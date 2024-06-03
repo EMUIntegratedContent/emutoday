@@ -2,7 +2,7 @@
     <div id="intcomm-area">
         <div class="row">
             <div class="large-12 medium-12 small-12 columns">
-                <h3 class="news-caps">INTCOMM (CHANGE)</h3>
+                <h1 class="news-caps">INTCOMM (CHANGE) &mdash; New Idea</h1>
             </div>
         </div>
         <div class="row">

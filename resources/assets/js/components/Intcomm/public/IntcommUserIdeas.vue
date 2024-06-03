@@ -54,6 +54,9 @@
                 </li>
               </ul>
             </template>
+            <template #no-data>
+              Create your <a href="/intcomm/ideas/create">first idea</a>.
+            </template>
           </v-data-table>
         </v-col>
       </v-row>

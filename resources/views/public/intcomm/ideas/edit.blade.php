@@ -23,6 +23,7 @@
             Not logged in. You must be logged in to see this section.
           </div>
         @endif
+          <a href="/intcomm/ideas" class="button">Back to My Ideas</a>
       </div>
     </div>
   </div>

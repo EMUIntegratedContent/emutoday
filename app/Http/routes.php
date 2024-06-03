@@ -88,6 +88,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 	Route::post('intcomm/ideas/admin/{ideaId}/makepost', 'Api\IntcommIdeaAdminController@makepost')->name('api_intcomm_admin_makepost');
 	Route::get('intcomm/ideas/user/{ideaId}', 'Api\IntcommIdeaPublicController@show')->name('api_intcomm_user_idea');
 	Route::get('intcomm/ideas/user', 'Api\IntcommIdeaPublicController@index')->name('api_intcomm_user_ideas');
+	Route::post('intcomm/ideas/user', 'Api\IntcommIdeaPublicController@store')->name('api_intcomm_user_ideas_store');
+	Route::put('intcomm/ideas/user/{ideaId}', 'Api\IntcommIdeaPublicController@update')->name('api_intcomm_user_ideas_update');
 	/* Intcomm Posts */
 	Route::get('intcomm/posts/{postId}', 'Api\IntcommPostController@show')->name('api_intcomm_post');
 	Route::get('intcomm/posts', 'Api\IntcommPostController@index')->name('api_intcomm_posts');

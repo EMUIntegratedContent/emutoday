@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class IntcommIdea extends Model
 {
     use HasFactory;
-		protected $fillable = ['title', 'teaser', 'content', 'contributor', 'admin_status', 'archived', 'is_submitted'];
+		protected $fillable = ['title', 'teaser', 'content', 'contributor_netid', 'contributor_first', 'contributor_last', 'admin_status', 'archived', 'is_submitted'];
 		protected $dates = ['created_at', 'updated_at'];
 
 		public function images(){

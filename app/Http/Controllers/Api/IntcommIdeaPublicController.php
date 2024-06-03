@@ -5,47 +5,44 @@ namespace Emutoday\Http\Controllers\Api;
 
 use Emutoday\Http\Resources\IntcommIdeaResource;
 use Emutoday\IntcommIdea;
+use Emutoday\IntcommPost;
 use Emutoday\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class IntcommIdeaPublicController extends ApiController{
 	protected $idea;
+	protected $validationRules = [
+		'title' => 'required|max:255',
+		'content' => 'required',
+		'contributor_netid' => 'required',
+		'contributor_first' => 'required',
+		'contributor_last' => 'required',
+	];
+	protected $draftValidationRules = [
+		'title' => 'required|max:255',
+		'contributor_netid' => 'required',
+		'contributor_first' => 'required',
+		'contributor_last' => 'required',
+	];
 
 	function __construct(IntcommIdea $idea){
 		$this->idea = $idea;
 	}
 
 	/**
-	 * Display a listing of the resource.
+	 * Get the ideas for a specific netid.
 	 * @param Request $request
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function index(Request $request){
-//		$fromDate = $request->get('fromDate');
-//		$toDate = $request->get('toDate');
-//		if($fromDate && $toDate){
-//			$posts = $this->post->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate.' 23:59:59')->get();
-//		}
-//		else if($fromDate){
-//			$posts = $this->post->where('start_date', '>=', $fromDate)->get();
-//		}
-//		else if($toDate){
-//			$posts = $this->post->where('end_date', '<=', $toDate)->get();
-//		}
-//		else{
-//			$posts = $this->post->all();
-//		}
-
 		$netid = $request->get('netid');
 		if(!$netid){
 			return response()->json(['error' => 'Netid is required.'], 400);
 		}
 
-		$ideas = $this->idea->where('contributor', $netid)->get();
+		$ideas = $this->idea->where('contributor_netid', $netid)->get();
 
-		// Paginate the results
-//		$posts = $posts->paginate(10);
-		// Respond with json data
 		return response()->json(IntcommIdeaResource::collection($ideas));
 	}
 
@@ -69,57 +66,92 @@ class IntcommIdeaPublicController extends ApiController{
 	}
 
 	/**
-	 * Store a new post
+	 * Store a new idea
 	 */
 	public function store(Request $request){
-//		$validationRules = [
-//			'title' => 'required|min:10',
-//			'send_at' => 'nullable|date_format:Y-m-d H:i:s'
-//		];
-//		// The validator if there is a presidential message being included in the email, a valid URL must be passed
-//		if($request->get('is_president_included')){
-//			$validationRules['president_teaser'] = 'required';
-//			$validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
-//		}
-//
-//		$validation = \Validator::make(Input::all(), $validationRules);
-//
-//		if($validation->fails()){
-//			return $this->setStatusCode(422)
-//				->respondWithError($validation->errors()->getMessages());
-//		}
-//
-//		if($validation->passes()){
-//
-//			$fractal = new Manager();
-//			$resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
-//
-//			return $this->setStatusCode(200)
-//				->respondUpdatedWithData('Email has been created.', $fractal->createData($resource)->toArray());
-//		}
+		$idea = json_decode($request->get('idea'), true);
+		$saveType = $request->get('saveType');
+		if (!$idea || !$saveType) {
+			return response()->json(['error' => 'Invalid parameters.'], 400);
+		}
+
+		$ideaId = isset($idea['ideaId']) ?: null;
+		if($ideaId){
+			$idea = $this->idea->findOrFail($ideaId);
+			if($idea) {
+				return response()->json(['error' => 'Idea already exists.'], 400);
+			}
+		}
+
+		$data = [
+			'title' => $idea['title'],
+			'teaser' => $idea['teaser'],
+			'content' => $idea['content'],
+			'contributor_netid' => $idea['contributor_netid'],
+			'contributor_first' => $idea['contributor_first'],
+			'contributor_last' => $idea['contributor_last']
+		];
+
+		if($saveType == 'draft'){
+			$validator = Validator::make($data, $this->draftValidationRules);
+		} else {
+			$validator = Validator::make($data, $this->validationRules);
+		}
+
+		if($validator->fails()) {
+			return response()->json(['error' => $validator->errors()], 400);
+		}
+
+		$idea = new IntcommIdea();
+		$idea->fill($data);
+		$idea->save();
+
+		return response()->json(IntcommIdeaResource::make($idea));
 	}
 
 	/**
 	 * Update the specified post
+	 * @param Request $request
+	 * @param int $ideaId
+	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function update(Request $request, $id){
-//		$post = $this->post->findOrFail($id);
-//
-//		$validationRules = [
-//			'title' => 'required|min:10',
-//			'send_at' => 'nullable|date_format:Y-m-d H:i:s'
-//		];
-//
-//		$validation = \Validator::make(Input::all(), $validationRules);
-//
-//		if($validation->fails()){
-//			return $this->setStatusCode(422)
-//				->respondWithError($validation->errors()->getMessages());
-//		}
-//
-//		if($validation->passes()){
-//
-//		}
+	public function update(Request $request, int $ideaId){
+		$ideaArr = json_decode($request->get('idea'), true);
+		$saveType = $request->get('saveType');
+		if (!$ideaArr || !$saveType) {
+			return response()->json(['error' => $request->all()], 400);
+		}
+
+		$idea = $this->idea->findOrFail($ideaId);
+		if(!$idea){
+			return response()->json(['error' => 'Idea not found.'], 404);
+		}
+
+		$data = [
+			'title' => $ideaArr['title'],
+			'teaser' => $ideaArr['teaser'],
+			'content' => $ideaArr['content'],
+			'contributor_netid' => $idea->contributor_netid, // use existing netid
+			'contributor_first' => $ideaArr['contributor_first'],
+			'contributor_last' => $ideaArr['contributor_last']
+		];
+
+		if($saveType == 'draft'){
+			$validator = Validator::make($data, $this->draftValidationRules);
+		} else {
+			$validator = Validator::make($data, $this->validationRules);
+		}
+
+		if($validator->fails()) {
+			return response()->json(['error' => $validator->errors()], 400);
+		}
+
+		$idea->fill($data);
+		$idea->is_submitted = $saveType == 'draft' ? 0 : 1;
+		$idea->save();
+
+		$idea = $this->idea->findOrFail($ideaId); // get the entire updated idea
+		return response()->json(IntcommIdeaResource::make($idea));
 	}
 
 	/**
