@@ -40,6 +40,9 @@
               class="elevation-1"
               :loading="loadingIdeas"
           >
+            <template #[`item.created_at`]="{ item }">
+              {{ slashdatetime(item.created_at) }}
+            </template>
             <template #[`item.title`]="{ item }">
               <a :href="`/admin/intcomm/ideas/${item.ideaId}`">{{ item.title }}</a>
             </template>
@@ -55,6 +58,7 @@ import moment from 'moment'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import { mapMutations, mapState } from "vuex"
+import { slashdatetime } from '../../filters'
 
 export default {
   mixins: [],
@@ -96,6 +100,7 @@ export default {
     }
   },
   methods: {
+    slashdatetime,
     ...mapMutations([]),
     toggleRange () {
       if (this.isEndDate) {

@@ -1,138 +1,143 @@
 <template>
-  <v-form ref="postForm" @submit.prevent="savePost">
-    <v-card>
-      <v-card-text>
-        <v-row>
-          <v-col cols="12">
-            <!--        {{ post ? post.postId : null }}-->
-            <v-text-field
-                v-model="post.title"
-                label="Title"
-                maxlength="120"
-                counter
-                :rules="[v => !!v || 'Title is required']"
-            >
-              <template #label>
-                Title <span class="text-error">*</span>
-              </template>
-            </v-text-field>
-            <v-text-field
-                v-model="post.teaser"
-                label="Teaser"
-                maxlength="120"
-                counter
-            ></v-text-field>
-            <!--        <v-textarea-->
-            <!--            v-model="post.content"-->
-            <!--            label="Story Content"-->
-            <!--            :rules="[v => !!v || 'Story content is required']"-->
-            <!--        ></v-textarea>-->
-            <label for="content">Content <span class="text-error">*</span></label>
-            <ckeditor
-                id="content"
-                name="content"
-                v-model="post.content"
-                :editor="editor"
-                :config="mode === 'admin' ? editorConfigFull : editorConfigSimple"
-            ></ckeditor>
-            <div class="ck ck-word-count">
-              <p :class="wordCountColor">
-                <strong><span class="ck-word-count__words">Words: 0</span>/700</strong>
-                <span v-if="contentWordCount > wordLimit"
-                      class="text-error ml-3">You have exceeded the word limit by {{ contentWordCount - wordLimit }} words. Any words beyond the limit will not be saved.</span>
-              </p>
-            </div>
-          </v-col>
-        </v-row>
-        <template v-if="mode === 'admin'">
-          <v-row>
-            <v-col cols="12" md="6">
-              <label>Start Date<br>
-                <flatpickr
-                    v-model="post.start_date"
-                    id="startDatePicker"
-                    :config="flatpickrConfig"
-                    class="form-control"
-                    name="startingDate"
+  <v-row>
+    <v-col cols="12" md="6">
+      <v-card v-if="post.associated_idea">
+        <v-toolbar density="compact" color="grey-darken-3" title="Post Form"></v-toolbar>
+        <v-card-text>
+          <v-form ref="postForm" @submit.prevent="savePost">
+            <v-row>
+              <v-col cols="12">
+                <!--        {{ post ? post.postId : null }}-->
+                <v-text-field
+                    v-model="post.title"
+                    label="Title"
+                    maxlength="120"
+                    counter
+                    :rules="[v => !!v || 'Title is required']"
                 >
-                </flatpickr>
-              </label>
-            </v-col>
-            <v-col cols="12" md="6">
-              <label>End Date<br>
-                <flatpickr
-                    v-model="post.end_date"
-                    id="endDatePicker"
-                    :config="flatpickrConfig"
-                    class="form-control"
-                    name="endingDate"
-                >
-                </flatpickr>
-              </label>
-            </v-col>
-            <v-col cols="12">
-              <v-select
-                  v-model="post.status"
-                  :items="['Draft', 'Submitted', 'Approved', 'Denied']"
-                  label="Status"
-              >
-              </v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" md="6">
-              <v-card>
-                <v-toolbar title="Submission Info" density="compact" color="teal"></v-toolbar>
-                <v-card-text>
-                  <v-list density="compact">
-                    <v-list-item>Submitted By: {{ post.submitted_by }}</v-list-item>
-                    <v-list-item>Submission Dt: {{ post.created_at }}</v-list-item>
-                  </v-list>
-                </v-card-text>
-              </v-card>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-text-field
-                  v-model="post.source"
-                  label="Source"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </template>
-        <IntcommPostImages :mode="mode"></IntcommPostImages>
-        <v-row>
-          <v-col cols="12">
-            <v-btn type="submit" :loading="loadingPost" color="primary">Save Post</v-btn>
-            <v-btn type="button" :loading="loadingPost" color="secondary" variant="outlined">Cancel Changes</v-btn>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
-  </v-form>
-
-  <v-card v-if="post.associated_idea">
-    <v-toolbar density="compact" color="grey-darken-3" title="Associated Idea"></v-toolbar>
-    <v-card-text>
-      <v-row>
-        <v-col
-            :key="`idea-${post.associated_idea.ideaId}`"
-            class="d-flex child-flex bg-danger"
-            cols="12"
-            md="6"
-            lg="4"
-        >
-          <v-card>
-            <v-card-text>
-              <p class="text-h6"><v-chip label v-if="post.associated_idea.archived" color="warning" size="small" class="mr-3">Archived</v-chip>{{ post.associated_idea.title }}</p>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn color="primary" :href="`/admin/intcomm/ideas/${post.associated_idea.id}`">Go to idea</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-card-text>
-  </v-card>
+                  <template #label>
+                    Title <span class="text-error">*</span>
+                  </template>
+                </v-text-field>
+                <v-text-field
+                    v-model="post.teaser"
+                    label="Teaser"
+                    maxlength="120"
+                    counter
+                ></v-text-field>
+                <!--        <v-textarea-->
+                <!--            v-model="post.content"-->
+                <!--            label="Story Content"-->
+                <!--            :rules="[v => !!v || 'Story content is required']"-->
+                <!--        ></v-textarea>-->
+                <label for="content">Content <span class="text-error">*</span></label>
+                <ckeditor
+                    id="content"
+                    name="content"
+                    v-model="post.content"
+                    :editor="editor"
+                    :config="mode === 'admin' ? editorConfigFull : editorConfigSimple"
+                ></ckeditor>
+                <div class="ck ck-word-count">
+                  <p :class="wordCountColor">
+                    <strong><span class="ck-word-count__words">Words: 0</span>/700</strong>
+                    <span v-if="contentWordCount > wordLimit"
+                          class="text-error ml-3">You have exceeded the word limit by {{ contentWordCount - wordLimit }} words. Any words beyond the limit will not be saved.</span>
+                  </p>
+                </div>
+              </v-col>
+            </v-row>
+            <template v-if="mode === 'admin'">
+              <v-row>
+                <v-col cols="12" md="6">
+                  <label>Start Date<br>
+                    <flatpickr
+                        v-model="post.start_date"
+                        id="startDatePicker"
+                        :config="flatpickrConfig"
+                        class="form-control"
+                        name="startingDate"
+                    >
+                    </flatpickr>
+                  </label>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <label>End Date<br>
+                    <flatpickr
+                        v-model="post.end_date"
+                        id="endDatePicker"
+                        :config="flatpickrConfig"
+                        class="form-control"
+                        name="endingDate"
+                    >
+                    </flatpickr>
+                  </label>
+                </v-col>
+                <v-col cols="12">
+                  <v-select
+                      v-model="post.status"
+                      :items="['Draft', 'Submitted', 'Approved', 'Denied']"
+                      label="Status"
+                  >
+                  </v-select>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-card>
+                    <v-toolbar title="Submission Info" density="compact" color="teal"></v-toolbar>
+                    <v-card-text>
+                      <v-list density="compact">
+                        <v-list-item>Submitted By: {{ post.submitted_by }}</v-list-item>
+                        <v-list-item>Submission Dt: {{ post.created_at }}</v-list-item>
+                      </v-list>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                      v-model="post.source"
+                      label="Source"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </template>
+            <IntcommPostImages :mode="mode"></IntcommPostImages>
+            <v-row>
+              <v-col cols="12">
+                <v-btn type="submit" :loading="loadingPost" color="primary">Save Post</v-btn>
+                <v-btn type="button" :loading="loadingPost" color="secondary" variant="outlined">Cancel Changes</v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-col>
+    <v-col cols="12" md="6">
+      <v-card v-if="post.associated_idea">
+        <v-toolbar density="compact" color="grey-darken-3" title="Associated Idea"></v-toolbar>
+        <v-card-text>
+          <v-alert class="mb-3" color="info" density="compact">Contributed by {{ post.associated_idea.submitted_by }} on
+            {{ slashdatetime(post.associated_idea.created_at) }}
+          </v-alert>
+          <p>
+            <strong>Suggested Title</strong>
+            <br>{{ post.associated_idea.title }}
+          </p>
+          <p>
+            <strong>Suggested Teaser</strong>
+            <br>{{ post.associated_idea.teaser }}
+          </p>
+          <div class="mb-3">
+            <strong>Suggested Content</strong>
+            <br>
+            <span v-html="post.associated_idea.content"></span>
+          </div>
+          <v-btn color="primary" :href="`/admin/intcomm/ideas/${post.associated_idea.id}`">Go to idea</v-btn>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -143,6 +148,7 @@ import 'flatpickr/dist/flatpickr.css'
 import { mapMutations, mapState } from "vuex"
 import { ckeditorIntcommMixin } from '../../ckeditor_intcomm_config'
 import IntcommPostImages from './IntcommPostImages.vue'
+import { slashdatetime } from '../../filters'
 
 export default {
   mixins: [ckeditorIntcommMixin],
@@ -195,6 +201,7 @@ export default {
     }
   },
   methods: {
+    slashdatetime,
     ...mapMutations(['setPost']),
     async savePost () {
       alert("saving!")

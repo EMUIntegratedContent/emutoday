@@ -128,9 +128,23 @@ class IntcommIdeaAdminController extends ApiController{
 	 * @param int $id
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function unarchive($id){
+	public function unarchive(int $id){
 		$idea = $this->idea->findOrFail($id);
 		$idea->archived = 0;
+		$idea->save();
+		return response()->json(IntcommIdeaResource::make($idea));
+	}
+
+	/**
+	 * Change the admin_status of an idea.
+	 * @param Request $request
+	 * @param int $id
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function status(Request $request, int $id){
+		$status = $request->get('admin_status');
+		$idea = $this->idea->findOrFail($id);
+		$idea->admin_status = $status;
 		$idea->save();
 		return response()->json(IntcommIdeaResource::make($idea));
 	}
@@ -140,7 +154,7 @@ class IntcommIdeaAdminController extends ApiController{
 	 * @param int $id
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function destroy($id){
+	public function destroy(int $id){
     $idea = $this->idea->findOrFail($id);
     $idea->delete();
     return $this->setStatusCode(200)->respond('Idea successfully deleted!');

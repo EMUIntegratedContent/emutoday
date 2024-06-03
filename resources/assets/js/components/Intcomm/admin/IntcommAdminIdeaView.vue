@@ -13,6 +13,22 @@
                 <v-alert class="mb-3" color="info" density="compact">Contributed by {{ idea.submitted_by }} on
                   {{ slashdatetime(idea.created_at) }}
                 </v-alert>
+                <v-alert v-if="isErr" class="mb-3" type="error" density="compact">{{ errorMsg }}</v-alert>
+              </v-col>
+              <v-col cols="12" md="6" lg="3" v-if="!idea.is_archived">
+                <v-select
+                    v-model="idea.admin_status"
+                    :items="['New', 'Viewed', 'Not Considering', 'Considering', 'Done']"
+                    label="Admin Status"
+                    density="compact"
+                    variant="outlined"
+                    hint="For internal use only. This will not be visible to the contributor."
+                    persistent-hint
+                    :loading="changingStatus"
+                    @update:modelValue="changeAdminStatus"
+                ></v-select>
+              </v-col>
+              <v-col cols="12">
                 <p>
                   <strong>Suggested Title</strong>
                   <br>{{ idea.title }}
@@ -21,11 +37,15 @@
                   <strong>Suggested Teaser</strong>
                   <br>{{ idea.teaser }}
                 </p>
-                <div>
+                <div class="mb-3">
                   <strong>Suggested Content</strong>
                   <br>
                   <span v-html="idea.content"></span>
                 </div>
+                <p>
+                  <strong>Last updated</strong>
+                  <br>{{ slashdatetime(idea.updated_at) }}
+                </p>
               </v-col>
             </v-row>
             <!--        <IntcommIdeaImages :mode="mode"></IntcommIdeaImages>-->
@@ -93,14 +113,17 @@ export default {
   data: function () {
     return {
       archivingIdea: false,
+      changingStatus: false,
       currentDate: moment(),
       deletingIdea: false,
+      errorMsg: null,
       flatpickrConfig: {
         altFormat: "m/d/Y h:i K", // format the user sees
         altInput: true,
         dateFormat: "Y-m-d H:i:S", // format sumbitted to the API
         enableTime: true
       },
+      isErr: false,
       itemDeleted: false,
       loadingIdea: false,
       makingPost: false,
@@ -128,11 +151,33 @@ export default {
         this.setIdea(r.data)
         this.loadingIdea = false
       })
-      .catch((e) => {
-        console.log(e)
+      .catch(() => {
+        this.isErr = true
+        this.errorMsg = 'Error fetching idea.'
+      })
+    },
+    async changeAdminStatus () {
+      this.isErr = false
+      this.changingStatus = true
+
+      // Don't use FormData with a PUT request
+      let data = {
+        admin_status: this.idea.admin_status
+      }
+      let routeurl = '/api/intcomm/ideas/admin/' + this.idea.ideaId + '/status'
+
+      await this.$http.put(routeurl, data)
+      .then((r) => {
+        this.setIdea(r.data)
+        this.changingStatus = false
+      })
+      .catch(() => {
+        this.isErr = true
+        this.errorMsg = 'Error changing admin status.'
       })
     },
     async makePost () {
+      this.isErr = false
       this.makingPost = true
       // let formData = new FormData();
       let routeurl = '/api/intcomm/ideas/admin/' + this.idea.ideaId + '/makepost'
@@ -142,14 +187,16 @@ export default {
         this.setIdea(r.data)
         this.makingPost = false
       })
-      .catch((e) => {
-        console.log(e)
+      .catch(() => {
+        this.isErr = true
+        this.errorMsg = 'Error creating post.'
       })
     },
     async archiveIdea () {
       if(!confirm('Archived ideas will no longer show in the ideas list. Are you sure you want to archive this idea?')) {
         return
       }
+      this.isErr = false
       this.archivingIdea = true
       // let formData = new FormData();
       let routeurl = '/api/intcomm/ideas/admin/' + this.idea.ideaId + '/archive'
@@ -159,13 +206,14 @@ export default {
         this.setIdea(r.data)
         this.archivingIdea = false
       })
-      .catch((e) => {
-        console.log(e)
+      .catch(() => {
+        this.isErr = true
+        this.errorMsg = 'Error archiving idea.'
       })
     },
     async unarchiveIdea () {
+      this.isErr = false
       this.unarchivingIdea = true
-      // let formData = new FormData();
       let routeurl = '/api/intcomm/ideas/admin/' + this.idea.ideaId + '/unarchive'
 
       await this.$http.put(routeurl)
@@ -173,8 +221,9 @@ export default {
         this.setIdea(r.data)
         this.unarchivingIdea = false
       })
-      .catch((e) => {
-        console.log(e)
+      .catch(() => {
+        this.isErr = true
+        this.errorMsg = 'Error unarchiving idea.'
       })
     },
     async deleteIdea () {
@@ -182,16 +231,16 @@ export default {
         return
       }
       this.deletingIdea = true
-      // let formData = new FormData();
       let routeurl = '/api/intcomm/ideas/admin/' + this.idea.ideaId
 
       await this.$http.delete(routeurl)
-      .then((r) => {
+      .then(() => {
         this.deletingIdea = false
         this.itemDeleted = true
       })
-      .catch((e) => {
-        console.log(e)
+      .catch(() => {
+        this.isErr = true
+        this.errorMsg = 'Error deleting idea.'
       })
     }
   }

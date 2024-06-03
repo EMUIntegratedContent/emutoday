@@ -83,6 +83,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 	Route::get('intcomm/ideas/admin/{ideaId}', 'Api\IntcommIdeaAdminController@show')->name('api_intcomm_admin_idea');
 	Route::put('intcomm/ideas/admin/{ideaId}/archive', 'Api\IntcommIdeaAdminController@archive')->name('api_intcomm_admin_idea_archive');
 	Route::put('intcomm/ideas/admin/{ideaId}/unarchive', 'Api\IntcommIdeaAdminController@unarchive')->name('api_intcomm_admin_idea_unarchive');
+	Route::put('intcomm/ideas/admin/{ideaId}/status', 'Api\IntcommIdeaAdminController@status')->name('api_intcomm_admin_idea_status');
 	Route::delete('intcomm/ideas/admin/{ideaId}', 'Api\IntcommIdeaAdminController@destroy')->name('api_intcomm_admin_idea_delete');
 	Route::post('intcomm/ideas/admin/{ideaId}/makepost', 'Api\IntcommIdeaAdminController@makepost')->name('api_intcomm_admin_makepost');
 	Route::get('intcomm/ideas/user/{ideaId}', 'Api\IntcommIdeaPublicController@show')->name('api_intcomm_user_idea');

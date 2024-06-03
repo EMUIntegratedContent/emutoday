@@ -41,7 +41,7 @@ class IntcommIdeaPublicController extends ApiController{
 			return response()->json(['error' => 'Netid is required.'], 400);
 		}
 
-		$ideas = $this->idea->where('submitted_by', $netid)->get();
+		$ideas = $this->idea->where('contributor', $netid)->get();
 
 		// Paginate the results
 //		$posts = $posts->paginate(10);

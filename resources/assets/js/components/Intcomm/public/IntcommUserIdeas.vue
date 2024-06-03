@@ -1,8 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12">
-      {{ netid }}
-      Yea user ideas!
+      <p>Logged in as {{ netid }}</p>
       <!-- Date filter -->
 <!--      <form class="form-inline">-->
 <!--        <label>Starting <span v-if="isEndDate">between</span><span v-else>on or after</span><br>-->
@@ -45,6 +44,16 @@
             <template #[`item.title`]="{ item }">
               <a :href="`/intcomm/ideas/${item.ideaId}/edit`">{{ item.title }}</a>
             </template>
+            <template #[`item.created_at`]="{ item }">
+              {{ slashdate(item.created_at) }}
+            </template>
+            <template #[`item.associated_posts`]="{ item }">
+              <ul v-if="item.associated_posts.length">
+                <li v-for="(ap, i) in item.associated_posts" :key="`ap-${i}`">
+                  <a :href="`/intcomm/posts/${ap.postId}`">{{ ap.title }}</a>
+                </li>
+              </ul>
+            </template>
           </v-data-table>
         </v-col>
       </v-row>
@@ -57,6 +66,7 @@ import moment from 'moment'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import { mapMutations, mapState } from "vuex"
+import { slashdate } from '../../filters'
 
 export default {
   mixins: [],
@@ -88,9 +98,9 @@ export default {
         enableTime: false
       },
       headers: [
+        { title: 'Submit Dt', key: 'created_at' },
         { title: 'Title', key: 'title' },
-        { title: 'Teaser', key: 'teaser' },
-        { title: 'Submit Dt', key: 'created_at' }
+        { title: 'EMU Today Post(s)', key: 'associated_posts', sortable: false }
       ],
       loadingIdeas: false,
       ideas: []
@@ -103,6 +113,7 @@ export default {
     // }
   },
   methods: {
+    slashdate,
     ...mapMutations([]),
     // toggleRange () {
     //   if (this.isEndDate) {

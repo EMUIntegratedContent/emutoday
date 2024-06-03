@@ -1,5 +1,9 @@
 import moment from 'moment'
 
 export const slashdatetime = (datetime) => {
-	return moment(datetime).format('YYYY/MM/DD HH:mm A')
+	return moment(datetime).format('MM/DD/YYYY h:mm A')
+}
+
+export const slashdate = (datetime) => {
+	return moment(datetime).format('MM/DD/YYYY')
 }
