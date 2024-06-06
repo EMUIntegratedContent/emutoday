@@ -98,6 +98,12 @@ ul.intcomm-nav li a:not(.button) {color: #333;font-size: 1.1rem;font-weight: 400
     font-weight: 400;
 }
 
+/* Override foundation styles for fields (using Vuetify here) */
+#intcomm-area [type="color"], #intcomm-area [type="date"], #intcomm-area [type="datetime-local"], #intcomm-area [type="datetime"], #intcomm-area [type="email"], #intcomm-area [type="month"], #intcomm-area [type="number"], #intcomm-area [type="password"], #intcomm-area [type="search"], #intcomm-area [type="tel"], #intcomm-area [type="text"], #intcomm-area [type="time"], #intcomm-area [type="url"], #intcomm-area [type="week"], #intcomm-area textarea {
+    border: none !important;
+    margin: 0 !important;
+}
+
 /* Medium screens */
 @media only screen and (min-width: 40.063em) { } /* min-width 641px, medium screens */
 

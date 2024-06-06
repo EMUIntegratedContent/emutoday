@@ -8,15 +8,17 @@
           <v-card-text>
             <v-row>
               <v-col cols="12">
-                <v-alert v-if="itemDeleted" class="mb-3" color="error" icon="mdi-delete" density="compact">This idea has been deleted.</v-alert>
-                <v-alert v-if="idea.archived" class="mb-3" type="warning" density="compact">This idea has been archived. It will not show in the ideas list.</v-alert>
-                <v-alert class="mb-3" color="info" density="compact">Contributed by {{ idea.submitted_by }} on
-                  {{ slashdatetime(idea.created_at) }}
+                <v-alert v-if="itemDeleted" class="mb-3" color="error" icon="mdi-delete" density="compact">This idea has
+                  been deleted.
+                </v-alert>
+                <v-alert v-if="idea.archived" class="mb-3" type="warning" density="compact">This idea has been archived.
+                  It will not show in the ideas list.
                 </v-alert>
                 <v-alert v-if="isErr" class="mb-3" type="error" density="compact">{{ errorMsg }}</v-alert>
               </v-col>
-              <v-col cols="12" md="6" lg="3" v-if="!idea.is_archived">
+              <v-col cols="12" sm="6" md="4" lg="3">
                 <v-select
+                    v-if="!idea.is_archived"
                     v-model="idea.admin_status"
                     :items="['New', 'Viewed', 'Not Considering', 'Considering', 'Done']"
                     label="Admin Status"
@@ -28,31 +30,64 @@
                     @update:modelValue="changeAdminStatus"
                 ></v-select>
               </v-col>
-              <v-col cols="12">
-                <p>
-                  <strong>Suggested Title</strong>
-                  <br>{{ idea.title }}
-                </p>
-                <p>
-                  <strong>Suggested Teaser</strong>
-                  <br>{{ idea.teaser }}
-                </p>
-                <div class="mb-3">
-                  <strong>Suggested Content</strong>
-                  <br>
-                  <span v-html="idea.content"></span>
-                </div>
-                <p>
-                  <strong>Last updated</strong>
-                  <br>{{ slashdatetime(idea.updated_at) }}
-                </p>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="6" md="4" lg="3">
+                <v-card>
+                  <v-list lines="two">
+                    <v-list-item>
+                      <v-list-item-title>Suggested Title</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{ idea.title }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+
+                    <v-list-item>
+                      <v-list-item-title>Suggested Teaser</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{ idea.teaser ? idea.teaser : 'No suggested teaser provided' }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-title>Contributor</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{ idea.contributor_fullname + ' (' + idea.contributor_netid + ')' }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-title>Submission Dt</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{ slashdatetime(idea.created_at) }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-title>Last Updated</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{ slashdatetime(idea.updated_at) }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                  </v-list>
+                </v-card>
+              </v-col>
+              <v-col cols="12" sm="6" md="8" lg="9">
+                <v-card>
+                  <v-card-text>
+                    <span v-html="idea.content"></span>
+                  </v-card-text>
+                </v-card>
               </v-col>
             </v-row>
             <!--        <IntcommIdeaImages :mode="mode"></IntcommIdeaImages>-->
           </v-card-text>
           <v-card-actions v-if="!itemDeleted">
             <v-btn :loading="makingPost" color="primary" @click="makePost">Convert to Post</v-btn>
-            <v-btn v-if="!idea.archived" :loading="archivingIdea" color="warning" @click="archiveIdea">Archive Idea</v-btn>
+            <v-btn v-if="!idea.archived" :loading="archivingIdea" color="warning" @click="archiveIdea">Archive Idea
+            </v-btn>
             <v-btn v-else :loading="unarchivingIdea" color="warning" @click="unarchiveIdea">Reinstate Idea</v-btn>
             <v-btn :loading="deletingIdea" color="error" @click="deleteIdea">Delete Idea</v-btn>
           </v-card-actions>
@@ -193,7 +228,7 @@ export default {
       })
     },
     async archiveIdea () {
-      if(!confirm('Archived ideas will no longer show in the ideas list. Are you sure you want to archive this idea?')) {
+      if (!confirm('Archived ideas will no longer show in the ideas list. Are you sure you want to archive this idea?')) {
         return
       }
       this.isErr = false
@@ -227,7 +262,7 @@ export default {
       })
     },
     async deleteIdea () {
-      if(!confirm('Deleting an idea will also delete it for the original contributor. If you want the contributor to still see their idea, use the "Reject Idea" feature instead. Are you sure you want to delete this idea?')) {
+      if (!confirm('Deleting an idea will also delete it for the original contributor. If you want the contributor to still see their idea, use the "Reject Idea" feature instead. Are you sure you want to delete this idea?')) {
         return
       }
       this.deletingIdea = true

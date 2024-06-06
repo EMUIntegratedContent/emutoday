@@ -10,7 +10,7 @@
                   v-if="idea.created_at"
                   density="compact"
                   type="info"
-                  class="mb-3"
+                  class="mb-4"
               >This is a draft. Please click the "Submit Idea" button to finalize your idea.</v-alert>
               <v-text-field
                   v-model="idea.title"
@@ -74,6 +74,11 @@
               </v-text-field>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col cols="12">
+              IMAGES
+            </v-col>
+          </v-row>
           <p v-if="formModified && !showSuccess && !errSaving" class="text-error">You have unsaved changes.</p>
           <p v-if="errSaving" class="text-error">Error saving your idea.</p>
           <p v-if="showSuccess" class="text-success">Your idea has been saved.</p>
@@ -132,7 +137,7 @@
               </p>
             </v-col>
           </v-row>
-          <!--        <IntcommIdeaImages :mode="mode"></IntcommIdeaImages>-->
+          <IntcommIdeaImages :mode="mode"></IntcommIdeaImages>
         </v-card-text>
       </template>
     </v-card>
@@ -147,7 +152,7 @@ import 'flatpickr/dist/flatpickr.css'
 import { mapMutations, mapState } from "vuex"
 import { ckeditorIntcommMixin } from '../../ckeditor_intcomm_config'
 import { slashdate } from '../../filters'
-// import IntcommPostImages from './IntcommPostImages.vue'
+import IntcommIdeaImages from './IntcommIdeaImages.vue'
 
 export default {
   mixins: [ckeditorIntcommMixin],
@@ -162,7 +167,7 @@ export default {
     }
   },
   components: {
-    // IntcommPostImages,
+    IntcommIdeaImages,
     flatpickr,
     intcomm_store: store
   },

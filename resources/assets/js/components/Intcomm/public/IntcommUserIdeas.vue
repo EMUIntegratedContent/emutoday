@@ -2,36 +2,6 @@
   <v-row>
     <v-col cols="12">
       <p>Logged in as {{ netid }}</p>
-      <!-- Date filter -->
-<!--      <form class="form-inline">-->
-<!--        <label>Starting <span v-if="isEndDate">between</span><span v-else>on or after</span><br>-->
-<!--          <flatpickr-->
-<!--              v-model="startDate"-->
-<!--              id="startDatePicker"-->
-<!--              :config="flatpickrConfig"-->
-<!--              class="form-control mr-2"-->
-<!--              name="startingDate"-->
-<!--          >-->
-<!--          </flatpickr>-->
-<!--        </label>-->
-<!--        <template v-if="isEndDate">-->
-<!--          <label> and<br>-->
-<!--            <flatpickr-->
-<!--                v-model="endDate"-->
-<!--                id="endDatePicker"-->
-<!--                :config="flatpickrConfig"-->
-<!--                class="form-control"-->
-<!--                name="endingDate"-->
-<!--            >-->
-<!--            </flatpickr>-->
-<!--          </label>-->
-<!--        </template>-->
-<!--        <button href="#" id="rangetoggle" type="button" @click="toggleRange"><span-->
-<!--            v-if="isEndDate"> - Remove </span><span-->
-<!--            v-else> + Add </span>Range-->
-<!--        </button>-->
-<!--        <v-btn size="small" color="info" class="ml-4" @click="fetchPosts">Filter</v-btn>-->
-<!--      </form>-->
       <v-row>
         <v-col cols="12">
           <v-data-table
@@ -41,11 +11,12 @@
               class="elevation-1"
               :loading="loadingIdeas"
           >
-            <template #[`item.title`]="{ item }">
-              <a :href="`/intcomm/ideas/${item.ideaId}/edit`">{{ item.title }}</a>
-            </template>
             <template #[`item.created_at`]="{ item }">
               {{ slashdate(item.created_at) }}
+            </template>
+            <template #[`item.title`]="{ item }">
+              <a :href="`/intcomm/ideas/${item.ideaId}/edit`">{{ item.title }}</a>
+              <v-chip label v-if="!item.is_submitted" color="warning" class="ml-2 mb-1" size="small">Draft</v-chip>
             </template>
             <template #[`item.associated_posts`]="{ item }">
               <ul v-if="item.associated_posts.length">
@@ -101,7 +72,7 @@ export default {
         enableTime: false
       },
       headers: [
-        { title: 'Submit Dt', key: 'created_at' },
+        { title: 'Date Created', key: 'created_at' },
         { title: 'Title', key: 'title' },
         { title: 'EMU Today Post(s)', key: 'associated_posts', sortable: false }
       ],

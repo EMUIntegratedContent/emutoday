@@ -23,6 +23,7 @@ class IntcommIdeaResource extends JsonResource
 				'contributor_netid' => $this->contributor_netid,
 				'contributor_first' => $this->contributor_first,
 				'contributor_last' => $this->contributor_last,
+				'contributor_fullname' => $this->contributor_first . ' ' . $this->contributor_last,
 				'is_submitted' => $this->is_submitted,
 				'admin_status' => $this->admin_status,
 				'archived' => $this->archived,
