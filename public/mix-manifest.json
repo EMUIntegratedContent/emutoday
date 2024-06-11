@@ -1,11 +1,6 @@
 {
-    "/js/vue-intcomm-queue.js": "/js/vue-intcomm-queue.js?id=d8f1b535cba529cdfc4d3a6aa644af71",
-    "/js/vue-intcomm-post-form-wrapper-admin.js": "/js/vue-intcomm-post-form-wrapper-admin.js?id=976233f70054a925a191c4afff2b3b43",
-    "/js/vue-intcomm-user-idea-form.js": "/js/vue-intcomm-user-idea-form.js?id=de9f5a161cca38dd62ecbf8b172ab012",
-    "/js/vue-intcomm-user-ideas.js": "/js/vue-intcomm-user-ideas.js?id=5a140b5ee60a7d5439872708232bdec1",
-    "/js/vue-intcomm-admin-dashboard.js": "/js/vue-intcomm-admin-dashboard.js?id=35c2cf26248241f63178b736b9989e69",
-    "/js/vue-intcomm-admin-idea-view.js": "/js/vue-intcomm-admin-idea-view.js?id=ec72429123b1131e9dab1e0770b06ce3",
-    "/js/vue-intcomm-ideas-queue.js": "/js/vue-intcomm-ideas-queue.js?id=75546103dd8139a13d05efe0c8657576",
+    "/js/vue-intcomm-user-idea-form.js": "/js/vue-intcomm-user-idea-form.js?id=25c45dbf8e4b8d482761fd48bd2da9c3",
+    "/js/vue-intcomm-user-ideas.js": "/js/vue-intcomm-user-ideas.js?id=bdf31630ffa4375f9b6b32993817942f",
     "/js/admin-emucustom.js": "/js/admin-emucustom.js?id=b53a3485ef3fa04ce74f580fea32b841",
     "/css/public-styles.css": "/css/public-styles.css?id=946164109caa289cf1fff2e091996a1a",
     "/js/public-scripts.js": "/js/public-scripts.js?id=83de610ed18549969120a1a41921e8bf",

@@ -36,13 +36,18 @@ const emptyPost = () => {
 
 const state = {
 	idea: emptyIdea(),
+	ideaImgsForUpload: [],
 	ideas: [],
 	post: emptyPost(),
+	postImgsForUpload: [],
 	posts: [],
 }
 const mutations = {
 	setIdea (state, idea) {
 		state.idea = idea
+	},
+	setIdeaImagsForUpload (state, imgs) {
+		state.ideaImgsForUpload = imgs
 	},
 	setIdeaProp (state, { prop, value }) {
 		state.idea[prop] = value
@@ -52,6 +57,9 @@ const mutations = {
 	},
 	setPost (state, post) {
 		state.post = post
+	},
+	setPostImagsForUpload (state, imgs) {
+		state.postImgsForUpload = imgs
 	},
 	setPosts (state, posts) {
 		state.posts = posts

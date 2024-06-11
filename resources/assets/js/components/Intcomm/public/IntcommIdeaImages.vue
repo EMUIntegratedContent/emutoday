@@ -4,11 +4,11 @@
       <p>ASSOCIATED IMAGES (IDEA)</p>
       {{ idea ? idea : null}}
       <v-file-input
-          v-model="imgsForUpload"
+          v-model="ideaImgsForUpload"
           accept="image/*"
-          label="File input"
+          label="Attach an image"
           multiple
-          @update:modelValue="handleFileUpload"
+          @update:modelValue="handleAddImages"
       ></v-file-input>
     </v-col>
   </v-row>
@@ -41,7 +41,7 @@
 <!--          </v-row>-->
 <!--        </template>-->
 <!--      </v-img>-->
-      <IdeaImageDialog :key="`img-dialog-${i}`" :index="i"></IdeaImageDialog>
+      <IdeaImage :key="`img-dialog-${i}`" :index="i" @imageUpdated="$emit('imagesUpdated')"></IdeaImage>
     </v-col>
   </v-row>
 </template>
@@ -51,7 +51,7 @@ import store from '../../../vuex/intcomm_store'
 import moment from 'moment'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
-import IdeaImageDialog from './dialogs/IdeaImageIdalog.vue'
+import IdeaImage from './IdeaImage.vue'
 import { mapMutations, mapState } from "vuex"
 
 export default {
@@ -64,24 +64,24 @@ export default {
   },
   components: {
     intcomm_store: store,
-    IdeaImageDialog
+    IdeaImage
   },
   created () {
 
   },
   data: function () {
     return {
-      imgsForUpload: []
+      fileInputImgs: [] // only for the input. The actual images are put into the store to be saved with the idea.
     }
   },
   computed: {
-    ...mapState(['post']),
+    ...mapState(['idea', 'ideaImgsForUpload']),
   },
   methods: {
-    ...mapMutations(['setPost']),
-    // When a new image is uploaded, add it to the post's images array. This will be saved when the post is saved.
+    ...mapMutations(['setIdea', 'setIdeaImagsForUpload']),
+    // When a new image is uploaded, add it to the idea's images array. This will be saved when the idea is saved.
     // A temporary ID is generated for the image, and the image path is set to the generated URL, which is a temporary URL.
-    handleFileUpload (files) {
+    handleAddImages (files) {
       for (let i = 0; i < files.length; i++) {
         let file = files[i];
         let imageUrl = URL.createObjectURL(file);
@@ -90,18 +90,13 @@ export default {
           image_path: imageUrl, // Use the generated URL as the image path
           image_name: file.name,
           image_extension: file.type.split('/')[1],
-          intcomm_post_id: this.post.id ?? null,
-          title: null,
-          caption: null,
-          teaser: null,
-          alt_text: null,
-          moretext: null,
-          link: null,
-          link_text: null,
-          is_active: 0
+          intcomm_idea_id: this.idea.id ?? null,
+          description: null,
+          // file: file
         });
       }
-      this.imgsForUpload = []
+      this.fileInputImgs = []
+      this.$emit('imagesUpdated')
     },
     makeImageURL (image) {
       if(image.id.includes('new-')) return image.image_path // If the image is new, use the generated, temporary URL

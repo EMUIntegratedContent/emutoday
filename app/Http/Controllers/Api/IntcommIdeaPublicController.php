@@ -69,44 +69,48 @@ class IntcommIdeaPublicController extends ApiController{
 	 * Store a new idea
 	 */
 	public function store(Request $request){
-		$idea = json_decode($request->get('idea'), true);
-		$saveType = $request->get('saveType');
-		if (!$idea || !$saveType) {
-			return response()->json(['error' => 'Invalid parameters.'], 400);
-		}
+//		$idea = json_decode($request->get('idea'), true);
+//		$saveType = $request->get('saveType');
+//		if (!$idea || !$saveType) {
+//			return response()->json(['error' => 'Invalid parameters.'], 400);
+//		}
+//
+//		$ideaId = isset($idea['ideaId']) ?: null;
+//		if($ideaId){
+//			$idea = $this->idea->findOrFail($ideaId);
+//			if($idea) {
+//				return response()->json(['error' => 'Idea already exists.'], 400);
+//			}
+//		}
+//
+//		$data = [
+//			'title' => $idea['title'],
+//			'teaser' => $idea['teaser'],
+//			'content' => $idea['content'],
+//			'contributor_netid' => $idea['contributor_netid'],
+//			'contributor_first' => $idea['contributor_first'],
+//			'contributor_last' => $idea['contributor_last']
+//		];
+//
+//		if($saveType == 'draft'){
+//			$validator = Validator::make($data, $this->draftValidationRules);
+//		} else {
+//			$validator = Validator::make($data, $this->validationRules);
+//		}
+//
+//		if($validator->fails()) {
+//			return response()->json(['error' => $validator->errors()], 400);
+//		}
+//
+//		$idea = new IntcommIdea();
+//		$idea->fill($data);
+//		$idea->save();
 
-		$ideaId = isset($idea['ideaId']) ?: null;
-		if($ideaId){
-			$idea = $this->idea->findOrFail($ideaId);
-			if($idea) {
-				return response()->json(['error' => 'Idea already exists.'], 400);
-			}
-		}
+		// Get any attached images files from the request
+		$images = $request->file('images');
 
-		$data = [
-			'title' => $idea['title'],
-			'teaser' => $idea['teaser'],
-			'content' => $idea['content'],
-			'contributor_netid' => $idea['contributor_netid'],
-			'contributor_first' => $idea['contributor_first'],
-			'contributor_last' => $idea['contributor_last']
-		];
-
-		if($saveType == 'draft'){
-			$validator = Validator::make($data, $this->draftValidationRules);
-		} else {
-			$validator = Validator::make($data, $this->validationRules);
-		}
-
-		if($validator->fails()) {
-			return response()->json(['error' => $validator->errors()], 400);
-		}
-
-		$idea = new IntcommIdea();
-		$idea->fill($data);
-		$idea->save();
-
-		return response()->json(IntcommIdeaResource::make($idea));
+		return response()->json($images);
+//		return response()->json(IntcommIdeaResource::make($idea));
 	}
 
 	/**

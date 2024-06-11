@@ -11,7 +11,8 @@ class IntcommIdeasImages extends Model{
 	protected $fillable = [
 		'intcomm_idea_id',
 		'image_name',
-		'image_path'
+		'image_path',
+		'description'
 	];
 
 	public function post(){

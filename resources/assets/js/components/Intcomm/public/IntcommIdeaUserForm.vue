@@ -74,11 +74,7 @@
               </v-text-field>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="12">
-              IMAGES
-            </v-col>
-          </v-row>
+          <IntcommIdeaImages @imagesUpdated="formModified = true"></IntcommIdeaImages>
           <p v-if="formModified && !showSuccess && !errSaving" class="text-error">You have unsaved changes.</p>
           <p v-if="errSaving" class="text-error">Error saving your idea.</p>
           <p v-if="showSuccess" class="text-success">Your idea has been saved.</p>
@@ -137,7 +133,6 @@
               </p>
             </v-col>
           </v-row>
-          <IntcommIdeaImages :mode="mode"></IntcommIdeaImages>
         </v-card-text>
       </template>
     </v-card>
@@ -200,11 +195,11 @@ export default {
     }
   },
   computed: {
-    ...mapState(['idea'])
+    ...mapState(['idea', 'ideaImgsForUpload'])
   },
   methods: {
     slashdate,
-    ...mapMutations(['setIdea', 'setIdeaProp']),
+    ...mapMutations(['setIdea', 'setIdeaProp', 'setIdeaImagsForUpload']),
     async fetchIdea () {
       this.loadingIdea = true
       let routeurl = '/api/intcomm/ideas/user/' + this.ideaid
@@ -224,6 +219,7 @@ export default {
       this.setIdea(JSON.parse(JSON.stringify(this.originalIdea)))
       this.originalIdea = JSON.parse(JSON.stringify(this.idea))
       this.formModified = false
+      this.$refs.ideaForm.reset() // resets validation
     },
     async submitPreflight (evt) {
       const btnId = evt.submitter.id // determine whether submitting or saving a draft
@@ -249,17 +245,20 @@ export default {
       await this.saveIdea(saveType)
     },
     async saveIdea (saveType) {
-      // // Assuming `fileInput` is an input element with type="file"
-      // let fileInput = document.querySelector('#file-input');
-      // let files = fileInput.files;
-      //
-      // for (let i = 0; i < files.length; i++) {
-      //   formData.append('images[]', files[i]);
-      // }
-
       const data = new FormData()
       data.append('idea', JSON.stringify(this.idea))
       data.append('saveType', saveType)
+
+      // TODO: add images to form data something like this:
+      // this.idea.images.forEach((image, index) => {
+      //   if (image.id.startsWith('new-')) {
+      //     formData.append(`images[${index}]`, image.file);
+      //     formData.append(`descriptions[${index}]`, image.description);
+      //   }
+      // });
+      for (let i = 0; i < this.ideaImgsForUpload.length; i++) {
+        data.append('images[]', this.ideaImgsForUpload[i]);
+      }
 
       // Laravel doesn't like handing FormData in PUT methods.
       // To get around this, always submit as POST, but add _method=PUT to the end of the route
@@ -273,12 +272,12 @@ export default {
       })
       .then((r) => {
         // Send new submissions to the edit form
-        if(httpVerb === 'post') {
-          window.location.href = '/intcomm/ideas/' + r.data.ideaId + '/edit'
-        } else {
-          this.setIdea(r.data)
-          this.originalIdea = JSON.parse(JSON.stringify(this.idea))
-        }
+        // if(httpVerb === 'post') {
+        //   window.location.href = '/intcomm/ideas/' + r.data.ideaId + '/edit'
+        // } else {
+        //   this.setIdea(r.data)
+        //   this.originalIdea = JSON.parse(JSON.stringify(this.idea))
+        // }
         this.savingIdea = false
         this.savingDraft = false
         this.formModified = false
