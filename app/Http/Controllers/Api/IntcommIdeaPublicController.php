@@ -2,13 +2,15 @@
 
 namespace Emutoday\Http\Controllers\Api;
 
-
 use Emutoday\Http\Resources\IntcommIdeaResource;
 use Emutoday\IntcommIdea;
+use Emutoday\IntcommIdeasImages;
 use Emutoday\IntcommPost;
 use Emutoday\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class IntcommIdeaPublicController extends ApiController{
 	protected $idea;
@@ -69,48 +71,71 @@ class IntcommIdeaPublicController extends ApiController{
 	 * Store a new idea
 	 */
 	public function store(Request $request){
-//		$idea = json_decode($request->get('idea'), true);
-//		$saveType = $request->get('saveType');
-//		if (!$idea || !$saveType) {
-//			return response()->json(['error' => 'Invalid parameters.'], 400);
-//		}
-//
-//		$ideaId = isset($idea['ideaId']) ?: null;
-//		if($ideaId){
-//			$idea = $this->idea->findOrFail($ideaId);
-//			if($idea) {
-//				return response()->json(['error' => 'Idea already exists.'], 400);
-//			}
-//		}
-//
-//		$data = [
-//			'title' => $idea['title'],
-//			'teaser' => $idea['teaser'],
-//			'content' => $idea['content'],
-//			'contributor_netid' => $idea['contributor_netid'],
-//			'contributor_first' => $idea['contributor_first'],
-//			'contributor_last' => $idea['contributor_last']
-//		];
-//
-//		if($saveType == 'draft'){
-//			$validator = Validator::make($data, $this->draftValidationRules);
-//		} else {
-//			$validator = Validator::make($data, $this->validationRules);
-//		}
-//
-//		if($validator->fails()) {
-//			return response()->json(['error' => $validator->errors()], 400);
-//		}
-//
-//		$idea = new IntcommIdea();
-//		$idea->fill($data);
-//		$idea->save();
+		$idea = json_decode($request->get('idea'), true);
+		$saveType = $request->get('saveType');
+		if (!$idea || !$saveType) {
+			return response()->json(['error' => 'Invalid parameters.'], 400);
+		}
 
-		// Get any attached images files from the request
-		$images = $request->file('images');
+		$ideaId = isset($idea['ideaId']) ?: null;
+		if($ideaId){
+			$idea = $this->idea->findOrFail($ideaId);
+			if($idea) {
+				return response()->json(['error' => 'Idea already exists.'], 400);
+			}
+		}
 
-		return response()->json($images);
-//		return response()->json(IntcommIdeaResource::make($idea));
+		$data = [
+			'title' => $idea['title'],
+			'teaser' => $idea['teaser'],
+			'content' => $idea['content'],
+			'contributor_netid' => $idea['contributor_netid'],
+			'contributor_first' => $idea['contributor_first'],
+			'contributor_last' => $idea['contributor_last']
+		];
+
+		if($saveType == 'draft'){
+			$validator = Validator::make($data, $this->draftValidationRules);
+		} else {
+			$validator = Validator::make($data, $this->validationRules);
+		}
+
+		if($validator->fails()) {
+			return response()->json(['error' => $validator->errors()], 400);
+		}
+
+		$newIdea = new IntcommIdea();
+		$newIdea->fill($data);
+		$newIdea->save();
+
+		// Handle any attached images files from the request
+		$destinationFolder = '/imgs/intcomm/ideas/'.$newIdea->id.'/';
+		if (!empty(Input::file('images'))){
+			foreach(Input::file('images') as $image){
+				// If the path doesn't exist, create it
+				if (!file_exists(public_path() . $destinationFolder)) {
+					mkdir(public_path() . $destinationFolder, 0777, true);
+				}
+
+				$imgFilePath = $image->getRealPath();
+				$imgFileName = $image->getClientOriginalName();
+
+				Image::make($imgFilePath)
+					->save(public_path() . $destinationFolder . $imgFileName);
+			}
+		}
+
+		// TODO keep refining this whole method and the image handling
+		foreach($idea['images'] as $image){
+			$ideaImage = new IntcommIdeasImages();
+			$ideaImage->intcomm_idea_id = $newIdea->id;
+			$ideaImage->image_name = $image['image_name'];
+			$ideaImage->image_path = '/imgs/intcomm/ideas/'.$newIdea->id.'/'.$image['image_name'];
+			$ideaImage->description = $image['description'];
+			$ideaImage->save();
+		}
+
+		return response()->json(IntcommIdeaResource::make($newIdea));
 	}
 
 	/**

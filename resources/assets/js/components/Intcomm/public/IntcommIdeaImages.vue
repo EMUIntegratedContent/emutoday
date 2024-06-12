@@ -92,7 +92,7 @@ export default {
           image_extension: file.type.split('/')[1],
           intcomm_idea_id: this.idea.id ?? null,
           description: null,
-          // file: file
+          file: file // This will be used and removed when the idea is sent to the server
         });
       }
       this.fileInputImgs = []

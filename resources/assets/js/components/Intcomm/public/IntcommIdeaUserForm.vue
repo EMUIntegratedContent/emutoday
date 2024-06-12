@@ -249,16 +249,15 @@ export default {
       data.append('idea', JSON.stringify(this.idea))
       data.append('saveType', saveType)
 
-      // TODO: add images to form data something like this:
-      // this.idea.images.forEach((image, index) => {
-      //   if (image.id.startsWith('new-')) {
-      //     formData.append(`images[${index}]`, image.file);
-      //     formData.append(`descriptions[${index}]`, image.description);
-      //   }
-      // });
-      for (let i = 0; i < this.ideaImgsForUpload.length; i++) {
-        data.append('images[]', this.ideaImgsForUpload[i]);
-      }
+      // Attach any new images to the form data
+      this.idea.images.forEach((image, index) => {
+        if (image.id.startsWith('new-')) {
+          data.append(`images[${index}]`, image.file);
+          data.append(`descriptions[${index}]`, image.description);
+          // Remove the file from the image object
+          // delete image.file
+        }
+      });
 
       // Laravel doesn't like handing FormData in PUT methods.
       // To get around this, always submit as POST, but add _method=PUT to the end of the route
@@ -272,12 +271,12 @@ export default {
       })
       .then((r) => {
         // Send new submissions to the edit form
-        // if(httpVerb === 'post') {
-        //   window.location.href = '/intcomm/ideas/' + r.data.ideaId + '/edit'
-        // } else {
-        //   this.setIdea(r.data)
-        //   this.originalIdea = JSON.parse(JSON.stringify(this.idea))
-        // }
+        if(httpVerb === 'post') {
+          window.location.href = '/intcomm/ideas/' + r.data.ideaId + '/edit'
+        } else {
+          this.setIdea(r.data)
+          this.originalIdea = JSON.parse(JSON.stringify(this.idea))
+        }
         this.savingIdea = false
         this.savingDraft = false
         this.formModified = false

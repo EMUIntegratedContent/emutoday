@@ -70,8 +70,7 @@ export default {
       return this.idea.images[this.index]
     },
     imageUrl () {
-      if(this.image.id.includes('new-')) return this.image.image_path // If the image is new, use the generated, temporary URL
-      return `${this.image.image_path}/${this.image.image_name}.${this.image.image_extension}`
+      return this.image.image_path
     }
   },
   methods: {
