@@ -46,7 +46,7 @@ ul.social-icons li a.facebook{
     filter: grayscale(100%);
 }
 ul.social-icons li a.twitter{
-    background-image: url("/assets/imgs/icons/2018-social-icons/twitter-lg.png");
+    background-image: url("/assets/imgs/icons/twitter-x.png");
     background-position: center, center;
     background-size: cover;
     -moz-filter: grayscale(100%);

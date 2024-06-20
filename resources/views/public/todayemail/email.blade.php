@@ -219,7 +219,7 @@
                                     <a href="https://www.facebook.com/EasternMichU/" style="color: #046A38;text-decoration: underline;"><img class="img-circle" alt="Facebook" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/facebook.png" style="border-radius: 50%;width: 95%;-moz-filter: grayscale(100%);filter: grayscale(100%);"></a>
                                 </li>
                                 <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
-                                    <a href="https://www.emich.edu/communications/expertise/social-media//" style="color: #046A38;text-decoration: underline;"><img class="img-circle" alt="Twitter" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/twitter.png" style="border-radius: 50%;width: 95%;-moz-filter: grayscale(100%);filter: grayscale(100%);"></a>
+                                    <a href="https://www.emich.edu/communications/expertise/social-media/" style="color: #046A38;text-decoration: underline;"><img class="img-circle" alt="X (formerly Twitter)" src="{{ url('/') }}/assets/imgs/icons/twitter-x.png" style="border-radius: 50%;width: 95%;-moz-filter: grayscale(100%);filter: grayscale(100%);"></a>
                                 </li>
                                 <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                                     <a href="https://www.youtube.com/user/emichigan08" style="color: #046A38;text-decoration: underline;"><img class="img-circle" alt="YouTube" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/youtube.png" style="border-radius: 50%;width: 95%;-moz-filter: grayscale(100%);filter: grayscale(100%);"></a>
