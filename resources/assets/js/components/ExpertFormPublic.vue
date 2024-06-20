@@ -263,7 +263,7 @@
       </div>
       <div v-bind:class="md12col">
         <p class="callout primary">Enter related links like department/faculty websites and social media profiles. (e.g.
-          Center for Research website, Twitter account)</p>
+          Center for Research website, X account)</p>
       </div>
     </div>
     <!-- /.row -->

@@ -315,7 +315,7 @@
                           </li>
                           <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                             <a href="https://www.emich.edu/communications/expertise/social-media//"><img
-                                class="img-circle" alt="Twitter" src="/assets/imgs/icons/twitter-base-icons.png"></a>
+                                class="img-circle" alt="X (formerly Twitter)" src="/assets/imgs/icons/twitter-x.png"></a>
                           </li>
                           <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
                             <a href="https://www.youtube.com/user/emichigan08"><img class="img-circle" alt="YouTube"
