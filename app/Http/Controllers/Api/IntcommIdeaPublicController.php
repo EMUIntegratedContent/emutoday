@@ -20,6 +20,7 @@ class IntcommIdeaPublicController extends ApiController{
 		'contributor_netid' => 'required',
 		'contributor_first' => 'required',
 		'contributor_last' => 'required',
+		'other_source' => 'required_if:use_other_source,1'
 	];
 	protected $draftValidationRules = [
 		'title' => 'required|max:255',
@@ -91,7 +92,9 @@ class IntcommIdeaPublicController extends ApiController{
 			'content' => $idea['content'],
 			'contributor_netid' => $idea['contributor_netid'],
 			'contributor_first' => $idea['contributor_first'],
-			'contributor_last' => $idea['contributor_last']
+			'contributor_last' => $idea['contributor_last'],
+			'use_other_source' => $idea['use_other_source'],
+			'other_source' => $idea['other_source']
 		];
 
 		if($saveType == 'draft'){
@@ -162,7 +165,9 @@ class IntcommIdeaPublicController extends ApiController{
 			'content' => $ideaArr['content'],
 			'contributor_netid' => $idea->contributor_netid, // use existing netid
 			'contributor_first' => $ideaArr['contributor_first'],
-			'contributor_last' => $ideaArr['contributor_last']
+			'contributor_last' => $ideaArr['contributor_last'],
+			'use_other_source' => $ideaArr['use_other_source'],
+			'other_source' => $ideaArr['other_source']
 		];
 
 		if($saveType == 'draft'){
@@ -178,6 +183,58 @@ class IntcommIdeaPublicController extends ApiController{
 		$idea->fill($data);
 		$idea->is_submitted = $saveType == 'draft' ? 0 : 1;
 		$idea->save();
+
+		// Remove any images that are no longer associated with the idea
+		$images = $idea->images;
+		foreach($images as $image){
+			$found = false;
+			foreach($ideaArr['images'] as $newImage){
+				if($image->id == $newImage['id']){
+					$found = true;
+					break;
+				}
+			}
+			if(!$found){
+				$image->delete();
+				// Also remove the file from the server
+				$filePath = public_path() . $image->image_path;
+				if(file_exists($filePath)){
+					unlink($filePath);
+				}
+			}
+		}
+
+		// Handle any attached images files from the request (these will be new images)
+		$destinationFolder = '/imgs/intcomm/ideas/'.$idea->id.'/';
+		if (!empty(Input::file('images'))){
+			foreach(Input::file('images') as $image){
+				// If the path doesn't exist, create it
+				if (!file_exists(public_path() . $destinationFolder)) {
+					mkdir(public_path() . $destinationFolder, 0777, true);
+				}
+
+				$imgFilePath = $image->getRealPath();
+				$imgFileName = $image->getClientOriginalName();
+
+				Image::make($imgFilePath)
+					->save(public_path() . $destinationFolder . $imgFileName);
+			}
+		}
+
+		// Update the database with new and existing image information
+		foreach($ideaArr['images'] as $image){
+			// If the id contains 'new', it's a new image
+			if(strpos($image['id'], 'new') !== false){
+				$ideaImage = new IntcommIdeasImages();
+				$ideaImage->intcomm_idea_id = $idea->id;
+				$ideaImage->image_name = $image['image_name'];
+				$ideaImage->image_path = '/imgs/intcomm/ideas/'.$idea->id.'/'.$image['image_name'];
+			} else {
+				$ideaImage = IntcommIdeasImages::findOrFail($image['id']);
+			}
+			$ideaImage->description = $image['description'];
+			$ideaImage->save();
+		}
 
 		$idea = $this->idea->findOrFail($ideaId); // get the entire updated idea
 		return response()->json(IntcommIdeaResource::make($idea));

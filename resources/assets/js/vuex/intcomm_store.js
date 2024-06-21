@@ -9,6 +9,8 @@ const emptyIdea = () => {
 		contributor_netid: '',
 		contributor_first: '',
 		contributor_last: '',
+		use_other_source: 0,
+		other_source: '',
 		archived: 0,
 		is_submitted: 0,
 		admin_status: 'New',

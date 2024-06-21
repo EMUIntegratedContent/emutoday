@@ -39,7 +39,8 @@
                   v-model="idea.content"
                   variant="outlined"
                   density="compact"
-                  :rules="[v => !!v || 'Content is required']"
+                  counter
+                  :rules="wordLimitRule.concat(requiredRule)"
                   @update:modelValue="formModified = true"
               >
                 <template #label>
@@ -70,6 +71,30 @@
               >
                 <template #label>
                   Your Last Name <span class="text-error">*</span>
+                </template>
+              </v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-checkbox
+                  v-model="idea.use_other_source"
+                  label="Credit another source for this idea"
+                  density="compact"
+                  hide-details
+                  :true-value="1"
+                  :false-value="0"
+                  @update:modelValue="formModified = true">
+              </v-checkbox>
+              <v-text-field
+                  v-if="idea.use_other_source"
+                  v-model="idea.other_source"
+                  variant="outlined"
+                  density="compact"
+                  persistent-hint
+                  hint="By default, your name will be displayed as the source of this idea. If you would like to credit another source, please provide that here."
+                  :rules="[v => !!v || 'Other source is required. If you do not wish to credit another source, please uncheck the box above.']"
+                  @update:modelValue="formModified = true">
+                <template #label>
+                  Other Source <span class="text-error">*</span>
                 </template>
               </v-text-field>
             </v-col>
@@ -190,8 +215,15 @@ export default {
       originalIdea: null,
       savingDraft: null,
       savingIdea: false,
-      showSuccess: false
+      showSuccess: false,
       // wordLimit: 700
+      wordLimitRule: [
+          // make sure the content is less than 700 words
+        v => v.split(' ').length <= 500 || 'Must be 500 words or fewer.'
+      ],
+      requiredRule: [
+        v => !!v || 'This field is required.'
+      ]
     }
   },
   computed: {
@@ -251,11 +283,10 @@ export default {
 
       // Attach any new images to the form data
       this.idea.images.forEach((image, index) => {
-        if (image.id.startsWith('new-')) {
+        // New images have a temporary ID starting with 'new-'. Existing images are just numbers.
+        if (typeof image.id === 'string' && image.id.startsWith('new-')) {
           data.append(`images[${index}]`, image.file);
           data.append(`descriptions[${index}]`, image.description);
-          // Remove the file from the image object
-          // delete image.file
         }
       });
 
@@ -286,6 +317,8 @@ export default {
         }, 2000)
       })
       .catch(() => {
+        this.savingIdea = false
+        this.savingDraft = false
         this.errSaving = true
       })
     }

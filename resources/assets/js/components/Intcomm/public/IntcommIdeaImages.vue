@@ -1,13 +1,19 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <p>ASSOCIATED IMAGES (IDEA)</p>
-      {{ idea ? idea : null}}
+      <p class="text-h5">Associated Images</p>
+      <p>
+        Please include any images that should be considered along with this idea.<br>
+        <span class="font-weight-bold">The minimum accepted resolution for images is 412px by 248 px.<br>Image size may not exceed 2 MB.</span>
+      </p>
+<!--      {{ idea ? idea : null}}-->
       <v-file-input
-          v-model="ideaImgsForUpload"
+          v-model="fileInputImgs"
           accept="image/*"
           label="Attach an image"
           multiple
+          counter
+          show-size
           @update:modelValue="handleAddImages"
       ></v-file-input>
     </v-col>
@@ -19,28 +25,6 @@
         class="d-flex child-flex bg-danger"
         cols="4"
     >
-<!--      <v-img-->
-<!--          :lazy-src="`https://picsum.photos/10/6?image=15`"-->
-<!--          :src="makeImageURL(image)"-->
-<!--          aspect-ratio="1"-->
-<!--          class="bg-grey-lighten-2"-->
-<!--          cover-->
-<!--          max-height="200"-->
-<!--          max-width="200"-->
-<!--      >-->
-<!--        <template v-slot:placeholder>-->
-<!--          <v-row-->
-<!--              align="center"-->
-<!--              class="fill-height ma-0"-->
-<!--              justify="center"-->
-<!--          >-->
-<!--            <v-progress-circular-->
-<!--                color="grey-lighten-5"-->
-<!--                indeterminate-->
-<!--            ></v-progress-circular>-->
-<!--          </v-row>-->
-<!--        </template>-->
-<!--      </v-img>-->
       <IdeaImage :key="`img-dialog-${i}`" :index="i" @imageUpdated="$emit('imagesUpdated')"></IdeaImage>
     </v-col>
   </v-row>
@@ -75,32 +59,45 @@ export default {
     }
   },
   computed: {
-    ...mapState(['idea', 'ideaImgsForUpload']),
+    ...mapState(['idea']),
   },
   methods: {
-    ...mapMutations(['setIdea', 'setIdeaImagsForUpload']),
+    ...mapMutations(['setIdea']),
     // When a new image is uploaded, add it to the idea's images array. This will be saved when the idea is saved.
-    // A temporary ID is generated for the image, and the image path is set to the generated URL, which is a temporary URL.
+    // A temporary ID is generated for the image, and the image path is set to a generated, temporary URL.
     handleAddImages (files) {
       for (let i = 0; i < files.length; i++) {
         let file = files[i];
-        let imageUrl = URL.createObjectURL(file);
-        this.idea.images.push({
-          id: `new-${Date.now()}`, // Generate a temporary ID
-          image_path: imageUrl, // Use the generated URL as the image path
-          image_name: file.name,
-          image_extension: file.type.split('/')[1],
-          intcomm_idea_id: this.idea.id ?? null,
-          description: null,
-          file: file // This will be used and removed when the idea is sent to the server
-        });
+
+        // Check that file size is > 2 MB and at least 412px by 248px
+        if (file.size > 2000000) {
+          alert(`The file ${file.name} is too large. Please upload a file that is less than 2 MB. Skipping this file.`)
+          continue
+        }
+
+        // Create a Javascript Image object to check the image dimensions
+        const imageUrl = URL.createObjectURL(file);
+        const img = new Image();
+        img.src = imageUrl;
+        img.onload = () => { // Wait for the image to load before checking the dimensions
+          console.log(img.width, img.height)
+          if (img.width < 412 || img.height < 248) {
+            alert(`The file ${file.name} is too small (${img.width}px by ${img.height}px). Please upload a file that is at least 412px by 248px. Skipping this file.`)
+          } else {
+            this.idea.images.push({
+              id: `new-${Date.now()}`, // Generate a temporary ID
+              image_path: imageUrl, // Use the generated URL as the image path
+              image_name: file.name,
+              image_extension: file.type.split('/')[1],
+              intcomm_idea_id: this.idea.id ?? null,
+              description: null,
+              file: file // This will be used and removed when the idea is sent to the server
+            });
+          }
+        }
       }
       this.fileInputImgs = []
       this.$emit('imagesUpdated')
-    },
-    makeImageURL (image) {
-      if(image.id.includes('new-')) return image.image_path // If the image is new, use the generated, temporary URL
-      return `${image.image_path}/${image.image_name}.${image.image_extension}`
     }
   }
 }
