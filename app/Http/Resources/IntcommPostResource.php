@@ -26,7 +26,7 @@ class IntcommPostResource extends JsonResource
 				'status' => $this->status,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
-				'associated_idea' => $this->idea,
+				'associated_idea' => $this->idea ? $this->idea->load('images') : null, // Load the associated idea and its images
 				'images' => IntcommPostsImagesResource::collection($this->images)
 			];
     }

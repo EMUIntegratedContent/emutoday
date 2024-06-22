@@ -5,10 +5,12 @@ namespace Emutoday\Http\Controllers\Api;
 
 use Emutoday\Http\Resources\IntcommIdeaResource;
 use Emutoday\IntcommIdea;
+use Emutoday\IntcommPostsImages;
 use Emutoday\User;
 use Illuminate\Http\Request;
 use Emutoday\IntcommPost;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class IntcommIdeaAdminController extends ApiController{
 	protected $idea;
@@ -107,6 +109,28 @@ class IntcommIdeaAdminController extends ApiController{
 		$post->fill($data);
 		$post->save();
 
+		// Take the images from the idea and copy them to the post
+		foreach($idea->images as $image){
+			$imgPath = '/imgs/intcomm/posts/'.$post->id.'/';
+			// Save the image info to the post
+			$postImage = new IntcommPostsImages();
+			$postImage->intcomm_post_id = $post->id;
+			$postImage->image_name = $image->image_name;
+			$postImage->image_path = $imgPath;
+			$postImage->caption = $image->description;
+			$postImage->save();
+
+			// Copy the image file to the post folder
+			$srcFolder = '/imgs/intcomm/ideas/'.$idea->id.'/';
+			// If the path doesn't exist, create it
+			if (!file_exists(public_path() . $imgPath)) {
+				mkdir(public_path() . $imgPath, 0777, true);
+			}
+			Image::make(public_path() . $srcFolder . $image->image_name)
+				->save(public_path() . $imgPath . $image->image_name);
+		}
+
+		// Return the IDEA, not the POST, because we want to show the user that the idea has been converted
 		return response()->json(IntcommIdeaResource::make($idea));
 	}
 

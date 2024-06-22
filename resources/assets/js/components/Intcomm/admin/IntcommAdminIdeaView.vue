@@ -90,13 +90,14 @@
               </v-col>
             </v-row>
             <IntcommIdeaImages></IntcommIdeaImages>
+            <v-alert v-if="postMade" type="success" density="compact" class="my-2">Idea has been successfully converted into a post. See 'Associated Posts' below.</v-alert>
           </v-card-text>
           <v-card-actions v-if="!itemDeleted">
-            <v-btn :loading="makingPost" color="primary" @click="makePost">Convert to Post</v-btn>
-            <v-btn v-if="!idea.archived" :loading="archivingIdea" color="warning" @click="archiveIdea">Archive Idea
+            <v-btn :loading="makingPost" color="primary" variant="elevated" @click="makePost">Convert to Post</v-btn>
+            <v-btn v-if="!idea.archived" :loading="archivingIdea" variant="outlined" color="warning" @click="archiveIdea">Archive Idea
             </v-btn>
-            <v-btn v-else :loading="unarchivingIdea" color="warning" @click="unarchiveIdea">Reinstate Idea</v-btn>
-            <v-btn :loading="deletingIdea" color="error" @click="deleteIdea">Delete Idea</v-btn>
+            <v-btn v-else :loading="unarchivingIdea" color="warning" variant="elevated" @click="unarchiveIdea">Reinstate Idea</v-btn>
+            <v-btn :loading="deletingIdea" color="error" variant="outlined" @click="deleteIdea">Delete Idea</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -104,27 +105,22 @@
         <v-card>
           <v-toolbar density="compact" color="grey-darken-3" title="Associated Posts"></v-toolbar>
           <v-card-text>
-            <v-row v-if="idea.associated_posts.length">
-              <v-col
-                  v-for="(post) in idea.associated_posts"
-                  :key="`post-${post.postId}`"
-                  class="d-flex child-flex bg-danger"
-                  cols="12"
-                  md="6"
-                  lg="4"
-              >
-                <v-card>
-                  <v-card-title>{{ post.title }}</v-card-title>
-                  <v-card-text>
-                    <p>{{ post.teaser }}</p>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-btn color="primary" :href="`/admin/intcomm/posts/${post.postId}/edit`">Go to post</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-col>
-            </v-row>
-            <p v-else>There are no posts associated with this idea yet.</p>
+            <v-data-table
+              :headers="assocPostHeaders"
+              :items="idea.associated_posts"
+              :items-per-page="-1"
+            >
+              <template #[`item.created_at`]="{ item }">
+                {{ slashdatetime(item.created_at) }}
+              </template>
+              <template #[`item.title`]="{ item }">
+                <a :href="`/admin/intcomm/posts/${item.postId}/edit`">{{ item.title }}</a>
+              </template>
+              <template #no-data>
+                No associated posts for this idea.
+              </template>
+              <template #bottom></template>
+            </v-data-table>
           </v-card-text>
         </v-card>
       </v-col>
@@ -155,6 +151,11 @@ export default {
   data: function () {
     return {
       archivingIdea: false,
+      assocPostHeaders: [
+        { title: 'Created', value: 'created_at' },
+        { title: 'Title', value: 'title' },
+        { title: 'Status', value: 'status' }
+      ],
       changingStatus: false,
       currentDate: moment(),
       deletingIdea: false,
@@ -169,6 +170,7 @@ export default {
       itemDeleted: false,
       loadingIdea: false,
       makingPost: false,
+      postMade: false,
       unarchivingIdea: false
     }
   },
@@ -220,6 +222,7 @@ export default {
     },
     async makePost () {
       this.isErr = false
+      this.postMade = false
       this.makingPost = true
       // let formData = new FormData();
       let routeurl = '/api/intcomm/ideas/admin/' + this.idea.ideaId + '/makepost'
@@ -228,6 +231,7 @@ export default {
       .then((r) => {
         this.setIdea(r.data)
         this.makingPost = false
+        this.postMade = true
       })
       .catch(() => {
         this.isErr = true

@@ -29,7 +29,7 @@
       ></v-textarea>
     </v-card-text>
 
-    <v-card-actions v-if="editMode">
+    <v-card-actions v-if="editMode && mode === 'idea'">
       <v-btn color="error" text="Remove" size="small" variant="outlined" @click="removeImage"></v-btn>
     </v-card-actions>
   </v-card>
@@ -47,7 +47,7 @@ export default {
   props: {
     mode: {
       type: String,
-      default: 'public'
+      default: 'idea' // 'post' or 'idea'
     },
     editMode: {
       type: Boolean,
@@ -72,8 +72,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(['idea']),
+    ...mapState(['idea', 'post']),
+    // Based on mode, get the image from the appropriate object
     image () {
+      if(this.mode === 'post') {
+        return this.post.associated_idea.images[this.index]
+      }
+
       return this.idea.images[this.index]
     },
     imageUrl () {
@@ -81,7 +86,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setIdea']),
     removeImage () {
       this.idea.images.splice(this.index, 1)
       this.$emit('imageUpdated')

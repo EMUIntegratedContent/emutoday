@@ -7,7 +7,7 @@
           <v-form ref="postForm" @submit.prevent="savePost">
             <v-row>
               <v-col cols="12">
-                <!--        {{ post ? post.postId : null }}-->
+                {{ post }}
                 <v-text-field
                     v-model="post.title"
                     label="Title"
@@ -30,79 +30,77 @@
                 <!--            label="Story Content"-->
                 <!--            :rules="[v => !!v || 'Story content is required']"-->
                 <!--        ></v-textarea>-->
-                <label for="content">Content <span class="text-error">*</span></label>
-                <ckeditor
-                    id="content"
-                    name="content"
-                    v-model="post.content"
-                    :editor="editor"
-                    :config="mode === 'admin' ? editorConfigFull : editorConfigSimple"
-                ></ckeditor>
-                <div class="ck ck-word-count">
-                  <p :class="wordCountColor">
-                    <strong><span class="ck-word-count__words">Words: 0</span>/700</strong>
-                    <span v-if="contentWordCount > wordLimit"
-                          class="text-error ml-3">You have exceeded the word limit by {{ contentWordCount - wordLimit }} words. Any words beyond the limit will not be saved.</span>
-                  </p>
-                </div>
+<!--                <label for="content">Content <span class="text-error">*</span></label>-->
+<!--                <ckeditor-->
+<!--                    id="content"-->
+<!--                    name="content"-->
+<!--                    v-model="post.content"-->
+<!--                    :editor="editor"-->
+<!--                    :config="mode === 'admin' ? editorConfigFull : editorConfigSimple"-->
+<!--                ></ckeditor>-->
+<!--                <div class="ck ck-word-count">-->
+<!--                  <p :class="wordCountColor">-->
+<!--                    <strong><span class="ck-word-count__words">Words: 0</span>/700</strong>-->
+<!--                    <span v-if="contentWordCount > wordLimit"-->
+<!--                          class="text-error ml-3">You have exceeded the word limit by {{ contentWordCount - wordLimit }} words. Any words beyond the limit will not be saved.</span>-->
+<!--                  </p>-->
+<!--                </div>-->
               </v-col>
             </v-row>
-            <template v-if="mode === 'admin'">
-              <v-row>
-                <v-col cols="12" md="6">
-                  <label>Start Date<br>
-                    <flatpickr
-                        v-model="post.start_date"
-                        id="startDatePicker"
-                        :config="flatpickrConfig"
-                        class="form-control"
-                        name="startingDate"
-                    >
-                    </flatpickr>
-                  </label>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <label>End Date<br>
-                    <flatpickr
-                        v-model="post.end_date"
-                        id="endDatePicker"
-                        :config="flatpickrConfig"
-                        class="form-control"
-                        name="endingDate"
-                    >
-                    </flatpickr>
-                  </label>
-                </v-col>
-                <v-col cols="12">
-                  <v-select
-                      v-model="post.status"
-                      :items="['Draft', 'Submitted', 'Approved', 'Denied']"
-                      label="Status"
+
+            <v-row>
+              <v-col cols="12" md="6">
+                <label>Start Date<br>
+                  <flatpickr
+                      v-model="post.start_date"
+                      id="startDatePicker"
+                      :config="flatpickrConfig"
+                      class="form-control"
+                      name="startingDate"
                   >
-                  </v-select>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" md="6">
-                  <v-card>
-                    <v-toolbar title="Submission Info" density="compact" color="teal"></v-toolbar>
-                    <v-card-text>
-                      <v-list density="compact">
-                        <v-list-item>Submitted By: {{ post.submitted_by }}</v-list-item>
-                        <v-list-item>Submission Dt: {{ post.created_at }}</v-list-item>
-                      </v-list>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                      v-model="post.source"
-                      label="Source"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </template>
-            <IntcommPostImages :mode="mode"></IntcommPostImages>
+                  </flatpickr>
+                </label>
+              </v-col>
+              <v-col cols="12" md="6">
+                <label>End Date<br>
+                  <flatpickr
+                      v-model="post.end_date"
+                      id="endDatePicker"
+                      :config="flatpickrConfig"
+                      class="form-control"
+                      name="endingDate"
+                  >
+                  </flatpickr>
+                </label>
+              </v-col>
+              <v-col cols="12">
+                <v-select
+                    v-model="post.status"
+                    :items="['Draft', 'Submitted', 'Approved', 'Denied']"
+                    label="Status"
+                >
+                </v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-card>
+                  <v-toolbar title="Submission Info" density="compact" color="teal"></v-toolbar>
+                  <v-card-text>
+                    <v-list density="compact">
+                      <v-list-item>Submitted By: {{ post.submitted_by }}</v-list-item>
+                      <v-list-item>Submission Dt: {{ slashdatetime(post.created_at) }}</v-list-item>
+                    </v-list>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                    v-model="post.source"
+                    label="Source"
+                ></v-text-field>
+              </v-col>
+            </v-row>
             <v-row>
               <v-col cols="12">
                 <v-btn type="submit" :loading="loadingPost" color="primary">Save Post</v-btn>
@@ -114,10 +112,16 @@
       </v-card>
     </v-col>
     <v-col cols="12" md="6">
+      <v-card>
+        <v-card-text>
+<!--          <IntcommPostImages :mode="mode"></IntcommPostImages>-->
+        </v-card-text>
+      </v-card>
       <v-card v-if="post.associated_idea">
         <v-toolbar density="compact" color="grey-darken-3" title="Associated Idea"></v-toolbar>
         <v-card-text>
-          <v-alert class="mb-3" color="info" density="compact">Contributed by {{ post.associated_idea.submitted_by }} on
+          {{ post.associated_idea }}
+          <v-alert class="mb-3" color="info" density="compact">Contributed by {{ post.associated_idea.contributor_first + ' ' + post.associated_idea.contributor_last + ' (' + post.associated_idea.contributor_netid  + ') ' }} on
             {{ slashdatetime(post.associated_idea.created_at) }}
           </v-alert>
           <p>
@@ -133,6 +137,7 @@
             <br>
             <span v-html="post.associated_idea.content"></span>
           </div>
+          <IntcommIdeaImages mode="post"></IntcommIdeaImages>
           <v-btn color="primary" :href="`/admin/intcomm/ideas/${post.associated_idea.id}`">Go to idea</v-btn>
         </v-card-text>
       </v-card>
@@ -149,6 +154,7 @@ import { mapMutations, mapState } from "vuex"
 import { ckeditorIntcommMixin } from '../../ckeditor_intcomm_config'
 import IntcommPostImages from './IntcommPostImages.vue'
 import { slashdatetime } from '../../filters'
+import IntcommIdeaImages from '../public/IntcommIdeaImages.vue'
 
 export default {
   mixins: [ckeditorIntcommMixin],
@@ -159,6 +165,7 @@ export default {
     }
   },
   components: {
+    IntcommIdeaImages,
     IntcommPostImages,
     flatpickr,
     intcomm_store: store
