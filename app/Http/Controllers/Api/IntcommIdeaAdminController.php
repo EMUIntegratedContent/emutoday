@@ -84,7 +84,6 @@ class IntcommIdeaAdminController extends ApiController{
 		// Make validation rules for IntcommPost
 		$rules = [
 			'title' => 'required|max:255',
-			'teaser' => 'required|max:100',
 			'content' => 'required',
 			'submitted_by' => 'required',
 			'intcomm_idea_id' => 'required|exists:intcomm_ideas,id'
@@ -94,7 +93,7 @@ class IntcommIdeaAdminController extends ApiController{
 			'title' => $idea->title,
 			'teaser' => $idea->teaser,
 			'content' => $idea->content,
-			'submitted_by' => $idea->submitted_by,
+			'submitted_by' => $idea->contributor_netid,
 			'intcomm_idea_id' => $idea->id
 		];
 

@@ -11,26 +11,31 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManagerStatic as Image;
+use Emutoday\Rules\MaxWords;
+use Emutoday\Services\IntcommService;
 
 class IntcommIdeaPublicController extends ApiController{
 	protected $idea;
-	protected $validationRules = [
-		'title' => 'required|max:255',
-		'content' => 'required',
-		'contributor_netid' => 'required',
-		'contributor_first' => 'required',
-		'contributor_last' => 'required',
-		'other_source' => 'required_if:use_other_source,1'
-	];
-	protected $draftValidationRules = [
-		'title' => 'required|max:255',
-		'contributor_netid' => 'required',
-		'contributor_first' => 'required',
-		'contributor_last' => 'required',
-	];
 
+	protected $draftValidationRules;
+	protected $validationRules;
 	function __construct(IntcommIdea $idea){
 		$this->idea = $idea;
+		$this->validationRules = [
+			'title' => 'required|max:255',
+			'content' => ['required', new MaxWords(500)],
+			'contributor_netid' => 'required',
+			'contributor_first' => 'required',
+			'contributor_last' => 'required',
+			'other_source' => 'required_if:use_other_source,1'
+		];
+		$this->draftValidationRules = [
+			'title' => 'required|max:255',
+			'content' => new MaxWords(500),
+			'contributor_netid' => 'required',
+			'contributor_first' => 'required',
+			'contributor_last' => 'required',
+		];
 	}
 
 	/**
@@ -71,7 +76,7 @@ class IntcommIdeaPublicController extends ApiController{
 	/**
 	 * Store a new idea
 	 */
-	public function store(Request $request){
+	public function store(Request $request, IntcommService $intcommService){
 		$idea = json_decode($request->get('idea'), true);
 		$saveType = $request->get('saveType');
 		if (!$idea || !$saveType) {
@@ -109,34 +114,10 @@ class IntcommIdeaPublicController extends ApiController{
 
 		$newIdea = new IntcommIdea();
 		$newIdea->fill($data);
+		$newIdea->is_submitted = $saveType == 'draft' ? 0 : 1;
 		$newIdea->save();
 
-		// Handle any attached images files from the request
-		$destinationFolder = '/imgs/intcomm/ideas/'.$newIdea->id.'/';
-		if (!empty(Input::file('images'))){
-			foreach(Input::file('images') as $image){
-				// If the path doesn't exist, create it
-				if (!file_exists(public_path() . $destinationFolder)) {
-					mkdir(public_path() . $destinationFolder, 0777, true);
-				}
-
-				$imgFilePath = $image->getRealPath();
-				$imgFileName = $image->getClientOriginalName();
-
-				Image::make($imgFilePath)
-					->save(public_path() . $destinationFolder . $imgFileName);
-			}
-		}
-
-		// TODO keep refining this whole method and the image handling
-		foreach($idea['images'] as $image){
-			$ideaImage = new IntcommIdeasImages();
-			$ideaImage->intcomm_idea_id = $newIdea->id;
-			$ideaImage->image_name = $image['image_name'];
-			$ideaImage->image_path = '/imgs/intcomm/ideas/'.$newIdea->id.'/'.$image['image_name'];
-			$ideaImage->description = $image['description'];
-			$ideaImage->save();
-		}
+		$intcommService->handleIdeaImages($newIdea, $idea);
 
 		return response()->json(IntcommIdeaResource::make($newIdea));
 	}
@@ -147,7 +128,7 @@ class IntcommIdeaPublicController extends ApiController{
 	 * @param int $ideaId
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function update(Request $request, int $ideaId){
+	public function update(Request $request, int $ideaId, IntcommService $intcommService) {
 		$ideaArr = json_decode($request->get('idea'), true);
 		$saveType = $request->get('saveType');
 		if (!$ideaArr || !$saveType) {
@@ -184,57 +165,7 @@ class IntcommIdeaPublicController extends ApiController{
 		$idea->is_submitted = $saveType == 'draft' ? 0 : 1;
 		$idea->save();
 
-		// Remove any images that are no longer associated with the idea
-		$images = $idea->images;
-		foreach($images as $image){
-			$found = false;
-			foreach($ideaArr['images'] as $newImage){
-				if($image->id == $newImage['id']){
-					$found = true;
-					break;
-				}
-			}
-			if(!$found){
-				$image->delete();
-				// Also remove the file from the server
-				$filePath = public_path() . $image->image_path;
-				if(file_exists($filePath)){
-					unlink($filePath);
-				}
-			}
-		}
-
-		// Handle any attached images files from the request (these will be new images)
-		$destinationFolder = '/imgs/intcomm/ideas/'.$idea->id.'/';
-		if (!empty(Input::file('images'))){
-			foreach(Input::file('images') as $image){
-				// If the path doesn't exist, create it
-				if (!file_exists(public_path() . $destinationFolder)) {
-					mkdir(public_path() . $destinationFolder, 0777, true);
-				}
-
-				$imgFilePath = $image->getRealPath();
-				$imgFileName = $image->getClientOriginalName();
-
-				Image::make($imgFilePath)
-					->save(public_path() . $destinationFolder . $imgFileName);
-			}
-		}
-
-		// Update the database with new and existing image information
-		foreach($ideaArr['images'] as $image){
-			// If the id contains 'new', it's a new image
-			if(strpos($image['id'], 'new') !== false){
-				$ideaImage = new IntcommIdeasImages();
-				$ideaImage->intcomm_idea_id = $idea->id;
-				$ideaImage->image_name = $image['image_name'];
-				$ideaImage->image_path = '/imgs/intcomm/ideas/'.$idea->id.'/'.$image['image_name'];
-			} else {
-				$ideaImage = IntcommIdeasImages::findOrFail($image['id']);
-			}
-			$ideaImage->description = $image['description'];
-			$ideaImage->save();
-		}
+		$intcommService->handleIdeaImages($idea, $ideaArr);
 
 		$idea = $this->idea->findOrFail($ideaId); // get the entire updated idea
 		return response()->json(IntcommIdeaResource::make($idea));

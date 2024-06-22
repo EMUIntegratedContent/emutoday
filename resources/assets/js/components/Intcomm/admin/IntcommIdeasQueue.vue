@@ -87,7 +87,7 @@ export default {
         { title: 'Submit Dt', key: 'created_at' },
         { title: 'Status', key: 'admin_status' },
         { title: 'Title', key: 'title' },
-        { title: 'Contributor', key: 'contributor' }
+        { title: 'Contributor', key: 'contributor_fullname' }
       ],
       loadingIdeas: false,
       ideas: []

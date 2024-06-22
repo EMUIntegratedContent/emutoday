@@ -58,6 +58,13 @@
                       </v-list-item-subtitle>
                     </v-list-item>
                     <v-list-item>
+                      <v-list-item-title>Source to Credit</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{ idea.use_other_source && idea.other_source ? idea.other_source : idea.contributor_fullname }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item>
                       <v-list-item-title>Submission Dt</v-list-item-title>
 
                       <v-list-item-subtitle>
@@ -82,7 +89,7 @@
                 </v-card>
               </v-col>
             </v-row>
-            <!--        <IntcommIdeaImages :mode="mode"></IntcommIdeaImages>-->
+            <IntcommIdeaImages></IntcommIdeaImages>
           </v-card-text>
           <v-card-actions v-if="!itemDeleted">
             <v-btn :loading="makingPost" color="primary" @click="makePost">Convert to Post</v-btn>
@@ -131,14 +138,14 @@ import moment from 'moment'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import { mapMutations, mapState } from "vuex"
-// import IntcommIdeaImages from './IntcommIdeaImages.vue'
+import IntcommIdeaImages from '../public/IntcommIdeaImages.vue'
 import { slashdatetime } from '../../filters'
 
 export default {
   mixins: [],
   props: {},
   components: {
-    // IntcommIdeaImages,
+    IntcommIdeaImages,
     flatpickr,
     intcomm_store: store
   },

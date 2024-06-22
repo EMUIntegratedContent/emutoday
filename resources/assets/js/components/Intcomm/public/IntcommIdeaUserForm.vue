@@ -3,7 +3,7 @@
     <v-card class="mb-3">
       <v-toolbar title="Submission Information" color="grey-darken-3" density="compact"></v-toolbar>
       <template v-if="!idea.is_submitted">
-        <v-card-text>
+        <v-card-text class="pb-2">
           <v-row>
             <v-col cols="12">
               <v-alert
@@ -36,16 +36,17 @@
             </v-col>
             <v-col cols="12">
               <v-textarea
-                  v-model="idea.content"
-                  variant="outlined"
-                  density="compact"
-                  counter
-                  :rules="wordLimitRule.concat(requiredRule)"
-                  @update:modelValue="formModified = true"
-              >
-                <template #label>
-                  Your idea <span class="text-error">*</span>
-                </template>
+                    v-model="idea.content"
+                    variant="outlined"
+                    density="compact"
+                    persistent-hint
+                    :hint="`${contentWords}/500 words`"
+                    :rules="wordLimitRule.concat(requiredRule)"
+                    @update:modelValue="formModified = true"
+                >
+                  <template #label>
+                    Your idea <span class="text-error">*</span>
+                  </template>
               </v-textarea>
             </v-col>
             <v-col cols="12" md="6">
@@ -99,10 +100,10 @@
               </v-text-field>
             </v-col>
           </v-row>
-          <IntcommIdeaImages @imagesUpdated="formModified = true"></IntcommIdeaImages>
-          <p v-if="formModified && !showSuccess && !errSaving" class="text-error">You have unsaved changes.</p>
-          <p v-if="errSaving" class="text-error">Error saving your idea.</p>
-          <p v-if="showSuccess" class="text-success">Your idea has been saved.</p>
+          <IntcommIdeaImages @imagesUpdated="formModified = true" :editMode="true"></IntcommIdeaImages>
+          <v-alert v-if="formModified && !showSuccess && !errSaving" type="info" color="warning" density="compact" class="my-2">You have unsaved changes.</v-alert>
+          <v-alert v-if="errSaving" type="error" density="compact" class="my-2">Your idea could not be saved.</v-alert>
+          <v-alert v-if="showSuccess" type="success" density="compact" class="my-2">Your idea has been saved.</v-alert>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -153,11 +154,18 @@
                 <br>
                 <span v-html="idea.content"></span>
               </div>
+              <div class="mb-3">
+                <strong>Credit</strong>
+                <br>
+                <span v-if="idea.use_other_source && idea.other_source">{{ idea.other_source}}</span>
+                <span v-else>{{ idea.contributor_fullname }}</span>
+              </div>
               <p>
                 Note: Submitted ideas are subject to review and may be edited for clarity and length. Ideas are not editable once submitted.
               </p>
             </v-col>
           </v-row>
+          <IntcommIdeaImages></IntcommIdeaImages>
         </v-card-text>
       </template>
     </v-card>
@@ -216,9 +224,7 @@ export default {
       savingDraft: null,
       savingIdea: false,
       showSuccess: false,
-      // wordLimit: 700
       wordLimitRule: [
-          // make sure the content is less than 700 words
         v => v.split(' ').length <= 500 || 'Must be 500 words or fewer.'
       ],
       requiredRule: [
@@ -227,7 +233,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['idea', 'ideaImgsForUpload'])
+    ...mapState(['idea']),
+    // Use spaces and hyphens to count words (mirrors Laravel's str_word_count)
+    contentWords () {
+      if(!this.idea || !this.idea.content) return 0
+      return this.idea.content.split(' ').length - 1
+    }
   },
   methods: {
     slashdate,
@@ -239,7 +250,7 @@ export default {
       await this.$http.get(routeurl)
       .then((r) => {
         this.setIdea(r.data)
-        this.originalIdea = JSON.parse(JSON.stringify(this.idea))
+        this.originalIdea = JSON.parse(JSON.stringify(r.data))
         this.loadingIdea = false
       })
       .catch(() => {
@@ -251,7 +262,7 @@ export default {
       this.setIdea(JSON.parse(JSON.stringify(this.originalIdea)))
       this.originalIdea = JSON.parse(JSON.stringify(this.idea))
       this.formModified = false
-      this.$refs.ideaForm.reset() // resets validation
+      this.$refs.ideaForm.resetValidation() // resets validation
     },
     async submitPreflight (evt) {
       const btnId = evt.submitter.id // determine whether submitting or saving a draft

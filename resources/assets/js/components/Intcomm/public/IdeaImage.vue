@@ -22,13 +22,15 @@
         density="compact"
         variant="outlined"
         row="3"
+        hide-details
+        :readonly="!editMode"
         :rules="[v => (!v || v.length < 256) || 'Must be 255 characters or less']"
         @update:modelValue="$emit('imageUpdated')"
       ></v-textarea>
     </v-card-text>
 
-    <v-card-actions>
-      <v-btn color="error" text="Remove" @click="removeImage"></v-btn>
+    <v-card-actions v-if="editMode">
+      <v-btn color="error" text="Remove" size="small" variant="outlined" @click="removeImage"></v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -47,11 +49,16 @@ export default {
       type: String,
       default: 'public'
     },
+    editMode: {
+      type: Boolean,
+      default: false
+    },
     index: {
       type: Number,
       required: true
     }
   },
+  emits: ['imageUpdated'],
   components: {
     intcomm_store: store
   },

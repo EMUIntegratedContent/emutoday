@@ -72,7 +72,7 @@ export default {
         enableTime: false
       },
       headers: [
-        { title: 'Date Created', key: 'created_at' },
+        { title: 'Created', key: 'created_at' },
         { title: 'Title', key: 'title' },
         { title: 'EMU Today Post(s)', key: 'associated_posts', sortable: false }
       ],

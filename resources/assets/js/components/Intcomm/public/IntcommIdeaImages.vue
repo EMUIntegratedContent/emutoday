@@ -2,20 +2,21 @@
   <v-row>
     <v-col cols="12">
       <p class="text-h5">Associated Images</p>
-      <p>
-        Please include any images that should be considered along with this idea.<br>
-        <span class="font-weight-bold">The minimum accepted resolution for images is 412px by 248 px.<br>Image size may not exceed 2 MB.</span>
-      </p>
-<!--      {{ idea ? idea : null}}-->
-      <v-file-input
-          v-model="fileInputImgs"
-          accept="image/*"
-          label="Attach an image"
-          multiple
-          counter
-          show-size
-          @update:modelValue="handleAddImages"
-      ></v-file-input>
+      <template v-if="editMode">
+        <p>
+          Please include any images that should be considered along with this idea.<br>
+          <span class="font-weight-bold">The minimum accepted resolution for images is 412px by 248 px.<br>Image size may not exceed 2 MB.</span>
+        </p>
+        <v-file-input
+            v-model="fileInputImgs"
+            accept="image/*"
+            label="Attach an image"
+            multiple
+            counter
+            show-size
+            @update:modelValue="handleAddImages"
+        ></v-file-input>
+      </template>
     </v-col>
   </v-row>
   <v-row>
@@ -25,7 +26,7 @@
         class="d-flex child-flex bg-danger"
         cols="4"
     >
-      <IdeaImage :key="`img-dialog-${i}`" :index="i" @imageUpdated="$emit('imagesUpdated')"></IdeaImage>
+      <IdeaImage :key="`img-dialog-${i}`" :index="i" :editMode="editMode" @imageUpdated="$emit('imagesUpdated')"></IdeaImage>
     </v-col>
   </v-row>
 </template>
@@ -44,8 +45,13 @@ export default {
     mode: {
       type: String,
       default: 'public'
+    },
+    editMode: {
+      type: Boolean,
+      default: false
     }
   },
+  emits: ['imagesUpdated'],
   components: {
     intcomm_store: store,
     IdeaImage
@@ -66,6 +72,7 @@ export default {
     // When a new image is uploaded, add it to the idea's images array. This will be saved when the idea is saved.
     // A temporary ID is generated for the image, and the image path is set to a generated, temporary URL.
     handleAddImages (files) {
+      if(!files) return
       for (let i = 0; i < files.length; i++) {
         let file = files[i];
 
