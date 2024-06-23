@@ -36,8 +36,8 @@
     </v-card-actions>
 
     <v-card-actions v-if="mode === 'post'">
-      <v-btn color="success" size="small" class="ml-3" @click="copyImgToPostContent"><v-icon>mdi-plus</v-icon>Place in Editor</v-btn>
-      <v-btn color="success" size="small" class="ml-3" @click="downloadImg"><v-icon>mdi-download</v-icon>Download</v-btn>
+      <v-btn color="success" variant="elevated" size="small" class="ml-3" @click="copyImgToPostContent"><v-icon>mdi-plus</v-icon>Place in Editor</v-btn>
+      <v-btn color="success" variant="elevated" size="small" class="ml-3" @click="downloadImg"><v-icon>mdi-download</v-icon>Download</v-btn>
     </v-card-actions>
   </v-card>
 </template>
