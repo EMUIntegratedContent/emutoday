@@ -4,6 +4,7 @@ namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Emutoday\Imagetype;
 
 class IntcommPostsImages extends Model{
 	use HasFactory;
@@ -26,5 +27,9 @@ class IntcommPostsImages extends Model{
 
 	public function post(){
 		return $this->belongsTo(IntcommPost::class);
+	}
+
+	public function imageTypes() {
+		return $this->hasMany(ImageType::class, 'id', 'image_type');
 	}
 }
