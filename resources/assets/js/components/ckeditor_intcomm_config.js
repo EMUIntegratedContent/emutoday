@@ -154,8 +154,8 @@ export const ckeditorIntcommMixin = {
 					contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
 				},
 				flmngr: {
-					urlFileManager: "/flmngr.php",
-					urlFiles: "/imgs/uploads/story/images/"
+					urlFileManager: "/flmngr_intcomm_posts.php",
+					urlFiles: "/imgs/uploads/intcomm/posts/",
 				},
 				toolbar: {
 					items: [
@@ -167,7 +167,7 @@ export const ckeditorIntcommMixin = {
 						'|', 'bulletedList', 'numberedList',
 						'|', 'alignment', 'heading', 'fontFamily', 'fontSize',
 						'|', 'horizontalLine', 'insertTable', 'exportPdf', 'sourceEditing', 'specialCharacters',
-						'|', 'upload', 'flmngr', // 'imgpen',  // Flmngr
+						'|', 'upload', 'flmngr',
 						'linkImage',
 						// 'imageUpload',
 						{

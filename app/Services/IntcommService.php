@@ -43,7 +43,7 @@ class IntcommService
 		}
 
 		// Handle any attached images files from the request (these will be new images)
-		$destinationFolder = '/imgs/intcomm/ideas/'.$idea->id.'/';
+		$destinationFolder = '/imgs/uploads/intcomm/ideas/'.$idea->id.'/';
 		if (!empty(Input::file('images'))){
 			foreach(Input::file('images') as $image){
 				// If the path doesn't exist, create it
@@ -66,7 +66,7 @@ class IntcommService
 				$ideaImage = new IntcommIdeasImages();
 				$ideaImage->intcomm_idea_id = $idea->id;
 				$ideaImage->image_name = $image['image_name'];
-				$ideaImage->image_path = '/imgs/intcomm/ideas/'.$idea->id.'/'.$image['image_name'];
+				$ideaImage->image_path = '/imgs/uploads/intcomm/ideas/'.$idea->id.'/'.$image['image_name'];
 			} else {
 				$ideaImage = IntcommIdeasImages::findOrFail($image['id']);
 			}

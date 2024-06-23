@@ -60,6 +60,9 @@ const mutations = {
 	setPost (state, post) {
 		state.post = post
 	},
+	setPostProp (state, { prop, value }) {
+		state.post[prop] = value
+	},
 	setPostImagsForUpload (state, imgs) {
 		state.postImgsForUpload = imgs
 	},

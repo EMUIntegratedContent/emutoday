@@ -1,13 +1,13 @@
 <template>
   <v-row>
-    <v-col cols="12" md="6">
+    <v-col cols="12" md="6" lg="8">
       <v-card v-if="post.associated_idea">
         <v-toolbar density="compact" color="grey-darken-3" title="Post Form"></v-toolbar>
         <v-card-text>
           <v-form ref="postForm" @submit.prevent="savePost">
             <v-row>
               <v-col cols="12">
-                {{ post }}
+<!--                {{ post }}-->
                 <v-text-field
                     v-model="post.title"
                     label="Title"
@@ -30,24 +30,24 @@
                 <!--            label="Story Content"-->
                 <!--            :rules="[v => !!v || 'Story content is required']"-->
                 <!--        ></v-textarea>-->
-<!--                <label for="content">Content <span class="text-error">*</span></label>-->
-<!--                <ckeditor-->
-<!--                    id="content"-->
-<!--                    name="content"-->
-<!--                    v-model="post.content"-->
-<!--                    :editor="editor"-->
-<!--                    :config="mode === 'admin' ? editorConfigFull : editorConfigSimple"-->
-<!--                ></ckeditor>-->
-<!--                <div class="ck ck-word-count">-->
+                <label for="content">Content <span class="text-error">*</span></label>
+                <ckeditor
+                    id="content"
+                    name="content"
+                    v-model="post.content"
+                    :editor="editor"
+                    :config="editorConfigFull"
+                ></ckeditor>
+                <div class="ck ck-word-count">
 <!--                  <p :class="wordCountColor">-->
-<!--                    <strong><span class="ck-word-count__words">Words: 0</span>/700</strong>-->
+                  <p>
+                    <strong><span class="ck-word-count__words">Words: 0</span>/700</strong>
 <!--                    <span v-if="contentWordCount > wordLimit"-->
 <!--                          class="text-error ml-3">You have exceeded the word limit by {{ contentWordCount - wordLimit }} words. Any words beyond the limit will not be saved.</span>-->
-<!--                  </p>-->
-<!--                </div>-->
+                  </p>
+                </div>
               </v-col>
             </v-row>
-
             <v-row>
               <v-col cols="12" md="6">
                 <label>Start Date<br>
@@ -104,23 +104,28 @@
             <v-row>
               <v-col cols="12">
                 <v-btn type="submit" :loading="loadingPost" color="primary">Save Post</v-btn>
-                <v-btn type="button" :loading="loadingPost" color="secondary" variant="outlined">Cancel Changes</v-btn>
+                <v-btn type="button" :loading="loadingPost" color="secondary" variant="outlined" class="ml-2">Cancel Changes</v-btn>
               </v-col>
             </v-row>
           </v-form>
         </v-card-text>
       </v-card>
     </v-col>
-    <v-col cols="12" md="6">
-      <v-card>
+    <v-col cols="12" md="6" lg="4">
+      <v-card v-if="post.associated_idea">
+        <v-toolbar density="compact" color="grey-darken-3" title="Post Images"></v-toolbar>
         <v-card-text>
-<!--          <IntcommPostImages :mode="mode"></IntcommPostImages>-->
+          POST IMAGES HERE
         </v-card-text>
       </v-card>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col cols="12">
       <v-card v-if="post.associated_idea">
         <v-toolbar density="compact" color="grey-darken-3" title="Associated Idea"></v-toolbar>
         <v-card-text>
-          {{ post.associated_idea }}
+          <!--          {{ post.associated_idea }}-->
           <v-alert class="mb-3" color="info" density="compact">Contributed by {{ post.associated_idea.contributor_first + ' ' + post.associated_idea.contributor_last + ' (' + post.associated_idea.contributor_netid  + ') ' }} on
             {{ slashdatetime(post.associated_idea.created_at) }}
           </v-alert>
@@ -137,9 +142,11 @@
             <br>
             <span v-html="post.associated_idea.content"></span>
           </div>
-          <IntcommIdeaImages mode="post"></IntcommIdeaImages>
-          <v-btn color="primary" :href="`/admin/intcomm/ideas/${post.associated_idea.id}`">Go to idea</v-btn>
+          <IntcommIdeaImages mode="post" :cols-per-img="6" @ideaImgCopied="formModified = true"></IntcommIdeaImages>
         </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" variant="elevated" :href="`/admin/intcomm/ideas/${post.associated_idea.id}`">Go to idea</v-btn>
+        </v-card-actions>
       </v-card>
     </v-col>
   </v-row>
@@ -182,6 +189,7 @@ export default {
         dateFormat: "Y-m-d H:i:S", // format sumbitted to the API
         enableTime: true
       },
+      formModified: false,
       loadingPost: false,
       wordLimit: 700
     }
@@ -197,19 +205,19 @@ export default {
     contentWordCount () {
       return this.post.content.split(' ').length
     },
-    wordCountColor () {
-      if (this.contentWordCount <= this.wordLimit - 100) {
-        return 'text-success'
-      }
-      else if (this.contentWordCount > this.wordLimit - 100 && this.contentWordCount <= this.wordLimit - 20) {
-        return 'text-warning'
-      }
-      return 'text-error'
-    }
+    // wordCountColor () {
+    //   if (this.contentWordCount <= this.wordLimit - 100) {
+    //     return 'text-success'
+    //   }
+    //   else if (this.contentWordCount > this.wordLimit - 100 && this.contentWordCount <= this.wordLimit - 20) {
+    //     return 'text-warning'
+    //   }
+    //   return 'text-error'
+    // }
   },
   methods: {
     slashdatetime,
-    ...mapMutations(['setPost']),
+    ...mapMutations(['setPost', 'setPostProp']),
     async savePost () {
       alert("saving!")
       // this.loadingPost = true

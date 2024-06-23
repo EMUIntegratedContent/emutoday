@@ -17,6 +17,7 @@
 
     <v-card-text>
       <v-textarea
+        v-if="mode === 'idea'"
         v-model="image.description"
         label="Description"
         density="compact"
@@ -27,10 +28,16 @@
         :rules="[v => (!v || v.length < 256) || 'Must be 255 characters or less']"
         @update:modelValue="$emit('imageUpdated')"
       ></v-textarea>
+      <p v-else><strong>Contributor Description</strong><br>{{ image.description }}</p>
     </v-card-text>
 
     <v-card-actions v-if="editMode && mode === 'idea'">
       <v-btn color="error" text="Remove" size="small" variant="outlined" @click="removeImage"></v-btn>
+    </v-card-actions>
+
+    <v-card-actions v-if="mode === 'post'">
+      <v-btn color="success" size="small" class="ml-3" @click="copyImgToPostContent"><v-icon>mdi-plus</v-icon>Place in Editor</v-btn>
+      <v-btn color="success" size="small" class="ml-3" @click="downloadImg"><v-icon>mdi-download</v-icon>Download</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -58,7 +65,7 @@ export default {
       required: true
     }
   },
-  emits: ['imageUpdated'],
+  emits: ['imageUpdated', 'ideaImgCopied'],
   components: {
     intcomm_store: store
   },
@@ -86,6 +93,18 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setPostProp']),
+    // Place the image inline at the end of the post's content
+    copyImgToPostContent () {
+      // This should never be called unless in post mode, but just make sure...
+      if(this.mode === 'post' && Object.hasOwn(this.post, 'content')) {
+        this.setPostProp({ prop: 'content', value: this.post.content + ` <img src="${this.imageUrl}" alt="post image" />` })
+        this.$emit('ideaImgCopied')
+      }
+    },
+    downloadImg () {
+      window.open(this.imageUrl, '_blank')
+    },
     removeImage () {
       this.idea.images.splice(this.index, 1)
       this.$emit('imageUpdated')

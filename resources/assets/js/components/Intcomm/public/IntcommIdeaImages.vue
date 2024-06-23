@@ -10,9 +10,9 @@
         v-for="(image, i) in ideaImages"
         :key="`img-${image.id}`"
         class="d-flex child-flex bg-danger"
-        cols="4"
+        :cols="colsPerImg"
     >
-      <IdeaImage :key="`img-dialog-${i}`" :index="i" :editMode="editMode" :mode="mode" @imageUpdated="$emit('imagesUpdated')"></IdeaImage>
+      <IdeaImage :key="`img-dialog-${i}`" :index="i" :editMode="editMode" :mode="mode" @imageUpdated="$emit('imagesUpdated')" @ideaImgCopied="$emit('ideaImgCopied')"></IdeaImage>
     </v-col>
   </v-row>
 </template>
@@ -34,9 +34,13 @@ export default {
     editMode: {
       type: Boolean,
       default: false
+    },
+    colsPerImg: {
+      type: Number,
+      default: 4
     }
   },
-  emits: ['imagesUpdated'],
+  emits: ['imagesUpdated', 'ideaImgCopied'],
   components: {
     IdeaImgUploader,
     intcomm_store: store,
