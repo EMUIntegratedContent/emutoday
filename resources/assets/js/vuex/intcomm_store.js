@@ -41,6 +41,7 @@ const state = {
 	ideaImgsForUpload: [],
 	ideas: [],
 	post: emptyPost(),
+	postImageTypes: [],
 	postImgsForUpload: [],
 	posts: [],
 }
@@ -60,10 +61,13 @@ const mutations = {
 	setPost (state, post) {
 		state.post = post
 	},
+	setPostImageTypes (state, types) {
+		state.postImageTypes = types
+	},
 	setPostProp (state, { prop, value }) {
 		state.post[prop] = value
 	},
-	setPostImagsForUpload (state, imgs) {
+	setPostImgsForUpload (state, imgs) {
 		state.postImgsForUpload = imgs
 	},
 	setPosts (state, posts) {

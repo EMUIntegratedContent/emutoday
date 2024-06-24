@@ -7,7 +7,7 @@
           <v-form ref="postForm" @submit.prevent="savePost">
             <v-row>
               <v-col cols="12">
-<!--                {{ post }}-->
+                {{ post }}
                 <v-text-field
                     v-model="post.title"
                     label="Title"
@@ -116,6 +116,7 @@
         <v-toolbar density="compact" color="grey-darken-3" title="Post Images"></v-toolbar>
         <v-card-text>
           POST IMAGES HERE
+          {{ postImageTypes }}
         </v-card-text>
       </v-card>
     </v-col>
@@ -177,8 +178,9 @@ export default {
     flatpickr,
     intcomm_store: store
   },
-  created () {
-
+  async created () {
+    await this.fetchPost()
+    await this.getImageTypes()
   },
   data: function () {
     return {
@@ -190,12 +192,13 @@ export default {
         enableTime: true
       },
       formModified: false,
+      imageTypes: [],
       loadingPost: false,
       wordLimit: 700
     }
   },
   computed: {
-    ...mapState(['post']),
+    ...mapState(['postImageTypes', 'post']),
     // Extract the post ID from the URL (will be the second to last part)
     // e.g. https://today.emich.edu/admin/intcomm/posts/54/edit
     postId () {
@@ -217,7 +220,30 @@ export default {
   },
   methods: {
     slashdatetime,
-    ...mapMutations(['setPost', 'setPostProp']),
+    ...mapMutations(['setPostImageTypes', 'setPost', 'setPostProp']),
+    async fetchPost () {
+      this.loadingPost = true
+      let routeurl = `/api/intcomm/posts/${this.postId}`
+
+      await this.$http.get(routeurl)
+      .then((r) => {
+        this.setPost(r.data)
+        this.loadingPost = false
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+    },
+    async getImageTypes () {
+      let routeurl = `/api/intcomm/posts/imagetypes`
+      await this.$http.get(routeurl)
+      .then((r) => {
+        this.setPostImageTypes(r.data)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+    },
     async savePost () {
       alert("saving!")
       // this.loadingPost = true

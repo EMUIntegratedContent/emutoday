@@ -16,8 +16,8 @@
 @endsection
 @section('content')
   <h1>Internal Communications</h1>
-  <div id="vue-intcomm-post-form-wrapper-admin">
-    <intcomm-post-form-wrapper-admin></intcomm-post-form-wrapper-admin>
+  <div id="vue-intcomm-post-form">
+    <intcomm-post-form></intcomm-post-form>
   </div>
 @endsection
 @section('footer-vendor')
@@ -28,7 +28,7 @@
 @endsection
 @section('footer-app')
   @parent
-  <script type="text/javascript" src="/js/vue-intcomm-post-form-wrapper-admin.js"></script>
+  <script type="text/javascript" src="/js/vue-intcomm-post-form.js"></script>
 @endsection
 @section('footer-script')
   @parent

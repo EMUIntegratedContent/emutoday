@@ -4,6 +4,7 @@ namespace Emutoday\Http\Controllers\Api;
 
 
 use Emutoday\Http\Resources\IntcommPostResource;
+use Emutoday\Imagetype;
 use Emutoday\IntcommPost;
 use Emutoday\User;
 use Illuminate\Http\Request;
@@ -135,5 +136,15 @@ class IntcommPostController extends ApiController{
 //    $email = $this->email->findOrFail($id);
 //    $email->delete();
 //    return $this->setStatusCode(200)->respond('Email successfully deleted!');
+	}
+
+
+	/**
+	 * Get the image types for the post images
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function getPostImageTypes(){
+		$types = Imagetype::where('group', 'intcommpost')->get(); // get email image types
+		return response()->json($types);
 	}
 }
