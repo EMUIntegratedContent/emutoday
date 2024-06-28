@@ -46,6 +46,9 @@ const state = {
 	posts: [],
 }
 const mutations = {
+	addPostImageRecord(state, imgRecord) {
+		state.post.images.push(imgRecord)
+	},
 	setIdea (state, idea) {
 		state.idea = idea
 	},
@@ -72,14 +75,89 @@ const mutations = {
 	},
 	setPosts (state, posts) {
 		state.posts = posts
+	},
+	updatePostImageRecord(state, { index, imgRecord }) {
+		console.log(index)
+		console.log(imgRecord)
+		state.post.images[index] = imgRecord
 	}
 }
 const actions = {
+	// Add a blank image record to the post (e.g. small, story, email). Corresponds to intcomm_posts_images table.
+	createPostImageRecord({commit}, imgType) {
+		const matchingImgType = state.postImageTypes.find(type => type.type === imgType)
+		if(!matchingImgType) {
+			return {
+				success: false,
+				message: 'Image type not found: ' + imgType
+			}
+		}
 
+		// See if the image type already exists in the post
+		const existingRecord = state.post.images.find(img => img.imagetype_id === matchingImgType.id)
+		if(existingRecord) {
+			return {
+				success: false,
+				message: `Image type ${imgType} already exists in post. Not adding...`
+			}
+		}
+
+		commit('addPostImageRecord', {
+			id: null,
+			intcomm_post_id: state.post.postId,
+			is_active: 0,
+			image_name: '',
+			image_path: '',
+			title: '',
+			caption: '',
+			teaser: '',
+			moretext: '',
+			alt_text: '',
+			link: '',
+			link_text: '',
+			image_extension: '',
+			imagetype_id: matchingImgType.id
+		})
+
+		return {
+			success: true,
+			message: `Image type ${imgType} added to post.`
+		}
+	},
+	updatePostImageRecord ({commit, state}, { imagetype_id, props }) {
+		// Find the image's index in the post's images array based on the imagetype_id
+		const imgIndex = state.post.images.findIndex(img => img.imagetype_id === imagetype_id)
+		// Use the existing record's fields and the new props to update the record.
+		const updatedImgRecord = {
+			...state.post.images[imgIndex],
+			...props
+		}
+		commit('updatePostImageRecord', { index: imgIndex, imgRecord: updatedImgRecord })
+	}
 }
 
 const getters = {
-
+	intcommSmallImgID: state => {
+		const matchingImgType = state.postImageTypes.find(type => type.type === 'small')
+		if(!matchingImgType) {
+			return null
+		}
+		return matchingImgType.id
+	},
+	intcommStoryImgID: state => {
+		const matchingImgType = state.postImageTypes.find(type => type.type === 'story')
+		if(!matchingImgType) {
+			return null
+		}
+		return matchingImgType.id
+	},
+	intcommEmailImgID: state => {
+		const matchingImgType = state.postImageTypes.find(type => type.type === 'email')
+		if(!matchingImgType) {
+			return null
+		}
+		return matchingImgType.id
+	}
 }
 
 export default new Vuex.Store({

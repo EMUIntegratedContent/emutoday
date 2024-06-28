@@ -112,13 +112,7 @@
       </v-card>
     </v-col>
     <v-col cols="12" md="6" lg="4">
-      <v-card v-if="post.associated_idea">
-        <v-toolbar density="compact" color="grey-darken-3" title="Post Images"></v-toolbar>
-        <v-card-text>
-          POST IMAGES HERE
-          {{ postImageTypes }}
-        </v-card-text>
-      </v-card>
+      <IntcommPostImages></IntcommPostImages>
     </v-col>
   </v-row>
   <v-row>
@@ -158,11 +152,12 @@ import store from '../../../vuex/intcomm_store'
 import moment from 'moment'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
-import { mapMutations, mapState } from "vuex"
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex"
 import { ckeditorIntcommMixin } from '../../ckeditor_intcomm_config'
 import IntcommPostImages from './IntcommPostImages.vue'
 import { slashdatetime } from '../../filters'
 import IntcommIdeaImages from '../public/IntcommIdeaImages.vue'
+import IntcommPostImage from './IntcommPostImage.vue'
 
 export default {
   mixins: [ckeditorIntcommMixin],
@@ -175,6 +170,7 @@ export default {
   components: {
     IntcommIdeaImages,
     IntcommPostImages,
+    IntcommPostImage,
     flatpickr,
     intcomm_store: store
   },
@@ -199,6 +195,7 @@ export default {
   },
   computed: {
     ...mapState(['postImageTypes', 'post']),
+    ...mapGetters(['intcommSmallImgID', 'intcommStoryImgID', 'intcommEmailImgID']),
     // Extract the post ID from the URL (will be the second to last part)
     // e.g. https://today.emich.edu/admin/intcomm/posts/54/edit
     postId () {
@@ -221,6 +218,7 @@ export default {
   methods: {
     slashdatetime,
     ...mapMutations(['setPostImageTypes', 'setPost', 'setPostProp']),
+    ...mapActions(['createPostImageRecord']),
     async fetchPost () {
       this.loadingPost = true
       let routeurl = `/api/intcomm/posts/${this.postId}`
