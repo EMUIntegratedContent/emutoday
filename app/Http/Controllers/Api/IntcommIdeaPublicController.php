@@ -109,7 +109,7 @@ class IntcommIdeaPublicController extends ApiController{
 		}
 
 		if($validator->fails()) {
-			return response()->json(['error' => $validator->errors()], 400);
+			return response()->json(['error' => $validator->errors()], 422);
 		}
 
 		$newIdea = new IntcommIdea();
@@ -123,9 +123,10 @@ class IntcommIdeaPublicController extends ApiController{
 	}
 
 	/**
-	 * Update the specified post
+	 * Update the specified idea
 	 * @param Request $request
 	 * @param int $ideaId
+	 * @param IntcommService $intcommService
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function update(Request $request, int $ideaId, IntcommService $intcommService) {
@@ -158,7 +159,7 @@ class IntcommIdeaPublicController extends ApiController{
 		}
 
 		if($validator->fails()) {
-			return response()->json(['error' => $validator->errors()], 400);
+			return response()->json(['error' => $validator->errors()], 422);
 		}
 
 		$idea->fill($data);

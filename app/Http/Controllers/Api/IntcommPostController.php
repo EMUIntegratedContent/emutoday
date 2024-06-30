@@ -2,10 +2,10 @@
 
 namespace Emutoday\Http\Controllers\Api;
 
-
 use Emutoday\Http\Resources\IntcommPostResource;
 use Emutoday\Imagetype;
 use Emutoday\IntcommPost;
+use Emutoday\Services\IntcommService;
 use Emutoday\User;
 use Illuminate\Http\Request;
 
@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as Input;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Validator;
 use League\Fractal\Manager;
 use League\Fractal;
 use League\Fractal\Serializer\ArraySerializer;
@@ -22,9 +23,14 @@ use Emutoday\Today\Transformers\FractalEventTransformerModelFull;
 
 class IntcommPostController extends ApiController{
 	protected $post;
+	protected $validationRules;
 
 	function __construct(IntcommPost $post){
 		$this->post = $post;
+		$this->validationRules = [
+			'title' => 'required|max:255',
+			'content' => 'required'
+		];
 	}
 
 	/**
@@ -106,25 +112,44 @@ class IntcommPostController extends ApiController{
 
 	/**
 	 * Update the specified post
+	 * @param Request $request
+	 * @param int $postId
+	 * @param IntcommService $intcommService
+	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function update(Request $request, $id){
-//		$post = $this->post->findOrFail($id);
-//
-//		$validationRules = [
-//			'title' => 'required|min:10',
-//			'send_at' => 'nullable|date_format:Y-m-d H:i:s'
-//		];
-//
-//		$validation = \Validator::make(Input::all(), $validationRules);
-//
-//		if($validation->fails()){
-//			return $this->setStatusCode(422)
-//				->respondWithError($validation->errors()->getMessages());
-//		}
-//
-//		if($validation->passes()){
-//
-//		}
+	public function update(Request $request, int $postId, IntcommService $intcommService) {
+		$postArr = json_decode($request->get('post'), true);
+		if (!$postArr) {
+			return response()->json(['error' => $request->all()], 400);
+		}
+
+		$post = $this->post->findOrFail($postId);
+		if(!$post){
+			return response()->json(['error' => 'Post not found.'], 404);
+		}
+
+		$data = [
+			'title' => $postArr['title'],
+			'teaser' => $postArr['teaser'],
+			'content' => $postArr['content'],
+			'start_date' => $postArr['start_date'],
+			'end_date' => $postArr['end_date'],
+			'status' => $postArr['status'],
+		];
+
+		$validator = Validator::make($data, $this->validationRules);
+
+		if($validator->fails()) {
+			return response()->json(['error' => $validator->errors()], 422);
+		}
+
+		$post->fill($data);
+		$post->save();
+
+		$intcommService->handlePostImages($post, $postArr);
+
+		$post = $this->post->findOrFail($postId); // get the entire updated post
+		return response()->json(IntcommPostResource::make($post));
 	}
 
 	/**

@@ -51,8 +51,6 @@
                         v-model="post.title"
                         label="Title"
                         maxlength="120"
-                        counter
-                        :rules="[v => !!v || 'Title is required']"
                         @update:modelValue="formModified = true"
                     >
                       <template #label>
@@ -125,19 +123,15 @@
             </v-row>
             <v-row>
               <v-col cols="12">
-                <!--                <v-alert v-if="formModified && !showSuccess && !errSaving" type="info" color="warning" density="compact" class="my-2">You have unsaved changes.</v-alert>-->
-                <v-alert v-if="formModified" type="info" color="warning" density="compact" class="my-2">You have unsaved
-                  changes.
-                </v-alert>
-                <!--                <v-alert v-if="errSaving" type="error" density="compact" class="my-2">Your idea could not be saved.</v-alert>-->
-                <!--                <v-alert v-if="showSuccess" type="success" density="compact" class="my-2">Your idea has been saved.</v-alert>-->
+                <v-alert v-if="formModified && !showSuccess && !errSaving" type="info" color="warning" density="compact" class="my-2">You have unsaved changes.</v-alert>
+                <v-alert v-if="errSaving" type="error" density="compact" class="my-2">The post could not be saved.</v-alert>
+                <v-alert v-if="showSuccess" type="success" density="compact" class="my-2">The post has been saved.</v-alert>
               </v-col>
             </v-row>
-
           </v-card-text>
           <v-card-actions>
-            <v-btn type="submit" :loading="loadingPost" color="success" variant="elevated">Save Post</v-btn>
-            <v-btn type="button" :loading="loadingPost" color="grey" variant="outlined" class="ml-2"
+            <v-btn type="submit" :loading="savingPost" color="success" variant="elevated">Save Post</v-btn>
+            <v-btn type="button" color="grey" variant="outlined" class="ml-2"
                    @click="resetPostForm">Cancel Changes
             </v-btn>
           </v-card-actions>
@@ -150,7 +144,6 @@
       <v-card v-if="post.associated_idea">
         <v-toolbar density="compact" color="grey-darken-3" title="Associated Idea"></v-toolbar>
         <v-card-text>
-          <!--          {{ post.associated_idea }}-->
           <v-alert class="mb-3" color="info" density="compact">Contributed by {{
               post.associated_idea.contributor_first + ' ' + post.associated_idea.contributor_last + ' (' + post.associated_idea.contributor_netid + ') '
             }} on
@@ -222,12 +215,14 @@ export default {
         dateFormat: "Y-m-d H:i:S", // format sumbitted to the API
         enableTime: true
       },
-      ckInput: false, // @input will run on ck on reset, so this is a flag to prevent that
       formModified: false,
       imageTypes: [],
       loadingPost: false,
       originalPost: {},
-      wordLimit: 700
+      wordLimit: 700,
+      savingPost: false,
+      errSaving: false,
+      showSuccess: false
     }
   },
   computed: {
@@ -256,7 +251,7 @@ export default {
     },
     async fetchPost () {
       this.loadingPost = true
-      let routeurl = `/api/intcomm/posts/${this.postId}`
+      let routeurl = `/api/intcomm/admin/posts/${this.postId}`
 
       await this.$http.get(routeurl)
       .then((r) => {
@@ -265,22 +260,14 @@ export default {
         this.loadingPost = false
         setTimeout(() => {
           this.formModified = false
-        }, 300)
+        }, 500)
       })
       .catch((e) => {
         console.log(e)
       })
     },
-    // Ensure ckeditor doesn't set form modified on reset
-    handleCkInput () {
-      if (!this.ckInput) {
-        this.ckInput = true
-        return
-      }
-      // this.formModified = true
-    },
     async getImageTypes () {
-      let routeurl = `/api/intcomm/posts/imagetypes`
+      let routeurl = `/api/intcomm/admin/posts/imagetypes`
       await this.$http.get(routeurl)
       .then((r) => {
         this.setPostImageTypes(r.data)
@@ -294,34 +281,53 @@ export default {
       // Delay for ckeditor to reset
       setTimeout(() => {
         this.formModified = false
-      }, 300)
+      }, 500)
     },
     async savePost () {
-      alert("saving!")
-      // this.loadingPost = true
-      // let formData = new FormData();
-      //
-      // // Assuming `fileInput` is an input element with type="file"
-      // let fileInput = document.querySelector('#file-input');
-      // let files = fileInput.files;
-      //
-      // for (let i = 0; i < files.length; i++) {
-      //   formData.append('images[]', files[i]);
-      // }
-      // let routeurl = '/api/intcomm/posts'
-      //
-      // await this.$http.post(routeurl, formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data'
-      //   }
-      // })
-      // .then((r) => {
-      //   this.post = r.data
-      //   this.loadingPost = false
-      // })
-      // .catch((e) => {
-      //   console.log(e)
-      // })export default {
+      const data = new FormData()
+      data.append('post', JSON.stringify(this.post))
+
+      // Attach any new images to the form data
+      let imgIndex = 0 // Don't use the image index because it's not always sequential
+      this.post.images.forEach((image) => {
+        // Only image records with a "file" property have new images to upload
+        if (Object.hasOwn(image, 'file')) {
+          data.append(`images[${imgIndex}]`, image.file);
+          data.append(`imageNames[${imgIndex}]`, image.image_name);
+          imgIndex++
+        }
+      });
+
+      // Laravel doesn't like handing FormData in PUT methods.
+      // To get around this, always submit as POST, but add _method=PUT to the end of the route
+      const httpVerb = this.post.postId && this.post.postId != 0 ? 'put' : 'post'
+      const routeurl = httpVerb === 'put' ? `/api/intcomm/admin/posts/${this.post.postId}?_method=PUT` : '/api/intcomm/admin/posts'
+
+      this.errSaving = false
+      await this.$http.post(routeurl, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((r) => {
+        // Send new submissions to the edit form
+        if(httpVerb === 'post') {
+          window.location.href = '/admin/intcomm/posts/' + r.data.postId + '/edit'
+        } else {
+          this.setPost(r.data)
+          this.originalPost = JSON.parse(JSON.stringify(this.post))
+        }
+        this.savingPost = false
+        this.formModified = false
+        this.showSuccess = true
+        setTimeout(() => {
+          this.showSuccess = false
+        }, 2000)
+      })
+      .catch(() => {
+        this.savingPost = false
+        this.errSaving = true
+      })
     }
   },
   mounted () {

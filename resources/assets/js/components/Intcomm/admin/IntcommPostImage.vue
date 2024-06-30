@@ -211,10 +211,14 @@ export default {
         }
         else {
           // Send only the props to the store that need to be changed in response to the image upload
+          let image_extension = file.type.split('/')[1]
+          if(image_extension === 'jpeg') {
+            image_extension = 'jpg' // Change 'jpeg' to 'jpg' for consistency
+          }
           const propsToUpdate = {
             image_path: imageUrl, // Use the generated URL as the image path
             image_name: file.name,
-            image_extension: file.type.split('/')[1],
+            image_extension: image_extension,
             file: file // This will be used and removed when the idea is sent to the server
           }
           this.updatePostImageRecord({ imagetype_id: this.img.imagetype_id, props: propsToUpdate })

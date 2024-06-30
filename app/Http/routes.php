@@ -92,9 +92,10 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 	Route::post('intcomm/ideas/user', 'Api\IntcommIdeaPublicController@store')->name('api_intcomm_user_ideas_store');
 	Route::put('intcomm/ideas/user/{ideaId}', 'Api\IntcommIdeaPublicController@update')->name('api_intcomm_user_ideas_update');
 	/* Intcomm Posts */
-	Route::get('intcomm/posts/imagetypes', 'Api\IntcommPostController@getPostImageTypes')->name('api_intcomm_post_imagetypes');
-	Route::get('intcomm/posts/{postId}', 'Api\IntcommPostController@show')->name('api_intcomm_post');
-	Route::get('intcomm/posts', 'Api\IntcommPostController@index')->name('api_intcomm_posts');
+	Route::get('intcomm/admin/posts/imagetypes', 'Api\IntcommPostController@getPostImageTypes')->name('api_intcomm_post_imagetypes');
+//	Route::get('intcomm/posts/{postId}', 'Api\IntcommPostController@show')->name('api_intcomm_post');
+//	Route::get('intcomm/posts', 'Api\IntcommPostController@index')->name('api_intcomm_posts');
+	Route::resource('intcomm/admin/posts', 'Api\IntcommPostController');
 
   /* STORY IDEAS */
   Route::resource('storyideas', 'Api\StoryIdeasController');

@@ -210,13 +210,6 @@ export default {
   },
   data: function () {
     return {
-      // currentDate: moment(),
-      // flatpickrConfig: {
-      //   altFormat: "m/d/Y h:i K", // format the user sees
-      //   altInput: true,
-      //   dateFormat: "Y-m-d H:i:S", // format sumbitted to the API
-      //   enableTime: true
-      // },
       errSaving: false,
       formModified: false,
       loadingIdea: false,

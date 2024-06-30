@@ -21,7 +21,7 @@ class IntcommPostsImages extends Model{
 		'link',
 		'link_text',
 		'image_extension',
-		'image_type',
+		'imagetype_id',
 		'alt_text'
 	];
 
