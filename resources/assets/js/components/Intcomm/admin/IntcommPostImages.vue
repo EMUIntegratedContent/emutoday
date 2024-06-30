@@ -1,19 +1,19 @@
 <template>
   <v-card>
-    <v-toolbar density="compact" color="grey-darken-3" title="Post Images"></v-toolbar>
+    <v-toolbar density="compact" color="grey-darken-1" title="Images"></v-toolbar>
     <v-card-text>
-<!--      {{ postImageTypes }}-->
-      <v-btn v-if="!postHasSmallImage" color="primary" @click="createPostImageRecord('small')">Add Small Image</v-btn>
+      {{ postImageTypes }}
+      <v-btn v-if="!postHasSmallImage" block class="my-2" color="error darken-3" @click="handleCreateImage('small')">Add Small Image (required)</v-btn>
       <template v-else>
-        <IntcommPostImage :imgtype_id="intcommSmallImgID"></IntcommPostImage>
+        <IntcommPostImage :imgtype_id="intcommSmallImgID" @imageUpdated="$emit('imageUpdated')"></IntcommPostImage>
       </template>
-      <v-btn v-if="!postHasStoryImage" color="primary" @click="createPostImageRecord('story')">Add Story Image</v-btn>
+      <v-btn v-if="!postHasStoryImage" block class="my-2" color="primary" @click="handleCreateImage('story')">Add Story Image</v-btn>
       <template v-else>
-        <IntcommPostImage :imgtype_id="intcommStoryImgID"></IntcommPostImage>
+        <IntcommPostImage :imgtype_id="intcommStoryImgID" @imageUpdated="$emit('imageUpdated')"></IntcommPostImage>
       </template>
-      <v-btn v-if="!postHasEmailImage" color="primary" @click="createPostImageRecord('email')">Add Email Image</v-btn>
+      <v-btn v-if="!postHasEmailImage" block class="my-2" color="primary" @click="handleCreateImage('email')">Add Email Image</v-btn>
       <template v-else>
-        <IntcommPostImage :imgtype_id="intcommEmailImgID"></IntcommPostImage>
+        <IntcommPostImage :imgtype_id="intcommEmailImgID" @imageUpdated="$emit('imageUpdated')"></IntcommPostImage>
       </template>
     </v-card-text>
   </v-card>
@@ -33,6 +33,7 @@ export default {
     IntcommPostImage,
     intcomm_store: store
   },
+  emits: ['imageUpdated'],
   created () {
 
   },
@@ -56,6 +57,10 @@ export default {
   methods: {
     ...mapMutations(['setPostImageTypes', 'setPost', 'setPostProp']),
     ...mapActions(['createPostImageRecord']),
+    handleCreateImage (imgType) {
+      this.createPostImageRecord(imgType)
+      this.$emit('imageUpdated')
+    }
   }
 }
 </script>

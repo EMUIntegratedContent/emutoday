@@ -157,6 +157,15 @@ const getters = {
 			return null
 		}
 		return matchingImgType.id
+	},
+	// Return true if the post has all required images, false otherwise.
+	postHasRequiredImages: (state, getters) => {
+		if(!getters.postRequiredImageIDs.length) return true
+		return getters.postRequiredImageIDs.every(id => state.post.images.some(img => img.imagetype_id === id))
+	},
+	// Based on the postImageTypes, return an array of the imagetype_ids that are required for this post to go live.
+	postRequiredImageIDs: state => {
+		return state.postImageTypes.filter(type => type.is_required === 1).map(type => type.id)
 	}
 }
 

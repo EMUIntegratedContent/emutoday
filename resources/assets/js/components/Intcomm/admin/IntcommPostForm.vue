@@ -1,118 +1,148 @@
 <template>
   <v-row>
-    <v-col cols="12" md="6" lg="8">
-      <v-card v-if="post.associated_idea">
-        <v-toolbar density="compact" color="grey-darken-3" title="Post Form"></v-toolbar>
-        <v-card-text>
-          <v-form ref="postForm" @submit.prevent="savePost">
+    <v-col cols="12">
+      <v-form ref="postForm" @submit.prevent="savePost">
+        <v-card>
+          <v-toolbar density="compact" color="grey-darken-3" title="Post Form"></v-toolbar>
+          <v-card-text>
+            <!--            {{ post }}-->
+            <!--            {{ postRequiredImageIDs }}-->
+            <!--            {{ postHasRequiredImages }}-->
             <v-row>
               <v-col cols="12">
-                {{ post }}
-                <v-text-field
-                    v-model="post.title"
-                    label="Title"
-                    maxlength="120"
-                    counter
-                    :rules="[v => !!v || 'Title is required']"
-                >
-                  <template #label>
-                    Title <span class="text-error">*</span>
-                  </template>
-                </v-text-field>
-                <v-text-field
-                    v-model="post.teaser"
-                    label="Teaser"
-                    maxlength="120"
-                    counter
-                ></v-text-field>
-                <!--        <v-textarea-->
-                <!--            v-model="post.content"-->
-                <!--            label="Story Content"-->
-                <!--            :rules="[v => !!v || 'Story content is required']"-->
-                <!--        ></v-textarea>-->
-                <label for="content">Content <span class="text-error">*</span></label>
-                <ckeditor
-                    id="content"
-                    name="content"
-                    v-model="post.content"
-                    :editor="editor"
-                    :config="editorConfigFull"
-                ></ckeditor>
-                <div class="ck ck-word-count">
-<!--                  <p :class="wordCountColor">-->
-                  <p>
-                    <strong><span class="ck-word-count__words">Words: 0</span>/700</strong>
-<!--                    <span v-if="contentWordCount > wordLimit"-->
-<!--                          class="text-error ml-3">You have exceeded the word limit by {{ contentWordCount - wordLimit }} words. Any words beyond the limit will not be saved.</span>-->
-                  </p>
-                </div>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <label>Start Date<br>
-                  <flatpickr
-                      v-model="post.start_date"
-                      id="startDatePicker"
-                      :config="flatpickrConfig"
-                      class="form-control"
-                      name="startingDate"
-                  >
-                  </flatpickr>
-                </label>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label>End Date<br>
-                  <flatpickr
-                      v-model="post.end_date"
-                      id="endDatePicker"
-                      :config="flatpickrConfig"
-                      class="form-control"
-                      name="endingDate"
-                  >
-                  </flatpickr>
-                </label>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-expansion-panels
+                        v-if="!isPostLiveEligible"
+                        v-model="explanationPanel"
+                    >
+                      <v-expansion-panel>
+                        <v-expansion-panel-title color="warning">
+                          <span class="font-weight-bold"><v-icon>mdi-alert</v-icon> Post is NOT eligible to be live.</span>
+                        </v-expansion-panel-title>
+                        <v-expansion-panel-text>
+                          This post is missing key components required for it to be shown live.<br><br>
+                          <ul>
+                            <li v-if="!post.title">Title is missing.</li>
+                            <li v-if="!post.content">Post content is missing.</li>
+                            <li v-if="!post.start_date">Start date is missing.</li>
+                            <li v-if="!post.end_date">End date is missing.</li>
+                            <li v-if="!postHasRequiredImages">At least one required image is missing.</li>
+                            <li v-if="post.status !== 'Approved'">An administrator has not approved this post.</li>
+                          </ul>
+                        </v-expansion-panel-text>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
+                    <v-alert v-else type="success" density="compact">Post is eligible to be live.</v-alert>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-select
+                        v-model="post.status"
+                        :items="['Draft', 'Submitted', 'Approved', 'Denied']"
+                        label="Admin Approval Status"
+                        @update:modelValue="formModified = true"
+                    >
+                    </v-select>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field
+                        v-model="post.title"
+                        label="Title"
+                        maxlength="120"
+                        counter
+                        :rules="[v => !!v || 'Title is required']"
+                        @update:modelValue="formModified = true"
+                    >
+                      <template #label>
+                        Title <span class="text-error">*</span>
+                      </template>
+                    </v-text-field>
+                    <v-text-field
+                        v-model="post.teaser"
+                        label="Teaser"
+                        maxlength="120"
+                        counter
+                        @update:modelValue="formModified = true"
+                    ></v-text-field>
+                    <label for="content">Content <span class="text-error">*</span></label>
+                    <ckeditor
+                        id="content"
+                        name="content"
+                        v-model="post.content"
+                        :editor="editor"
+                        :config="editorConfigFull"
+                        @input="formModified = true"
+                    ></ckeditor>
+                    <div class="ck ck-word-count">
+                      <p>
+                        <strong><span class="ck-word-count__words">Words: 0</span>/700</strong>
+                      </p>
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="6" lg="4">
+                    <v-sheet color="grey-lighten-4" class="py-3 px-5">
+                      <label>Start Date/Time<br>
+                        <flatpickr
+                            v-model="post.start_date"
+                            id="startDatePicker"
+                            :config="flatpickrConfig"
+                            class="form-control"
+                            name="startingDate"
+                            @change="formModified = true"
+                        >
+                        </flatpickr>
+                      </label>
+                      <br>
+                      <label>End Date/Time<br>
+                        <flatpickr
+                            v-model="post.end_date"
+                            id="endDatePicker"
+                            :config="flatpickrConfig"
+                            class="form-control"
+                            name="endingDate"
+                            @change="formModified = true"
+                        >
+                        </flatpickr>
+                      </label>
+                    </v-sheet>
+                  </v-col>
+                  <v-col cols="12" md="6" lg="8">
+                    <v-text-field
+                        v-model="post.source"
+                        label="Credit/Source"
+                        @update:modelValue="formModified = true"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
               </v-col>
               <v-col cols="12">
-                <v-select
-                    v-model="post.status"
-                    :items="['Draft', 'Submitted', 'Approved', 'Denied']"
-                    label="Status"
-                >
-                </v-select>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-card>
-                  <v-toolbar title="Submission Info" density="compact" color="teal"></v-toolbar>
-                  <v-card-text>
-                    <v-list density="compact">
-                      <v-list-item>Submitted By: {{ post.submitted_by }}</v-list-item>
-                      <v-list-item>Submission Dt: {{ slashdatetime(post.created_at) }}</v-list-item>
-                    </v-list>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                    v-model="post.source"
-                    label="Source"
-                ></v-text-field>
+                <IntcommPostImages @imageUpdated="formModified = true"></IntcommPostImages>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12">
-                <v-btn type="submit" :loading="loadingPost" color="primary">Save Post</v-btn>
-                <v-btn type="button" :loading="loadingPost" color="secondary" variant="outlined" class="ml-2">Cancel Changes</v-btn>
+                <!--                <v-alert v-if="formModified && !showSuccess && !errSaving" type="info" color="warning" density="compact" class="my-2">You have unsaved changes.</v-alert>-->
+                <v-alert v-if="formModified" type="info" color="warning" density="compact" class="my-2">You have unsaved
+                  changes.
+                </v-alert>
+                <!--                <v-alert v-if="errSaving" type="error" density="compact" class="my-2">Your idea could not be saved.</v-alert>-->
+                <!--                <v-alert v-if="showSuccess" type="success" density="compact" class="my-2">Your idea has been saved.</v-alert>-->
               </v-col>
             </v-row>
-          </v-form>
-        </v-card-text>
-      </v-card>
-    </v-col>
-    <v-col cols="12" md="6" lg="4">
-      <IntcommPostImages></IntcommPostImages>
+
+          </v-card-text>
+          <v-card-actions>
+            <v-btn type="submit" :loading="loadingPost" color="success" variant="elevated">Save Post</v-btn>
+            <v-btn type="button" :loading="loadingPost" color="grey" variant="outlined" class="ml-2"
+                   @click="resetPostForm">Cancel Changes
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
     </v-col>
   </v-row>
   <v-row>
@@ -121,7 +151,9 @@
         <v-toolbar density="compact" color="grey-darken-3" title="Associated Idea"></v-toolbar>
         <v-card-text>
           <!--          {{ post.associated_idea }}-->
-          <v-alert class="mb-3" color="info" density="compact">Contributed by {{ post.associated_idea.contributor_first + ' ' + post.associated_idea.contributor_last + ' (' + post.associated_idea.contributor_netid  + ') ' }} on
+          <v-alert class="mb-3" color="info" density="compact">Contributed by {{
+              post.associated_idea.contributor_first + ' ' + post.associated_idea.contributor_last + ' (' + post.associated_idea.contributor_netid + ') '
+            }} on
             {{ slashdatetime(post.associated_idea.created_at) }}
           </v-alert>
           <p>
@@ -140,7 +172,9 @@
           <IntcommIdeaImages mode="post" :cols-per-img="6" @ideaImgCopied="formModified = true"></IntcommIdeaImages>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" variant="elevated" :href="`/admin/intcomm/ideas/${post.associated_idea.id}`">Go to idea</v-btn>
+          <v-btn color="primary" variant="elevated" :href="`/admin/intcomm/ideas/${post.associated_idea.id}`">Go to
+            idea
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -181,44 +215,45 @@ export default {
   data: function () {
     return {
       currentDate: moment(),
+      explanationPanel: [0],
       flatpickrConfig: {
         altFormat: "m/d/Y h:i K", // format the user sees
         altInput: true,
         dateFormat: "Y-m-d H:i:S", // format sumbitted to the API
         enableTime: true
       },
+      ckInput: false, // @input will run on ck on reset, so this is a flag to prevent that
       formModified: false,
       imageTypes: [],
       loadingPost: false,
+      originalPost: {},
       wordLimit: 700
     }
   },
   computed: {
     ...mapState(['postImageTypes', 'post']),
-    ...mapGetters(['intcommSmallImgID', 'intcommStoryImgID', 'intcommEmailImgID']),
+    ...mapGetters(['intcommSmallImgID', 'intcommStoryImgID', 'intcommEmailImgID', 'postRequiredImageIDs', 'postHasRequiredImages']),
+    isPostLiveEligible () {
+      return this.post.status === 'Approved'
+    },
     // Extract the post ID from the URL (will be the second to last part)
     // e.g. https://today.emich.edu/admin/intcomm/posts/54/edit
     postId () {
       const urlParts = window.location.href.split('/')
       return urlParts[urlParts.length - 2]
-    },
-    contentWordCount () {
-      return this.post.content.split(' ').length
-    },
-    // wordCountColor () {
-    //   if (this.contentWordCount <= this.wordLimit - 100) {
-    //     return 'text-success'
-    //   }
-    //   else if (this.contentWordCount > this.wordLimit - 100 && this.contentWordCount <= this.wordLimit - 20) {
-    //     return 'text-warning'
-    //   }
-    //   return 'text-error'
-    // }
+    }
   },
   methods: {
     slashdatetime,
     ...mapMutations(['setPostImageTypes', 'setPost', 'setPostProp']),
     ...mapActions(['createPostImageRecord']),
+    // Alert the user if leaving the page with unsaved changes.
+    beforeUnload (e) {
+      if (this.formModified) {
+        e.preventDefault();
+        e.returnValue = ''; // text is set by the browser
+      }
+    },
     async fetchPost () {
       this.loadingPost = true
       let routeurl = `/api/intcomm/posts/${this.postId}`
@@ -226,11 +261,23 @@ export default {
       await this.$http.get(routeurl)
       .then((r) => {
         this.setPost(r.data)
+        this.originalPost = JSON.parse(JSON.stringify(r.data)) // save a copy of the original post in case a reset is needed.
         this.loadingPost = false
+        setTimeout(() => {
+          this.formModified = false
+        }, 300)
       })
       .catch((e) => {
         console.log(e)
       })
+    },
+    // Ensure ckeditor doesn't set form modified on reset
+    handleCkInput () {
+      if (!this.ckInput) {
+        this.ckInput = true
+        return
+      }
+      // this.formModified = true
     },
     async getImageTypes () {
       let routeurl = `/api/intcomm/posts/imagetypes`
@@ -241,6 +288,13 @@ export default {
       .catch((e) => {
         console.log(e)
       })
+    },
+    resetPostForm () {
+      this.setPost(JSON.parse(JSON.stringify(this.originalPost)))
+      // Delay for ckeditor to reset
+      setTimeout(() => {
+        this.formModified = false
+      }, 300)
     },
     async savePost () {
       alert("saving!")
@@ -267,9 +321,15 @@ export default {
       // })
       // .catch((e) => {
       //   console.log(e)
-      // })
+      // })export default {
     }
-  }
+  },
+  mounted () {
+    window.addEventListener('beforeunload', this.beforeUnload)
+  },
+  beforeUnmount () {
+    window.removeEventListener('beforeunload', this.beforeUnload)
+  },
 }
 </script>
 <style scoped>
