@@ -103,7 +103,7 @@ class IntcommPostController extends ApiController{
 			'content' => $post['content'],
 			'start_date' => $post['start_date'],
 			'end_date' => $post['end_date'],
-			'status' => $post['status'],
+			'admin_status' => $post['admin_status'],
 			'submitted_by' => auth()->user(),
 		];
 
@@ -146,7 +146,7 @@ class IntcommPostController extends ApiController{
 			'content' => $postArr['content'],
 			'start_date' => $postArr['start_date'],
 			'end_date' => $postArr['end_date'],
-			'status' => $postArr['status'],
+			'admin_status' => $postArr['admin_status'],
 			'submitted_by' => $post->submitted_by,
 		];
 

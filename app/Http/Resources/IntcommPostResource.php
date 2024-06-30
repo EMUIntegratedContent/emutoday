@@ -23,7 +23,7 @@ class IntcommPostResource extends JsonResource
 				'start_date' => $this->start_date,
 				'end_date' => $this->end_date,
 				'submitted_by' => $this->submitted_by,
-				'status' => $this->status,
+				'admin_status' => $this->admin_status,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
 				'associated_idea' => $this->idea ? $this->idea->load('images') : null, // Load the associated idea and its images

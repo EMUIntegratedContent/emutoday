@@ -25,7 +25,7 @@
                             <li v-if="!post.start_date">Start date is missing.</li>
                             <li v-if="!post.end_date">End date is missing.</li>
                             <li v-if="!postHasRequiredImages">At least one required image is missing.</li>
-                            <li v-if="post.status !== 'Approved'">An administrator has not approved this post.</li>
+                            <li v-if="post.admin_status !== 'Approved'">An administrator has not approved this post.</li>
                           </ul>
                         </v-expansion-panel-text>
                       </v-expansion-panel>
@@ -36,8 +36,8 @@
                   <v-col cols="12" md="6">
                     <v-select
                         v-if="userIsApprover"
-                        v-model="post.status"
-                        :items="['Draft', 'Submitted', 'Approved', 'Denied']"
+                        v-model="post.admin_status"
+                        :items="['Pending', 'Approved', 'Denied']"
                         label="Admin Approval Status"
                         @update:modelValue="formModified = true"
                     >
@@ -240,7 +240,7 @@ export default {
     ...mapState(['postImageTypes', 'post']),
     ...mapGetters(['intcommSmallImgID', 'intcommStoryImgID', 'intcommEmailImgID', 'postRequiredImageIDs', 'postHasRequiredImages']),
     isPostLiveEligible () {
-      return this.post.status === 'Approved'
+      return this.post.admin_status === 'Approved'
     },
     // Extract the post ID from the URL (will be the second to last part)
     // e.g. https://today.emich.edu/admin/intcomm/posts/54/edit
@@ -305,9 +305,9 @@ export default {
         return
       }
 
-      // If a non-admin user is saving a post, always set the approval status to 'Submitted'
+      // If a non-admin user is saving a post, always set the admin_status to 'Submitted'
       if(!this.userIsApprover) {
-        this.post.status = 'Submitted'
+        this.post.admin_status = 'Submitted'
       }
 
       await this.savePost()

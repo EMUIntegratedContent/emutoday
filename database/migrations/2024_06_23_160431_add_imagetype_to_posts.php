@@ -25,6 +25,7 @@ return new class extends Migration
     {
         Schema::table('intcomm_posts_images', function (Blueprint $table) {
             $table->dropForeign(['imagetype_id']);
+						$table->dropColumn('imagetype_id');
         });
     }
 };

@@ -28,7 +28,7 @@ const emptyPost = () => {
 		content: '',
 		start_date: null,
 		end_date: null,
-		status: 'Draft',
+		admin_status: 'Pending',
 		submittedBy: null,
 		created_at: null,
 		updated_at: null,
