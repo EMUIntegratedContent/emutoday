@@ -112,7 +112,7 @@ export default {
     },
     async fetchIdeas () {
       this.loadingIdeas = true
-      let routeurl = '/api/intcomm/ideas/admin/ideas'
+      let routeurl = '/api/intcomm/admin/ideas/ideas'
 
       // if a start date is set, get stories whose start_date is on or after this date
       if (this.startDate) {

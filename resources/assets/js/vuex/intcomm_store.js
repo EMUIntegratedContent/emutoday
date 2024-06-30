@@ -76,6 +76,10 @@ const mutations = {
 	setPosts (state, posts) {
 		state.posts = posts
 	},
+	removePostImgById (state, imagetype_id) {
+		const index = state.post.images.findIndex(img => img.imagetype_id === imagetype_id)
+		state.post.images.splice(index, 1)
+	},
 	updatePostImageRecord(state, { index, imgRecord }) {
 		console.log(index)
 		console.log(imgRecord)

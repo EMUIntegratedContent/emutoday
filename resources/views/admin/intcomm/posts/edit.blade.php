@@ -1,5 +1,5 @@
 @extends('admin.layouts.adminlte')
-@section('title', 'EMU 175 Frontpage Manager')
+@section('title', 'Edit INTCOMM (CHANGE) Post')
 @section('style-vendor')
     @parent
 @endsection
@@ -17,7 +17,7 @@
 @section('content')
   <h1>Internal Communications</h1>
   <div id="vue-intcomm-post-form">
-    <intcomm-post-form></intcomm-post-form>
+    <intcomm-post-form :user-roles="{{ $currentUser->roles }}"></intcomm-post-form>
   </div>
 @endsection
 @section('footer-vendor')

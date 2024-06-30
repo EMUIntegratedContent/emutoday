@@ -1,13 +1,10 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <v-form ref="postForm" @submit.prevent="savePost">
+      <v-form ref="postForm" @submit.prevent="savePostPreflight">
         <v-card>
-          <v-toolbar density="compact" color="grey-darken-3" title="Post Form"></v-toolbar>
+          <v-toolbar density="compact" color="grey-darken-3" :title="newForm ? 'New INTCOMM (CHANGE) Post' : 'Edit INTCOMM (CHANGE) Post'"></v-toolbar>
           <v-card-text>
-            <!--            {{ post }}-->
-            <!--            {{ postRequiredImageIDs }}-->
-            <!--            {{ postHasRequiredImages }}-->
             <v-row>
               <v-col cols="12">
                 <v-row>
@@ -34,9 +31,11 @@
                       </v-expansion-panel>
                     </v-expansion-panels>
                     <v-alert v-else type="success" density="compact">Post is eligible to be live.</v-alert>
+                    <v-alert v-if="!userIsApprover && isPostLiveEligible" type="info" density="compact" class="my-2">Any changes will need to be re-approved by an administrator or editor.</v-alert>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-select
+                        v-if="userIsApprover"
                         v-model="post.status"
                         :items="['Draft', 'Submitted', 'Approved', 'Denied']"
                         label="Admin Approval Status"
@@ -51,6 +50,7 @@
                         v-model="post.title"
                         label="Title"
                         maxlength="120"
+                        :rules="[v => !!v || 'Title is required']"
                         @update:modelValue="formModified = true"
                     >
                       <template #label>
@@ -123,7 +123,7 @@
             </v-row>
             <v-row>
               <v-col cols="12">
-                <v-alert v-if="formModified && !showSuccess && !errSaving" type="info" color="warning" density="compact" class="my-2">You have unsaved changes.</v-alert>
+                <v-alert v-if="formModified && !showSuccess && !errSaving && !savingPost" type="info" color="warning" density="compact" class="my-2">You have unsaved changes.</v-alert>
                 <v-alert v-if="errSaving" type="error" density="compact" class="my-2">The post could not be saved.</v-alert>
                 <v-alert v-if="showSuccess" type="success" density="compact" class="my-2">The post has been saved.</v-alert>
               </v-col>
@@ -189,9 +189,13 @@ import IntcommPostImage from './IntcommPostImage.vue'
 export default {
   mixins: [ckeditorIntcommMixin],
   props: {
-    mode: {
-      type: String,
-      default: 'public'
+    newForm: {
+      type: Boolean,
+      default: false
+    },
+    userRoles: {
+      type: Object,
+      default: () => ({})
     }
   },
   components: {
@@ -202,7 +206,14 @@ export default {
     intcomm_store: store
   },
   async created () {
-    await this.fetchPost()
+    if(!this.newForm) {
+      await this.fetchPost()
+    } else {
+      this.originalPost = JSON.parse(JSON.stringify(this.post))
+      setTimeout(() => {
+        this.formModified = false
+      }, 500)
+    }
     await this.getImageTypes()
   },
   data: function () {
@@ -236,6 +247,10 @@ export default {
     postId () {
       const urlParts = window.location.href.split('/')
       return urlParts[urlParts.length - 2]
+    },
+    userIsApprover () {
+      if(!this.userRoles) return false
+      return this.userRoles.find(role => role.name.includes('admin') || role.name.includes('editor'))
     }
   },
   methods: {
@@ -283,9 +298,26 @@ export default {
         this.formModified = false
       }, 500)
     },
+    async savePostPreflight () {
+      const { valid } = await this.$refs.postForm.validate()
+      if(!valid || !this.post.content) {
+        alert('Please fill in all required fields before saving.')
+        return
+      }
+
+      // If a non-admin user is saving a post, always set the approval status to 'Submitted'
+      if(!this.userIsApprover) {
+        this.post.status = 'Submitted'
+      }
+
+      await this.savePost()
+    },
     async savePost () {
+
       const data = new FormData()
       data.append('post', JSON.stringify(this.post))
+
+      this.savingPost = true
 
       // Attach any new images to the form data
       let imgIndex = 0 // Don't use the image index because it's not always sequential
@@ -310,6 +342,7 @@ export default {
         }
       })
       .then((r) => {
+        this.formModified = false // Reset the form modified flag before leaving the page (new forms)
         // Send new submissions to the edit form
         if(httpVerb === 'post') {
           window.location.href = '/admin/intcomm/posts/' + r.data.postId + '/edit'
@@ -318,7 +351,6 @@ export default {
           this.originalPost = JSON.parse(JSON.stringify(this.post))
         }
         this.savingPost = false
-        this.formModified = false
         this.showSuccess = true
         setTimeout(() => {
           this.showSuccess = false

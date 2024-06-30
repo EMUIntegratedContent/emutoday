@@ -29,7 +29,8 @@ class IntcommPostController extends ApiController{
 		$this->post = $post;
 		$this->validationRules = [
 			'title' => 'required|max:255',
-			'content' => 'required'
+			'content' => 'required',
+			'submitted_by' => 'required'
 		];
 	}
 
@@ -82,32 +83,43 @@ class IntcommPostController extends ApiController{
 	/**
 	 * Store a new post
 	 */
-	public function store(Request $request){
-//		$validationRules = [
-//			'title' => 'required|min:10',
-//			'send_at' => 'nullable|date_format:Y-m-d H:i:s'
-//		];
-//		// The validator if there is a presidential message being included in the email, a valid URL must be passed
-//		if($request->get('is_president_included')){
-//			$validationRules['president_teaser'] = 'required';
-//			$validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
-//		}
-//
-//		$validation = \Validator::make(Input::all(), $validationRules);
-//
-//		if($validation->fails()){
-//			return $this->setStatusCode(422)
-//				->respondWithError($validation->errors()->getMessages());
-//		}
-//
-//		if($validation->passes()){
-//
-//			$fractal = new Manager();
-//			$resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
-//
-//			return $this->setStatusCode(200)
-//				->respondUpdatedWithData('Email has been created.', $fractal->createData($resource)->toArray());
-//		}
+	public function store(Request $request, IntcommService $intcommService){
+		$post = json_decode($request->get('post'), true);
+		if (!$post) {
+			return response()->json(['error' => 'Invalid parameters.'], 400);
+		}
+
+		$postId = isset($idea['postId']) ?: null;
+		if($postId){
+			$post = $this->post->findOrFail($postId);
+			if($post) {
+				return response()->json(['error' => 'Post already exists.'], 400);
+			}
+		}
+
+		$data = [
+			'title' => $post['title'],
+			'teaser' => $post['teaser'],
+			'content' => $post['content'],
+			'start_date' => $post['start_date'],
+			'end_date' => $post['end_date'],
+			'status' => $post['status'],
+			'submitted_by' => auth()->user(),
+		];
+
+		$validator = Validator::make($data, $this->validationRules);
+
+		if($validator->fails()) {
+			return response()->json(['error' => $validator->errors()], 422);
+		}
+
+		$newPost = new IntcommPost();
+		$newPost->fill($data);
+		$newPost->save();
+
+		$intcommService->handlePostImages($newPost, $post);
+
+		return response()->json(IntcommPostResource::make($newPost));
 	}
 
 	/**
@@ -135,6 +147,7 @@ class IntcommPostController extends ApiController{
 			'start_date' => $postArr['start_date'],
 			'end_date' => $postArr['end_date'],
 			'status' => $postArr['status'],
+			'submitted_by' => $post->submitted_by,
 		];
 
 		$validator = Validator::make($data, $this->validationRules);

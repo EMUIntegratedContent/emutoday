@@ -7,11 +7,11 @@
       <template v-else>
         <IntcommPostImage :imgtype_id="intcommSmallImgID" @imageUpdated="$emit('imageUpdated')"></IntcommPostImage>
       </template>
-      <v-btn v-if="!postHasStoryImage" block class="my-2" color="primary" @click="handleCreateImage('story')">Add Story Image</v-btn>
+      <v-btn v-if="!postHasStoryImage" block class="my-2" color="primary" variant="outlined" @click="handleCreateImage('story')">Add Story Image</v-btn>
       <template v-else>
         <IntcommPostImage :imgtype_id="intcommStoryImgID" @imageUpdated="$emit('imageUpdated')"></IntcommPostImage>
       </template>
-      <v-btn v-if="!postHasEmailImage" block class="my-2" color="primary" @click="handleCreateImage('email')">Add Email Image</v-btn>
+      <v-btn v-if="!postHasEmailImage" block class="my-2" color="primary" variant="outlined" @click="handleCreateImage('email')">Add Email Image</v-btn>
       <template v-else>
         <IntcommPostImage :imgtype_id="intcommEmailImgID" @imageUpdated="$emit('imageUpdated')"></IntcommPostImage>
       </template>

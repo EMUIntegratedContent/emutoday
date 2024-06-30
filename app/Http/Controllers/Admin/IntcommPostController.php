@@ -32,13 +32,14 @@ class IntcommPostController extends Controller
 			return view('admin.intcomm.posts.index');
     }
 
-//    /**
-//     * Show the form for creating a new resource.
-//     */
-//    public function create()
-//    {
-//        //
-//    }
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+			$user = \Auth::user();
+			return view('admin.intcomm.posts.create', compact('user'));
+    }
 //
 //    /**
 //     * Store a newly created resource in storage.
@@ -61,7 +62,8 @@ class IntcommPostController extends Controller
 //     */
     public function edit(IntcommPost $intcommPost)
     {
-        return view('admin.intcomm.posts.edit', compact('intcommPost'));
+			$user = \Auth::user();
+			return view('admin.intcomm.posts.edit', compact('intcommPost', 'user'));
     }
 //
 //    /**

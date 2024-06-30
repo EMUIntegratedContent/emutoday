@@ -116,6 +116,9 @@
         </template>
       </v-row>
     </v-card-text>
+    <v-card-actions>
+      <v-btn color="error" size="small" variant="outlined" @click="removeImage">Remove Image</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -190,7 +193,7 @@ export default {
   },
   methods: {
     slashdatetime,
-    ...mapMutations(['setPostImageTypes', 'setPost', 'setPostProp']),
+    ...mapMutations(['setPostImageTypes', 'setPost', 'setPostProp', 'removePostImgById']),
     ...mapActions(['createPostImageRecord', 'updatePostImageRecord']),
     handleAddImage (file) {
       // Check that file size is > 2 MB and at least 412px by 248px
@@ -224,6 +227,10 @@ export default {
           this.updatePostImageRecord({ imagetype_id: this.img.imagetype_id, props: propsToUpdate })
         }
       }
+      this.$emit('imageUpdated')
+    },
+    removeImage () {
+      this.removePostImgById({ imagetype_id: this.img.imagetype_id, props: { image_path: null, image_name: null, image_extension: null, file: null } })
       this.$emit('imageUpdated')
     }
   }

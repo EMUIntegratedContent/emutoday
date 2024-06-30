@@ -6,7 +6,11 @@
     </v-col>
   </v-row>
   <v-row>
+    <v-col cols="12" v-if="ideaImages.length === 0">
+      <p>No associated images with this idea.</p>
+    </v-col>
     <v-col
+        v-else
         v-for="(image, i) in ideaImages"
         :key="`img-${image.id}`"
         class="d-flex child-flex bg-danger"

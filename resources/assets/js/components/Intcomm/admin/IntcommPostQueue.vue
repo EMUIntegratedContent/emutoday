@@ -33,6 +33,7 @@
       </form>
       <v-row>
         <v-col cols="12">
+          <v-btn color="success" href="/admin/intcomm/posts/create" class="mb-3">New Post</v-btn>
           <v-data-table
               :headers="headers"
               :items="posts"
@@ -107,7 +108,7 @@ export default {
     },
     async fetchPosts () {
       this.loadingPosts = true
-      let routeurl = '/api/intcomm/posts'
+      let routeurl = '/api/intcomm/admin/posts'
 
       // if a start date is set, get stories whose start_date is on or after this date
       if (this.startDate) {

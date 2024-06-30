@@ -11,7 +11,7 @@
                 <v-alert v-if="itemDeleted" class="mb-3" color="error" icon="mdi-delete" density="compact">This idea has
                   been deleted.
                 </v-alert>
-                <v-alert v-if="idea.archived" class="mb-3" type="warning" density="compact">This idea has been archived.
+                <v-alert v-if="idea.archived && !itemDeleted" class="mb-3" type="warning" density="compact">This idea has been archived.
                   It will not show in the ideas list.
                 </v-alert>
                 <v-alert v-if="isErr" class="mb-3" type="error" density="compact">{{ errorMsg }}</v-alert>
@@ -93,7 +93,7 @@
             <v-alert v-if="postMade" type="success" density="compact" class="my-2">Idea has been successfully converted into a post. See 'Associated Posts' below.</v-alert>
           </v-card-text>
           <v-card-actions v-if="!itemDeleted">
-            <v-btn :loading="makingPost" color="primary" variant="elevated" @click="makePost">Convert to Post</v-btn>
+            <v-btn v-if="!idea.archived" :loading="makingPost" color="primary" variant="elevated" @click="makePost">Convert to Post</v-btn>
             <v-btn v-if="!idea.archived" :loading="archivingIdea" variant="outlined" color="warning" @click="archiveIdea">Archive Idea
             </v-btn>
             <v-btn v-else :loading="unarchivingIdea" color="warning" variant="elevated" @click="unarchiveIdea">Reinstate Idea</v-btn>
@@ -188,7 +188,7 @@ export default {
     ...mapMutations(['setIdea']),
     async fetchIdea () {
       this.loadingIdea = true
-      let routeurl = '/api/intcomm/ideas/admin/' + this.ideaId
+      let routeurl = '/api/intcomm/admin/ideas/' + this.ideaId
 
       await this.$http.get(routeurl)
       .then((r) => {
@@ -208,7 +208,7 @@ export default {
       let data = {
         admin_status: this.idea.admin_status
       }
-      let routeurl = '/api/intcomm/ideas/admin/' + this.idea.ideaId + '/status'
+      let routeurl = '/api/intcomm/admin/ideas/' + this.idea.ideaId + '/status'
 
       await this.$http.put(routeurl, data)
       .then((r) => {
@@ -225,7 +225,7 @@ export default {
       this.postMade = false
       this.makingPost = true
       // let formData = new FormData();
-      let routeurl = '/api/intcomm/ideas/admin/' + this.idea.ideaId + '/makepost'
+      let routeurl = '/api/intcomm/admin/ideas/' + this.idea.ideaId + '/makepost'
 
       await this.$http.post(routeurl)
       .then((r) => {
@@ -245,7 +245,7 @@ export default {
       this.isErr = false
       this.archivingIdea = true
       // let formData = new FormData();
-      let routeurl = '/api/intcomm/ideas/admin/' + this.idea.ideaId + '/archive'
+      let routeurl = '/api/intcomm/admin/ideas/' + this.idea.ideaId + '/archive'
 
       await this.$http.put(routeurl)
       .then((r) => {
@@ -260,7 +260,7 @@ export default {
     async unarchiveIdea () {
       this.isErr = false
       this.unarchivingIdea = true
-      let routeurl = '/api/intcomm/ideas/admin/' + this.idea.ideaId + '/unarchive'
+      let routeurl = '/api/intcomm/admin/ideas/' + this.idea.ideaId + '/unarchive'
 
       await this.$http.put(routeurl)
       .then((r) => {
@@ -273,11 +273,11 @@ export default {
       })
     },
     async deleteIdea () {
-      if (!confirm('Deleting an idea will also delete it for the original contributor. If you want the contributor to still see their idea, use the "Reject Idea" feature instead. Are you sure you want to delete this idea?')) {
+      if (!confirm('Deleting an idea will also delete it for the original contributor. If you want the contributor to still see their idea, set the Admin Status to "Not Considering" instead. Are you sure you want to delete this idea?')) {
         return
       }
       this.deletingIdea = true
-      let routeurl = '/api/intcomm/ideas/admin/' + this.idea.ideaId
+      let routeurl = '/api/intcomm/admin/ideas/' + this.idea.ideaId
 
       await this.$http.delete(routeurl)
       .then(() => {
