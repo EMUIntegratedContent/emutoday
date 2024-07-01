@@ -41,8 +41,18 @@
               class="elevation-1"
               :loading="loadingPosts"
           >
-            <template #[`item.title`]="{ item }">
-              <a :href="`/admin/intcomm/posts/${item.postId}/edit`">{{ item.title }}</a>
+            <template #[`item`]="{ item }">
+              <tr :class="{ 'is-live': item.is_live }">
+                <td>
+                  <v-chip label v-if="item.is_live" color="green-darken-4">Live</v-chip>
+                </td>
+                <td>
+                  <a :href="`/admin/intcomm/posts/${item.postId}/edit`">{{ item.title }}</a>
+                </td>
+                <td>{{ item.admin_status }}</td>
+                <td>{{ slashdatetime(item.start_date) }}</td>
+                <td>{{ slashdatetime(item.end_date) }}</td>
+              </tr>
             </template>
           </v-data-table>
         </v-col>
@@ -55,6 +65,7 @@
 import moment from 'moment'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
+import { slashdatetime } from '../../filters'
 import { mapMutations, mapState } from "vuex"
 
 export default {
@@ -81,10 +92,11 @@ export default {
         enableTime: false
       },
       headers: [
+        { title: 'Live', key: 'is_live' },
         { title: 'Title', key: 'title' },
-        { title: 'Teaser', key: 'teaser' },
+        { title: 'Admin Status', key: 'admin_status' },
         { title: 'Start Date', key: 'start_date' },
-        { title: 'End Date', key: 'end_date' },
+        { title: 'End Date', key: 'end_date' }
       ],
       loadingPosts: false,
       posts: []
@@ -97,6 +109,7 @@ export default {
     }
   },
   methods: {
+    slashdatetime,
     ...mapMutations([]),
     toggleRange () {
       if (this.isEndDate) {
@@ -138,7 +151,10 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+.is-live {
+  background-color: #E8F5E9;
+}
 #rangetoggle {
   color: #FF851B;
   margin-left: 5px;

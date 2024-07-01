@@ -26,6 +26,7 @@ class IntcommPostResource extends JsonResource
 				'admin_status' => $this->admin_status,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
+				'is_live' => $this->postIsLive(), // In the model, this method checks if the post is live based on several criteria
 				'associated_idea' => $this->idea ? $this->idea->load('images') : null, // Load the associated idea and its images
 				'images' => IntcommPostsImagesResource::collection($this->images)
 			];

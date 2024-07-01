@@ -230,7 +230,7 @@ export default {
       this.$emit('imageUpdated')
     },
     removeImage () {
-      this.removePostImgById({ imagetype_id: this.img.imagetype_id, props: { image_path: null, image_name: null, image_extension: null, file: null } })
+      this.removePostImgById(this.img.imagetype_id)
       this.$emit('imageUpdated')
     }
   }

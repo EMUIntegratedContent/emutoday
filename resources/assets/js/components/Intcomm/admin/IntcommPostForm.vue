@@ -9,29 +9,32 @@
               <v-col cols="12">
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-expansion-panels
-                        v-if="!isPostLiveEligible"
-                        v-model="explanationPanel"
-                    >
-                      <v-expansion-panel>
-                        <v-expansion-panel-title color="warning">
-                          <span class="font-weight-bold"><v-icon>mdi-alert</v-icon> Post is NOT eligible to be live.</span>
-                        </v-expansion-panel-title>
-                        <v-expansion-panel-text>
-                          This post is missing key components required for it to be shown live.<br><br>
-                          <ul>
-                            <li v-if="!post.title">Title is missing.</li>
-                            <li v-if="!post.content">Post content is missing.</li>
-                            <li v-if="!post.start_date">Start date is missing.</li>
-                            <li v-if="!post.end_date">End date is missing.</li>
-                            <li v-if="!postHasRequiredImages">At least one required image is missing.</li>
-                            <li v-if="post.admin_status !== 'Approved'">An administrator has not approved this post.</li>
-                          </ul>
-                        </v-expansion-panel-text>
-                      </v-expansion-panel>
-                    </v-expansion-panels>
-                    <v-alert v-else type="success" density="compact">Post is eligible to be live.</v-alert>
-                    <v-alert v-if="!userIsApprover && isPostLiveEligible" type="info" density="compact" class="my-2">Any changes will need to be re-approved by an administrator or editor.</v-alert>
+                    <v-alert v-if="post.is_live" type="success" density="compact" variant="elevated">Post is LIVE.</v-alert>
+                    <template v-else>
+                      <v-expansion-panels
+                          v-if="!isPostLiveEligible"
+                          v-model="explanationPanel"
+                      >
+                        <v-expansion-panel>
+                          <v-expansion-panel-title color="warning">
+                            <span class="font-weight-bold"><v-icon>mdi-alert</v-icon> Post is NOT eligible to be live.</span>
+                          </v-expansion-panel-title>
+                          <v-expansion-panel-text>
+                            This post is missing key components required for it to be shown live.<br><br>
+                            <ul>
+                              <li v-if="!post.title">Title is missing.</li>
+                              <li v-if="!post.content">Post content is missing.</li>
+                              <li v-if="!post.start_date">Start date is missing.</li>
+                              <li v-if="!post.end_date">End date is missing.</li>
+                              <li v-if="!postHasRequiredImages">At least one required image is missing.</li>
+                              <li v-if="post.admin_status !== 'Approved'">An administrator has not approved this post.</li>
+                            </ul>
+                          </v-expansion-panel-text>
+                        </v-expansion-panel>
+                      </v-expansion-panels>
+                      <v-alert v-else type="success" density="compact" variant="outlined">Post is eligible to be live.</v-alert>
+                      <v-alert v-if="!userIsApprover && isPostLiveEligible" type="info" density="compact" class="my-2">Any changes will need to be re-approved by an administrator or editor.</v-alert>
+                    </template>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-select
@@ -239,8 +242,9 @@ export default {
   computed: {
     ...mapState(['postImageTypes', 'post']),
     ...mapGetters(['intcommSmallImgID', 'intcommStoryImgID', 'intcommEmailImgID', 'postRequiredImageIDs', 'postHasRequiredImages']),
+    // Determine if the post is eligible to be live. This does NOT check if the post is currently live. That is determined by post.is_live.
     isPostLiveEligible () {
-      return this.post.admin_status === 'Approved'
+      return this.post.admin_status === 'Approved' && this.postHasRequiredImages && this.post.title && this.post.content && this.post.start_date && this.post.end_date
     },
     // Extract the post ID from the URL (will be the second to last part)
     // e.g. https://today.emich.edu/admin/intcomm/posts/54/edit

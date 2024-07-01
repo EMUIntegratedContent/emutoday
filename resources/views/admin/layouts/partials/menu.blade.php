@@ -95,8 +95,17 @@
     <a href="#"><i class="fa fa-lightbulb-o"></i> <span>Intcomm</span></a>
     <ul class="treeview-menu">
       <li class="{{ set_active('admin/intcomm') }}"><a href="/admin/intcomm"><i class="fa fa-list"></i> <span>Dashboard</span></a></li>
-      <li class="{{ set_active('admin/intcomm/posts*') }}"><a href="/admin/intcomm/posts"><i class="fa fa-lightbulb-o"></i> <span>Posts</span></a></li>
-{{--      <li class="{{ set_active('admin/page*') }}"><a href="/admin/page/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>--}}
+
+
+    <li><a href="#"><i class="fa fa-circle-o"></i>Posts <span class="pull-right-container">
+    <i class="fa fa-angle-left pull-right"></i>
+    </span></a>
+        <ul class="treeview-menu {{ set_active('admin/story/posts*') }}">
+          <li class="{{ set_active('admin/intcomm/posts') }}"><a href="/admin/intcomm/posts"><i class="fa fa-file-text-o"></i> <span>Queue</span></a></li>
+          <li class="{{ set_active('admin/intcomm/posts/create') }}"><a href="/admin/intcomm/posts/create"><i class="fa fa-plus-square"></i><span>New Post</span></a></li>
+        </ul>
+      </li>
+      <li class="{{ set_active('admin/intcomm/ideas*') }}"><a href="/admin/intcomm/ideas"><i class="fa fa-lightbulb-o"></i> <span>Public Submissions</span></a></li>
     </ul>
   </li>
 @endcan

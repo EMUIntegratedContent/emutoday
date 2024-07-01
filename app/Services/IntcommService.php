@@ -113,7 +113,7 @@ class IntcommService
 				}
 
 				$imgFilePath = $image->getRealPath();
-				$imgFileName = $imgNames[$count] ? $this->appendExtensionToFilename($imgNames[$count], $image->getClientOriginalExtension()) : $image->getClientOriginalName();
+				$imgFileName = $this->appendExtensionToFilename($imgNames[$count], $image->getClientOriginalExtension());
 
 				Image::make($imgFilePath)
 					->save(public_path() . $destinationFolder . $imgFileName);
