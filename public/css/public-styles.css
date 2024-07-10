@@ -3773,7 +3773,7 @@ a.firefox:before {
   }
 }
 
-/* Eastern Experts Stylesheets */
+/* Intcomm Stylesheets */
 #intcomm-area{
     padding-top: 2rem;
     margin-bottom: 2rem;
@@ -3877,6 +3877,12 @@ ul.intcomm-nav li a:not(.button) {color: #333;font-size: 1.1rem;font-weight: 400
 #intcomm-area [type="color"], #intcomm-area [type="date"], #intcomm-area [type="datetime-local"], #intcomm-area [type="datetime"], #intcomm-area [type="email"], #intcomm-area [type="month"], #intcomm-area [type="number"], #intcomm-area [type="password"], #intcomm-area [type="search"], #intcomm-area [type="tel"], #intcomm-area [type="text"], #intcomm-area [type="time"], #intcomm-area [type="url"], #intcomm-area [type="week"], #intcomm-area textarea {
     border: none !important;
     margin: 0 !important;
+}
+
+.v-toolbar-title__placeholder {
+    white-space: normal !important; /* Allow the title to wrap instead of truncating */
+    overflow: visible !important; /* Make sure the overflow text is visible */
+    text-overflow: clip !important; /* Prevent text from being clipped */
 }
 
 /* Medium screens */

@@ -14527,7 +14527,6 @@ fieldset[disabled] .btn-yahoo.focus {
 
 /*# sourceMappingURL=admin-less.css.map */
 
-
 .content-header > .breadcrumb {
   float: left;
   background: transparent;
@@ -15025,4 +15024,152 @@ img.better-thumb {
   height: 250px;
   overflow-y: auto;
 }
+
+
+/* Intcomm Stylesheets */
+#intcomm-area{
+    padding-top: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+#intcomm-area h1{
+    color: #666;
+    font-size: 2.4rem;
+    font-weight: 400;
+    margin-top: .2rem;
+}
+#intcomm-area article.expert-listing {
+    display: block;
+    float: left;
+    width: 50%;
+    border-bottom: 1px solid #ccc;
+    padding: 1.3rem;
+}
+#intcomm-area article.expert-listing:nth-child(odd){
+    border-left: 1px solid #ccc;
+}
+#intcomm-area article.expert-listing .photobox{
+}
+#intcomm-area  article.expert-listing .text-expertbox{
+
+}
+#intcomm-area  article.expert-listing .text-expertbox p{
+    margin-bottom: .4rem;
+    line-height: 1.3rem;
+}
+#intcomm-area  article.expert-listing .text-expertbox p:first-of-type{
+    font-style: italic;
+    font-size: 1rem;
+}
+#intcomm-area article.expert-listing img{width: 100%;}
+ul.side-nav.intcomm-nav {margin-top: .6rem;
+}
+ul.side-nav {list-style: outside none none;margin: 0.6rem 0 1rem;padding: 0;
+}
+ul.side-nav.intcomm-nav li {
+
+}
+ul.side-nav li {margin: 0rem;padding: 0 0 0.4rem 0rem;position: relative;
+}
+ul.side-nav.intcomm-nav li a:not(.button) {background-color: #f5f4f1;color: #333;display: block;font-size: 1.05rem;font-weight: 400;line-height: 1.2rem;padding: 0.9rem 1rem;
+}
+ul.side-nav.intcomm-nav li a.home-style:not(.button) {
+    background-color: #fff;
+    color: #006633;
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 500;
+    line-height: 1.2rem;
+    padding: 0.9rem 1rem;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top: 3px solid #006633;
+}
+ul.intcomm-nav li a:not(.button) {color: #333;font-size: 1.1rem;font-weight: 400;line-height: 1.2rem;
+}
+#intcomm-area img.expert-sidepic{
+    margin-bottom: 1rem;
+}
+.rightside-column a.button{
+    width: 100%;
+    margin-bottom: 0;
+}
+.rightside-column p {
+    font-size: .9rem;
+}
+.search-container{
+    color: #333;
+    padding: 1.4rem 1.8rem;
+    border: 1px solid #ccc;
+    margin: .6rem 1rem 2rem;
+    width: 96%;
+    position: relative;
+}
+.search-container label{
+      color: #333;
+    font-size: 1rem;
+}
+.search-container .button{
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    font-weight: 700;
+    background-color: #2b873b;
+    margin-top: .7rem;
+    margin-right: .7rem;
+    margin-bottom: 0;
+}
+.search-container  .button.hollow {
+    border: 1px solid #666;
+    color: #fff;
+    background-color: #666;
+    font-weight: 400;
+}
+
+/* Override foundation styles for fields (using Vuetify here) */
+#intcomm-area [type="color"], #intcomm-area [type="date"], #intcomm-area [type="datetime-local"], #intcomm-area [type="datetime"], #intcomm-area [type="email"], #intcomm-area [type="month"], #intcomm-area [type="number"], #intcomm-area [type="password"], #intcomm-area [type="search"], #intcomm-area [type="tel"], #intcomm-area [type="text"], #intcomm-area [type="time"], #intcomm-area [type="url"], #intcomm-area [type="week"], #intcomm-area textarea {
+    border: none !important;
+    margin: 0 !important;
+}
+
+.v-toolbar-title__placeholder {
+    white-space: normal !important; /* Allow the title to wrap instead of truncating */
+    overflow: visible !important; /* Make sure the overflow text is visible */
+    text-overflow: clip !important; /* Prevent text from being clipped */
+}
+
+/* Medium screens */
+@media only screen and (min-width: 40.063em) { } /* min-width 641px, medium screens */
+
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+#intcomm-area article.expert-listing {
+    height: auto;
+    width: 100%;
+}
+#intcomm-area article.expert-listing:nth-child(odd){
+    border-left: none;
+}
+.search-container{
+    width: 94%;
+}
+
+} /* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
+
+/* Small screens */
+@media only screen { } /* Define mobile styles */
+
+@media only screen and (max-width: 40em) {
+   #intcomm-area article.expert-listing {
+    height: auto;
+    width: 100%;
+}
+#intcomm-area article.expert-listing:nth-child(odd){
+    border-left: none;
+}
+.search-container{
+    width: 92%;
+}
+
+} /* max-width 640px, mobile-only styles, use when QAing mobile issues */
+
 

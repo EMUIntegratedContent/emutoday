@@ -4,11 +4,12 @@ namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class IntcommPost extends Model{
 	use HasFactory;
 
-	protected $fillable = ['title', 'teaser', 'content', 'start_date', 'end_date', 'submitted_by', 'admin_status', 'intcomm_idea_id'];
+	protected $fillable = ['title', 'teaser', 'content', 'start_date', 'end_date', 'submitted_by', 'admin_status', 'intcomm_idea_id', 'seq'];
 	protected $dates = ['start_date', 'end_date', 'created_at', 'updated_at'];
 
 	public function images(){
@@ -42,5 +43,33 @@ class IntcommPost extends Model{
 		});
 		return $this->title != '' && $this->content != '' &&
 			$this->admin_status === 'Approved' && $this->start_date <= now() && $this->end_date >= now() && $hasReqImgs;
+	}
+
+	public function postIsApproved(): bool{
+		return $this->admin_status === 'Approved';
+	}
+
+	public function postStartsIn24Hours(): bool{
+		// Carbon diff in hours
+		$start = Carbon::parse($this->start_date);
+		$now = Carbon::now();
+		$diff = $now->diffInMinutes($start, false);
+		return $diff >= 0 && $diff <= 24*60 && !$this->postIsLive();
+	}
+
+	public function postEndsIn24Hours(): bool{
+		// Carbon diff in hours
+		$end = Carbon::parse($this->end_date);
+		$now = Carbon::now();
+		$diff = $now->diffInMinutes($end, false);
+		return $diff >= 0 && $diff <= 24*60 && $this->postIsLive();
+	}
+
+	public function postEndedInLast24Hours(): bool{
+		// Carbon diff in hours
+		$end = Carbon::parse($this->end_date);
+		$now = Carbon::now();
+		$diff = $now->diffInMinutes($end, false);
+		return $diff >= -24*60 && $diff <= 0;
 	}
 }

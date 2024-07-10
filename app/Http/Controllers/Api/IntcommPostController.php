@@ -104,6 +104,7 @@ class IntcommPostController extends ApiController{
 			'start_date' => $post['start_date'],
 			'end_date' => $post['end_date'],
 			'admin_status' => $post['admin_status'],
+			'seq' => $post['seq'] ?: 0,
 			'submitted_by' => auth()->user(),
 		];
 
@@ -147,6 +148,7 @@ class IntcommPostController extends ApiController{
 			'start_date' => $postArr['start_date'],
 			'end_date' => $postArr['end_date'],
 			'admin_status' => $postArr['admin_status'],
+			'seq' => $postArr['seq'] ?: 0,
 			'submitted_by' => $post->submitted_by,
 		];
 
@@ -163,6 +165,58 @@ class IntcommPostController extends ApiController{
 
 		$post = $this->post->findOrFail($postId); // get the entire updated post
 		return response()->json(IntcommPostResource::make($post));
+	}
+
+	/**
+	 * Add post to the bottom of the rankings
+	 * @param Request $request
+	 * @param $postId
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function addRank(Request $request, $postId){
+		$post = $this->post->findOrFail($postId);
+		if(!$post){
+			return response()->json(['error' => 'Post not found.'], 404);
+		}
+
+		$highestSeq = $this->post->max('seq'); // get the highest seq of all posts
+		$post->seq = $highestSeq + 1;
+		$post->save();
+
+		$post = $this->post->findOrFail($postId); // get the entire updated post
+		return response()->json(IntcommPostResource::make($post));
+	}
+
+	/**
+	 * Update the rankings of the posts (use order of the array to set the seq of the posts)
+	 * @param Request $request
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function updateRanks(Request $request){
+		$postIds = json_decode($request->get('postIds'), true);
+		if (!$postIds) {
+			return response()->json(['error' => 'Invalid parameters.'], 400);
+		}
+
+		$seq = 1;
+		foreach($postIds as $pid){
+			$post = $this->post->findOrFail($pid);
+			if(!$post){
+				return response()->json(['error' => 'Post not found.'], 404);
+			}
+			$post->seq = $seq;
+			$post->save();
+			$seq++;
+		}
+
+		// Set seq = 0 for all other posts
+		$posts = $this->post->whereNotIn('id', $postIds)->get();
+		foreach($posts as $post){
+			$post->seq = 0;
+			$post->save();
+		}
+
+		return response()->json(['success' => 'Posts updated.']);
 	}
 
 	/**

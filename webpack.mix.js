@@ -105,6 +105,7 @@ mix.js('resources/assets/js/vue-intcomm-post-form.js', 'public/js/vue-intcomm-po
 mix.styles([
 	'resources/assets/css/admin-less.css',
 	'resources/assets/css/admin.css',
+	'resources/assets/css/intcomm-styles.css'
 ], 'public/css/admin-styles.css').version();
 /*
 |--------------------------------------------------------------------------

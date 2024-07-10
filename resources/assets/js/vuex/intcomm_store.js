@@ -29,6 +29,7 @@ const emptyPost = () => {
 		start_date: null,
 		end_date: null,
 		admin_status: 'Pending',
+		seq: 0,
 		submittedBy: null,
 		created_at: null,
 		updated_at: null,

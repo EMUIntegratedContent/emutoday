@@ -93,6 +93,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 	Route::put('intcomm/ideas/user/{ideaId}', 'Api\IntcommIdeaPublicController@update')->name('api_intcomm_user_ideas_update');
 	/* Intcomm Posts */
 	Route::get('intcomm/admin/posts/imagetypes', 'Api\IntcommPostController@getPostImageTypes')->name('api_intcomm_post_imagetypes');
+	Route::patch('intcomm/admin/posts/addrank/{postId}', 'Api\IntcommPostController@addRank')->name('api_intcomm_post_addrank');
+	Route::post('intcomm/admin/posts/updateranks', 'Api\IntcommPostController@updateRanks')->name('api_intcomm_post_updateranks');
 //	Route::get('intcomm/posts/{postId}', 'Api\IntcommPostController@show')->name('api_intcomm_post');
 //	Route::get('intcomm/posts', 'Api\IntcommPostController@index')->name('api_intcomm_posts');
 	Route::resource('intcomm/admin/posts', 'Api\IntcommPostController');
