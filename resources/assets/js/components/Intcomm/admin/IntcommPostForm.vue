@@ -3,7 +3,21 @@
     <v-col cols="12">
       <v-form ref="postForm" @submit.prevent="savePostPreflight">
         <v-card>
-          <v-toolbar density="compact" color="grey-darken-3" :title="newForm ? 'New INTCOMM (CHANGE) Post' : 'Edit INTCOMM (CHANGE) Post'"></v-toolbar>
+          <v-toolbar
+              density="compact"
+              color="grey-darken-3"
+              :title="newForm ? 'New INTCOMM (CHANGE) Post' : 'Edit INTCOMM (CHANGE) Post'"
+          >
+            <v-spacer></v-spacer>
+            <v-btn
+                v-if="!newForm"
+                color="warning"
+                size="x-small"
+                icon="mdi-eye"
+                title="preview post"
+                @click="previewItem"
+            ></v-btn>
+          </v-toolbar>
           <v-card-text>
             <v-row>
               <v-col cols="12">
@@ -252,6 +266,9 @@ export default {
       const urlParts = window.location.href.split('/')
       return urlParts[urlParts.length - 2]
     },
+    postPreviewPath: function () {
+      return `/admin/preview/intcomm/post/${this.post.postId}`
+    },
     userIsApprover () {
       if(!this.userRoles) return false
       return this.userRoles.find(role => role.name.includes('admin') || role.name.includes('editor'))
@@ -294,6 +311,9 @@ export default {
       .catch((e) => {
         console.log(e)
       })
+    },
+    previewItem: function () {
+      window.location.href = this.postPreviewPath;
     },
     resetPostForm () {
       this.setPost(JSON.parse(JSON.stringify(this.originalPost)))

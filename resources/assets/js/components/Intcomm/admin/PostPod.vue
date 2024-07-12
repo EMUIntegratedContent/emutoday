@@ -9,6 +9,7 @@
     </v-card-text>
     <v-card-actions>
       TODO - preview, edit, buttons here
+      <v-btn @click="previewItem" color="warning" size="x-small" icon="mdi-eye"></v-btn>
     </v-card-actions>
 
 <!--                <button v-on:click.prevent="editItem" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip"-->
@@ -44,9 +45,14 @@ export default {
     this.postCopy = JSON.parse(JSON.stringify(this.post))
   },
   computed: {
-
+    postPreviewPath: function () {
+      return `/admin/preview/intcomm/post/${this.post.postId}`
+    },
   },
   methods: {
+    previewItem: function () {
+      window.location.href = this.postPreviewPath;
+    },
     removeRank () {
       this.$emit('removeRank', this.post)
     }

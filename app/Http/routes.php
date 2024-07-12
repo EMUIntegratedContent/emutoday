@@ -362,6 +362,7 @@ Route::resource('experts', 'Today\ExpertsController');
  */
 Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   Route::group(['prefix' => 'preview', 'middleware' => ['bindings']], function () {
+		Route::get('intcomm/post/{postId}', 'PreviewController@intcommpost')->name('preview_intcomm_post');
     Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');
     Route::get('page/{page}/', 'PreviewController@hub')->name('preview_hub');
     Route::get('magazine/{magazine}/', 'PreviewController@magazine')->name('preview_magazine');
