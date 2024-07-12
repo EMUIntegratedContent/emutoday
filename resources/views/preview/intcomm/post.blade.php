@@ -41,15 +41,14 @@
         <div id="story-content" class="row ck-content">
         <!-- Story Content Column -->
           <div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
-{{--            @if(isset($mainStoryImage) && !isset($fullBannerImage))--}}
+            @if(isset($mainImg))
               <div id="big-feature-image">
-{{--                <img src="{{$mainStoryImage->present()->mainImageURL }}"--}}
-{{--                     alt="{{ $mainStoryImage->alt_text != '' ? $mainStoryImage->alt_text : str_replace('"', "", $story->title) }}">--}}
-
-{{--                <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>--}}
-                <div class="feature-image-caption">CAPTION HERE!</div>
+                <img src="{{ $mainImg->image_path }}"
+                     alt="{{ $mainImg->alt_text != '' ? $mainImg->alt_text : str_replace('"', "", $post->title) }}">
+                <div class="feature-image-caption">{{ $mainImg->caption }}</div>
+{{--                {{ $mainImg->image_path }}--}}
               </div>
-{{--            @endif--}}
+            @endif
             <div id="story-content-edit">
               @php
                 if(isset($_GET['truepreview']) && $_GET['truepreview'] == "true"):
