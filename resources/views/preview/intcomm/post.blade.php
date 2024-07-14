@@ -35,7 +35,7 @@
         <!-- Story Page Content -->
         {!! Form::model($post,[
             'method' => 'put',
-            'route' => ['posts.update', $post->id],
+            'route' => ['posts.update', $post],
             'files' => true
         ]) !!}
         <div id="story-content" class="row ck-content">
@@ -50,11 +50,27 @@
               </div>
             @endif
             <div id="story-content-edit">
+              @if(session('success'))
+                <div class="preview-alert preview-alert-success" role="alert">
+                  {{ session('success') }}
+                </div>
+              @endif
+              @if(session('errors') && session('errors')->any())
+                <div class="preview-alert preview-alert-error" role="alert">
+                  There were errors with your submission.
+                  <ul>
+                    @foreach(session('errors')->all() as $error)
+                      <li>{{ $error }}</li>
+                    @endforeach
+                  </ul>
+                </div>
+              @endif
               @php
                 if(isset($_GET['truepreview']) && $_GET['truepreview'] == "true"):
               @endphp
               <a href="?truepreview=false" class="button secondary"><i class="fa fa-exchange" aria-hidden="true"></i>
                 Editable preview</a>
+
               {!! Form::hidden('content') !!}
               {!! $post->content !!}
               @php
@@ -93,9 +109,12 @@
         </div><!-- /#story-content -->
         <div class="row">
           <div class="medium-8 columns">
-            <div class="button-group">
-              {!! Form::submit('Update Post', ['class' => 'button']) !!}
-            </div><!-- /.button-group -->
+            @if(!isset($_GET['truepreview']) || $_GET['truepreview'] != "true")
+              <div class="button-group">
+                {!! Form::hidden('id') !!}
+                {!! Form::submit('Update Post', ['class' => 'button']) !!}
+              </div><!-- /.button-group -->
+            @endif
           </div><!-- /.medium-8 columns -->
           <div class="medium-4 columns">
             <h6 class="subheader text-right">Start Date: {{$post->start_date}}</h6>

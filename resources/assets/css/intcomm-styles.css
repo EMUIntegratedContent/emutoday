@@ -110,6 +110,21 @@ ul.intcomm-nav li a:not(.button) {color: #333;font-size: 1.1rem;font-weight: 400
     text-overflow: clip !important; /* Prevent text from being clipped */
 }
 
+.preview-alert {
+    padding: 10px 20px;
+    margin: 5px 0px;
+}
+
+.preview-alert-success {
+    background: #43AC6A;
+    color: white;
+}
+
+.preview-alert-error {
+    background: #f04124;
+    color: white;
+}
+
 /* Medium screens */
 @media only screen and (min-width: 40.063em) { } /* min-width 641px, medium screens */
 
