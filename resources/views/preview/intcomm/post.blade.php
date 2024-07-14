@@ -1,5 +1,4 @@
-<!-- Preview Story Page -->
-
+<!-- Preview Post Page -->
 @extends('public.layouts.global')
 @section('styles')
   @parent
@@ -46,7 +45,6 @@
                 <img src="{{ $mainImg->image_path }}"
                      alt="{{ $mainImg->alt_text != '' ? $mainImg->alt_text : str_replace('"', "", $post->title) }}">
                 <div class="feature-image-caption">{{ $mainImg->caption }}</div>
-{{--                {{ $mainImg->image_path }}--}}
               </div>
             @endif
             <div id="story-content-edit">
@@ -88,22 +86,20 @@
           <div class="large-3 large-pull-9 medium-3 medium-pull-9 small-12 columns" id="story-sidebar">
             <div class="dots-bottom">
               <div class="addthis"><img src="/assets/imgs/icons/fake-sharethis.png"/></div>
-{{--              <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>--}}
             </div>
             <div class="dots-bottom">
-{{--              <p>--}}
-{{--                Submitted by:<br>--}}
-{{--                {{$story->photo_credit}}--}}
-{{--              </p>--}}
-            </div>
-
-            <div class="dots-bottom">
-{{--              <p>--}}
-{{--                Contact:<br>--}}
-{{--                {{ $story->contact->first_name }} {{ $story->contact->last_name }}<br>--}}
-{{--                <a href="mailto:{{ $story->contact->email }}">{{ $story->contact->email }}</a><br>--}}
-{{--                {{ empty($story->contact->phone) ? '': $story->contact->phone }}--}}
-{{--              </p>--}}
+              <p>
+                Submitted by:<br>
+                @if($idea)
+                  @if($idea->use_other_source && $idea->other_source)
+                    {{$idea->other_source}}
+                  @else
+                    {{$idea->contributor_first}} {{$idea->contributor_last}}
+                  @endif
+                @else
+                  Division of Communications
+                @endif
+              </p>
             </div>
           </div>
         </div><!-- /#story-content -->

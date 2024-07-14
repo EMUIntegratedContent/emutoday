@@ -526,5 +526,6 @@ Route::group(['prefix' => 'intcomm'], function () {
 //  Route::get('/', 'Today\IntcommPostController@index')->name('intcomm_index');
 //  Route::get('/', 'Today\IntcommPostController@index')->name('intcomm_index');
 	Route::resource('/ideas', 'Today\IntcommIdeaController');
+	Route::resource('/posts', 'Today\IntcommPostController');
 	Route::resource('', 'Today\IntcommController');
 });
