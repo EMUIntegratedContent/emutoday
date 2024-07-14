@@ -43,16 +43,16 @@ class IntcommPostController extends ApiController{
 		$fromDate = $request->get('fromDate');
 		$toDate = $request->get('toDate');
 		if($fromDate && $toDate){
-			$posts = $this->post->with('idea')->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate.' 23:59:59')->get();
+			$posts = $this->post->with('idea')->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate.' 23:59:59')->orderBy('start_date', 'desc')->get();
 		}
 		else if($fromDate){
-			$posts = $this->post->with('idea')->where('start_date', '>=', $fromDate)->get();
+			$posts = $this->post->with('idea')->where('start_date', '>=', $fromDate)->orderBy('start_date', 'desc')->get();
 		}
 		else if($toDate){
-			$posts = $this->post->with('idea')->where('end_date', '<=', $toDate)->get();
+			$posts = $this->post->with('idea')->where('end_date', '<=', $toDate)->orderBy('start_date', 'desc')->get();
 		}
 		else{
-			$posts = $this->post->with('idea')->all();
+			$posts = $this->post->with('idea')->orderBy('start_date', 'desc')->get();
 		}
 
 		// Paginate the results
@@ -67,17 +67,6 @@ class IntcommPostController extends ApiController{
 	public function show($postId){
 		$post = $this->post->with('images')->findOrFail($postId);
 		return response()->json(IntcommPostResource::make($post));
-	}
-
-	/**
-	 * Get the specified post
-	 */
-	public function edit(IntcommPost $post){
-//    $fractal = new Manager();
-//    $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
-//
-//    return $this->setStatusCode(200)
-//        ->respondUpdatedWithData('Got email.', $fractal->createData($resource)->toArray());
 	}
 
 	/**

@@ -114,7 +114,11 @@ class IntcommIdeaPublicController extends ApiController{
 
 		$newIdea = new IntcommIdea();
 		$newIdea->fill($data);
-		$newIdea->is_submitted = $saveType == 'draft' ? 0 : 1;
+		if($saveType == 'draft') {
+			$newIdea->submitted_at = null;
+		} else {
+			$newIdea->submitted_at = now();
+		}
 		$newIdea->save();
 
 		$intcommService->handleIdeaImages($newIdea, $idea);
@@ -163,7 +167,11 @@ class IntcommIdeaPublicController extends ApiController{
 		}
 
 		$idea->fill($data);
-		$idea->is_submitted = $saveType == 'draft' ? 0 : 1;
+		if($saveType == 'draft') {
+			$idea->submitted_at = null;
+		} else {
+			$idea->submitted_at = now();
+		}
 		$idea->save();
 
 		$intcommService->handleIdeaImages($idea, $ideaArr);

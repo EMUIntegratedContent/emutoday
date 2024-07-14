@@ -35,7 +35,7 @@
     <v-col cols="12">
       <p><strong>Extra Filters</strong></p>
       <v-btn-toggle
-          v-model="filters"
+          v-model="extraFilters"
           color="warning"
           multiple
           divided
@@ -52,12 +52,12 @@
           Ending Next 24 Hours
         </v-btn>
 
-        <v-btn>
-          Ended Last 24 Hours
-        </v-btn>
+<!--        <v-btn>-->
+<!--          Ended Last 24 Hours-->
+<!--        </v-btn>-->
 
         <v-btn>
-          Pending Approval
+          Progress < 100%
         </v-btn>
 
         <v-btn>
@@ -74,13 +74,24 @@
           </div>
         </v-col>
         <v-col cols="12">
+          <p>
+            <v-chip color="success"></v-chip> = Live Post
+            <v-chip color="warning" class="ml-3"></v-chip> = Live in next 24 hours
+          </p>
           <v-data-table
               :headers="headers"
               :items="filteredPosts"
               :items-per-page="25"
               class="elevation-1"
+              :search="search"
               :loading="loadingPosts"
+              :custom-filter="filterOnlyTitle"
+              v-model:sort-by="sortBy"
+              clearable
           >
+            <template #top>
+              <v-text-field v-model="search" label="Search All Fields" single-line hide-details></v-text-field>
+            </template>
             <template #[`header.seq`]="{ column }">
               {{ column.title }}
               <v-tooltip
@@ -97,20 +108,48 @@
                   </v-btn>
                 </template>
                 <span>
-                  Posts with a ranking greater than 0 will be shown in order of their ranking (1 is the highest ranking).
+                  Posts with a ranking will be shown in order of their ranking.
                   <br>To make a post a ranked post, click on the "Add Ranking" button.
                   <br>To re-order ranked posts or to un-rank a post, click on the "Manage Rankings" button above.
-                  <br>Posts with a ranking of '0' will be ranked in order of their start date.
+                  <br>Unranked posts will be shown in order of their start date after ranked posts.
+                </span>
+              </v-tooltip>
+            </template>
+            <template #[`header.progress`]="{ column }">
+              {{ column.title }}
+              <v-tooltip
+                  location="bottom"
+              >
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                      icon="mdi-information"
+                      color="info"
+                      v-bind="props"
+                      class="ml-3"
+                      size="x-small"
+                  >
+                  </v-btn>
+                </template>
+                <span>
+                  Only a post whose progress is 100% is eligible for publication. A post is considered eligible for publication if it:
+                  <ul>
+                    <li>Has a title</li>
+                    <li>Has a start date</li>
+                    <li>Has content</li>
+                    <li>Has the required image(s)</li>
+                    <li>Has been approved by an editor or administrator</li>
+                  </ul>
+                  Note that this does NOT necessarily mean that the post is live; it must fall within the start and end date to be live.
                 </span>
               </v-tooltip>
             </template>
             <template #[`item`]="{ item }">
               <tr :class="{ 'is-live': item.is_live, 'is-starting-soon': item.starts_soon}">
-                <td>
-                  <v-chip label v-if="item.is_live" class="mr-1">Live <span
-                      v-if="item.ends_soon">&nbsp;(ends soon)</span></v-chip>
-                  <v-chip label v-if="item.starts_soon" class="mr-1">Starts Soon</v-chip>
-                </td>
+<!--                <td>-->
+<!--                  <v-chip label v-if="item.is_live" class="mr-1">Live <span-->
+<!--                      v-if="item.ends_soon">&nbsp;(ends soon)</span></v-chip>-->
+<!--                  <v-chip label v-if="item.starts_soon" class="mr-1">Starts Soon</v-chip>-->
+<!--                </td>-->
                 <td>
                   <a :href="`/admin/intcomm/posts/${item.postId}/edit`">{{ item.title }}</a>
                 </td>
@@ -120,6 +159,9 @@
                 </td>
                 <td>{{ slashdatetime(item.start_date) }}</td>
                 <td>{{ slashdatetime(item.end_date) }}</td>
+                <td>
+                  <v-progress-linear :model-value="item.progress" :color="item.progress === 100 ? 'success' : 'warning'"></v-progress-linear>
+                </td>
                 <IntcommPostRankCol :post="item" @rankAdded="fetchPosts"></IntcommPostRankCol>
               </tr>
             </template>
@@ -162,7 +204,7 @@ export default {
       startDate: null,
       endDate: null,
       isEndDate: false,
-      filters: [], // 'live', 'nextWeek', 'justEnded', 'ranked'
+      extraFilters: [],
       flatpickrConfig: {
         altFormat: "m/d/Y", // format the user sees
         altInput: true,
@@ -170,27 +212,30 @@ export default {
         enableTime: false
       },
       headers: [
-        { title: 'Stage Status', sortable: false },
+        // { title: 'Stage Status', sortable: false },
         { title: 'Title', key: 'title' },
-        { title: 'Admin Status', key: 'admin_status' },
-        { title: 'Start Date', key: 'start_date' },
-        { title: 'End Date', key: 'end_date' },
+        { title: 'Appr Status', key: 'admin_status' },
+        { title: 'Start Dt', key: 'start_date' },
+        { title: 'End Dt', key: 'end_date' },
+        { title: 'Progress', key: 'progress' },
         { title: 'Ranking', key: 'seq' }
       ],
-      loadingPosts: false
+      loadingPosts: false,
+      search: '',
+      sortBy: [{ key: 'start_date', order: 'desc' }],
     }
   },
   computed: {
     ...mapState(['posts']),
 
     filteredPosts () {
-      if (this.filters.length === 0) {
+      if (this.extraFilters.length === 0) {
         return this.posts
       }
 
       let filtered = []
 
-      this.filters.forEach(filter => {
+      this.extraFilters.forEach(filter => {
         switch (filter) {
           case 0: // Live Posts
             filtered = filtered.concat(this.posts.filter(post => post.is_live));
@@ -201,13 +246,13 @@ export default {
           case 2: // Ending Next 24 Hours
             filtered = filtered.concat(this.posts.filter(post => post.ends_soon))
             break
-          case 3: // Ended Last 24 Hours
-            filtered = filtered.concat(this.posts.filter(post => post.ended_recently))
+          // case 3: // Ended Last 24 Hours
+          //   filtered = filtered.concat(this.posts.filter(post => post.ended_recently))
+          //   break
+          case 3: // Progress < 100%
+            filtered = filtered.concat(this.posts.filter(post => post.progress < 100))
             break
-          case 4: // Pending Approval
-            filtered = filtered.concat(this.posts.filter(post => post.admin_status === 'Pending'))
-            break
-          case 5: // Ranked Posts
+          case 4: // Ranked Posts
             filtered = filtered.concat(this.posts.filter(post => post.seq > 0))
             break
         }
@@ -229,6 +274,9 @@ export default {
       else {
         this.isEndDate = true
       }
+    },
+    filterOnlyTitle (value, query, item) {
+      return item.raw.title.toLowerCase().indexOf(query.toLowerCase()) > -1
     },
     async fetchPosts () {
       this.loadingPosts = true

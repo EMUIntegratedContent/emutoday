@@ -26,11 +26,11 @@ class IntcommIdeaResource extends JsonResource
 				'contributor_fullname' => $this->contributor_first . ' ' . $this->contributor_last,
 				'use_other_source' => $this->use_other_source,
 				'other_source' => $this->other_source,
-				'is_submitted' => $this->is_submitted,
 				'admin_status' => $this->admin_status,
 				'archived' => $this->archived,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
+				'submitted_at' => $this->submitted_at,
 				'images' => IntcommIdeasImagesResource::collection($this->images),
 				'associated_posts' => IntcommPostResource::collection($this->posts) // Posts that have the fk intcomm_idea_id = ideaId
 			];

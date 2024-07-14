@@ -31,7 +31,7 @@ class IntcommIdeaAdminController extends ApiController{
 			$ideas = $this->idea
 				->where('created_at', '>=', $fromDate)
 				->where('created_at', '<=', $toDate.' 23:59:59')
-				->where('is_submitted', '=', 1)
+				->whereNotNull('submitted_at')
 				->where('archived', '=', 0)
 				->orderBy('created_at', 'desc')
 				->get();
@@ -39,7 +39,7 @@ class IntcommIdeaAdminController extends ApiController{
 		else if($fromDate){
 			$ideas = $this->idea
 				->where('created_at', '>=', $fromDate)
-				->where('is_submitted', '=', 1)
+				->whereNotNull('submitted_at')
 				->where('archived', '=', 0)
 				->orderBy('created_at', 'desc')
 				->get();
@@ -47,7 +47,7 @@ class IntcommIdeaAdminController extends ApiController{
 		else if($toDate){
 			$ideas = $this->idea
 				->where('created_at', '<=', $toDate)
-				->where('is_submitted', '=', 1)
+				->whereNotNull('submitted_at')
 				->where('archived', '=', 0)
 				->orderBy('created_at', 'desc')
 				->get();
@@ -55,7 +55,7 @@ class IntcommIdeaAdminController extends ApiController{
 		else{
 			$ideas = $this->idea
 				->where('status', '!=', 'Draft')
-				->where('is_submitted', '=', 1)
+				->whereNotNull('submitted_at')
 				->where('archived', '=', 0)
 				->orderBy('created_at', 'desc')
 				->all();

@@ -16,7 +16,7 @@
             </template>
             <template #[`item.title`]="{ item }">
               <a :href="`/intcomm/ideas/${item.ideaId}/edit`">{{ item.title }}</a>
-              <v-chip label v-if="!item.is_submitted" color="warning" class="ml-2 mb-1" size="small">Draft</v-chip>
+              <v-chip label v-if="!item.submitted_at" color="warning" class="ml-2 mb-1" size="small">Draft</v-chip>
             </template>
             <template #[`item.associated_posts`]="{ item }">
               <ul v-if="item.associated_posts.length">

@@ -34,6 +34,24 @@ class IntcommPost extends Model{
 	 * @return bool;
 	 */
 	public function postIsLive(): bool{
+		// End date is optional
+		if($this->end_date) {
+			return $this->postProgress() === 100 && $this->start_date <= now() && $this->end_date >= now();
+		}
+		return $this->postProgress() === 100 && $this->start_date <= now();
+	}
+
+	/**
+	 * Give a percentage representation of post progress. For a post to be 100% complete, it must:
+	 * - Have a title
+	 * - Have content
+	 * - Be approved by an admin
+	 * - Have a start date
+	 * - Have all required images (imagetypes.is_required == 1)
+	 * @return int;
+	 */
+	public function postProgress(): int{
+		$progress = 0;
 		$reqImgs = $this->requiredImageTypes();
 
 		// Make sure that the post has one image for each of the $reqImgs ids
@@ -41,8 +59,14 @@ class IntcommPost extends Model{
 		$hasReqImgs = $reqImgs->every(function($reqImg){
 			return $this->images->contains('imagetype_id', $reqImg->id);
 		});
-		return $this->title != '' && $this->content != '' &&
-			$this->admin_status === 'Approved' && $this->start_date <= now() && $this->end_date >= now() && $hasReqImgs;
+
+		if($this->title != '') $progress += 20;
+		if($this->content != '') $progress += 20;
+		if($this->admin_status === 'Approved') $progress += 20;
+		if($this->start_date != '') $progress += 20;
+		if($hasReqImgs) $progress += 20;
+
+		return $progress;
 	}
 
 	public function postIsApproved(): bool{

@@ -33,13 +33,49 @@
       </form>
       <v-row>
         <v-col cols="12">
+          <p><strong>Extra Filters</strong></p>
+          <v-btn-toggle
+              v-model="extraFilters"
+              color="warning"
+              multiple
+              divided
+          >
+            <v-btn>
+              New
+            </v-btn>
+
+            <v-btn>
+              Viewed
+            </v-btn>
+
+            <v-btn>
+              Considering
+            </v-btn>
+
+            <v-btn>
+              Not Considering
+            </v-btn>
+
+            <v-btn>
+              Done
+            </v-btn>
+          </v-btn-toggle>
+        </v-col>
+        <v-col cols="12">
           <v-data-table
               :headers="headers"
-              :items="ideas"
+              :items="filteredIdeas"
               :items-per-page="25"
               class="elevation-1"
+              :search="search"
               :loading="loadingIdeas"
+              :custom-filter="filterOnlyTitle"
+              v-model:sort-by="sortBy"
+              clearable
           >
+            <template #top>
+              <v-text-field v-model="search" label="Filter Titles" single-line hide-details></v-text-field>
+            </template>
             <template #[`item.created_at`]="{ item }">
               {{ slashdatetime(item.created_at) }}
             </template>
@@ -84,17 +120,49 @@ export default {
         enableTime: false
       },
       headers: [
-        { title: 'Submit Dt', key: 'created_at' },
-        { title: 'Status', key: 'admin_status' },
         { title: 'Title', key: 'title' },
-        { title: 'Contributor', key: 'contributor_fullname' }
+        { title: 'Contributor', key: 'contributor_fullname' },
+        { title: 'Submit Dt', key: 'created_at' },
+        { title: 'Status', key: 'admin_status' }
       ],
       loadingIdeas: false,
-      ideas: []
+      ideas: [],
+      extraFilters: [],
+      search: '',
+      sortBy: [{ key: 'submitted_at', order: 'desc' }],
     }
   },
   computed: {
     ...mapState([]),
+    filteredIdeas () {
+      if (this.extraFilters.length === 0) {
+        return this.ideas
+      }
+
+      let filtered = []
+
+      this.extraFilters.forEach(filter => {
+        switch (filter) {
+          case 0: // New
+            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'New'));
+            break
+          case 1: // Viewed
+            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Viewed'))
+            break
+          case 2: // Considering
+            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Considering'))
+            break
+          case 3: // Not Considering
+            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Not Considering'))
+            break
+          case 4: // Done
+            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Done'))
+            break
+        }
+      })
+      // Return array with duplicates removed by ideaId
+      return Array.from(new Map(filtered.map(idea => [idea.ideaId, idea])).values())
+    },
     totalPages: function () {
       return Math.ceil(this.queueStories.length / this.itemsPerPage)
     }
@@ -102,6 +170,9 @@ export default {
   methods: {
     slashdatetime,
     ...mapMutations([]),
+    filterOnlyTitle (value, query, item) {
+      return item.raw.title.toLowerCase().indexOf(query.toLowerCase()) > -1
+    },
     toggleRange () {
       if (this.isEndDate) {
         this.isEndDate = false

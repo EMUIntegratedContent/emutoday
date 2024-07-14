@@ -2,7 +2,7 @@
   <v-form ref="ideaForm" @submit.prevent="submitPreflight">
     <v-card class="mb-3">
       <v-toolbar title="Submission Information" color="grey-darken-3" density="compact"></v-toolbar>
-      <template v-if="!idea.is_submitted">
+      <template v-if="!idea.submitted_at">
         <v-card-text class="pb-2">
           <v-row>
             <v-col cols="12">
