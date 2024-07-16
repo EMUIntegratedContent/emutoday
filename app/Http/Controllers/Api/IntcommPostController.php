@@ -10,6 +10,7 @@ use Emutoday\User;
 use Illuminate\Http\Request;
 
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as Input;
 use Carbon\Carbon;
 
@@ -30,7 +31,7 @@ class IntcommPostController extends ApiController{
 		$this->validationRules = [
 			'title' => 'required|max:255',
 			'content' => 'required',
-			'submitted_by' => 'required'
+			'created_by' => 'required'
 		];
 	}
 
@@ -93,8 +94,9 @@ class IntcommPostController extends ApiController{
 			'start_date' => $post['start_date'],
 			'end_date' => $post['end_date'],
 			'admin_status' => $post['admin_status'],
-			'seq' => $post['seq'] ?: 0,
-			'submitted_by' => auth()->user(),
+			'seq' => 0,
+			'created_by' => Auth::user()->id,
+			'source' => $post['source'],
 		];
 
 		$validator = Validator::make($data, $this->validationRules);
@@ -137,8 +139,8 @@ class IntcommPostController extends ApiController{
 			'start_date' => $postArr['start_date'],
 			'end_date' => $postArr['end_date'],
 			'admin_status' => $postArr['admin_status'],
-			'seq' => $postArr['seq'] ?: 0,
-			'submitted_by' => $post->submitted_by,
+			'source' => $postArr['source'],
+			'created_by' => $post->created_by
 		];
 
 		$validator = Validator::make($data, $this->validationRules);

@@ -87,15 +87,24 @@ class IntcommIdeaAdminController extends ApiController{
 		$rules = [
 			'title' => 'required|max:255',
 			'content' => 'required',
-			'submitted_by' => 'required',
+			'created_by' => 'required',
 			'intcomm_idea_id' => 'required|exists:intcomm_ideas,id'
 		];
+
+		$source = '';
+		if($idea->use_other_source){
+			$source = $idea->other_source;
+		}
+		else{
+			$source = $idea->contributor_first . ' ' . $idea->contributor_last;
+		}
 
 		$data = [
 			'title' => $idea->title,
 			'teaser' => $idea->teaser,
 			'content' => $idea->content,
-			'submitted_by' => auth()->user(),
+			'created_by' => auth()->user()->id,
+			'source' => $source,
 			'intcomm_idea_id' => $idea->id
 		];
 

@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class IntcommPost extends Model{
 	use HasFactory;
 
-	protected $fillable = ['title', 'teaser', 'content', 'start_date', 'end_date', 'submitted_by', 'admin_status', 'intcomm_idea_id', 'seq'];
+	protected $fillable = ['title', 'teaser', 'content', 'start_date', 'end_date', 'admin_status', 'intcomm_idea_id', 'seq', 'created_by', 'source'];
 	protected $dates = ['start_date', 'end_date', 'created_at', 'updated_at'];
 
 	public function images(){
@@ -95,5 +95,9 @@ class IntcommPost extends Model{
 		$now = Carbon::now();
 		$diff = $now->diffInMinutes($end, false);
 		return $diff >= -24*60 && $diff <= 0;
+	}
+
+	public function postCreator (){
+		return User::select('first_name', 'last_name', 'email')->where('id', $this->created_by)->first();
 	}
 }

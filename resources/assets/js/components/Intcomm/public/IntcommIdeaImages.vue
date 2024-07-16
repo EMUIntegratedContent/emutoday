@@ -1,22 +1,28 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <p class="text-h5">Associated Images</p>
-      <IdeaImgUploader v-if="editMode" @imageUploaded="$emit('imagesUpdated')"></IdeaImgUploader>
-    </v-col>
-  </v-row>
-  <v-row>
-    <v-col cols="12" v-if="ideaImages.length === 0">
-      <p>No associated images with this idea.</p>
-    </v-col>
-    <v-col
-        v-else
-        v-for="(image, i) in ideaImages"
-        :key="`img-${image.id}`"
-        class="d-flex child-flex bg-danger"
-        :cols="colsPerImg"
-    >
-      <IdeaImage :key="`img-dialog-${i}`" :index="i" :editMode="editMode" :mode="mode" @imageUpdated="$emit('imagesUpdated')" @ideaImgCopied="$emit('ideaImgCopied')"></IdeaImage>
+      <v-card>
+        <v-toolbar title="Associated Images" density="compact"></v-toolbar>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12">
+              <IdeaImgUploader v-if="editMode" @imageUploaded="$emit('imagesUpdated')"></IdeaImgUploader>
+            </v-col>
+            <v-col cols="12" v-if="ideaImages.length === 0" class="mt-0 pt-0">
+              <p v-if="ideaImages.length === 0">No associated images with this idea.</p>
+            </v-col>
+            <v-col
+                v-else
+                v-for="(image, i) in ideaImages"
+                :key="`img-${image.id}`"
+                class="d-flex child-flex bg-danger"
+                :cols="colsPerImg"
+            >
+              <IdeaImage :key="`img-dialog-${i}`" :index="i" :editMode="editMode" :mode="mode" @imageUpdated="$emit('imagesUpdated')" @ideaImgCopied="$emit('ideaImgCopied')"></IdeaImage>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
     </v-col>
   </v-row>
 </template>

@@ -122,7 +122,7 @@ export default {
       headers: [
         { title: 'Title', key: 'title' },
         { title: 'Contributor', key: 'contributor_fullname' },
-        { title: 'Submit Dt', key: 'created_at' },
+        { title: 'Submit Dt', key: 'submitted_at' },
         { title: 'Status', key: 'admin_status' }
       ],
       loadingIdeas: false,

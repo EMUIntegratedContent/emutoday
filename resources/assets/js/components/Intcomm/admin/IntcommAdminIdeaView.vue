@@ -11,7 +11,8 @@
                 <v-alert v-if="itemDeleted" class="mb-3" color="error" icon="mdi-delete" density="compact">This idea has
                   been deleted.
                 </v-alert>
-                <v-alert v-if="idea.archived && !itemDeleted" class="mb-3" type="warning" density="compact">This idea has been archived.
+                <v-alert v-if="idea.archived && !itemDeleted" class="mb-3" type="warning" density="compact">This idea
+                  has been archived.
                   It will not show in the ideas list.
                 </v-alert>
                 <v-alert v-if="isErr" class="mb-3" type="error" density="compact">{{ errorMsg }}</v-alert>
@@ -24,7 +25,7 @@
                     label="Admin Status"
                     density="compact"
                     variant="outlined"
-                    hint="For internal use only. This will not be visible to the contributor."
+                    hint="For internal use only. This will not be visible to the contributor. Updates automatically on change."
                     persistent-hint
                     :loading="changingStatus"
                     @update:modelValue="changeAdminStatus"
@@ -32,71 +33,84 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="12" sm="6" md="4" lg="3">
+              <v-col cols="12">
                 <v-card>
-                  <v-list lines="two">
-                    <v-list-item>
-                      <v-list-item-title>Suggested Title</v-list-item-title>
+                  <v-row elevation="2">
+                    <v-col cols="12" sm="6" md="4" lg="3">
+                      <v-card elevation="0">
+                        <v-list lines="two" color="blue">
+                          <v-list-item>
+                            <v-list-item-title>Suggested Title</v-list-item-title>
 
-                      <v-list-item-subtitle>
-                        {{ idea.title }}
-                      </v-list-item-subtitle>
-                    </v-list-item>
+                            <v-list-item-subtitle>
+                              {{ idea.title }}
+                            </v-list-item-subtitle>
+                          </v-list-item>
 
-                    <v-list-item>
-                      <v-list-item-title>Suggested Teaser</v-list-item-title>
+                          <v-list-item>
+                            <v-list-item-title>Suggested Teaser</v-list-item-title>
 
-                      <v-list-item-subtitle>
-                        {{ idea.teaser ? idea.teaser : 'No suggested teaser provided' }}
-                      </v-list-item-subtitle>
-                    </v-list-item>
-                    <v-list-item>
-                      <v-list-item-title>Contributor</v-list-item-title>
+                            <v-list-item-subtitle>
+                              {{ idea.teaser ? idea.teaser : 'No suggested teaser provided' }}
+                            </v-list-item-subtitle>
+                          </v-list-item>
+                          <v-list-item>
+                            <v-list-item-title>Contributor</v-list-item-title>
 
-                      <v-list-item-subtitle>
-                        {{ idea.contributor_fullname + ' (' + idea.contributor_netid + ')' }}
-                      </v-list-item-subtitle>
-                    </v-list-item>
-                    <v-list-item>
-                      <v-list-item-title>Source to Credit</v-list-item-title>
+                            <v-list-item-subtitle>
+                              {{ idea.contributor_fullname + ' (' + idea.contributor_netid + ')' }}
+                            </v-list-item-subtitle>
+                          </v-list-item>
+                          <v-list-item>
+                            <v-list-item-title>Source to Credit</v-list-item-title>
 
-                      <v-list-item-subtitle>
-                        {{ idea.use_other_source && idea.other_source ? idea.other_source : idea.contributor_fullname }}
-                      </v-list-item-subtitle>
-                    </v-list-item>
-                    <v-list-item>
-                      <v-list-item-title>Submission Dt</v-list-item-title>
+                            <v-list-item-subtitle>
+                              {{
+                                idea.use_other_source && idea.other_source ? idea.other_source : idea.contributor_fullname
+                              }}
+                            </v-list-item-subtitle>
+                          </v-list-item>
+                          <v-list-item>
+                            <v-list-item-title>Submission Dt</v-list-item-title>
 
-                      <v-list-item-subtitle>
-                        {{ slashdatetime(idea.created_at) }}
-                      </v-list-item-subtitle>
-                    </v-list-item>
-                    <v-list-item>
-                      <v-list-item-title>Last Updated</v-list-item-title>
+                            <v-list-item-subtitle>
+                              {{ slashdatetime(idea.submitted_at) }}
+                            </v-list-item-subtitle>
+                          </v-list-item>
+                          <v-list-item>
+                            <v-list-item-title>Last Updated</v-list-item-title>
 
-                      <v-list-item-subtitle>
-                        {{ slashdatetime(idea.updated_at) }}
-                      </v-list-item-subtitle>
-                    </v-list-item>
-                  </v-list>
-                </v-card>
-              </v-col>
-              <v-col cols="12" sm="6" md="8" lg="9">
-                <v-card>
-                  <v-card-text>
-                    <span v-html="idea.content"></span>
-                  </v-card-text>
+                            <v-list-item-subtitle>
+                              {{ slashdatetime(idea.updated_at) }}
+                            </v-list-item-subtitle>
+                          </v-list-item>
+                        </v-list>
+                      </v-card>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="8" lg="9">
+                      <v-card-text>
+                        <span v-html="idea.content"></span>
+                      </v-card-text>
+                    </v-col>
+                  </v-row>
                 </v-card>
               </v-col>
             </v-row>
             <IntcommIdeaImages></IntcommIdeaImages>
-            <v-alert v-if="postMade" type="success" density="compact" class="my-2">Idea has been successfully converted into a post. See 'Associated Posts' below.</v-alert>
+            <v-alert v-if="postMade" type="success" density="compact" class="my-2">Idea has been successfully converted
+              into a post. See 'Associated Posts' below.
+            </v-alert>
           </v-card-text>
           <v-card-actions v-if="!itemDeleted">
-            <v-btn v-if="!idea.archived" :loading="makingPost" color="primary" variant="elevated" @click="makePost">Convert to Post</v-btn>
-            <v-btn v-if="!idea.archived" :loading="archivingIdea" variant="outlined" color="warning" @click="archiveIdea">Archive Idea
+            <v-btn v-if="!idea.archived" :loading="makingPost" color="success" variant="elevated" @click="makePost">
+              Convert to Post
             </v-btn>
-            <v-btn v-else :loading="unarchivingIdea" color="warning" variant="elevated" @click="unarchiveIdea">Reinstate Idea</v-btn>
+            <v-btn v-if="!idea.archived" :loading="archivingIdea" variant="outlined" color="warning"
+                   @click="archiveIdea">Archive Idea
+            </v-btn>
+            <v-btn v-else :loading="unarchivingIdea" color="warning" variant="elevated" @click="unarchiveIdea">Reinstate
+              Idea
+            </v-btn>
             <v-btn :loading="deletingIdea" color="error" variant="outlined" @click="deleteIdea">Delete Idea</v-btn>
           </v-card-actions>
         </v-card>
@@ -106,9 +120,9 @@
           <v-toolbar density="compact" color="grey-darken-3" title="Associated Posts"></v-toolbar>
           <v-card-text>
             <v-data-table
-              :headers="assocPostHeaders"
-              :items="idea.associated_posts"
-              :items-per-page="-1"
+                :headers="assocPostHeaders"
+                :items="idea.associated_posts"
+                :items-per-page="-1"
             >
               <template #[`item.created_at`]="{ item }">
                 {{ slashdatetime(item.created_at) }}
@@ -154,7 +168,7 @@ export default {
       assocPostHeaders: [
         { title: 'Created', value: 'created_at' },
         { title: 'Title', value: 'title' },
-        { title: 'Status', value: 'status' }
+        { title: 'Status', value: 'admin_status' }
       ],
       changingStatus: false,
       currentDate: moment(),
@@ -293,7 +307,8 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.v-card-text {
-  font-size: 1.2rem;
+.v-list {
+  background-color: #0a568c;
+  color: white;
 }
 </style>

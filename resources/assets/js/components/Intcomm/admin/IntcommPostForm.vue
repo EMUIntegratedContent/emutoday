@@ -39,7 +39,6 @@
                               <li v-if="!post.title">Title is missing.</li>
                               <li v-if="!post.content">Post content is missing.</li>
                               <li v-if="!post.start_date">Start date is missing.</li>
-                              <li v-if="!post.end_date">End date is missing.</li>
                               <li v-if="!postHasRequiredImages">At least one required image is missing.</li>
                               <li v-if="post.admin_status !== 'Approved'">An administrator has not approved this post.</li>
                             </ul>
@@ -100,7 +99,7 @@
                 <v-row>
                   <v-col cols="12" md="6" lg="4">
                     <v-sheet color="grey-lighten-4" class="py-3 px-5">
-                      <label>Start Date/Time<br>
+                      <label>Start Date/Time <span class="text-error">*</span><br>
                         <flatpickr
                             v-model="post.start_date"
                             id="startDatePicker"
@@ -156,36 +155,73 @@
       </v-form>
     </v-col>
   </v-row>
-  <v-row>
+  <v-row v-if="post.associated_idea">
     <v-col cols="12">
-      <v-card v-if="post.associated_idea">
+      <v-card>
         <v-toolbar density="compact" color="grey-darken-3" title="Associated Idea"></v-toolbar>
         <v-card-text>
-          <v-alert class="mb-3" color="info" density="compact">Contributed by {{
-              post.associated_idea.contributor_first + ' ' + post.associated_idea.contributor_last + ' (' + post.associated_idea.contributor_netid + ') '
-            }} on
-            {{ slashdatetime(post.associated_idea.created_at) }}
-          </v-alert>
-          <p>
-            <strong>Suggested Title</strong>
-            <br>{{ post.associated_idea.title }}
-          </p>
-          <p>
-            <strong>Suggested Teaser</strong>
-            <br>{{ post.associated_idea.teaser }}
-          </p>
-          <div class="mb-3">
-            <strong>Suggested Content</strong>
-            <br>
-            <span v-html="post.associated_idea.content"></span>
-          </div>
+          <v-card class="mb-3">
+            <v-row elevation="2">
+              <v-col cols="12" sm="6" md="4" lg="3">
+                <v-card elevation="0">
+                  <v-list lines="two" color="blue">
+                    <v-list-item>
+                      <v-list-item-title>Suggested Title</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{ post.associated_idea.title }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+
+                    <v-list-item>
+                      <v-list-item-title>Suggested Teaser</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{ post.associated_idea.teaser ? post.associated_idea.teaser : 'No suggested teaser provided' }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-title>Contributor</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{ post.associated_idea.contributor_fullname + ' (' + post.associated_idea.contributor_netid + ')' }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-title>Source to Credit</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{
+                          post.associated_idea.use_other_source && post.associated_idea.other_source ? post.associated_idea.other_source : post.associated_idea.contributor_fullname
+                        }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-title>Submission Dt</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{ slashdatetime(post.associated_idea.submitted_at) }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-title>Last Updated</v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        {{ slashdatetime(post.associated_idea.updated_at) }}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                  </v-list>
+                </v-card>
+              </v-col>
+              <v-col cols="12" sm="6" md="8" lg="9">
+                <v-card-text>
+                  <span v-html="post.associated_idea.content"></span>
+                </v-card-text>
+              </v-col>
+            </v-row>
+          </v-card>
           <IntcommIdeaImages mode="post" :cols-per-img="6" @ideaImgCopied="formModified = true"></IntcommIdeaImages>
         </v-card-text>
-        <v-card-actions>
-          <v-btn color="primary" variant="elevated" :href="`/admin/intcomm/ideas/${post.associated_idea.id}`">Go to
-            idea
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-col>
   </v-row>
@@ -258,7 +294,7 @@ export default {
     ...mapGetters(['intcommSmallImgID', 'intcommStoryImgID', 'intcommEmailImgID', 'postRequiredImageIDs', 'postHasRequiredImages']),
     // Determine if the post is eligible to be live. This does NOT check if the post is currently live. That is determined by post.is_live.
     isPostLiveEligible () {
-      return this.post.admin_status === 'Approved' && this.postHasRequiredImages && this.post.title && this.post.content && this.post.start_date && this.post.end_date
+      return this.post.admin_status === 'Approved' && this.postHasRequiredImages && this.post.title && this.post.content && this.post.start_date
     },
     // Extract the post ID from the URL (will be the second to last part)
     // e.g. https://today.emich.edu/admin/intcomm/posts/54/edit
@@ -394,6 +430,9 @@ export default {
   },
 }
 </script>
-<style scoped>
-
+<style scoped lang="scss">
+.v-list {
+  background-color: #0a568c;
+  color: white;
+}
 </style>

@@ -25,6 +25,8 @@ class IntcommPostResource extends JsonResource
 				'submitted_by' => $this->submitted_by,
 				'admin_status' => $this->admin_status,
 				'seq' => $this->seq,
+				'source' => $this->source,
+				'created_by' => $this->postCreator(),
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
 				'is_live' => $this->postIsLive(), // In the model, this method checks if the post is live based on several criteria
