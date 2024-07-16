@@ -10,6 +10,7 @@
         </div>
         <div class="row">
           <div class="small-12 columns search-container">
+            {{ $posts }}
             ALL LIVE POSTS SHOULD SHOW HERE.
           </div>
         </div>
