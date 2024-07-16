@@ -3,6 +3,7 @@
 namespace Emutoday\Http\Controllers\Today;
 
 use Emutoday\Http\Controllers\Controller;
+use Emutoday\Http\Resources\IntcommPostResource;
 use Emutoday\IntcommPost;
 use Illuminate\Support\Facades\View;
 use Emutoday\Imagetype;
@@ -27,6 +28,7 @@ class IntcommController extends Controller{
 			->where('group', 'intcommpost')
 			->pluck('id')
 			->toArray();
+		// TODO rank by seq then by date
 
 		$posts = $this->post->whereNotNull('title')
 			->whereNotNull('content')
@@ -39,8 +41,14 @@ class IntcommController extends Controller{
 			->whereHas('images', function ($query) use ($requiredImageTypeIds) {
 				$query->whereIn('imagetype_id', $requiredImageTypeIds);
 			})
-			->with('images')
+			->with(['images' => function ($query) use ($requiredImageTypeIds) {
+				// Only retrieve the required images for each post (in this case, the 'small' image)
+				$query->whereIn('imagetype_id', $requiredImageTypeIds);
+			}])
+			->orderByRaw('CASE WHEN seq >= 1 THEN 0 ELSE 1 END, seq ASC')
+			->orderByRaw('CASE WHEN seq = 0 THEN start_date END DESC')
 			->get();
+
 		return view('public.intcomm.index', compact('posts'));
 	}
 }
