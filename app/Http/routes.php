@@ -495,9 +495,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   Route::resource('emu175', 'Admin\EMU175Controller');
 
 	// Intcomm Posts
-	Route::get('intcomm', 'Admin\IntcommController@dashboard')->name('admin_intcomm_dashboard');
-	Route::resource('intcomm/ideas', 'Admin\IntcommIdeaController');
-	Route::resource('intcomm/posts', 'Admin\IntcommPostController');
+	Route::group(['middleware' => ['intcomm']], function () {
+		Route::resource('intcomm/ideas', 'Admin\IntcommIdeaController');
+		Route::resource('intcomm/posts', 'Admin\IntcommPostController');
+	});
 
   Route::get('story/queueall', 'Admin\StoryTypeController@queueAll')->name('admin_story_queue');
   Route::get('magazine/article/queuearticle', 'Admin\StoryTypeController@queueArticle')->name('admin_magazine_article_queue');

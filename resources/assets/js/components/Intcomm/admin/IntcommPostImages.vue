@@ -7,7 +7,7 @@
       <template v-else>
         <IntcommPostImage :imgtype_id="intcommSmallImgID" @imageUpdated="$emit('imageUpdated')"></IntcommPostImage>
       </template>
-      <v-btn v-if="!postHasStoryImage" block class="my-2" color="primary" variant="outlined" @click="handleCreateImage('story')">Add Story Image</v-btn>
+      <v-btn v-if="!postHasHeadlineImage" block class="my-2" color="primary" variant="outlined" @click="handleCreateImage('story')">Add Headline Image</v-btn>
       <template v-else>
         <IntcommPostImage :imgtype_id="intcommStoryImgID" @imageUpdated="$emit('imageUpdated')"></IntcommPostImage>
       </template>
@@ -50,7 +50,7 @@ export default {
     postHasSmallImage () {
       return this.post.images.some(img => img.imagetype_id === this.intcommSmallImgID)
     },
-    postHasStoryImage () {
+    postHasHeadlineImage () {
       return this.post.images.some(img => img.imagetype_id === this.intcommStoryImgID)
     }
   },

@@ -90,13 +90,10 @@
 </ul>
 </li>
 @endcan
-@can('admin', $currentUser)
+@if(Gate::check('admin_super') || Gate::check('admin') || Gate::check('editor_super') || Gate::check('editor') || Gate::check('contributor_2') || Gate::check('contributor_1'))
   <li class="treeview {{ set_active('admin/intcomm*') }}">
     <a href="#"><i class="fa fa-lightbulb-o"></i> <span>Intcomm</span></a>
     <ul class="treeview-menu">
-      <li class="{{ set_active('admin/intcomm') }}"><a href="/admin/intcomm"><i class="fa fa-list"></i> <span>Dashboard</span></a></li>
-
-
     <li><a href="#"><i class="fa fa-circle-o"></i>Posts <span class="pull-right-container">
     <i class="fa fa-angle-left pull-right"></i>
     </span></a>
@@ -108,7 +105,7 @@
       <li class="{{ set_active('admin/intcomm/ideas*') }}"><a href="/admin/intcomm/ideas"><i class="fa fa-lightbulb-o"></i> <span>Public Submissions</span></a></li>
     </ul>
   </li>
-@endcan
+@endif
 @can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/page*') }}">
   <a href="#"><i class="fa fa-sitemap"></i> <span>Hub</span></a>

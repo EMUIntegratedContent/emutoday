@@ -80,17 +80,26 @@ class IntcommService
 
 	public function handlePostImages(IntcommPost $post, array $postArr)
 	{
-		// Remove any images that are no longer associated with the post
-		// TODO also remove any files that don't match any of the image paths/names
+		$destinationFolder = '/imgs/intcomm_posts/'.$post->id.'/';
+
 		$images = $post->images;
 		foreach($images as $image){
 			$found = false;
+			// Check if each $postArr['images'] id matches an image id
+			// $postArr['images'] is the array of images from the request (corresponding to intcomm_post_images records)
 			foreach($postArr['images'] as $newImage){
 				if($image->id == $newImage['id']){
-					$found = true;
+					// If the image's name or path has changed, update it in the filesystem
+					$oldFilePath = public_path() . $image->image_path;
+					$newFilePath = public_path() . $destinationFolder . $newImage['image_name'];
+					if(file_exists($oldFilePath) && $oldFilePath != $newFilePath){
+						rename($oldFilePath, $newFilePath);
+					}
+					$found = true; // Flag that the image was found
 					break;
 				}
 			}
+			// Remove any images that are no longer associated with the post
 			if(!$found){
 				$image->delete();
 				// Also remove the file from the server
@@ -102,7 +111,6 @@ class IntcommService
 		}
 
 		// Handle any attached images files from the request (these will be new images)
-		$destinationFolder = '/imgs/intcomm_posts/posts/'.$post->id.'/';
 		if (!empty(Input::file('images'))){
 			$count = 0;
 			$imgNames = Input::get('imageNames');

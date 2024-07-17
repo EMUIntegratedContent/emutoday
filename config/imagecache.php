@@ -33,6 +33,7 @@ return array(
                 public_path('imgs/event'),
                 public_path('imgs/placeholder'),
                 public_path('imgs/expert'),
+								public_path('imgs/intcomm_posts'),
     ),
     /*
     |--------------------------------------------------------------------------

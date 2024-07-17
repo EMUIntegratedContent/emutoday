@@ -51,10 +51,12 @@
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-select
-                        v-if="userIsApprover"
                         v-model="post.admin_status"
                         :items="['Pending', 'Approved', 'Denied']"
-                        label="Admin Approval Status"
+                        label="Post Approval Status"
+                        :readonly="!userIsApprover"
+                        :hint="!userIsApprover ? 'You do not have permission to set approval status.' : ''"
+                        :persistent-hint="!userIsApprover"
                         @update:modelValue="formModified = true"
                     >
                     </v-select>
@@ -307,7 +309,7 @@ export default {
     },
     userIsApprover () {
       if(!this.userRoles) return false
-      return this.userRoles.find(role => role.name.includes('admin') || role.name.includes('editor'))
+      return this.userRoles.find(role => role.name.includes('admin') || role.name.includes('editor') || role.name.includes('contributor_2'))
     }
   },
   methods: {

@@ -87,13 +87,21 @@ class IntcommPostController extends ApiController{
 			}
 		}
 
+		// Non-admins creating posts need to have the post approved by an admin
+		$user = auth()->user();
+		if ($user->canApproveIntcommPosts()) {
+			$adminStatus = $post['admin_status'];
+		} else {
+			$adminStatus = 'Pending';
+		}
+
 		$data = [
 			'title' => $post['title'],
 			'teaser' => $post['teaser'],
 			'content' => $post['content'],
 			'start_date' => $post['start_date'],
 			'end_date' => $post['end_date'],
-			'admin_status' => $post['admin_status'],
+			'admin_status' => $adminStatus,
 			'seq' => 0,
 			'created_by' => Auth::user()->id,
 			'source' => $post['source'],
@@ -132,13 +140,21 @@ class IntcommPostController extends ApiController{
 			return response()->json(['error' => 'Post not found.'], 404);
 		}
 
+		// People without intcomm making changes need to have the post re-approved
+		$user = auth()->user();
+		if ($user->canApproveIntcommPosts()) {
+			$adminStatus = $postArr['admin_status'];
+		} else {
+			$adminStatus = 'Pending';
+		}
+
 		$data = [
 			'title' => $postArr['title'],
 			'teaser' => $postArr['teaser'],
 			'content' => $postArr['content'],
 			'start_date' => $postArr['start_date'],
 			'end_date' => $postArr['end_date'],
-			'admin_status' => $postArr['admin_status'],
+			'admin_status' => $adminStatus,
 			'source' => $postArr['source'],
 			'created_by' => $post->created_by
 		];
