@@ -2,7 +2,6 @@
   <v-card>
     <v-toolbar density="compact" color="grey-darken-1" title="Images"></v-toolbar>
     <v-card-text>
-<!--      {{ postImageTypes }}-->
       <v-btn v-if="!postHasSmallImage" block class="my-2" color="error darken-3" @click="handleCreateImage('small')">Add Small Image (required)</v-btn>
       <template v-else>
         <IntcommPostImage :imgtype_id="intcommSmallImgID" @imageUpdated="$emit('imageUpdated')"></IntcommPostImage>

@@ -5,6 +5,11 @@
       <!--      <pre>{{ JSON.stringify(img, null, 2) }}</pre>-->
       <v-row>
         <v-col cols="12" md="6">
+          <p>
+            <span v-if="imgType === 'small'">Recommended image size is <mark>412px x 248px</mark></span>
+            <span v-if="imgType === 'story'">Recommended image size is <mark>960px x 500px</mark></span>
+            <span v-if="imgType === 'email'">Recommended image size is <mark>600px x 282px</mark></span>
+          </p>
           <v-file-input
               v-model="fileInputImg"
               accept="image/*"
@@ -47,9 +52,12 @@
           <v-text-field
               v-model="img.caption"
               density="compact"
-              label="Caption"
+              :rules="[v => (!!v || imgType !== 'small') || 'Caption is required']"
               @update:modelValue="$emit('imageUpdated')"
           >
+            <template #label>
+              Caption <span v-if="imgType === 'small'" class="text-error">*</span>
+            </template>
           </v-text-field>
         </v-col>
         <template v-if="imgType === 'small' || imgType === 'email'">
@@ -57,11 +65,12 @@
             <v-text-field
                 v-model="img.moretext"
                 density="compact"
-                label="More Text Link"
-                persistent-hint
-                hint="Text used to link to full post"
+                :rules="[v => (!!v || imgType !== 'small') || 'More text link is required']"
                 @update:modelValue="$emit('imageUpdated')"
             >
+              <template #label>
+                Story Link Text <span class="text-error" v-if="imgType === 'small'">*</span>
+              </template>
             </v-text-field>
           </v-col>
         </template>
@@ -196,6 +205,29 @@ export default {
     ...mapMutations(['setPostImageTypes', 'setPost', 'setPostProp', 'removePostImgById']),
     ...mapActions(['createPostImageRecord', 'updatePostImageRecord']),
     handleAddImage (file) {
+      const smallMinW = 412
+      const smallMinH = 248
+      const storyMinW = 50
+      const storyMinH = 100
+      const emailMinW = 225
+      const emailMinH = 225
+
+      let minW = 0
+      let minH = 0
+      if(this.imgType === 'small') {
+        minW = smallMinW
+        minH = smallMinH
+      } else if (this.imgType === 'story') {
+        minW = storyMinW
+        minH = storyMinH
+      } else if (this.imgType === 'email') {
+        minW = emailMinW
+        minH = emailMinH
+      } else {
+        alert("Invalid image type. Quitting.")
+        return
+      }
+
       // Check that file size is > 2 MB and at least 412px by 248px
       if (file.size > 2000000) {
         alert(`The file ${file.name} is too large. Please upload a file that is less than 2 MB. Skipping this file.`)
@@ -208,8 +240,8 @@ export default {
       const img = new Image();
       img.src = imageUrl;
       img.onload = () => { // Wait for the image to load before checking the dimensions
-        if (img.width < 412 || img.height < 248) {
-          alert(`The file ${file.name} is too small (${img.width}px by ${img.height}px). Please upload a file that is at least 412px by 248px.`)
+        if (img.width < minW || img.height < minH) {
+          alert(`The file ${file.name} is too small (${img.width}px by ${img.height}px). Please upload a file that is at least ${minW}px by ${minH}px.`)
           this.fileInputImg = null
         }
         else {

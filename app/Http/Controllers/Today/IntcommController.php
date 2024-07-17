@@ -28,8 +28,8 @@ class IntcommController extends Controller{
 			->where('group', 'intcommpost')
 			->pluck('id')
 			->toArray();
-		// TODO rank by seq then by date
 
+		// Posts are ordered by seq then by date
 		$posts = $this->post->whereNotNull('title')
 			->whereNotNull('content')
 			->where('admin_status', 'Approved')

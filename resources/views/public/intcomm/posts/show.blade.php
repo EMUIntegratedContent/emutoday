@@ -41,7 +41,7 @@
           <div id="title-grouping" class="row">
             <div class="small-12 columns">
               <h2>{{ $post->title }}</h2>
-              <h3>{{ $post->subtitle }}</h3>
+              <h3>{{ $post->teaser }}</h3>
             </div>
           </div>
           <!-- Post Page Content -->
@@ -66,13 +66,9 @@
 {{--              </div>--}}
               <div class="dots-bottom">
                 <p>
-                  Submitted by:<br>
-                  @if($idea)
-                    @if($idea->use_other_source && $idea->other_source)
-                      {{$idea->other_source}}
-                    @else
-                      {{$idea->contributor_first}} {{$idea->contributor_last}}
-                    @endif
+                  Contributed by:<br>
+                  @if($post->source)
+                    {{$post->source}}
                   @else
                     Division of Communications
                   @endif
