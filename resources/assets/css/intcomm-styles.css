@@ -180,6 +180,10 @@ ul.intcomm-nav li a:not(.button) {
   margin-bottom: 1.3rem
 }
 
+#intcomm-hub-container .caption-link {
+  color:white;
+}
+
 /* Medium screens */
 @media only screen and (min-width: 40.063em) {
 }
