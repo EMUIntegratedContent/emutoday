@@ -212,7 +212,7 @@ class MainController extends Controller
 		// Intcomm Hub Post (with small image)
 		$intcomm = $this->intcommPost->where('is_hub_post', 1)->with(['images' => function ($query) {
 			// Only retrieve the required images for each post (in this case, the 'small' image)
-			$query->where('imagetype_id', 27);
+			$query->where('imagetype_id', 28);
 		}])->first();
 
     JavaScript::put([

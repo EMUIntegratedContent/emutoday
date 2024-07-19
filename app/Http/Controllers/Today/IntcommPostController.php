@@ -38,7 +38,7 @@ class IntcommPostController extends Controller
 			}
 
 			$idea = $post->idea;
-			$mainImg = $post->images()->where('imagetype_id', 28)->first();
+			$mainImg = $post->images()->where('imagetype_id', 29)->first();
 			return view('public.intcomm.posts.show', compact('post', 'mainImg', 'idea'));
     }
 }

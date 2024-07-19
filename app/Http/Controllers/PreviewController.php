@@ -269,7 +269,7 @@ class PreviewController extends Controller{
 	public function intcommpost($postId){
 		$post = $this->intcommPost->findOrFail($postId);
 		$idea = $post->idea;
-		$mainImg = $post->images()->where('imagetype_id', 28)->first();
+		$mainImg = $post->images()->where('imagetype_id', 29)->first();
 		return view('preview.intcomm.post', compact('post', 'mainImg', 'idea'));
 	}
 }
