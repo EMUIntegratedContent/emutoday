@@ -9,7 +9,7 @@ use Emutoday\Http\Resources\IntcommPostsImagesResource;
 class IntcommPostPublicResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * Transform the resource into an array with limited information.
 		 * This should be used when sending the post data in public views (e.g. the user's idea list)
      *
      * @return array<string, mixed>

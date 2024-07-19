@@ -7,11 +7,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class IntcommIdeaPublicResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
+	/**
+	 * Transform the resource into an array with limited information.
+	 * This should be used when sending the post data in public views (e.g. the user's idea list)
+	 *
+	 * @return array<string, mixed>
+	 */
     public function toArray(Request $request): array
 		{
 			return [
