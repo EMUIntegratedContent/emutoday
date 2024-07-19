@@ -52,10 +52,6 @@
           Ending Next 24 Hours
         </v-btn>
 
-<!--        <v-btn>-->
-<!--          Ended Last 24 Hours-->
-<!--        </v-btn>-->
-
         <v-btn>
           Progress < 100%
         </v-btn>
@@ -77,6 +73,7 @@
           <p>
             <v-chip color="success"></v-chip> = Live Post
             <v-chip color="warning" class="ml-3"></v-chip> = Live in next 24 hours
+            <v-icon color="yellow-darken-3" class="ml-3" size="large">mdi-star</v-icon> = EMU Today Hub Post
           </p>
           <v-data-table
               :headers="headers"
@@ -145,13 +142,12 @@
             </template>
             <template #[`item`]="{ item }">
               <tr :class="{ 'is-live': item.is_live, 'is-starting-soon': item.starts_soon}">
-<!--                <td>-->
-<!--                  <v-chip label v-if="item.is_live" class="mr-1">Live <span-->
-<!--                      v-if="item.ends_soon">&nbsp;(ends soon)</span></v-chip>-->
-<!--                  <v-chip label v-if="item.starts_soon" class="mr-1">Starts Soon</v-chip>-->
-<!--                </td>-->
+                <td>
+                  <HubPostStarBtn :post="item" @madeHubPost="fetchPosts"></HubPostStarBtn>
+                </td>
                 <td>
                   <a :href="`/admin/intcomm/posts/${item.postId}/edit`">{{ item.title }}</a>
+                  <v-progress-linear :model-value="item.progress" :color="item.progress === 100 ? 'success' : 'warning'"></v-progress-linear>
                 </td>
                 <td>
                   <mark v-if="item.admin_status === 'Pending'">{{ item.admin_status }}</mark>
@@ -159,9 +155,6 @@
                 </td>
                 <td>{{ slashdatetime(item.start_date) }}</td>
                 <td>{{ slashdatetime(item.end_date) }}</td>
-                <td>
-                  <v-progress-linear :model-value="item.progress" :color="item.progress === 100 ? 'success' : 'warning'"></v-progress-linear>
-                </td>
                 <IntcommPostRankCol :post="item" @rankAdded="fetchPosts"></IntcommPostRankCol>
               </tr>
             </template>
@@ -184,10 +177,12 @@ import { slashdatetime } from '../../filters'
 import { mapMutations, mapState } from "vuex"
 import IntcommPostRankCol from './IntcommPostRankCol.vue'
 import ManageRankingsDialog from './dialogs/ManageRankingsDialog.vue'
+import HubPostStarBtn from './HubPostStarBtn.vue'
 
 export default {
   mixins: [],
   components: {
+    HubPostStarBtn,
     ManageRankingsDialog,
     IntcommPostRankCol,
     flatpickr,
@@ -213,11 +208,11 @@ export default {
       },
       headers: [
         // { title: 'Stage Status', sortable: false },
+        { title: 'Hub Post', key: 'is_hub_post' },
         { title: 'Title', key: 'title' },
         { title: 'Appr Status', key: 'admin_status' },
         { title: 'Start Dt', key: 'start_date' },
         { title: 'End Dt', key: 'end_date' },
-        { title: 'Progress', key: 'progress' },
         { title: 'Ranking', key: 'seq' }
       ],
       loadingPosts: false,

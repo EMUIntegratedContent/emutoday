@@ -91,8 +91,10 @@ class IntcommPostController extends ApiController{
 		$user = auth()->user();
 		if ($user->canApproveIntcommPosts()) {
 			$adminStatus = $post['admin_status'];
+			$isHubPost = $adminStatus === 'Approved' ? $post['is_hub_post'] : 0;
 		} else {
 			$adminStatus = 'Pending';
+			$isHubPost = 0;
 		}
 
 		$data = [
@@ -103,6 +105,7 @@ class IntcommPostController extends ApiController{
 			'end_date' => $post['end_date'],
 			'admin_status' => $adminStatus,
 			'seq' => 0,
+			'is_hub_post' => $isHubPost,
 			'created_by' => Auth::user()->id,
 			'source' => $post['source'],
 		];
@@ -144,8 +147,10 @@ class IntcommPostController extends ApiController{
 		$user = auth()->user();
 		if ($user->canApproveIntcommPosts()) {
 			$adminStatus = $postArr['admin_status'];
+			$isHubPost = $adminStatus === 'Approved' ? $postArr['is_hub_post'] : 0;
 		} else {
 			$adminStatus = 'Pending';
+			$isHubPost = 0;
 		}
 
 		$data = [
@@ -156,6 +161,7 @@ class IntcommPostController extends ApiController{
 			'end_date' => $postArr['end_date'],
 			'admin_status' => $adminStatus,
 			'source' => $postArr['source'],
+			'is_hub_post' => $isHubPost,
 			'created_by' => $post->created_by
 		];
 
@@ -224,6 +230,33 @@ class IntcommPostController extends ApiController{
 		}
 
 		return response()->json(['success' => 'Posts updated.']);
+	}
+
+	/**
+	 * Make this post the hub post and remove the hub status from all other posts
+	 * @param Request $request
+	 * @param $postId
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function makeHubPost(Request $request, $postId){
+		$post = $this->post->findOrFail($postId);
+		if(!$post){
+			return response()->json(['error' => 'Post not found.'], 404);
+		}
+
+		// Remove hub status from all other posts
+		$posts = $this->post->where('is_hub_post', 1)->get();
+		foreach($posts as $post){
+			$post->is_hub_post = 0;
+			$post->save();
+		}
+
+		$post = $this->post->findOrFail($postId);
+		// Set this post as the hub post
+		$post->is_hub_post = 1;
+		$post->save();
+
+		return response()->json(IntcommPostResource::make($post));
 	}
 
 	/**

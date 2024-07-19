@@ -1,6 +1,19 @@
 <template>
   <v-form ref="ideaForm" @submit.prevent="submitPreflight">
     <v-card class="mb-3">
+      <v-card-text>
+        <p><strong>Submission Guidelines</strong></p>
+        <ul>
+          <li>Ideas must involve an official EMU unit or have a direct connection to the University.</li>
+          <li>Entries must be received by <mark>Tuesday at noon</mark> in order to be considered for inclusion in <span style="font-style: italic">The Week at EMU</span> email, which comes out on Wednesday.</li>
+          <li>Keep all entries concise (500 words maximum).</li>
+          <li>Include a descriptive headline; date, time, and place; a brief description of the event, award, or story; any deadlines or RSVP dates; and a contact name and email address.</li>
+          <li>Do not include job openings or solicitations or fundraising requests.</li>
+          <li>All content is intended for EMU employees. The final decision to publish your submission is at the discretion of the editor.</li>
+        </ul>
+      </v-card-text>
+    </v-card>
+    <v-card class="mb-3">
       <v-toolbar title="Submission Information" color="grey-darken-3" density="compact"></v-toolbar>
       <template v-if="!idea.submitted_at">
         <v-card-text class="pb-2">
@@ -16,24 +29,24 @@
                   v-model="idea.title"
                   variant="outlined"
                   density="compact"
-                  :rules="[v => !!v || 'Title is required']"
+                  :rules="[v => !!v || 'Headline is required']"
                   @update:modelValue="formModified = true"
               >
                 <template #label>
-                  Title <span class="text-error">*</span>
+                  Headline <span class="text-error">*</span>
                 </template>
               </v-text-field>
             </v-col>
-            <v-col cols="12">
-              <v-text-field
-                  v-model="idea.teaser"
-                  variant="outlined"
-                  density="compact"
-                  label="Teaser"
-                  @update:modelValue="formModified = true"
-              >
-              </v-text-field>
-            </v-col>
+<!--            <v-col cols="12">-->
+<!--              <v-text-field-->
+<!--                  v-model="idea.teaser"-->
+<!--                  variant="outlined"-->
+<!--                  density="compact"-->
+<!--                  label="Teaser"-->
+<!--                  @update:modelValue="formModified = true"-->
+<!--              >-->
+<!--              </v-text-field>-->
+<!--            </v-col>-->
             <v-col cols="12">
               <v-textarea
                     v-model="idea.content"

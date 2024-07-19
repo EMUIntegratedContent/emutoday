@@ -20,7 +20,10 @@
             </template>
             <template #[`item.associated_posts`]="{ item }">
               <ul v-if="item.associated_posts.length">
-                <li v-for="(ap, i) in item.associated_posts" :key="`ap-${i}`">
+                <li
+                    v-for="(ap, i) in livePosts(item.associated_posts)"
+                    :key="`ap-${i}`"
+                >
                   <a :href="`/intcomm/posts/${ap.postId}`">{{ ap.title }}</a>
                 </li>
               </ul>
@@ -125,6 +128,10 @@ export default {
       .catch((e) => {
         console.log(e)
       })
+    },
+    // Filter all of the posts that were sent from the server and pick out only those that are live.
+    livePosts (posts) {
+      return posts.filter(p => p.is_live)
     }
   }
 }

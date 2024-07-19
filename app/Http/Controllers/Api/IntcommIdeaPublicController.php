@@ -2,6 +2,7 @@
 
 namespace Emutoday\Http\Controllers\Api;
 
+use Emutoday\Http\Resources\IntcommIdeaPublicResource;
 use Emutoday\Http\Resources\IntcommIdeaResource;
 use Emutoday\IntcommIdea;
 use Emutoday\IntcommIdeasImages;
@@ -51,7 +52,7 @@ class IntcommIdeaPublicController extends ApiController{
 
 		$ideas = $this->idea->where('contributor_netid', $netid)->orderBy('created_at', 'desc')->get();
 
-		return response()->json(IntcommIdeaResource::collection($ideas));
+		return response()->json(IntcommIdeaPublicResource::collection($ideas));
 	}
 
 	/**

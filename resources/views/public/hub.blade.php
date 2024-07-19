@@ -271,17 +271,41 @@
         <div class="card small-12 medium-7 large-7 columns" data-equalizer-watch>
         @endif
           <div class="card-section" id="intcomm-hub-container" data-equalizer-watch>
+            @if($topAnnouncement)
+            <div>
+                <h4><a class="bold-green-link" title="INTCOMM (CHANGE)"
+                       href="{{ url('/intcomm') }}">INTCOMM (CHANGE)</a></h4>
+              @if($intcomm)
+                <img src="/imagecache/original/{{$intcomm->id}}/{{$intcomm->images[0]->image_name}}"
+                     alt="{{ $intcomm->images[0]->alt_text != '' ? $intcomm->images[0]->alt_text : str_replace('"', "", $intcomm->images[0]->caption) }}">
+              @endif
+              @if($intcomm)
+              <p style="margin-top: 0.8rem">{{ $intcomm->images[0]->caption }}</p>
+              @endif
+              <p style="font-weight: lighter; margin-bottom: 1.1rem">Go to our INTCOMM (CHANGE) page to find other user-submitted stories produced by staff and faculty across the University.</p>
+              <a class="round-white-btn" title="Link to INTCOMM (CHANGE) posts."
+                 href="{{ url('/intcomm') }}">Read More Stories</a>
+            </div>
+            @else
             <div style="display: flex; align-items: flex-start;">
               <div style="flex: 1; padding-right: .5rem">
-                <h4 style="margin-bottom: 1.3rem"><a class="bold-green-link" title="INTCOMM (CHANGE)"
-                       href="{{ url('/intcomm') }}">INTCOMM (CHANGE)</a></h4>
-                <p>Small image description of the post selected as "Hub Post" goes here</p>
+                <h4><a class="bold-green-link" title="INTCOMM (CHANGE)"
+                                                     href="{{ url('/intcomm') }}">INTCOMM (CHANGE)</a></h4>
+                @if($intcomm)
+                  <p>{{ $intcomm->images[0]->caption }}</p>
+                @endif
                 <p style="font-weight: lighter">Go to our INTCOMM (CHANGE) page to find other user-submitted stories produced by staff and faculty across the University.</p>
+                <div style="display: flex; justify-content: center;">
+                  <a class="round-white-btn" title="Link to INTCOMM (CHANGE) posts."
+                     href="{{ url('/intcomm') }}">Read More Stories</a>
+                </div>
               </div>
-              <img src="#" style="height: 248px; width: 412px; margin-left: auto;" />
+              @if($intcomm)
+                <img src="/imagecache/original/{{$intcomm->id}}/{{$intcomm->images[0]->image_name}}" style="width: 290px; height: 175px"
+                     alt="{{ $intcomm->images[0]->alt_text != '' ? $intcomm->images[0]->alt_text : str_replace('"', "", $intcomm->images[0]->caption) }}">
+              @endif
             </div>
-            <a class="round-white-btn" title="Link to INTCOMM (CHANGE) posts."
-               href="{{ url('/intcomm') }}">Read More Stories</a>
+            @endif
           </div>
         </div><!-- end .card -->
         @if($topAnnouncement)
@@ -308,7 +332,7 @@
                 <div class="large-6 medium-12 small-12 large-pull-6 columns">
                   <ul>
                     @foreach ($currentAnnouncements as $announcement)
-                       priority of 1000000 is a special announcement and will appear in its own box
+                       <!-- priority of 1000000 is a special announcement and will appear in its own box -->
                       @if($announcement->priority != 1000000)
                         <li>
                           <a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a>

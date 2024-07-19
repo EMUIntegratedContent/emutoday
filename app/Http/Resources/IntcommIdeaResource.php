@@ -4,7 +4,6 @@ namespace Emutoday\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Emutoday\Http\Resources\IntcommIdeasImagesResource;
 
 class IntcommIdeaResource extends JsonResource
 {

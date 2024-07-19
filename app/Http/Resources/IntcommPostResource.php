@@ -29,6 +29,7 @@ class IntcommPostResource extends JsonResource
 				'created_by' => $this->postCreator(),
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
+				'is_hub_post' => $this->is_hub_post,
 				'is_live' => $this->postIsLive(), // In the model, this method checks if the post is live based on several criteria
 				'progress' => $this->postProgress(), // In the model, this method checks the progress of the post based on several criteria
 				'starts_soon' => $this->postStartsIn24Hours(),

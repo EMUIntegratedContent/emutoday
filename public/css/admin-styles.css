@@ -15204,6 +15204,10 @@ ul.intcomm-nav li a:not(.button) {
   color: white !important;
 }
 
+#intcomm-hub-container h4 {
+  margin-bottom: 1.3rem
+}
+
 /* Medium screens */
 @media only screen and (min-width: 40.063em) {
 }

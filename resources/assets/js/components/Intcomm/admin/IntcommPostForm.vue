@@ -24,7 +24,15 @@
                 <v-row>
                   <v-col cols="12" md="6">
                     <v-alert v-if="post.is_live" type="success" density="compact" variant="elevated">Post is LIVE.</v-alert>
-                    <template v-else>
+                    <v-alert
+                        v-if="showHubPostAlert"
+                        color="yellow-darken-3"
+                        icon="mdi-star-outline"
+                        density="compact"
+                        variant="elevated"
+                        class="mt-3"
+                    >This post is featured on the hub page.</v-alert>
+                    <template v-if="!post.is_live">
                       <v-expansion-panels
                           v-if="!isPostLiveEligible"
                           v-model="explanationPanel"
@@ -60,6 +68,17 @@
                         @update:modelValue="formModified = true"
                     >
                     </v-select>
+                    <v-switch
+                        v-if="canMakeHubPost"
+                        v-model="post.is_hub_post"
+                        label="Make this the featured post on the hub page"
+                        color="yellow-darken-3"
+                        hide-details
+                        :true-value="1"
+                        :false-value="0"
+                        @update:modelValue="formModified = true"
+                    >
+                    </v-switch>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -294,6 +313,9 @@ export default {
   computed: {
     ...mapState(['postImageTypes', 'post']),
     ...mapGetters(['intcommSmallImgID', 'intcommStoryImgID', 'intcommEmailImgID', 'postRequiredImageIDs', 'postHasRequiredImages']),
+    canMakeHubPost () {
+      return !this.newForm && this.userIsApprover && this.post.admin_status === 'Approved'
+    },
     // Determine if the post is eligible to be live. This does NOT check if the post is currently live. That is determined by post.is_live.
     isPostLiveEligible () {
       return this.post.admin_status === 'Approved' && this.postHasRequiredImages && this.post.title && this.post.content && this.post.start_date
@@ -306,6 +328,10 @@ export default {
     },
     postPreviewPath: function () {
       return `/admin/preview/intcomm/post/${this.post.postId}`
+    },
+    // Avoid showing the hub post alert when the post isn't updated yet.
+    showHubPostAlert () {
+      return this.post.is_live && this.originalPost.is_hub_post
     },
     userIsApprover () {
       if(!this.userRoles) return false
@@ -375,7 +401,6 @@ export default {
       await this.savePost()
     },
     async savePost () {
-
       const data = new FormData()
       data.append('post', JSON.stringify(this.post))
 

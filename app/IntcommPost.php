@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class IntcommPost extends Model{
 	use HasFactory;
 
-	protected $fillable = ['title', 'teaser', 'content', 'start_date', 'end_date', 'admin_status', 'intcomm_idea_id', 'seq', 'created_by', 'source'];
+	protected $fillable = ['title', 'teaser', 'content', 'start_date', 'end_date', 'admin_status', 'intcomm_idea_id', 'seq', 'created_by', 'source', 'is_hub_post'];
 	protected $dates = ['start_date', 'end_date', 'created_at', 'updated_at'];
 
 	public function images(){

@@ -3,6 +3,7 @@
 namespace Emutoday\Http\Controllers;
 
 use Emutoday\Imagetype;
+use Emutoday\IntcommPost;
 use Illuminate\Http\Request;
 
 use Emutoday\Story;
@@ -24,12 +25,13 @@ class MainController extends Controller
   protected $recordLimitEvents = 4;
   protected $recordLimitHR = 4;
 
-  public function __construct(Page $page, Story $story, Announcement $announcement, Event $event, Tweet $tweets) {
+  public function __construct(Page $page, Story $story, Announcement $announcement, Event $event, Tweet $tweets, IntcommPost $intcommPost) {
     $this->page = $page;
     $this->story = $story;
     $this->announcement = $announcement;
     $this->event = $event;
     $this->tweets = $tweets;
+		$this->intcommPost = $intcommPost;
   }
 
   public function index() {
@@ -56,7 +58,6 @@ class MainController extends Controller
       ])->orderBy('start_date', 'desc')->first();
     }
 
-    // TODO this query is throwing an error
     $currentStorysBasic = $this->story->where([
         ['is_approved', 1],
         ['is_archived', 0],
@@ -208,6 +209,12 @@ class MainController extends Controller
 			$emu175Dyk = array_slice($emu175DykFile, 0, 3);
 		}
 
+		// Intcomm Hub Post (with small image)
+		$intcomm = $this->intcommPost->where('is_hub_post', 1)->with(['images' => function ($query) {
+			// Only retrieve the required images for each post (in this case, the 'small' image)
+			$query->where('imagetype_id', 27);
+		}])->first();
+
     JavaScript::put([
         'jsis' => 'hi',
         'cdnow' => Carbon::now(),
@@ -216,7 +223,7 @@ class MainController extends Controller
         'currentPage' => $page
     ]);
 
-    return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events', 'currentStoryImageWithVideoTag', 'currentHRAnnouncements', 'featuredevents', 'emu175StoryImg', 'emu175Dyk'));
+    return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events', 'currentStoryImageWithVideoTag', 'currentHRAnnouncements', 'featuredevents', 'emu175StoryImg', 'emu175Dyk', 'intcomm'));
 
   }
 
