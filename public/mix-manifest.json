@@ -1,11 +1,6 @@
 {
-    "/js/vue-intcomm-queue.js": "/js/vue-intcomm-queue.js?id=edfa668b9ae7b2fba8b0f58e7ad51280",
-    "/js/vue-intcomm-post-form.js": "/js/vue-intcomm-post-form.js?id=9b9ad89aa7f768980f9af3aa655fdd56",
-    "/js/vue-intcomm-user-idea-form.js": "/js/vue-intcomm-user-idea-form.js?id=a271ef0945c9e722d6f08acd2076f4e4",
-    "/js/vue-intcomm-user-ideas.js": "/js/vue-intcomm-user-ideas.js?id=b72fb095b396f09bd8f4791b5627c756",
-    "/js/vue-intcomm-admin-idea-view.js": "/js/vue-intcomm-admin-idea-view.js?id=9b5f1aff04a9dff044129fde7df026fc",
-    "/js/vue-intcomm-ideas-queue.js": "/js/vue-intcomm-ideas-queue.js?id=72fb87939407f42aad22da153b4b7837",
-    "/js/admin-emucustom.js": "/js/admin-emucustom.js?id=b53a3485ef3fa04ce74f580fea32b841",
+    "/js/vue-email-form.js": "/js/vue-email-form.js?id=772c3e21ec29c9acf9ca3d2b7feb530c",
+    "/js/admin-emucustom.js": "/js/admin-emucustom.js?id=52956980790c02defbb62c130da4f09c",
     "/css/public-styles.css": "/css/public-styles.css?id=034e9586e55cdb7a41c1142a22f0f36b",
     "/js/public-scripts.js": "/js/public-scripts.js?id=83de610ed18549969120a1a41921e8bf",
     "/css/admin-styles.css": "/css/admin-styles.css?id=e2a56c6acc762efc9bd8d227ed9417f6"

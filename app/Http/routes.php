@@ -125,6 +125,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::get('email/stories/main/{fromDate?}/{toDate?}', 'Api\EmailController@getMainEmailReadyStories')->name('api_email_main_stories');
   Route::get('email/stories/otherstories/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyStories')->name('api_email_other_stories');
   Route::get('email/events/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyEvents')->name('api_email_events');
+  Route::get('email/insideposts/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyInsidePosts')->name('api_email_inside_posts');
   Route::get('email/announcements/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyAnnouncements')->name('api_email_announcements');
   Route::get('email/recipients', 'Api\EmailController@getAllRecipients')->name('api_email_recipients_get');
   Route::post('email/recipients', 'Api\EmailController@saveRecipient')->name('api_email_recipients_save');

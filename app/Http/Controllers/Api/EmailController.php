@@ -4,6 +4,8 @@ namespace Emutoday\Http\Controllers\Api;
 
 
 use Emutoday\Email;
+use Emutoday\Http\Resources\IntcommPostResource;
+use Emutoday\IntcommPost;
 use Emutoday\Story;
 use Emutoday\User;
 use Emutoday\Event;
@@ -29,9 +31,11 @@ use Emutoday\Today\Transformers\FractalEmailTransformerModel;
 class EmailController extends ApiController
 {
   protected $email;
+	protected $intcommPost;
 
-  function __construct(Email $email) {
+  function __construct(Email $email, IntcommPost $intcommPost) {
     $this->email = $email;
+		$this->intcommPost = $intcommPost;
   }
 
   /**
@@ -408,6 +412,30 @@ class EmailController extends ApiController
     return $this->setStatusCode(200)
         ->respondUpdatedWithData('Got events.', $fractal->createData($resource)->toArray());
   }
+
+	/**
+	 * Inside EMU Posts.
+	 * @param Request $request
+	 * @param $fromDate
+	 * @param $toDate
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function getAllEmailReadyInsidePosts(Request $request, $fromDate = null, $toDate = null): \Illuminate\Http\JsonResponse {
+		// Only want posts that are live
+		if ($fromDate && !$toDate) {
+			$posts = $this->intcommPost->where([['start_date', '>=', $fromDate]])->orderBy('start_date', 'desc')->get();
+		} elseif ($fromDate && $toDate) {
+			$posts = $this->intcommPost->where([['start_date', '>=', $fromDate]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'desc')->get();
+		} else {
+			// By default, only get future posts
+			$posts = $this->intcommPost->where([['start_date', '>=', date('Y-m-d')]])->orderBy('start_date', 'desc')->get();
+		}
+
+		$resource = IntcommPostResource::collection($posts);
+
+		return $this->setStatusCode(200)
+			->respondUpdatedWithData('Got Inside EMU posts.', $resource);
+	}
 
   /**
    * Announcements.

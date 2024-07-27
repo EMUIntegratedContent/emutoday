@@ -36,6 +36,7 @@ class IntcommPostResource extends JsonResource
 				'ends_soon' => $this->postEndsIn24Hours(),
 				'ended_recently' => $this->postEndedInLast24Hours(),
 				'associated_idea' => $this->idea ? $this->idea->load('images') : null, // Load the associated idea and its images
+				'full_url' => url('/').'/intcomm/posts'.$this->id,
 				'images' => IntcommPostsImagesResource::collection($this->images)
 			];
     }
