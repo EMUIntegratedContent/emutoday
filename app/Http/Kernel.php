@@ -44,8 +44,8 @@ class Kernel extends HttpKernel
           \Emutoday\Http\Middleware\ExpertsMiddleware::class,
         ],
 
-				'intcomm' => [
-					\Emutoday\Http\Middleware\IntcommMiddleware::class,
+				'insideemu' => [
+					\Emutoday\Http\Middleware\InsideemuMiddleware::class,
 				],
 
         'mediahighlights' => [

@@ -116,11 +116,11 @@ class User extends Authenticatable
         return $this->hasRole('emails');
     }
 
-		public function hasIntcommAccess() {
+		public function hasInsideemuAccess() {
 			return $this->isAdmin() || $this->isEditor() || $this->isContributor();
 		}
 
-		public function canApproveIntcommPosts() {
+		public function canApproveInsideemuPosts() {
 			return $this->isAdmin() || $this->isEditor() || $this->hasRole('contributor_2');
 		}
 

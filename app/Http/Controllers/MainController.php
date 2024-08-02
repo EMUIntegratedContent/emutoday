@@ -3,7 +3,7 @@
 namespace Emutoday\Http\Controllers;
 
 use Emutoday\Imagetype;
-use Emutoday\IntcommPost;
+use Emutoday\InsideemuPost;
 use Illuminate\Http\Request;
 
 use Emutoday\Story;
@@ -25,13 +25,13 @@ class MainController extends Controller
   protected $recordLimitEvents = 4;
   protected $recordLimitHR = 4;
 
-  public function __construct(Page $page, Story $story, Announcement $announcement, Event $event, Tweet $tweets, IntcommPost $intcommPost) {
+  public function __construct(Page $page, Story $story, Announcement $announcement, Event $event, Tweet $tweets, InsideemuPost $insideemuPost) {
     $this->page = $page;
     $this->story = $story;
     $this->announcement = $announcement;
     $this->event = $event;
     $this->tweets = $tweets;
-		$this->intcommPost = $intcommPost;
+		$this->insideemuPost = $insideemuPost;
   }
 
   public function index() {
@@ -209,8 +209,8 @@ class MainController extends Controller
 			$emu175Dyk = array_slice($emu175DykFile, 0, 3);
 		}
 
-		// Intcomm Hub Post (with small image)
-		$intcomm = $this->intcommPost->where('is_hub_post', 1)->with(['images' => function ($query) {
+		// Insideemu Hub Post (with small image)
+		$insideemu = $this->insideemuPost->where('is_hub_post', 1)->with(['images' => function ($query) {
 			// Only retrieve the required images for each post (in this case, the 'small' image)
 			$query->where('imagetype_id', 28);
 		}])->first();
@@ -223,7 +223,7 @@ class MainController extends Controller
         'currentPage' => $page
     ]);
 
-    return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events', 'currentStoryImageWithVideoTag', 'currentHRAnnouncements', 'featuredevents', 'emu175StoryImg', 'emu175Dyk', 'intcomm'));
+    return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events', 'currentStoryImageWithVideoTag', 'currentHRAnnouncements', 'featuredevents', 'emu175StoryImg', 'emu175Dyk', 'insideemu'));
 
   }
 

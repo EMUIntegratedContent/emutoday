@@ -82,8 +82,8 @@
           <li><a title="EMU Today campus announcements." href="/announcement">Announcements</a></li>
           <li><a title="EMU Today campus news, press releases, and official statements." href="/story/news">News</a>
           </li>
-          <li><a title="Submit your story ideas."
-                 href="{{ url('/intcomm') }}">INTCOMM (Change)</a></li>
+          <li><a title="Submit to Inside EMU."
+                 href="{{ url('/insideemu') }}">Inside EMU</a></li>
           <li><a title="Eastern Magazine's homepage" href="https://magazine.emich.edu">Eastern Magazine</a>
           </li>
           <li><a title="Eastern Experts are availble for interviews and speaking engagements."
@@ -96,7 +96,7 @@
           <li><a title="Subscribe to EMU Today" href="/subscribe">Subscribe to EMU Today</a></li>
           <li><a title="Submit a campus event." href="/calendar/event/form">Submit an Event</a></li>
           <li><a title="Submit an announcement." href="/announcement/form">Submit an Announcement</a></li>
-          <li><a title="Submit a suggestion." href="/intcomm/ideas/create">Submit an INTCOMM IDEA (CHANGE)</a></li>
+          <li><a title="Submit a suggestion." href="/insideemu/ideas/create">Submit to Inside EMU</a></li>
         </ul>
       @show
     </div> <!-- off-canvas position-right -->
@@ -158,7 +158,7 @@
                                     <span class="smaller"><a title="Subscribe to EMU Today" href="/subscribe">Subscribe to EMU Today</a> | <a
                                           href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a
                                           href="{{ url('/announcement/form') }}">Submit an Announcement</a> | <a
-                                          href="{{ url('/intcomm/ideas/create') }}">Submit an INTCOMM IDEA (CHANGE)</a>
+                                          href="{{ url('/insideemu/ideas/create') }}">Submit to Inside EMU</a>
                                     </span>
                 </div><!-- large-3 -->
 
@@ -181,8 +181,8 @@
                       <li><a title="EMU Today campus news, press releases, and official statements."
                              class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}">News</a>
                       </li>
-                      <li><a title="Submit your story ideas."
-                             href="{{ url('/intcomm') }}">INTCOMM (Change)</a></li>
+                      <li><a title="Submit to Inside EMU."
+                             href="{{ url('/insideemu') }}">Inside EMU</a></li>
                       <li><a title="Eastern Magazine's homepage" href="{{ url('/magazine') }}">Eastern
                           Magazine</a></li>
                       <li>

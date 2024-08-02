@@ -35,7 +35,7 @@ mix.combine([
 	'resources/assets/css/tweeks.css',
 	'resources/assets/css/ckeditor5-styles.css',
 	'resources/assets/css/emu175.css',
-	'resources/assets/css/intcomm-styles.css',
+	'resources/assets/css/insideemu-styles.css',
 ], 'public/css/public-styles.css').version()
 
 /*
@@ -86,13 +86,13 @@ mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').v
 // mix.js('resources/assets/js/vue-emu-175.js', 'public/js/vue-emu-175.js').vue().version().version();
 
 
-// mix.js('resources/assets/js/vue-intcomm-queue.js', 'public/js/vue-intcomm-queue.js').vue().version().version();
-// mix.js('resources/assets/js/vue-intcomm-post-form.js', 'public/js/vue-intcomm-post-form.js').vue().version().version();
-// mix.js('resources/assets/js/vue-intcomm-user-idea-form.js', 'public/js/vue-intcomm-user-idea-form.js').vue().version().version();
-// mix.js('resources/assets/js/vue-intcomm-user-ideas.js', 'public/js/vue-intcomm-user-ideas.js').vue().version().version();
-// mix.js('resources/assets/js/vue-intcomm-admin-dashboard.js', 'public/js/vue-intcomm-admin-dashboard.js').vue().version().version();
-// mix.js('resources/assets/js/vue-intcomm-admin-idea-view.js', 'public/js/vue-intcomm-admin-idea-view.js').vue().version().version();
-// mix.js('resources/assets/js/vue-intcomm-ideas-queue.js', 'public/js/vue-intcomm-ideas-queue.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-queue.js', 'public/js/vue-insideemu-queue.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-post-form.js', 'public/js/vue-insideemu-post-form.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-user-idea-form.js', 'public/js/vue-insideemu-user-idea-form.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-user-ideas.js', 'public/js/vue-insideemu-user-ideas.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-admin-dashboard.js', 'public/js/vue-insideemu-admin-dashboard.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-admin-idea-view.js', 'public/js/vue-insideemu-admin-idea-view.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-ideas-queue.js', 'public/js/vue-insideemu-ideas-queue.js').vue().version().version();
 
 /*
 |--------------------------------------------------------------------------
@@ -105,7 +105,7 @@ mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').v
 mix.styles([
 	'resources/assets/css/admin-less.css',
 	'resources/assets/css/admin.css',
-	'resources/assets/css/intcomm-styles.css'
+	'resources/assets/css/insideemu-styles.css'
 ], 'public/css/admin-styles.css').version();
 /*
 |--------------------------------------------------------------------------

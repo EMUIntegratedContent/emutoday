@@ -45,7 +45,7 @@ class Email extends Model
   }
 
 	public function insidePosts() {
-		return $this->belongsToMany('Emutoday\IntcommPost', 'email_inside_post')->withPivot('order')->orderBy('order')->withTimestamps();
+		return $this->belongsToMany('Emutoday\InsideemuPost', 'email_inside_post')->withPivot('order')->orderBy('order')->withTimestamps();
 	}
 
   /**

@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Emutoday\IntcommPost;
+use Emutoday\InsideemuPost;
 
-class IntcommPostSeeder extends Seeder
+class InsideemuPostSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class IntcommPostSeeder extends Seeder
     public function run(): void
     {
         // Create 50 posts
-				IntcommPost::factory(50)->create();
+				InsideemuPost::factory(50)->create();
     }
 }

@@ -79,26 +79,26 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']], function
  */
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 
-	/* Intcomm Ideas */
-	Route::get('intcomm/admin/ideas/ideas', 'Api\IntcommIdeaAdminController@index')->name('api_intcomm_admin_ideas');
-	Route::get('intcomm/admin/ideas/{ideaId}', 'Api\IntcommIdeaAdminController@show')->name('api_intcomm_admin_idea');
-	Route::put('intcomm/admin/ideas/{ideaId}/archive', 'Api\IntcommIdeaAdminController@archive')->name('api_intcomm_admin_idea_archive');
-	Route::put('intcomm/admin/ideas/{ideaId}/unarchive', 'Api\IntcommIdeaAdminController@unarchive')->name('api_intcomm_admin_idea_unarchive');
-	Route::put('intcomm/admin/ideas/{ideaId}/status', 'Api\IntcommIdeaAdminController@status')->name('api_intcomm_admin_idea_status');
-	Route::delete('intcomm/admin/ideas/{ideaId}', 'Api\IntcommIdeaAdminController@destroy')->name('api_intcomm_admin_idea_delete');
-	Route::post('intcomm/admin/ideas/{ideaId}/makepost', 'Api\IntcommIdeaAdminController@makepost')->name('api_intcomm_admin_makepost');
-	Route::get('intcomm/ideas/user/{ideaId}', 'Api\IntcommIdeaPublicController@show')->name('api_intcomm_user_idea');
-	Route::get('intcomm/ideas/user', 'Api\IntcommIdeaPublicController@index')->name('api_intcomm_user_ideas');
-	Route::post('intcomm/ideas/user', 'Api\IntcommIdeaPublicController@store')->name('api_intcomm_user_ideas_store');
-	Route::put('intcomm/ideas/user/{ideaId}', 'Api\IntcommIdeaPublicController@update')->name('api_intcomm_user_ideas_update');
-	/* Intcomm Posts */
-	Route::get('intcomm/admin/posts/imagetypes', 'Api\IntcommPostController@getPostImageTypes')->name('api_intcomm_post_imagetypes');
-	Route::patch('intcomm/admin/posts/addrank/{postId}', 'Api\IntcommPostController@addRank')->name('api_intcomm_post_addrank');
-	Route::patch('intcomm/admin/posts/makehubpost/{postId}', 'Api\IntcommPostController@makeHubPost')->name('api_intcomm_post_makehubpost');
-	Route::post('intcomm/admin/posts/updateranks', 'Api\IntcommPostController@updateRanks')->name('api_intcomm_post_updateranks');
-//	Route::get('intcomm/posts/{postId}', 'Api\IntcommPostController@show')->name('api_intcomm_post');
-//	Route::get('intcomm/posts', 'Api\IntcommPostController@index')->name('api_intcomm_posts');
-	Route::resource('intcomm/admin/posts', 'Api\IntcommPostController');
+	/* Inside EMU Ideas */
+	Route::get('insideemu/admin/ideas/ideas', 'Api\InsideemuIdeaAdminController@index')->name('api_insideemu_admin_ideas');
+	Route::get('insideemu/admin/ideas/{ideaId}', 'Api\InsideemuIdeaAdminController@show')->name('api_insideemu_admin_idea');
+	Route::put('insideemu/admin/ideas/{ideaId}/archive', 'Api\InsideemuIdeaAdminController@archive')->name('api_insideemu_admin_idea_archive');
+	Route::put('insideemu/admin/ideas/{ideaId}/unarchive', 'Api\InsideemuIdeaAdminController@unarchive')->name('api_insideemu_admin_idea_unarchive');
+	Route::put('insideemu/admin/ideas/{ideaId}/status', 'Api\InsideemuIdeaAdminController@status')->name('api_insideemu_admin_idea_status');
+	Route::delete('insideemu/admin/ideas/{ideaId}', 'Api\InsideemuIdeaAdminController@destroy')->name('api_insideemu_admin_idea_delete');
+	Route::post('insideemu/admin/ideas/{ideaId}/makepost', 'Api\InsideemuIdeaAdminController@makepost')->name('api_insideemu_admin_makepost');
+	Route::get('insideemu/ideas/user/{ideaId}', 'Api\InsideemuIdeaPublicController@show')->name('api_insideemu_user_idea');
+	Route::get('insideemu/ideas/user', 'Api\InsideemuIdeaPublicController@index')->name('api_insideemu_user_ideas');
+	Route::post('insideemu/ideas/user', 'Api\InsideemuIdeaPublicController@store')->name('api_insideemu_user_ideas_store');
+	Route::put('insideemu/ideas/user/{ideaId}', 'Api\InsideemuIdeaPublicController@update')->name('api_insideemu_user_ideas_update');
+	/* Inside EMU Posts */
+	Route::get('insideemu/admin/posts/imagetypes', 'Api\InsideemuPostController@getPostImageTypes')->name('api_insideemu_post_imagetypes');
+	Route::patch('insideemu/admin/posts/addrank/{postId}', 'Api\InsideemuPostController@addRank')->name('api_insideemu_post_addrank');
+	Route::patch('insideemu/admin/posts/makehubpost/{postId}', 'Api\InsideemuPostController@makeHubPost')->name('api_insideemu_post_makehubpost');
+	Route::post('insideemu/admin/posts/updateranks', 'Api\InsideemuPostController@updateRanks')->name('api_insideemu_post_updateranks');
+//	Route::get('insideemu/posts/{postId}', 'Api\InsideemuPostController@show')->name('api_insideemu_post');
+//	Route::get('insideemu/posts', 'Api\InsideemuPostController@index')->name('api_insideemu_posts');
+	Route::resource('insideemu/admin/posts', 'Api\InsideemuPostController');
 
   /* STORY IDEAS */
   Route::resource('storyideas', 'Api\StoryIdeasController');
@@ -364,7 +364,7 @@ Route::resource('experts', 'Today\ExpertsController');
  */
 Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   Route::group(['prefix' => 'preview', 'middleware' => ['bindings']], function () {
-		Route::get('intcomm/post/{postId}', 'PreviewController@intcommpost')->name('preview_intcomm_post');
+		Route::get('insideemu/post/{postId}', 'PreviewController@insideemupost')->name('preview_insideemu_post');
     Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');
     Route::get('page/{page}/', 'PreviewController@hub')->name('preview_hub');
     Route::get('magazine/{magazine}/', 'PreviewController@magazine')->name('preview_magazine');
@@ -496,10 +496,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   // EMU 175
   Route::resource('emu175', 'Admin\EMU175Controller');
 
-	// Intcomm Posts
-	Route::group(['middleware' => ['intcomm'], 'prefix' => 'intcomm', 'as' => 'admin.'], function () {
-		Route::resource('/ideas', 'Admin\IntcommIdeaController');
-		Route::resource('/posts', 'Admin\IntcommPostController');
+	// Inside EMU Posts
+	Route::group(['middleware' => ['insideemu'], 'prefix' => 'insideemu', 'as' => 'admin.'], function () {
+		Route::resource('/ideas', 'Admin\InsideemuIdeaController');
+		Route::resource('/posts', 'Admin\InsideemuPostController');
 	});
 
   Route::get('story/queueall', 'Admin\StoryTypeController@queueAll')->name('admin_story_queue');
@@ -525,10 +525,10 @@ Route::group(['prefix' => 'mediahighlights'], function () {
   Route::get('/', 'Today\MediaHighlightController@index')->name('mediahighlights_index');
 });
 
-Route::group(['prefix' => 'intcomm'], function () {
-//  Route::get('/', 'Today\IntcommPostController@index')->name('intcomm_index');
-//  Route::get('/', 'Today\IntcommPostController@index')->name('intcomm_index');
-	Route::resource('/ideas', 'Today\IntcommIdeaController');
-	Route::resource('/posts', 'Today\IntcommPostController');
-	Route::resource('', 'Today\IntcommController');
+Route::group(['prefix' => 'insideemu'], function () {
+//  Route::get('/', 'Today\InsideemuPostController@index')->name('insideemu_index');
+//  Route::get('/', 'Today\InsideemuPostController@index')->name('insideemu_index');
+	Route::resource('/ideas', 'Today\InsideemuIdeaController');
+	Route::resource('/posts', 'Today\InsideemuPostController');
+	Route::resource('', 'Today\InsideemuController');
 });

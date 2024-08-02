@@ -35,7 +35,7 @@
           </div><!-- /.col-md-6 -->
           <div class="col-sm-6">
             <div class="btn-group pull-right">
-              <a :href="`/admin/intcomm/posts/${item.postId}/edit`" target="_blank"
+              <a :href="`/admin/insideemu/posts/${item.postId}/edit`" target="_blank"
                  class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip"
                  title="preview"><i class="fa fa-pencil"></i></a>
             </div>

@@ -270,41 +270,41 @@
         @else
         <div class="card small-12 medium-7 large-7 columns" data-equalizer-watch>
         @endif
-          <div class="card-section" id="intcomm-hub-container" data-equalizer-watch>
+          <div class="card-section" id="insideemu-hub-container" data-equalizer-watch>
             @if($topAnnouncement)
             <div>
-                <h4><a class="bold-green-link" title="INTCOMM (CHANGE)"
-                       href="{{ url('/intcomm') }}">INTCOMM (CHANGE)</a></h4>
-              @if($intcomm)
-                <img src="/imagecache/original/{{$intcomm->id}}/{{$intcomm->images[0]->image_name}}"
-                     alt="{{ $intcomm->images[0]->alt_text != '' ? $intcomm->images[0]->alt_text : str_replace('"', "", $intcomm->images[0]->caption) }}">
+                <h4><a class="bold-green-link" title="Inside EMU"
+                       href="{{ url('/insideemu') }}">Inside EMU</a></h4>
+              @if($insideemu)
+                <img src="/imagecache/original/{{$insideemu->id}}/{{$insideemu->images[0]->image_name}}"
+                     alt="{{ $insideemu->images[0]->alt_text != '' ? $insideemu->images[0]->alt_text : str_replace('"', "", $insideemu->images[0]->caption) }}">
               @endif
-              @if($intcomm)
+              @if($insideemu)
               <p style="margin-top: 0.8rem">
-                <a href="{{ url('/intcomm/posts/' . $intcomm->id ) }}">{{ $intcomm->images[0]->caption }}</a>
+                <a href="{{ url('/insideemu/posts/' . $insideemu->id ) }}">{{ $insideemu->images[0]->caption }}</a>
               </p>
               @endif
-              <p style="font-weight: lighter; margin-bottom: 1.1rem">Go to our INTCOMM (CHANGE) page to find other user-submitted stories produced by staff and faculty across the University.</p>
-              <a class="round-white-btn" title="Link to INTCOMM (CHANGE) posts."
-                 href="{{ url('/intcomm') }}">Read More Stories</a>
+              <p style="font-weight: lighter; margin-bottom: 1.1rem">Go to our Inside EMU page to find other user-submitted posts produced by staff and faculty across the University.</p>
+              <a class="round-white-btn" title="Link to Inside EMU posts."
+                 href="{{ url('/insideemu') }}">Read More Posts</a>
             </div>
             @else
             <div style="display: flex; align-items: flex-start;">
               <div style="flex: 1; padding-right: .5rem">
-                <h4><a class="bold-green-link" title="INTCOMM (CHANGE)"
-                                                     href="{{ url('/intcomm') }}">INTCOMM (CHANGE)</a></h4>
-                @if($intcomm)
-                  <p><a href="{{ url('/intcomm/posts/' . $intcomm->id ) }}" class="caption-link">{{ $intcomm->images[0]->caption }}</a></p>
+                <h4><a class="bold-green-link" title="Inside EMU"
+                                                     href="{{ url('/insideemu') }}">Inside EMU</a></h4>
+                @if($insideemu)
+                  <p><a href="{{ url('/insideemu/posts/' . $insideemu->id ) }}" class="caption-link">{{ $insideemu->images[0]->caption }}</a></p>
                 @endif
-                <p style="font-weight: lighter">Go to our INTCOMM (CHANGE) page to find other user-submitted stories produced by staff and faculty across the University.</p>
+                <p style="font-weight: lighter">Go to our Inside EMU page to find other user-submitted posts produced by staff and faculty across the University.</p>
                 <div style="display: flex; justify-content: center;">
-                  <a class="round-white-btn" title="Link to INTCOMM (CHANGE) posts."
-                     href="{{ url('/intcomm') }}">Read More Stories</a>
+                  <a class="round-white-btn" title="Link to Inside EMU posts."
+                     href="{{ url('/insideemu') }}">Read More Stories</a>
                 </div>
               </div>
-              @if($intcomm)
-                <img src="/imagecache/original/{{$intcomm->id}}/{{$intcomm->images[0]->image_name}}" style="width: 290px; height: 175px"
-                     alt="{{ $intcomm->images[0]->alt_text != '' ? $intcomm->images[0]->alt_text : str_replace('"', "", $intcomm->images[0]->caption) }}">
+              @if($insideemu)
+                <img src="/imagecache/original/{{$insideemu->id}}/{{$insideemu->images[0]->image_name}}" style="width: 290px; height: 175px"
+                     alt="{{ $insideemu->images[0]->alt_text != '' ? $insideemu->images[0]->alt_text : str_replace('"', "", $insideemu->images[0]->caption) }}">
               @endif
             </div>
             @endif

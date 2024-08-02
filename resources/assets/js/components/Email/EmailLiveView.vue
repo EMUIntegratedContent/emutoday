@@ -278,7 +278,7 @@
               <tr v-if="!emailBuilderEmail.exclude_inside_posts">
                 <td valign="middle">
                   <div style="padding-top: 5px;">
-                    <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/intcomm">Inside EMU &#10137;</a></h2>
+                    <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/insideemu">Inside EMU &#10137;</a></h2>
                     <template v-if="emailBuilderEmail.insidePosts.length > 0">
                       <ul style="padding-bottom: 0px; margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                         <li v-for="post in emailBuilderEmail.insidePosts"

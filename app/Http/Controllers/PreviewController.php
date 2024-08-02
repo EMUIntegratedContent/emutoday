@@ -2,7 +2,7 @@
 
 namespace Emutoday\Http\Controllers;
 
-use Emutoday\IntcommPost;
+use Emutoday\InsideemuPost;
 use Illuminate\Http\Request;
 
 use Emutoday\Http\Requests;
@@ -35,7 +35,7 @@ Route::get('magazine/{magazine}', ['as' => 'preview_magazine', 'uses' => 'Previe
 class PreviewController extends Controller{
 
 
-	public function __construct(Page $page, Story $story, Magazine $magazine, Event $event, Announcement $announcement, Expert $expert, IntcommPost $intcommPost){
+	public function __construct(Page $page, Story $story, Magazine $magazine, Event $event, Announcement $announcement, Expert $expert, InsideemuPost $insideemuPost){
 		$this->middleware('auth');
 		$this->page = $page;
 		$this->magazine = $magazine;
@@ -43,7 +43,7 @@ class PreviewController extends Controller{
 		$this->event = $event;
 		$this->announcement = $announcement;
 		$this->expert = $expert;
-		$this->intcommPost = $intcommPost;
+		$this->insideemuPost = $insideemuPost;
 	}
 
 	public function goBack($gtype, $stype, $qtype, $id = null){
@@ -266,10 +266,10 @@ class PreviewController extends Controller{
 
 	}
 
-	public function intcommpost($postId){
-		$post = $this->intcommPost->findOrFail($postId);
+	public function insideemupost($postId){
+		$post = $this->insideemuPost->findOrFail($postId);
 		$idea = $post->idea;
 		$mainImg = $post->images()->where('imagetype_id', 29)->first();
-		return view('preview.intcomm.post', compact('post', 'mainImg', 'idea'));
+		return view('preview.insideemu.post', compact('post', 'mainImg', 'idea'));
 	}
 }

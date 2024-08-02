@@ -88,7 +88,7 @@ const mutations = {
 	}
 }
 const actions = {
-	// Add a blank image record to the post (e.g. small, story, email). Corresponds to intcomm_posts_images table.
+	// Add a blank image record to the post (e.g. small, story, email). Corresponds to insideemu_posts_images table.
 	createPostImageRecord({commit}, imgType) {
 		const matchingImgType = state.postImageTypes.find(type => type.type === imgType)
 		if(!matchingImgType) {
@@ -109,7 +109,7 @@ const actions = {
 
 		commit('addPostImageRecord', {
 			id: null,
-			intcomm_post_id: state.post.postId,
+			insideemu_post_id: state.post.postId,
 			is_active: 0,
 			image_name: '',
 			image_path: '',
@@ -142,21 +142,21 @@ const actions = {
 }
 
 const getters = {
-	intcommSmallImgID: state => {
+	insideemuSmallImgID: state => {
 		const matchingImgType = state.postImageTypes.find(type => type.type === 'small')
 		if(!matchingImgType) {
 			return null
 		}
 		return matchingImgType.id
 	},
-	intcommStoryImgID: state => {
+	insideemuStoryImgID: state => {
 		const matchingImgType = state.postImageTypes.find(type => type.type === 'story')
 		if(!matchingImgType) {
 			return null
 		}
 		return matchingImgType.id
 	},
-	intcommEmailImgID: state => {
+	insideemuEmailImgID: state => {
 		const matchingImgType = state.postImageTypes.find(type => type.type === 'email')
 		if(!matchingImgType) {
 			return null

@@ -1,7 +1,7 @@
 ====================================================================================================
-INTCOMM NOTES 2024
+INSIDE EMU NOTES 2024
 
-TODO: create intcomm model and controller
+TODO: create insideemu model and controller
 
 https://inertiajs.com/  <== Vue + Laravel (no need for API routes)
 
