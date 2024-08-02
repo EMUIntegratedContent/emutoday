@@ -690,16 +690,16 @@ export default {
         }
       }
     },
-    // Progress of email bulider (adds up to 100%)
+    // Progress of email builder (adds up to 100%)
     progress: function () {
       let progress = 0
 
-      let steps = 9 // there are anywhere from 7 to 11 steps in the email builder
+      let steps = 8 // there are anywhere from 6 to 12 steps in the email builder
       if(this.emailBuilderEmail.is_president_included) {
-        steps += 1
+        steps += 2
       }
       if(this.emailBuilderEmail.is_emu175_included) {
-        steps += 1
+        steps += 2
       }
       if(this.emailBuilderEmail.exclude_events) {
         steps -= 1
@@ -708,105 +708,28 @@ export default {
         steps -= 1
       }
 
-      // TODO finish this and get rid of all the commented out code below when done
       const stepValue = 100 / steps
       this.emailBuilderEmail.title ? progress += stepValue : ''
-
-      return progress
-      // // Normal (NO presidential message, with events, NO EMU 175)
-      // if (!this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
-      //   this.emailBuilderEmail.title ? progress += 13 : ''
-      //   this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
-      //   this.emailBuilderEmail.events.length > 0 ? progress += 15 : ''
-      //   this.emailBuilderEmail.announcements.length > 0 ? progress += 15 : ''
-      //   this.emailBuilderEmail.otherStories.length > 0 ? progress += 15 : ''
-      //   this.emailBuilderEmail.recipients.length > 0 ? progress += 14 : ''
-      //   this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 13 : ''
-      // }
-      // // Presidential message, with events, NO EMU 175
-      // else if (this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
-      //   this.emailBuilderEmail.title ? progress += 12 : ''
-      //   this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
-      //   this.emailBuilderEmail.events.length > 0 ? progress += 11 : ''
-      //   this.emailBuilderEmail.announcements.length > 0 ? progress += 11 : ''
-      //   this.emailBuilderEmail.otherStories.length > 0 ? progress += 11 : ''
-      //   this.emailBuilderEmail.recipients.length > 0 ? progress += 11 : ''
-      //   this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 13 : ''
-      //   this.emailBuilderEmail.president_teaser ? progress += 8 : ''
-      //   this.emailBuilderEmail.president_url ? progress += 8 : ''
-      // }
-      // // Presidential message, NO events, NO EMU 175
-      // else if (this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
-      //   this.emailBuilderEmail.title ? progress += 13 : ''
-      //   this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
-      //   this.emailBuilderEmail.announcements.length > 0 ? progress += 15 : ''
-      //   this.emailBuilderEmail.otherStories.length > 0 ? progress += 15 : ''
-      //   this.emailBuilderEmail.recipients.length > 0 ? progress += 15 : ''
-      //   this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 15 : ''
-      //   this.emailBuilderEmail.president_teaser ? progress += 6 : ''
-      //   this.emailBuilderEmail.president_url ? progress += 6 : ''
-      // }
-      // // Presidential message, with events, WITH EMU 175
-      // else if(this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
-      //   this.emailBuilderEmail.title ? progress += 14 : ''
-      //   this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 12 : ''
-      //   this.emailBuilderEmail.events.length > 0 ? progress += 10 : ''
-      //   this.emailBuilderEmail.announcements.length > 0 ? progress += 10 : ''
-      //   this.emailBuilderEmail.otherStories.length > 0 ? progress += 10 : ''
-      //   this.emailBuilderEmail.recipients.length > 0 ? progress += 10 : ''
-      //   this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 10 : ''
-      //   this.emailBuilderEmail.president_teaser ? progress += 6 : ''
-      //   this.emailBuilderEmail.president_url ? progress += 6 : ''
-      //   this.emailBuilderEmail.emu175_teaser ? progress += 6 : ''
-      //   this.emailBuilderEmail.emu175_url ? progress += 6 : ''
-      // }
-      // // Presidential message, NO events, WITH EMU 175
-      // else if(this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
-      //   this.emailBuilderEmail.title ? progress += 14 : ''
-      //   this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 14 : ''
-      //   this.emailBuilderEmail.announcements.length > 0 ? progress += 10 : ''
-      //   this.emailBuilderEmail.otherStories.length > 0 ? progress += 10 : ''
-      //   this.emailBuilderEmail.recipients.length > 0 ? progress += 10 : ''
-      //   this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 10 : ''
-      //   this.emailBuilderEmail.president_teaser ? progress += 8 : ''
-      //   this.emailBuilderEmail.president_url ? progress += 8 : ''
-      //   this.emailBuilderEmail.emu175_teaser ? progress += 8 : ''
-      //   this.emailBuilderEmail.emu175_url ? progress += 8 : ''
-      // }
-      // // NO Presidential message, with events, WITH EMU 175
-      // else if(!this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
-      //   this.emailBuilderEmail.title ? progress += 14 : ''
-      //   this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
-      //   this.emailBuilderEmail.events.length > 0 ? progress += 13 : ''
-      //   this.emailBuilderEmail.announcements.length > 0 ? progress += 10 : ''
-      //   this.emailBuilderEmail.otherStories.length > 0 ? progress += 10 : ''
-      //   this.emailBuilderEmail.recipients.length > 0 ? progress += 10 : ''
-      //   this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 10 : ''
-      //   this.emailBuilderEmail.emu175_teaser ? progress += 9 : ''
-      //   this.emailBuilderEmail.emu175_url ? progress += 9 : ''
-      // }
-      // // NO Presidential message, NO events, WITH EMU 175
-      // else if(!this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
-      //   this.emailBuilderEmail.title ? progress += 15 : ''
-      //   this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
-      //   this.emailBuilderEmail.announcements.length > 0 ? progress += 12 : ''
-      //   this.emailBuilderEmail.otherStories.length > 0 ? progress += 12 : ''
-      //   this.emailBuilderEmail.recipients.length > 0 ? progress += 12 : ''
-      //   this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 12 : ''
-      //   this.emailBuilderEmail.emu175_teaser ? progress += 12 : ''
-      //   this.emailBuilderEmail.emu175_url ? progress += 10 : ''
-      // }
-      // // NO presidential message, NO events, NO EMU 175
-      // else if (!this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
-      //   this.emailBuilderEmail.title ? progress += 16 : ''
-      //   this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 17 : ''
-      //   this.emailBuilderEmail.announcements.length > 0 ? progress += 17 : ''
-      //   this.emailBuilderEmail.otherStories.length > 0 ? progress += 17 : ''
-      //   this.emailBuilderEmail.recipients.length > 0 ? progress += 17 : ''
-      //   this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 16 : ''
-      // }
-      //
-      // return progress
+      this.emailBuilderEmail.mainStories.length === 1 || this.emailBuilderEmail.mainStories.length === 3 ? progress += stepValue : ''
+      this.emailBuilderEmail.announcements.length > 0 ? progress += stepValue : ''
+      this.emailBuilderEmail.otherStories.length > 0 ? progress += stepValue : ''
+      this.emailBuilderEmail.recipients.length > 0 ? progress += stepValue : ''
+      this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += stepValue : ''
+      if(!this.emailBuilderEmail.exclude_events) {
+        this.emailBuilderEmail.events.length > 0 ? progress += stepValue : ''
+      }
+      if(!this.emailBuilderEmail.exclude_inside_posts) {
+        this.emailBuilderEmail.insidePosts.length > 0 ? progress += stepValue : ''
+      }
+      if(this.emailBuilderEmail.is_president_included) {
+        this.emailBuilderEmail.president_teaser ? progress += stepValue : ''
+        this.emailBuilderEmail.president_url ? progress += stepValue : ''
+      }
+      if(this.emailBuilderEmail.is_emu175_included) {
+        this.emailBuilderEmail.emu175_teaser ? progress += stepValue : ''
+        this.emailBuilderEmail.emu175_url ? progress += stepValue : ''
+      }
+      return progress.toFixed(0)
     },
     successFailure: function () {
       return {

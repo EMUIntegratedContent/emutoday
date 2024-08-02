@@ -496,7 +496,7 @@ class EmailController extends ApiController
 
   /**
    * Takes an Email object and analyzes it to see if it should be marked as "READY".
-   * Requirements: Must have main story, at least 1 side story, announcement, event, send date set in the future, at least one recipient
+   * Requirements: Must have main story, at least 1 side story, announcement, event, inside EMU posts, send date set in the future, at least one recipient
    */
   private function isEmailReady(Email $email) {
     $email->is_ready = 0;
@@ -505,6 +505,7 @@ class EmailController extends ApiController
         ($email->mainstories()->count() == 1 || $email->mainstories()->count() == 3) &&
         $email->announcements()->first() &&
         ($email->events()->first() || $email->exclude_events) &&
+				($email->insidePosts()->first() || $email->exclude_inside_posts) &&
         $email->stories()->first() &&
         $email->recipients()->first() &&
         \Carbon\Carbon::parse($email->send_at) >= date('Y-m-d H:i:s') &&
@@ -514,6 +515,5 @@ class EmailController extends ApiController
     }
 
     $email->save();
-    return;
   }
 }
