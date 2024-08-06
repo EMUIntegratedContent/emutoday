@@ -1,7 +1,6 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <p>Logged in as {{ netid }}</p>
       <v-row>
         <v-col cols="12">
           <v-data-table
@@ -29,7 +28,7 @@
               </ul>
             </template>
             <template #no-data>
-              Create your <a href="/insideemu/ideas/create">first idea</a>.
+              Create your <a href="/insideemu/ideas/create">first submission</a>.
             </template>
           </v-data-table>
         </v-col>
@@ -57,9 +56,6 @@ export default {
     }
   },
   created () {
-    // let threeMonthsEarlier = moment().subtract(3, 'M')
-    // this.startDate = threeMonthsEarlier.format("YYYY-MM-DD")
-    // this.endDate = moment().format("YYYY-MM-DD")
     this.fetchUserPosts()
   },
   data: function () {
@@ -84,38 +80,14 @@ export default {
     }
   },
   computed: {
-    ...mapState([]),
-    // totalPages: function () {
-    //   return Math.ceil(this.queueStories.length / this.itemsPerPage)
-    // }
+    ...mapState([])
   },
   methods: {
     slashdate,
     ...mapMutations([]),
-    // toggleRange () {
-    //   if (this.isEndDate) {
-    //     this.isEndDate = false
-    //   }
-    //   else {
-    //     this.isEndDate = true
-    //   }
-    // },
     async fetchUserPosts () {
       this.loadingIdeas = true
       let routeurl = '/api/insideemu/ideas/user?netid=' + this.netid
-
-      // if a start date is set, get stories whose start_date is on or after this date
-      // if (this.startDate) {
-      //   routeurl = routeurl + '?fromDate=' + this.startDate
-      // }
-      // else {
-      //   routeurl = routeurl + '?fromDate=' + moment().subtract(3, 'm').format("YYYY-MM-DD")
-      // }
-      //
-      // // if a date range is set, get stories between the start date and end date
-      // if (this.isEndDate) {
-      //   routeurl = routeurl + '&toDate=' + this.endDate
-      // }
 
       await this.$http.get(routeurl)
       .then((r) => {

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('intcomm_ideas_images', function (Blueprint $table) {
+        Schema::table('insideemu_ideas_images', function (Blueprint $table) {
 						$table->string('description', 255)->nullable();
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('intcomm_ideas_images', function (Blueprint $table) {
+        Schema::table('insideemu_ideas_images', function (Blueprint $table) {
 						$table->dropColumn('description');
         });
     }

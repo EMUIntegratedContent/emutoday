@@ -21,7 +21,7 @@
 <script>
 import store from '../../../vuex/insideemu_store'
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex"
-import InisdeemuPostImage from './InisdeemuPostImage.vue'
+import InsideemuPostImage from './InsideemuPostImage.vue'
 
 export default {
   mixins: [],
@@ -29,8 +29,8 @@ export default {
 
   },
   components: {
-    InisdeemuPostImage,
-    inisdeemu_store: store
+    InsideemuPostImage,
+    insideemu_store: store
   },
   emits: ['imageUpdated'],
   created () {

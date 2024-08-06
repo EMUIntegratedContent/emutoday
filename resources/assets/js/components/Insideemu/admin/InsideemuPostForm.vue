@@ -254,14 +254,14 @@ import moment from 'moment'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex"
-import { ckeditorInisdeemuMixin } from '../../ckeditor_insideemu_config'
-import InisdeemuPostImages from './InsideemuPostImages.vue'
+import { ckeditorInsideemuMixin } from '../../ckeditor_insideemu_config'
+import InsideemuPostImages from './InsideemuPostImages.vue'
 import { slashdatetime } from '../../filters'
-import InisdeemuIdeaImages from '../public/InisdeemuIdeaImages.vue'
-import InisdeemuPostImage from './InisdeemuPostImage.vue'
+import InsideemuIdeaImages from '../public/InsideemuIdeaImages.vue'
+import InsideemuPostImage from './InsideemuPostImage.vue'
 
 export default {
-  mixins: [ckeditorInisdeemuMixin],
+  mixins: [ckeditorInsideemuMixin],
   props: {
     newForm: {
       type: Boolean,
@@ -273,9 +273,9 @@ export default {
     }
   },
   components: {
-    InisdeemuIdeaImages,
-    InisdeemuPostImages,
-    InisdeemuPostImage,
+    InsideemuIdeaImages,
+    InsideemuPostImages,
+    InsideemuPostImage,
     flatpickr,
     insideemu_store: store
   },

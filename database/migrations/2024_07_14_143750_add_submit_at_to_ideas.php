@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('intcomm_ideas', function (Blueprint $table) {
+        Schema::table('insideemu_ideas', function (Blueprint $table) {
 					$table->dateTime('submitted_at')->nullable()->after('contributor_netid');
 					$table->dropColumn('is_submitted');
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('intcomm_ideas', function (Blueprint $table) {
+        Schema::table('insideemu_ideas', function (Blueprint $table) {
             $table->dropColumn('submitted_at');
 						$table->tinyInteger('is_submitted')->default(0)->after('contributor_netid');
         });

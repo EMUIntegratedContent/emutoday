@@ -11,7 +11,6 @@
             </div>
             <div class="large-9 medium-9 small-12 columns">
                 @if($user)
-                    <p>Hello, {{ $user }}</p>
                     <div id="vue-insideemu-user-idea-form">
                         <insideemu-idea-user-form
                             netid="{{$user}}"

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-			Schema::table('intcomm_ideas', function (Blueprint $table) {
+			Schema::table('insideemu_ideas', function (Blueprint $table) {
 				$table->renameColumn('contributor', 'contributor_netid');
 			});
 
-			Schema::table('intcomm_ideas', function (Blueprint $table) {
+			Schema::table('insideemu_ideas', function (Blueprint $table) {
 				$table->string('contributor_first', 40)->nullable();
 				$table->string('contributor_last', 40)->nullable();
 			});
@@ -26,11 +26,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-			Schema::table('intcomm_ideas', function (Blueprint $table) {
+			Schema::table('insideemu_ideas', function (Blueprint $table) {
 				$table->renameColumn('contributor_netid', 'contributor');
 			});
 
-			Schema::table('intcomm_ideas', function (Blueprint $table) {
+			Schema::table('insideemu_ideas', function (Blueprint $table) {
 				$table->dropColumn('contributor_first');
 				$table->dropColumn('contributor_last');
 			});

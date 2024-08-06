@@ -91,7 +91,19 @@ class InsideemuPostController extends ApiController{
 		$user = auth()->user();
 		if ($user->canApproveInsideemuPosts()) {
 			$adminStatus = $post['admin_status'];
-			$isHubPost = $adminStatus === 'Approved' ? $post['is_hub_post'] : 0;
+			if($adminStatus === 'Approved'){
+				$isHubPost = $post['is_hub_post'];
+			} else {
+				$isHubPost = 0;
+			}
+			if($isHubPost) {
+				// Remove hub status from all other posts
+				$hubPosts = $this->post->where('id', '<>', $postId)->where('is_hub_post', 1)->get();
+				foreach($hubPosts as $hubPost){
+					$hubPost->is_hub_post = 0;
+					$hubPost->save();
+				}
+			}
 		} else {
 			$adminStatus = 'Pending';
 			$isHubPost = 0;
@@ -147,7 +159,19 @@ class InsideemuPostController extends ApiController{
 		$user = auth()->user();
 		if ($user->canApproveInsideemuPosts()) {
 			$adminStatus = $postArr['admin_status'];
-			$isHubPost = $adminStatus === 'Approved' ? $postArr['is_hub_post'] : 0;
+			if($adminStatus === 'Approved'){
+				$isHubPost = $postArr['is_hub_post'];
+			} else {
+				$isHubPost = 0;
+			}
+			if($isHubPost) {
+				// Remove hub status from all other posts
+				$hubPosts = $this->post->where('id', '<>', $postId)->where('is_hub_post', 1)->get();
+				foreach($hubPosts as $hubPost){
+					$hubPost->is_hub_post = 0;
+					$hubPost->save();
+				}
+			}
 		} else {
 			$adminStatus = 'Pending';
 			$isHubPost = 0;
@@ -276,7 +300,7 @@ class InsideemuPostController extends ApiController{
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function getPostImageTypes(){
-		$types = Imagetype::where('group', 'insideemupost')->get(); // get email image types
+		$types = Imagetype::where('group', 'insideemu')->get(); // get email image types
 		return response()->json($types);
 	}
 }

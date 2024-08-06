@@ -21,7 +21,7 @@ const vuetify = createVuetify({
 })
 
 const app = createApp({
-    components: { InisdeemuPostForm }
+    components: { InsideemuPostForm }
 })
 app.use(store)
 app.use(vuetify)

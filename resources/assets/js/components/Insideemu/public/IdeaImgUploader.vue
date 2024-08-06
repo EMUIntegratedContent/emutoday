@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>
-      Please include any images that should be considered along with this idea.<br>
+      Please include any images that should be considered along with this submission.<br>
       <span class="font-weight-bold">The minimum accepted resolution for images is 412px by 248 px.<br>Image size may not exceed 2 MB.</span>
     </p>
     <v-file-input
@@ -17,8 +17,6 @@
 </template>
 <script>
 import store from '../../../vuex/insideemu_store'
-import moment from 'moment'
-import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import IdeaImage from './IdeaImage.vue'
 import { mapMutations, mapState } from "vuex"

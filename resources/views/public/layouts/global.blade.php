@@ -131,7 +131,7 @@
 
               <div class="row">
 
-                <div class="large-7 medium-6 small-12 columns">
+                <div class="large-5 medium-6 small-12 columns">
                   <h1><a href="/hub">EMU <span style="color:#000000;">Today</span></a></h1>
                   <div class="hide-for-large">
                     <img src="/assets/imgs/emu175/emu-175-green-logo.png" alt="EMU 175th Anniversary logo"
@@ -154,7 +154,7 @@
                 </div>
 
 
-                <div class="large-5 medium-6 columns show-for-large text text-right">
+                <div class="large-7 medium-6 columns show-for-large text text-right">
                                     <span class="smaller"><a title="Subscribe to EMU Today" href="/subscribe">Subscribe to EMU Today</a> | <a
                                           href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a
                                           href="{{ url('/announcement/form') }}">Submit an Announcement</a> | <a

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-			Schema::table('intcomm_posts', function (Blueprint $table) {
+			Schema::table('insideemu_posts', function (Blueprint $table) {
 				$table->dropColumn('status');
 			});
 
-			Schema::table('intcomm_posts', function (Blueprint $table) {
+			Schema::table('insideemu_posts', function (Blueprint $table) {
 				$table->enum('admin_status', ['Pending', 'Approved', 'Denied'])->default('Pending');
 			});
     }
@@ -25,11 +25,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-			Schema::table('intcomm_posts', function (Blueprint $table) {
+			Schema::table('insideemu_posts', function (Blueprint $table) {
 				$table->dropColumn('admin_status');
 			});
 
-			Schema::table('intcomm_posts', function (Blueprint $table) {
+			Schema::table('insideemu_posts', function (Blueprint $table) {
 				$table->enum('status', ['Pending', 'Approved', 'Denied'])->default('Pending');
 			});
     }

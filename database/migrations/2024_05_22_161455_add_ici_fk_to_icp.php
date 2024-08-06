@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('intcomm_posts', function (Blueprint $table) {
-            // Add foreign key to intcomm_ideas table
-						$table->unsignedBigInteger('intcomm_idea_id')->nullable();
-						$table->foreign('intcomm_idea_id')->references('id')->on('intcomm_ideas')->onDelete('SET NULL');
+        Schema::table('insideemu_posts', function (Blueprint $table) {
+            // Add foreign key to insideemu_ideas table
+						$table->unsignedBigInteger('insideemu_idea_id')->nullable();
+						$table->foreign('insideemu_idea_id')->references('id')->on('insideemu_ideas')->onDelete('SET NULL');
         });
     }
 
@@ -23,9 +23,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('intcomm_posts', function (Blueprint $table) {
-            // Drop foreign key to intcomm_ideas table
-						$table->dropForeign(['intcomm_idea_id']);
+        Schema::table('insideemu_posts', function (Blueprint $table) {
+            // Drop foreign key to insideemu_ideas table
+						$table->dropForeign(['insideemu_idea_id']);
         });
     }
 };

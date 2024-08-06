@@ -1,5 +1,5 @@
 import { createApp } from "vue"
-import InisdeemuUserIdeas from "./components/Inisdeemu/public/InisdeemuUserIdeas.vue"
+import InsideemuUserIdeas from "./components/Insideemu/public/InsideemuUserIdeas.vue"
 import axios from "axios"
 import store from './vuex/insideemu_store'
 import CKEditor from '@ckeditor/ckeditor5-vue'
@@ -21,7 +21,7 @@ const vuetify = createVuetify({
 })
 
 const app = createApp({
-    components: { InisdeemuUserIdeas }
+    components: { InsideemuUserIdeas }
 })
 app.use(store)
 app.use(vuetify)

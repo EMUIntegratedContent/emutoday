@@ -25,7 +25,7 @@ class InsideemuController extends Controller{
 		// Retrieve the IDs of the required image types
 		$requiredImageTypeIds = Imagetype::select('id')
 			->where('is_required', 1)
-			->where('group', 'insideemupost')
+			->where('group', 'insideemu')
 			->pluck('id')
 			->toArray();
 

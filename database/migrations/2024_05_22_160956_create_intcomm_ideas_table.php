@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('intcomm_ideas', function (Blueprint $table) {
+        Schema::create('insideemu_ideas', function (Blueprint $table) {
 					$table->id();
 					$table->string('title', 255);
 					$table->string('teaser', 100)->nullable();
 					$table->text('content')->nullable();
 					$table->string('submitted_by', 8)->nullable();
 					$table->enum('status', ['Draft', 'Submitted'])->default('Draft');
-//						$table->foreign('decision_by')->references('id')->on('users')->onDelete('SET NULL');
 					$table->timestamps();
         });
     }
@@ -28,7 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('intcomm_ideas', function (Blueprint $table) {
+        Schema::dropIfExists('insideemu_ideas', function (Blueprint $table) {
             //
         });
     }

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('intcomm_ideas', function (Blueprint $table) {
+        Schema::table('insideemu_ideas', function (Blueprint $table) {
 					$table->tinyInteger('use_other_source')->default(0)->after('contributor_last');
 					$table->string('other_source')->nullable()->after('contributor_last');
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('intcomm_ideas', function (Blueprint $table) {
+        Schema::table('insideemu_ideas', function (Blueprint $table) {
           $table->dropColumn('use_other_source');
 					$table->dropColumn('other_source');
         });

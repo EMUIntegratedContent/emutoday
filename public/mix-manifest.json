@@ -1,7 +1,14 @@
 {
-    "/js/vue-email-form.js": "/js/vue-email-form.js",
-    "/js/admin-emucustom.js": "/js/admin-emucustom.js",
-    "/css/public-styles.css": "/css/public-styles.css?id=034e9586e55cdb7a41c1142a22f0f36b",
+    "/js/vue-email-form.js": "/js/vue-email-form.js?id=758da7f1810afdd0b365fa862fd5c21c",
+    "/js/vue-insideemu-queue.js": "/js/vue-insideemu-queue.js?id=4c39aaaece24e25df449786b419ee1f9",
+    "/js/vue-insideemu-post-form.js": "/js/vue-insideemu-post-form.js?id=55a4ef01a00ef57a60bf9deb888210b7",
+    "/js/vue-insideemu-user-idea-form.js": "/js/vue-insideemu-user-idea-form.js?id=187f557d95e6e4b1c95afbd52fcb4039",
+    "/js/vue-insideemu-user-ideas.js": "/js/vue-insideemu-user-ideas.js?id=23eabbc92f6e906133c161afe828b133",
+    "/js/vue-insideemu-admin-dashboard.js": "/js/vue-insideemu-admin-dashboard.js?id=4a254f185c2a67a50a83fa3f001d67f2",
+    "/js/vue-insideemu-admin-idea-view.js": "/js/vue-insideemu-admin-idea-view.js?id=cf4cd26ff2e9cc50fb56a43a8fb8c844",
+    "/js/vue-insideemu-ideas-queue.js": "/js/vue-insideemu-ideas-queue.js?id=3cae897ac76584da7aefa391a2198410",
+    "/js/admin-emucustom.js": "/js/admin-emucustom.js?id=b53a3485ef3fa04ce74f580fea32b841",
+    "/css/public-styles.css": "/css/public-styles.css?id=41d893ee8036979a7c70afc777875d2c",
     "/js/public-scripts.js": "/js/public-scripts.js?id=83de610ed18549969120a1a41921e8bf",
-    "/css/admin-styles.css": "/css/admin-styles.css?id=e2a56c6acc762efc9bd8d227ed9417f6"
+    "/css/admin-styles.css": "/css/admin-styles.css?id=641cb549378fad6c57d2d4573ae3a51d"
 }

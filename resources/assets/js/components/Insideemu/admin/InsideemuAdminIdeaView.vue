@@ -4,16 +4,16 @@
     <v-row>
       <v-col cols="12">
         <v-card>
-          <v-toolbar density="compact" color="grey-darken-3" title="Idea Submission Details"></v-toolbar>
+          <v-toolbar density="compact" color="grey-darken-3" title="Submission Details"></v-toolbar>
           <v-card-text>
             <v-row>
               <v-col cols="12">
-                <v-alert v-if="itemDeleted" class="mb-3" color="error" icon="mdi-delete" density="compact">This idea has
+                <v-alert v-if="itemDeleted" class="mb-3" color="error" icon="mdi-delete" density="compact">This submission has
                   been deleted.
                 </v-alert>
-                <v-alert v-if="idea.archived && !itemDeleted" class="mb-3" type="warning" density="compact">This idea
+                <v-alert v-if="idea.archived && !itemDeleted" class="mb-3" type="warning" density="compact">This submission
                   has been archived.
-                  It will not show in the ideas list.
+                  It will not show in the list.
                 </v-alert>
                 <v-alert v-if="isErr" class="mb-3" type="error" density="compact">{{ errorMsg }}</v-alert>
               </v-col>
@@ -47,13 +47,6 @@
                             </v-list-item-subtitle>
                           </v-list-item>
 
-                          <v-list-item>
-                            <v-list-item-title>Suggested Teaser</v-list-item-title>
-
-                            <v-list-item-subtitle>
-                              {{ idea.teaser ? idea.teaser : 'No suggested teaser provided' }}
-                            </v-list-item-subtitle>
-                          </v-list-item>
                           <v-list-item>
                             <v-list-item-title>Contributor</v-list-item-title>
 
@@ -97,7 +90,7 @@
               </v-col>
             </v-row>
             <InsideemuIdeaImages></InsideemuIdeaImages>
-            <v-alert v-if="postMade" type="success" density="compact" class="my-2">Idea has been successfully converted
+            <v-alert v-if="postMade" type="success" density="compact" class="my-2">Submission has been successfully converted
               into a post. See 'Associated Posts' below.
             </v-alert>
           </v-card-text>
@@ -106,12 +99,12 @@
               Convert to Post
             </v-btn>
             <v-btn v-if="!idea.archived" :loading="archivingIdea" variant="outlined" color="warning"
-                   @click="archiveIdea">Archive Idea
+                   @click="archiveIdea">Archive Submission
             </v-btn>
             <v-btn v-else :loading="unarchivingIdea" color="warning" variant="elevated" @click="unarchiveIdea">Reinstate
-              Idea
+              Submission
             </v-btn>
-            <v-btn :loading="deletingIdea" color="error" variant="outlined" @click="deleteIdea">Delete Idea</v-btn>
+            <v-btn :loading="deletingIdea" color="error" variant="outlined" @click="deleteIdea">Delete Submission</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -131,7 +124,7 @@
                 <a :href="`/admin/insideemu/posts/${item.postId}/edit`">{{ item.title }}</a>
               </template>
               <template #no-data>
-                No associated posts for this idea.
+                No associated posts for this submission.
               </template>
               <template #bottom></template>
             </v-data-table>
@@ -253,7 +246,7 @@ export default {
       })
     },
     async archiveIdea () {
-      if (!confirm('Archived ideas will no longer show in the ideas list. Are you sure you want to archive this idea?')) {
+      if (!confirm('Archived submissions will no longer show in the list. Are you sure you want to archive this submission?')) {
         return
       }
       this.isErr = false
@@ -287,7 +280,7 @@ export default {
       })
     },
     async deleteIdea () {
-      if (!confirm('Deleting an idea will also delete it for the original contributor. If you want the contributor to still see their idea, set the Admin Status to "Not Considering" instead. Are you sure you want to delete this idea?')) {
+      if (!confirm('Deleting a submission will also delete it for the original contributor. If you want the contributor to still see their submission, set the Admin Status to "Not Considering" instead. Are you sure you want to delete this submission?')) {
         return
       }
       this.deletingIdea = true
@@ -300,7 +293,7 @@ export default {
       })
       .catch(() => {
         this.isErr = true
-        this.errorMsg = 'Error deleting idea.'
+        this.errorMsg = 'Error deleting submission.'
       })
     }
   }

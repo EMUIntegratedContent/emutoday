@@ -15,7 +15,7 @@
                 v-else
                 v-for="(image, i) in ideaImages"
                 :key="`img-${image.id}`"
-                class="d-flex child-flex bg-danger"
+                class="d-flex child-flex"
                 :cols="colsPerImg"
             >
               <IdeaImage :key="`img-dialog-${i}`" :index="i" :editMode="editMode" :mode="mode" @imageUpdated="$emit('imagesUpdated')" @ideaImgCopied="$emit('ideaImgCopied')"></IdeaImage>

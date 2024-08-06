@@ -9,10 +9,10 @@ return new class extends Migration{
 	 * Run the migrations.
 	 */
 	public function up(): void{
-		Schema::create('intcomm_ideas_images', function (Blueprint $table){
+		Schema::create('insideemu_ideas_images', function (Blueprint $table){
 			$table->id();
-			$table->unsignedBigInteger('intcomm_idea_id')->nullable();
-			$table->foreign('intcomm_idea_id')->references('id')->on('intcomm_ideas')->onDelete('SET NULL');
+			$table->unsignedBigInteger('insideemu_idea_id')->nullable();
+			$table->foreign('insideemu_idea_id')->references('id')->on('insideemu_ideas')->onDelete('SET NULL');
 			$table->string('image_name', 255);
 			$table->string('image_path', 255);
 			$table->timestamps();
@@ -23,6 +23,6 @@ return new class extends Migration{
 	 * Reverse the migrations.
 	 */
 	public function down(): void{
-		Schema::dropIfExists('intcomm_ideas_images');
+		Schema::dropIfExists('insideemu_ideas_images');
 	}
 };

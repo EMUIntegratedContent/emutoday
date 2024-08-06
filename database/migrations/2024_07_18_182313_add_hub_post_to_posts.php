@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-			Schema::table('intcomm_posts', function (Blueprint $table) {
+			Schema::table('insideemu_posts', function (Blueprint $table) {
 				$table->tinyInteger('is_hub_post')->default(0);
 			});
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('intcomm_posts', function (Blueprint $table) {
+        Schema::table('insideemu_posts', function (Blueprint $table) {
             $table->dropColumn('is_hub_post');
         });
     }

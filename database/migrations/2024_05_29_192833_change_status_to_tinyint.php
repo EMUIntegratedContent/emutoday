@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-			  Schema::table('intcomm_ideas', function (Blueprint $table) {
+			  Schema::table('insideemu_ideas', function (Blueprint $table) {
 					$table->dropColumn('status');
 					$table->renameColumn('submitted_by', 'contributor');
 				});
 
-        Schema::table('intcomm_ideas', function (Blueprint $table) {
+        Schema::table('insideemu_ideas', function (Blueprint $table) {
 					$table->tinyInteger('is_submitted')->default(0);
 					$table->enum('admin_status', ['New', 'Viewed', 'Not Considering', 'Considering', 'Done'])->default('New');
 				});
@@ -27,12 +27,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-				Schema::table('intcomm_ideas', function (Blueprint $table) {
+				Schema::table('insideemu_ideas', function (Blueprint $table) {
 					$table->dropColumn('admin_status');
 					$table->renameColumn('contributor', 'submitted_by');
 				});
 
-        Schema::table('intcomm_ideas', function (Blueprint $table) {
+        Schema::table('insideemu_ideas', function (Blueprint $table) {
 					$table->dropColumn('is_submitted');
 					$table->enum('status', ['Draft', 'Submitted'])->default('Draft');
         });

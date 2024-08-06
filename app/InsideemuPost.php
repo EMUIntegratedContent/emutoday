@@ -30,7 +30,7 @@ class InsideemuPost extends Model{
 	 * - Have content
 	 * - Be approved by an admin
 	 * - Be within the start and end date
-	 * - Have all required images (imagetypes.is_required == 1)
+	 * - TODO Have all required images (imagetypes.is_required == 1)
 	 * @return bool;
 	 */
 	public function postIsLive(): bool{

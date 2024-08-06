@@ -4,7 +4,7 @@
       <v-card-text>
         <p><strong>Submission Guidelines</strong></p>
         <ul>
-          <li>Ideas must involve an official EMU unit or have a direct connection to the University.</li>
+          <li>Submissions must involve an official EMU unit or have a direct connection to the University.</li>
           <li>Entries must be received by <mark>Tuesday at noon</mark> in order to be considered for inclusion in <span style="font-style: italic">The Week at EMU</span> email, which comes out on Wednesday.</li>
           <li>Keep all entries concise (500 words maximum).</li>
           <li>Include a descriptive headline; date, time, and place; a brief description of the event, award, or story; any deadlines or RSVP dates; and a contact name and email address.</li>
@@ -24,7 +24,7 @@
                   density="compact"
                   type="info"
                   class="mb-4"
-              >This is a draft. Please click the "Submit Idea" button to finalize your idea.</v-alert>
+              >This is a draft. Please click the "Confirm Submission" button to finalize your entry.</v-alert>
               <v-text-field
                   v-model="idea.title"
                   variant="outlined"
@@ -37,16 +37,6 @@
                 </template>
               </v-text-field>
             </v-col>
-<!--            <v-col cols="12">-->
-<!--              <v-text-field-->
-<!--                  v-model="idea.teaser"-->
-<!--                  variant="outlined"-->
-<!--                  density="compact"-->
-<!--                  label="Teaser"-->
-<!--                  @update:modelValue="formModified = true"-->
-<!--              >-->
-<!--              </v-text-field>-->
-<!--            </v-col>-->
             <v-col cols="12">
               <v-textarea
                     v-model="idea.content"
@@ -58,7 +48,7 @@
                     @update:modelValue="formModified = true"
                 >
                   <template #label>
-                    Your idea <span class="text-error">*</span>
+                    Submission Body <span class="text-error">*</span>
                   </template>
               </v-textarea>
             </v-col>
@@ -104,7 +94,7 @@
                   variant="outlined"
                   density="compact"
                   persistent-hint
-                  hint="By default, your name will be displayed as the source of this idea. If you would like to credit another source, please provide that here."
+                  hint="By default, you will be credited for this submission. If you would like to credit another source, please provide that here."
                   :rules="[v => !!v || 'Other source is required. If you do not wish to credit another source, please uncheck the box above.']"
                   @update:modelValue="formModified = true">
                 <template #label>
@@ -115,8 +105,8 @@
           </v-row>
           <InsideemuIdeaImages @imagesUpdated="formModified = true" :editMode="true"></InsideemuIdeaImages>
           <v-alert v-if="formModified && !showSuccess && !errSaving" type="info" color="warning" density="compact" class="my-2">You have unsaved changes.</v-alert>
-          <v-alert v-if="errSaving" type="error" density="compact" class="my-2">Your idea could not be saved.</v-alert>
-          <v-alert v-if="showSuccess" type="success" density="compact" class="my-2">Your idea has been saved.</v-alert>
+          <v-alert v-if="errSaving" type="error" density="compact" class="my-2">Your submission could not be saved.</v-alert>
+          <v-alert v-if="showSuccess" type="success" density="compact" class="my-2">Your submission has been saved.</v-alert>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -126,7 +116,7 @@
               color="#036937"
               class="mr-2"
               :loading="savingIdea"
-          >Submit Idea
+          >Confirm Submission
           </v-btn>
           <v-btn
               type="submit"
@@ -174,11 +164,11 @@
                 <span v-else>{{ idea.contributor_fullname }}</span>
               </div>
               <p>
-                Note: Submitted ideas are subject to review and may be edited for clarity and length. Ideas are not editable once submitted.
+                Note: Submissions are subject to review and may be edited for clarity and length. Entries are not editable once submitted.
               </p>
             </v-col>
           </v-row>
-          <InisdeemuIdeaImages></InisdeemuIdeaImages>
+          <InsideemuIdeaImages></InsideemuIdeaImages>
         </v-card-text>
       </template>
     </v-card>
@@ -191,12 +181,12 @@ import store from '../../../vuex/insideemu_store'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import { mapMutations, mapState } from "vuex"
-import { ckeditorInisdeemuMixin } from '../../ckeditor_inisdeemu_config'
+import { ckeditorInsideemuMixin } from '../../ckeditor_insideemu_config'
 import { slashdate } from '../../filters'
-import InisdeemuIdeaImages from './InisdeemuIdeaImages.vue'
+import InsideemuIdeaImages from './InsideemuIdeaImages.vue'
 
 export default {
-  mixins: [ckeditorInisdeemuMixin],
+  mixins: [ckeditorInsideemuMixin],
   props: {
     netid: {
       type: String,
@@ -208,7 +198,7 @@ export default {
     }
   },
   components: {
-    InisdeemuIdeaImages,
+    InsideemuIdeaImages,
     flatpickr,
     insideemu_store: store
   },
@@ -281,7 +271,7 @@ export default {
           alert('Please fill out all required fields.')
           return
         }
-        if(!confirm('Are you sure you are ready to submit this idea? Ideas are not editable once submitted.')) return
+        if(!confirm('Are you sure you are ready to submit this entry? Submissions are not editable once submitted.')) return
         this.savingIdea = true
       } else {
         if(!this.idea.title || !this.idea.contributor_first || !this.idea.contributor_last) {
