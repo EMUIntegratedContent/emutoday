@@ -275,13 +275,13 @@
                   </div>
                 </td>
               </tr>
-              <tr v-if="!emailBuilderEmail.exclude_inside_posts">
+              <tr v-if="!emailBuilderEmail.exclude_insideemu">
                 <td valign="middle">
                   <div style="padding-top: 5px;">
                     <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/insideemu">Inside EMU &#10137;</a></h2>
-                    <template v-if="emailBuilderEmail.insidePosts.length > 0">
+                    <template v-if="emailBuilderEmail.insideemuPosts.length > 0">
                       <ul style="padding-bottom: 0px; margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
-                        <li v-for="post in emailBuilderEmail.insidePosts"
+                        <li v-for="post in emailBuilderEmail.insideemuPosts"
                             style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                           <a style="text-decoration: none;" :href="post.full_url">{{ post.title }}</a>
                         </li>

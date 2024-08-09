@@ -39,6 +39,7 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
             'announcements' => $email->announcements()->orderBy('email_announcement.order', 'asc')->get(),
             'events' => $email->events()->orderBy('email_event.order', 'asc')->get(),
             'otherStories' => $otherStories['data'],
+						'insideemuPosts' => $email->insideemuPosts()->orderBy('email_insideemu.order', 'asc')->get(),
             'send_at' => $sendAt,
             'recipients' => $email->recipients()->get(),
             'is_sent' => $email->is_sent,

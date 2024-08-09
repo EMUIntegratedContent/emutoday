@@ -31,7 +31,7 @@ export const emailMixin = {
 			'setEmailBuilderEmailProp',
 			'updateAnnouncementsOrder',
 			'updateEventsOrder',
-			'updateInsidePostsOrder',
+			'updateInsideemuPostsOrder',
 			'updateMainStoriesOrder',
 			'updateOtherStoriesOrder'
 		])

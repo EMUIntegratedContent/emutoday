@@ -84,6 +84,7 @@ class EmailController extends ApiController
       $email->send_at = $sendAt;
       $email->is_president_included = $request->get('is_president_included', 0);
       $email->exclude_events = $request->get('exclude_events', 0);
+			$email->exclude_insideemu = $request->get('exclude_insideemu', 0);
       $email->president_teaser = $request->get('president_teaser', null);
       $email->president_url = $request->get('president_url', null);
 
@@ -124,6 +125,15 @@ class EmailController extends ApiController
           $otherStoryCount++;
         }
         $email->stories()->sync($otherStoryIds);
+
+				// Sync Inside EMU posts
+				$insideemuPostCount = 0;
+				$postIds = array();
+				foreach ($request->get('insideemuPosts') as $insidePost) {
+					$postIds[$insidePost['postId']] = ['order' => $insideemuPostCount];
+					$insideemuPostCount++;
+				}
+				$email->insideemuPosts()->sync($postIds);
 
         // Sync recipients
         $recipientIds = array();
@@ -185,6 +195,7 @@ class EmailController extends ApiController
       $email->send_at = $sendAt;
       $email->is_president_included = $request->get('is_president_included', 0);
       $email->exclude_events = $request->get('exclude_events', 0);
+			$email->exclude_insideemu = $request->get('exclude_insideemu', 0);
       $email->president_teaser = $request->get('president_teaser', null);
       $email->president_url = $request->get('president_url', null);
       $email->is_emu175_included = $request->get('is_emu175_included', 0);
@@ -227,6 +238,15 @@ class EmailController extends ApiController
         $otherStoryCount++;
       }
       $email->stories()->sync($otherStoryIds);
+
+			// Sync Inside EMU posts
+			$insideemuPostCount = 0;
+			$postIds = array();
+			foreach ($request->get('insideemuPosts') as $insidePost) {
+				$postIds[$insidePost['postId']] = ['order' => $insideemuPostCount];
+				$insideemuPostCount++;
+			}
+			$email->insideemuPosts()->sync($postIds);
 
       // Sync recipients
       $recipientIds = array();
@@ -273,17 +293,16 @@ class EmailController extends ApiController
     if ($validation->passes()) {
       $email = new Email;
 
-      $sendAt = null;
-      if ($request->get('send_at') != null) {
-        $sendAt = \Carbon\Carbon::parse($request->get('send_at'));
-      }
-
       $email->title = $request->get('title');
       $email->subheading = $request->get('subheading', null);
       $email->is_president_included = $request->get('is_president_included', 0);
       $email->exclude_events = $request->get('exclude_events', 0);
+			$email->exclude_insideemu = $request->get('exclude_insideemu', 0);
       $email->president_teaser = $request->get('president_teaser', null);
       $email->president_url = $request->get('president_url', null);
+			$email->is_emu175_included = $request->get('is_emu175_included', 0);
+			$email->emu175_teaser = $request->get('emu175_teaser', null);
+			$email->emu175_url = $request->get('emu175_url', null);
       $email->clone_email_id = $request->get('id'); // mark from which email this one was cloned
 
       if ($email->save()) {
@@ -323,6 +342,15 @@ class EmailController extends ApiController
           $otherStoryCount++;
         }
         $email->stories()->sync($otherStoryIds);
+
+				// Sync Inside EMU posts
+				$insideemuPostCount = 0;
+				$postIds = array();
+				foreach ($request->get('insideemuPosts') as $insidePost) {
+					$postIds[$insidePost['postId']] = ['order' => $insideemuPostCount];
+					$insideemuPostCount++;
+				}
+				$email->insideemuPosts()->sync($postIds);
 
         $fractal = new Manager();
         $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
@@ -420,7 +448,7 @@ class EmailController extends ApiController
 	 * @param $toDate
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function getAllEmailReadyInsidePosts(Request $request, $fromDate = null, $toDate = null): \Illuminate\Http\JsonResponse {
+	public function getAllEmailReadyInsideemuPosts(Request $request, $fromDate = null, $toDate = null): \Illuminate\Http\JsonResponse {
 		// Only want posts that are live
 		if ($fromDate && !$toDate) {
 			$posts = $this->insideemuPost->where([['start_date', '>=', $fromDate]])->orderBy('start_date', 'desc')->get();
@@ -505,7 +533,7 @@ class EmailController extends ApiController
         ($email->mainstories()->count() == 1 || $email->mainstories()->count() == 3) &&
         $email->announcements()->first() &&
         ($email->events()->first() || $email->exclude_events) &&
-				($email->insidePosts()->first() || $email->exclude_inside_posts) &&
+				($email->insideemuPosts()->first() || $email->exclude_insideemu) &&
         $email->stories()->first() &&
         $email->recipients()->first() &&
         \Carbon\Carbon::parse($email->send_at) >= date('Y-m-d H:i:s') &&

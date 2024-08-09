@@ -135,9 +135,9 @@ export default {
   },
   computed: {
     isPost: function () {
-      if (this.emailBuilderEmail.insidePosts) {
-        for (let i = 0; i < this.emailBuilderEmail.insidePosts.length; i++) {
-          if (this.emailBuilderEmail.insidePosts[i].postId == this.item.postId) {
+      if (this.emailBuilderEmail.insideemuPosts) {
+        for (let i = 0; i < this.emailBuilderEmail.insideemuPosts.length; i++) {
+          if (this.emailBuilderEmail.insideemuPosts[i].postId == this.item.postId) {
             this.checked = true
             return true
           }

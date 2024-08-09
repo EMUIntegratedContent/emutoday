@@ -103,9 +103,9 @@
                     ({{ emailBuilderEmail.events.length }})</a>
                   </li>
                   <li :class="{ 'active' : activeSubTab === 5 }"><a href="#insidePosts" role="tab" data-toggle="tab"
-                                                                   :class="emailBuilderEmail.insidePosts.length < 1 && !emailBuilderEmail.exclude_inside_posts ? 'insufficient' : ''"
+                                                                   :class="emailBuilderEmail.insideemuPosts.length < 1 && !emailBuilderEmail.exclude_insideemu ? 'insufficient' : ''"
                                                                    @click="activeSubTab = 5">Inside EMU
-                    ({{ emailBuilderEmail.insidePosts.length }})</a>
+                    ({{ emailBuilderEmail.insideemuPosts.length }})</a>
                   </li>
                   <li :class="{ 'active' : activeSubTab === 6 }"><a href="#president" role="tab" data-toggle="tab"
                                                                    :class="emailBuilderEmail.is_president_included && (!emailBuilderEmail.president_url || !emailBuilderEmail.president_teaser) ? 'insufficient' : ''"
@@ -135,7 +135,7 @@
                     <email-event-queue></email-event-queue>
                   </div>
                   <div class="tab-pane" id="insidePosts">
-                    <email-inside-posts-queue></email-inside-posts-queue>
+                    <email-insideemu-posts-queue></email-insideemu-posts-queue>
                   </div>
                   <div class="tab-pane" id="president">
                     <div class="row">
@@ -518,7 +518,7 @@ import EmailStoryQueue from './EmailStoryQueue.vue'
 import { emailMixin } from './email_mixin'
 import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
 import EmailEventQueue from './EmailEventQueue.vue'
-import EmailInsidePostsQueue from './EmailInsidePostsQueue.vue'
+import EmailInsideemuPostsQueue from './EmailInsideemuPostsQueue.vue'
 import EmailDeleteModal from './EmailDeleteModal.vue'
 import EmailStatsModal from './EmailStatsModal.vue'
 import EmailCloneModal from './EmailCloneModal.vue'
@@ -533,7 +533,7 @@ export default {
     EmailStoryQueue,
     EmailAnnouncementQueue,
     EmailEventQueue,
-    EmailInsidePostsQueue,
+    EmailInsideemuPostsQueue,
     EmailLiveView,
     EmailDeleteModal,
     EmailStatsModal,
@@ -704,7 +704,7 @@ export default {
       if(this.emailBuilderEmail.exclude_events) {
         steps -= 1
       }
-      if(this.emailBuilderEmail.exclude_inside_posts) {
+      if(this.emailBuilderEmail.exclude_insideemu) {
         steps -= 1
       }
 
@@ -718,8 +718,8 @@ export default {
       if(!this.emailBuilderEmail.exclude_events) {
         this.emailBuilderEmail.events.length > 0 ? progress += stepValue : ''
       }
-      if(!this.emailBuilderEmail.exclude_inside_posts) {
-        this.emailBuilderEmail.insidePosts.length > 0 ? progress += stepValue : ''
+      if(!this.emailBuilderEmail.exclude_insideemu) {
+        this.emailBuilderEmail.insideemuPosts.length > 0 ? progress += stepValue : ''
       }
       if(this.emailBuilderEmail.is_president_included) {
         this.emailBuilderEmail.president_teaser ? progress += stepValue : ''
@@ -796,6 +796,7 @@ export default {
           this.onRefresh();
         }
       }).catch((e) => {
+        console.log(e)
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;
         this.formErrors = e.response.data.error.message;

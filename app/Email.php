@@ -23,7 +23,7 @@ class Email extends Model
       'send_at',
       'is_president_included',
       'exclude_events',
-			'exclude_inside_posts',
+			'exclude_insideemu',
       'president_teaser',
       'president_url',
       'is_emu175_included',
@@ -44,8 +44,8 @@ class Email extends Model
     return $this->belongsToMany('Emutoday\Event', 'email_event')->withPivot('order')->orderBy('order')->withTimestamps();
   }
 
-	public function insidePosts() {
-		return $this->belongsToMany('Emutoday\InsideemuPost', 'email_inside_post')->withPivot('order')->orderBy('order')->withTimestamps();
+	public function insideemuPosts() {
+		return $this->belongsToMany('Emutoday\InsideemuPost', 'email_insideemu')->withPivot('order')->orderBy('order')->withTimestamps();
 	}
 
   /**

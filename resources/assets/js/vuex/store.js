@@ -5,7 +5,7 @@ const defaultEmail = {
 	clone: [],
 	created_at: null,
 	exclude_events: 0,
-	exclude_inside_posts: 0,
+	exclude_insideemu: 0,
 	is_approved: false,
 	is_president_included: false,
 	is_emu175_included: false,
@@ -25,7 +25,7 @@ const defaultEmail = {
 	events: [],
 	mainStories: [],
 	otherStories: [],
-	insidePosts: [],
+	insideemuPosts: [],
 	recipients: []
 }
 
@@ -94,7 +94,7 @@ const mutations = {
 		state.emailBuilderEmail.events.push(event)
 	},
 	addInsidePost (state, post) {
-		state.emailBuilderEmail.insidePosts.push(post)
+		state.emailBuilderEmail.insideemuPosts.push(post)
 	},
 	addMainStory (state, story) {
 		state.emailBuilderEmail.mainStories.push(story)
@@ -119,11 +119,11 @@ const mutations = {
 		}
 	},
 	removeInsidePost (state, postId) {
-		const posts = JSON.parse(JSON.stringify(state.emailBuilderEmail.insidePosts))
+		const posts = JSON.parse(JSON.stringify(state.emailBuilderEmail.insideemuPosts))
 		const post = posts.find(ip => ip.postId == postId)
 		if(post) {
 			posts.splice(posts.indexOf(post), 1)
-			state.emailBuilderEmail.insidePosts = JSON.parse(JSON.stringify(posts))
+			state.emailBuilderEmail.insideemuPosts = JSON.parse(JSON.stringify(posts))
 		}
 	},
 	removeMainStory (state, storyId) {
@@ -155,8 +155,8 @@ const mutations = {
 	updateEventsOrder (state, { newIndex, oldIndex }) {
 		state.emailBuilderEmail.events.splice(newIndex, 0, state.emailBuilderEmail.events.splice(oldIndex, 1)[0]);
 	},
-	updateInsidePostsOrder (state, { newIndex, oldIndex }) {
-		state.emailBuilderEmail.insidePosts.splice(newIndex, 0, state.emailBuilderEmail.insidePosts.splice(oldIndex, 1)[0]);
+	updateInsideemuPostsOrder (state, { newIndex, oldIndex }) {
+		state.emailBuilderEmail.insideemuPosts.splice(newIndex, 0, state.emailBuilderEmail.insideemuPosts.splice(oldIndex, 1)[0]);
 	},
 	updateMainStoriesOrder (state, { newIndex, oldIndex }) {
 		state.emailBuilderEmail.mainStories.splice(newIndex, 0, state.emailBuilderEmail.mainStories.splice(oldIndex, 1)[0]);
