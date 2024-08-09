@@ -82,7 +82,7 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="8" lg="9">
                       <v-card-text>
-                        <span v-html="idea.content"></span>
+                        <span v-html="formattedBody"></span>
                       </v-card-text>
                     </v-col>
                   </v-row>
@@ -183,6 +183,9 @@ export default {
   },
   computed: {
     ...mapState(['idea']),
+    formattedBody() {
+      return this.idea.content.replace(/\n/g, '<br>')
+    },
     // Extract the idea ID from the URL (will be the second to last part)
     // e.g. https://today.emich.edu/admin/insideemu/posts/54/edit
     ideaId () {

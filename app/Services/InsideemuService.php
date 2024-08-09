@@ -155,6 +155,26 @@ class InsideemuService
 	}
 
 	/**
+	 * When converting a user-submitted idea to a post, replace any newlines with paragraph tags.
+	 * @param $text
+	 * @return string
+	 */
+	public function replaceNewlinesWithPTags($text) {
+		// Split the text by newlines
+		$lines = explode("\n", $text);
+
+		// Wrap each line with <p> tags
+		$wrappedLines = array_map(function($line) {
+			$tline = trim($line);
+			if(empty($tline)) return ''; // Skip empty lines
+			return '<p>' . $tline . '</p>';
+		}, $lines);
+
+		// Join the wrapped lines back into a single string
+		return implode("\n", $wrappedLines);
+	}
+
+	/**
 	 * Make sure the filename has an extension
 	 * @param $filename
 	 * @param $extension

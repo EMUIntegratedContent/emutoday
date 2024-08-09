@@ -20,7 +20,7 @@ class MaxWords implements ValidationRule{
 		$wordCount = str_word_count($value);
 
 		if($wordCount > $this->maxWords){
-			$fail("The :attribute field may not have more than $this->maxWords words.");
+			$fail("The :attribute field may not have more than $this->maxWords words. (Currently has $wordCount words.)");
 		}
 	}
 }

@@ -526,8 +526,6 @@ Route::group(['prefix' => 'mediahighlights'], function () {
 });
 
 Route::group(['prefix' => 'insideemu'], function () {
-//  Route::get('/', 'Today\InsideemuPostController@index')->name('insideemu_index');
-//  Route::get('/', 'Today\InsideemuPostController@index')->name('insideemu_index');
 	Route::resource('/ideas', 'Today\InsideemuIdeaController');
 	Route::resource('/posts', 'Today\InsideemuPostController');
 	Route::resource('', 'Today\InsideemuController');

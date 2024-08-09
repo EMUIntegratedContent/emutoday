@@ -13,7 +13,6 @@ class InsideemuController extends Controller{
 
 	public function __construct(InsideemuPost $post){
 		$this->post = $post;
-//			$this->middleware('auth', []);
 	}
 
 	/**

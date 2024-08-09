@@ -14,20 +14,7 @@ class InsideemuPostController extends Controller
 
 		public function __construct(InsideemuPost $post){
 			$this->post = $post;
-//			$this->middleware('auth', []);
 		}
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-//			$user = null;
-//			if (\Auth::check()) {
-//				$user = cas()->user();
-//			}
-//			return view('public.insideemu.ideas.index', compact('user'));
-    }
 
     /**
      * Display the specified resource.

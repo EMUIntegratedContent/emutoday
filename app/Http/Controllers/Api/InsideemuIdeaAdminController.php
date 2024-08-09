@@ -5,12 +5,10 @@ namespace Emutoday\Http\Controllers\Api;
 
 use Emutoday\Http\Resources\InsideemuIdeaResource;
 use Emutoday\InsideemuIdea;
-use Emutoday\InsideemuPostsImages;
-use Emutoday\User;
+use Emutoday\Services\InsideemuService;
 use Illuminate\Http\Request;
 use Emutoday\InsideemuPost;
 use Illuminate\Support\Facades\Validator;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class InsideemuIdeaAdminController extends ApiController{
 	protected $idea;
@@ -80,7 +78,7 @@ class InsideemuIdeaAdminController extends ApiController{
 	 * @param int $ideaId
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function makepost(int $ideaId){
+	public function makepost(int $ideaId, InsideemuService $insideemuService){
 		$idea = $this->idea->findOrFail($ideaId);
 
 		// Make validation rules for InsideemuPost
@@ -99,10 +97,13 @@ class InsideemuIdeaAdminController extends ApiController{
 			$source = $idea->contributor_first . ' ' . $idea->contributor_last;
 		}
 
+		// Change all new lines to <p> tags
+		$content = $insideemuService->replaceNewlinesWithPTags($idea->content);
+
 		$data = [
 			'title' => $idea->title,
 			'teaser' => $idea->teaser,
-			'content' => $idea->content,
+			'content' => $content,
 			'created_by' => auth()->user()->id,
 			'source' => $source,
 			'insideemu_idea_id' => $idea->id

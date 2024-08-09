@@ -155,7 +155,7 @@
               <div class="mb-3">
                 <strong>Suggested Content</strong>
                 <br>
-                <span v-html="idea.content"></span>
+                <span v-html="formattedBody"></span>
               </div>
               <div class="mb-3">
                 <strong>Credit</strong>
@@ -230,10 +230,14 @@ export default {
   },
   computed: {
     ...mapState(['idea']),
-    // Use spaces and hyphens to count words (mirrors Laravel's str_word_count)
+    // \s matches any whitespace character (spaces, tabs, newlines, etc.). + means one or more.
+    // This should match the backend word count logic.
     contentWords () {
       if(!this.idea || !this.idea.content) return 0
-      return this.idea.content.split(' ').length - 1
+      return this.idea.content.split(/\s+/).length
+    },
+    formattedBody() {
+      return this.idea.content.replace(/\n/g, '<br>')
     }
   },
   methods: {
@@ -268,7 +272,7 @@ export default {
         // Non-draft submissions require full validation
         const { valid } = await this.$refs.ideaForm.validate()
         if(!valid) {
-          alert('Please fill out all required fields.')
+          alert('Please fill out all required fields and ensure submission body is 500 words or fewer.')
           return
         }
         if(!confirm('Are you sure you are ready to submit this entry? Submissions are not editable once submitted.')) return

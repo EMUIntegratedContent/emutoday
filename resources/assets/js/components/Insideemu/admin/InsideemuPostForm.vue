@@ -112,7 +112,7 @@
                     ></ckeditor>
                     <div class="ck ck-word-count">
                       <p>
-                        <strong><span class="ck-word-count__words">Words: 0</span>/700</strong>
+                        <strong><span class="ck-word-count__words">Words: 0</span></strong>
                       </p>
                     </div>
                   </v-col>

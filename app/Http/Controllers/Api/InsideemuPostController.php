@@ -44,16 +44,44 @@ class InsideemuPostController extends ApiController{
 		$fromDate = $request->get('fromDate');
 		$toDate = $request->get('toDate');
 		if($fromDate && $toDate){
-			$posts = $this->post->with('idea')->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate.' 23:59:59')->orderBy('start_date', 'desc')->get();
+			$posts = $this->post
+				->with('idea')
+				->where(function($query) use ($fromDate) {
+					$query->where('start_date', '>=', $fromDate)
+						->orWhereNull('start_date');
+				})
+				->where(function($query) use ($toDate) {
+					$query->where('end_date', '<=', $toDate . ' 23:59:59')
+						->orWhereNull('end_date');
+				})
+				->orderBy('start_date', 'desc')
+				->get();
 		}
 		else if($fromDate){
-			$posts = $this->post->with('idea')->where('start_date', '>=', $fromDate)->orderBy('start_date', 'desc')->get();
+			$posts = $this->post
+				->with('idea')
+				->where(function($query) use ($fromDate) {
+					$query->where('start_date', '>=', $fromDate)
+						->orWhereNull('start_date');
+				})
+				->orderBy('start_date', 'desc')
+				->get();
 		}
 		else if($toDate){
-			$posts = $this->post->with('idea')->where('end_date', '<=', $toDate)->orderBy('start_date', 'desc')->get();
+			$posts = $this->post
+				->with('idea')
+				->where(function($query) use ($toDate) {
+					$query->where('end_date', '<=', $toDate . ' 23:59:59')
+						->orWhereNull('end_date');
+				})
+				->orderBy('start_date', 'desc')
+				->get();
 		}
 		else{
-			$posts = $this->post->with('idea')->orderBy('start_date', 'desc')->get();
+			$posts = $this->post
+				->with('idea')
+				->orderBy('start_date', 'desc')
+				->get();
 		}
 
 		// Paginate the results
