@@ -30,12 +30,12 @@
               @update="updateOrder"
           >
             <template #item="{element}">
-              <email-inside-post-pod
+              <email-insideemu-post-pod
                   pid="posts-list-post"
                   pod-type="post"
                   :item="element"
               >
-              </email-inside-post-pod>
+              </email-insideemu-post-pod>
             </template>
           </Sortable>
         </template>
@@ -82,7 +82,7 @@
         <div id="email-inside-posts">
           <template v-if="!loadingQueue">
             <template v-if="filteredPosts.length > 0">
-              <email-inside-post-pod
+              <email-insideemu-post-pod
                   pid="posts-queue-post"
                   pod-type="postqueue"
                   :item="post"
@@ -90,7 +90,7 @@
                   :key="'post-' + index"
                   v-for="(post, index) in filteredPosts"
               >
-              </email-inside-post-pod>
+              </email-insideemu-post-pod>
               <ul class="pagination">
                 <li v-bind:class="{disabled: (currentPage <= 1)}" class="page-item">
                   <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
@@ -125,15 +125,15 @@
 </style>
 <script>
 import { emailMixin } from './email_mixin'
-import moment from 'moment';
-import EmailInsidePostPod from './EmailInsidePostPod.vue'
+import moment from 'moment'
+import EmailInsideemuPostPod from './EmailInsideemuPostPod.vue'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import { Sortable } from 'sortablejs-vue3'
 
 export default {
   components: {
-    EmailInsidePostPod,
+    EmailInsideemuPostPod,
     flatpickr,
     Sortable
   },

@@ -31,7 +31,7 @@ use Emutoday\Today\Transformers\FractalEmailTransformerModel;
 class EmailController extends ApiController
 {
   protected $email;
-	protected $insdieemuPost;
+	protected $insideemuPost;
 
   function __construct(Email $email, InsideemuPost $insideemuPost) {
     $this->email = $email;
@@ -537,7 +537,8 @@ class EmailController extends ApiController
         $email->stories()->first() &&
         $email->recipients()->first() &&
         \Carbon\Carbon::parse($email->send_at) >= date('Y-m-d H:i:s') &&
-        ($email->is_president_included ? ($email->president_url && $email->president_teaser) : true) // <- If the president's message is included, the URL and teaser must also be present. If not, both are irrelevant, just return true.
+        ($email->is_president_included ? ($email->president_url && $email->president_teaser) : true) && // <- If the president's message is included, the URL and teaser must also be present. If not, both are irrelevant, just return true.
+				($email->is_emu175_included ? ($email->emu175_url && $email->emu175_teaser) : true) // <- If the EMU 175 message is included, the URL and teaser must also be present. If not, both are irrelevant, just return true.
     ) {
       $email->is_ready = 1;
     }

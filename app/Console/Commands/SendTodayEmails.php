@@ -77,7 +77,9 @@ class SendTodayEmails extends Command
 
         // Send one email to each recipient/mailing list
         foreach($email->recipients as $recipient){
-          Mail::send('public.todayemail.email', ['email' => $email, 'events' => $events, 'mainStories' => $mainStories, 'mainStoryImages' => $mainStoryImages, 'smallStoryImages' => $smallStoryImages], function ($message) use ($email, $recipient){
+          Mail::send('public.todayemail.email',
+						['email' => $email, 'events' => $events, 'mainStories' => $mainStories, 'mainStoryImages' => $mainStoryImages, 'smallStoryImages' => $smallStoryImages],
+						function ($message) use ($email, $recipient){
 							//$message->from('test@emich.edu', 'The Week at EMU');
               $message->from(env("MAIL_USERNAME", "postmaster@today.emich.edu"), 'The Week at EMU');
               $message->replyTo('emu_today@emich.edu', 'EMU Today Admin');

@@ -86,13 +86,13 @@ mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').v
 // mix.js('resources/assets/js/vue-emu-175.js', 'public/js/vue-emu-175.js').vue().version().version();
 
 
-mix.js('resources/assets/js/vue-insideemu-queue.js', 'public/js/vue-insideemu-queue.js').vue().version().version();
-mix.js('resources/assets/js/vue-insideemu-post-form.js', 'public/js/vue-insideemu-post-form.js').vue().version().version();
-mix.js('resources/assets/js/vue-insideemu-user-idea-form.js', 'public/js/vue-insideemu-user-idea-form.js').vue().version().version();
-mix.js('resources/assets/js/vue-insideemu-user-ideas.js', 'public/js/vue-insideemu-user-ideas.js').vue().version().version();
-mix.js('resources/assets/js/vue-insideemu-admin-dashboard.js', 'public/js/vue-insideemu-admin-dashboard.js').vue().version().version();
-mix.js('resources/assets/js/vue-insideemu-admin-idea-view.js', 'public/js/vue-insideemu-admin-idea-view.js').vue().version().version();
-mix.js('resources/assets/js/vue-insideemu-ideas-queue.js', 'public/js/vue-insideemu-ideas-queue.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-queue.js', 'public/js/vue-insideemu-queue.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-post-form.js', 'public/js/vue-insideemu-post-form.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-user-idea-form.js', 'public/js/vue-insideemu-user-idea-form.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-user-ideas.js', 'public/js/vue-insideemu-user-ideas.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-admin-dashboard.js', 'public/js/vue-insideemu-admin-dashboard.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-admin-idea-view.js', 'public/js/vue-insideemu-admin-idea-view.js').vue().version().version();
+// mix.js('resources/assets/js/vue-insideemu-ideas-queue.js', 'public/js/vue-insideemu-ideas-queue.js').vue().version().version();
 
 /*
 |--------------------------------------------------------------------------
