@@ -231,7 +231,7 @@ class InsideemuPostController extends ApiController{
 	 */
 	public function updateRanks(Request $request){
 		$postIds = json_decode($request->get('postIds'), true);
-		if (!$postIds) {
+		if (!isset($postIds)) {
 			return response()->json(['error' => 'Invalid parameters.'], 400);
 		}
 

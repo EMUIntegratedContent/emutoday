@@ -3,6 +3,9 @@
 namespace Emutoday\Http\Controllers\Today;
 
 use Emutoday\Http\Controllers\Controller;
+use Emutoday\Http\Resources\InsideemuPostPublicResource;
+use Emutoday\Http\Resources\InsideemuPostResource;
+use Emutoday\Imagetype;
 use Emutoday\InsideemuPost;
 
 class InsideemuPostController extends Controller
@@ -39,6 +42,15 @@ class InsideemuPostController extends Controller
 
 			$idea = $post->idea;
 			$mainImg = $post->images()->where('imagetype_id', 29)->first();
-			return view('public.insideemu.posts.show', compact('post', 'mainImg', 'idea'));
+
+			$sidePostsRaw = InsideemuPost::all()->filter(function($p) use ($post){
+				return $p->id !== $post->id && $p->postIsLive();
+			})->take(2);
+
+			$sidePosts = InsideemuPostResource::collection($sidePostsRaw);
+			$post = InsideemuPostResource::make($post);
+
+
+			return view('public.insideemu.posts.show', compact('post', 'mainImg', 'idea', 'sidePosts'));
     }
 }

@@ -30,6 +30,8 @@ const emptyPost = () => {
 		end_date: null,
 		admin_status: 'Pending',
 		seq: 0,
+		is_hub_post: 0,
+		source: '',
 		submittedBy: null,
 		created_at: null,
 		updated_at: null,

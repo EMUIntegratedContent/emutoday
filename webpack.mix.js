@@ -60,7 +60,7 @@ mix.combine([
 // mix.js('resources/assets/js/vue-archive-queue.js', 'public/js/vue-archive-queue.js').vue().version();
 // mix.js('resources/assets/js/vue-author-form.js', 'public/js/vue-author-form.js').vue().version();
 // mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js').vue().version();
-mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').vue().version();
+// mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').vue().version();
 // mix.js('resources/assets/js/vue-event-form.js', 'public/js/vue-event-form.js').vue().version();
 // mix.js('resources/assets/js/vue-event-hscqueue.js', 'public/js/vue-event-hscqueue.js').vue().version();
 // mix.js('resources/assets/js/vue-event-lbcqueue.js', 'public/js/vue-event-lbcqueue.js').vue().version();
@@ -86,13 +86,13 @@ mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').v
 // mix.js('resources/assets/js/vue-emu-175.js', 'public/js/vue-emu-175.js').vue().version().version();
 
 
-// mix.js('resources/assets/js/vue-insideemu-queue.js', 'public/js/vue-insideemu-queue.js').vue().version().version();
-// mix.js('resources/assets/js/vue-insideemu-post-form.js', 'public/js/vue-insideemu-post-form.js').vue().version().version();
-// mix.js('resources/assets/js/vue-insideemu-user-idea-form.js', 'public/js/vue-insideemu-user-idea-form.js').vue().version().version();
-// mix.js('resources/assets/js/vue-insideemu-user-ideas.js', 'public/js/vue-insideemu-user-ideas.js').vue().version().version();
-// mix.js('resources/assets/js/vue-insideemu-admin-dashboard.js', 'public/js/vue-insideemu-admin-dashboard.js').vue().version().version();
-// mix.js('resources/assets/js/vue-insideemu-admin-idea-view.js', 'public/js/vue-insideemu-admin-idea-view.js').vue().version().version();
-// mix.js('resources/assets/js/vue-insideemu-ideas-queue.js', 'public/js/vue-insideemu-ideas-queue.js').vue().version().version();
+mix.js('resources/assets/js/vue-insideemu-queue.js', 'public/js/vue-insideemu-queue.js').vue().version().version();
+mix.js('resources/assets/js/vue-insideemu-post-form.js', 'public/js/vue-insideemu-post-form.js').vue().version().version();
+mix.js('resources/assets/js/vue-insideemu-user-idea-form.js', 'public/js/vue-insideemu-user-idea-form.js').vue().version().version();
+mix.js('resources/assets/js/vue-insideemu-user-ideas.js', 'public/js/vue-insideemu-user-ideas.js').vue().version().version();
+mix.js('resources/assets/js/vue-insideemu-admin-dashboard.js', 'public/js/vue-insideemu-admin-dashboard.js').vue().version().version();
+mix.js('resources/assets/js/vue-insideemu-admin-idea-view.js', 'public/js/vue-insideemu-admin-idea-view.js').vue().version().version();
+mix.js('resources/assets/js/vue-insideemu-ideas-queue.js', 'public/js/vue-insideemu-ideas-queue.js').vue().version().version();
 
 /*
 |--------------------------------------------------------------------------

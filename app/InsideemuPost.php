@@ -21,7 +21,7 @@ class InsideemuPost extends Model{
 	}
 
 	public function requiredImageTypes(){
-		return Imagetype::select('id')->where('is_required', 1)->where('group', 'insideemupost')->get();
+		return Imagetype::select('id')->where('is_required', 1)->where('group', 'insideemu')->get();
 	}
 
 	/**
@@ -30,15 +30,22 @@ class InsideemuPost extends Model{
 	 * - Have content
 	 * - Be approved by an admin
 	 * - Be within the start and end date
-	 * - TODO Have all required images (imagetypes.is_required == 1)
+	 * - Have all required images
 	 * @return bool;
 	 */
 	public function postIsLive(): bool{
+		$reqImgs = $this->requiredImageTypes();
+
+		// Check if the post has one image for each of the $reqImgs ids
+		$hasReqImgs = $reqImgs->isNotEmpty() && $reqImgs->every(function($reqImg){
+			return $this->images->contains('imagetype_id', $reqImg->id);
+		});
+
 		// End date is optional
 		if($this->end_date) {
-			return $this->postProgress() === 100 && $this->start_date <= now() && $this->end_date >= now();
+			return $this->postProgress() === 100 && $this->start_date <= now() && $this->end_date >= now() && $hasReqImgs;
 		}
-		return $this->postProgress() === 100 && $this->start_date <= now();
+		return $this->postProgress() === 100 && $this->start_date <= now() && $hasReqImgs;
 	}
 
 	/**

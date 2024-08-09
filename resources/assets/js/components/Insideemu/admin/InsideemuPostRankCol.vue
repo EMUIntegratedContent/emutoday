@@ -1,6 +1,6 @@
 <template>
   <td>
-    <template v-if="post.seq === 0">
+    <template v-if="post.seq === 0 && post.is_live">
       <v-btn
           color="purple"
           size="x-small"
@@ -12,7 +12,7 @@
       <p v-if="showSuccess" class="text-success">Rankings updated</p>
       <p v-if="errSaving" class="text-error">Error updaing ranking</p>
     </template>
-    <template v-else>
+    <template v-else-if="post.seq > 0">
       {{ post.seq }}
     </template>
   </td>

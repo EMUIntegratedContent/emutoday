@@ -278,11 +278,9 @@
               @if($insideemu)
                 <img src="/imagecache/original/{{$insideemu->id}}/{{$insideemu->images[0]->image_name}}"
                      alt="{{ $insideemu->images[0]->alt_text != '' ? $insideemu->images[0]->alt_text : str_replace('"', "", $insideemu->images[0]->caption) }}">
-              @endif
-              @if($insideemu)
-              <p style="margin-top: 0.8rem">
-                <a href="{{ url('/insideemu/posts/' . $insideemu->id ) }}">{{ $insideemu->images[0]->caption }}</a>
-              </p>
+                <p style="margin-top: 0.8rem">
+                  <a href="{{ url('/insideemu/posts/' . $insideemu->id ) }}">{{ $insideemu->images[0]->caption }}</a>
+                </p>
               @endif
               <p style="font-weight: lighter; margin-bottom: 1.1rem">Go to our Inside EMU page to find other user-submitted posts produced by staff and faculty across the University.</p>
               <a class="round-white-btn" title="Link to Inside EMU posts."

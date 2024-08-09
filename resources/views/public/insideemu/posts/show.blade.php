@@ -2,33 +2,20 @@
 @section('title'){{ isset($post) ? $post->title : 'Post not available' }} @stop
 
 @section('addthisMeta')
-{{--<meta property="og:type" content="website" />--}}
-{{--<meta property="og:url" content="{{trim(Request::fullUrl())}}" />--}}
-{{--@if($story->story_type == 'news' && $addThisImage)--}}
-{{--  @if($addThisImage->title)--}}
-{{--  <meta property="og:title" content="{{$addThisImage->title}}" />--}}
-{{--  @else--}}
-{{--  <meta property="og:title" content="{{trim($story->title)}}" />--}}
-{{--  @endif--}}
-{{--@else--}}
-{{--  <meta property="og:title" content="{{trim($story->title)}}" />--}}
-{{--@endif--}}
-{{--<meta property="og:description" content="{{trim($story->subtitle)}}" />--}}
-{{--  @if($story->story_type == 'news' && $addThisImage)--}}
-{{--  <meta property="og:image" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($addThisImage->present()->mainImageURL)}}"/>--}}
-{{--  <meta property="og:image:secure_url" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($addThisImage->present()->mainImageURL)}}"/>--}}
-{{--  <meta property="og:image:width" content="400" />--}}
-{{--  <meta property="og:image:height" content="300" />--}}
-{{--  @elseif($mainStoryImage)--}}
-{{--  <meta property="og:image" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainStoryImage->present()->mainImageURL)}}"/>--}}
-{{--  <meta property="og:image:secure_url" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainStoryImage->present()->mainImageURL)}}"/>--}}
-{{--  <meta property="og:image:width" content="400" />--}}
-{{--  <meta property="og:image:height" content="300" />--}}
-{{--  @else--}}
-{{--  <meta property="og:image" content="{{ url('/assets/imgs/home/block-e-green.png') }}"/>--}}
-{{--  <meta property="og:image:secure_url" content="{{ url('/assets/imgs/home/block-e-green.png') }}"/>  <meta property="og:image:width" content="150" />--}}
-{{--  <meta property="og:image:height" content="150" />--}}
-{{--  @endif--}}
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{trim(Request::fullUrl())}}" />
+<meta property="og:title" content="{{trim($post->title)}}" />
+<meta property="og:description" content="{{trim($post->teaser)}}" />
+  @if($mainImg)
+  <meta property="og:image" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainImg->image_path)}}"/>
+  <meta property="og:image:secure_url" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainImg->image_path)}}"/>
+  <meta property="og:image:width" content="400" />
+  <meta property="og:image:height" content="300" />
+  @else
+  <meta property="og:image" content="{{ url('/assets/imgs/home/block-e-green.png') }}"/>
+  <meta property="og:image:secure_url" content="{{ url('/assets/imgs/home/block-e-green.png') }}"/>  <meta property="og:image:width" content="150" />
+  <meta property="og:image:height" content="150" />
+  @endif
 @endsection
 
 @section('content')
@@ -61,10 +48,10 @@
             </div>
             <!-- Page Side Bar Column -->
             <div class="large-3 large-pull-9 medium-3 medium-pull-9 small-12 columns" id="story-sidebar">
-{{--              <div class="dots-bottom">--}}
-{{--                @include('public.vendor.addthis')--}}
-{{--              </div>--}}
               <div class="dots-bottom">
+                @include('public.vendor.addthis')
+              </div>
+              <div class="no-dots-bottom">
                 <p>
                   Contributed by:<br>
                   @if($post->source)
@@ -82,9 +69,9 @@
       </div>
     </div>
   </div>
-{{--  <div id="more-stories-bar">--}}
-{{--      @include('public.components.sideblock', ['storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])--}}
-{{--  </div>--}}
+  <div id="more-stories-bar">
+      @include('public.components.insideemu_sideblock', ['sideitems' => $sidePosts])
+  </div>
 @endsection
     @section('footer-vendor')
         @parent
