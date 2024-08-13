@@ -13,7 +13,6 @@
                 </v-alert>
                 <v-alert v-if="idea.archived && !itemDeleted" class="mb-3" type="warning" density="compact">This submission
                   has been archived.
-                  It will not show in the list.
                 </v-alert>
                 <v-alert v-if="isErr" class="mb-3" type="error" density="compact">{{ errorMsg }}</v-alert>
               </v-col>
@@ -94,16 +93,23 @@
               into a post. See 'Associated Posts' below.
             </v-alert>
           </v-card-text>
-          <v-card-actions v-if="!itemDeleted">
-            <v-btn v-if="!idea.archived" :loading="makingPost" color="success" variant="elevated" @click="makePost">
-              Convert to Post
-            </v-btn>
-            <v-btn v-if="!idea.archived" :loading="archivingIdea" variant="outlined" color="warning"
-                   @click="archiveIdea">Archive Submission
-            </v-btn>
-            <v-btn v-else :loading="unarchivingIdea" color="warning" variant="elevated" @click="unarchiveIdea">Reinstate
-              Submission
-            </v-btn>
+          <v-card-actions>
+            <template v-if="!itemDeleted">
+              <v-btn v-if="!idea.archived" :loading="makingPost" color="success" variant="elevated" @click="makePost">
+                Convert to Post
+              </v-btn>
+              <v-btn v-if="!idea.archived" :loading="archivingIdea" variant="outlined" color="warning"
+                     @click="archiveIdea">Archive Submission
+              </v-btn>
+              <v-btn v-else :loading="unarchivingIdea" color="warning" variant="elevated" @click="unarchiveIdea">Reinstate
+                Submission
+              </v-btn>
+            </template>
+            <v-spacer></v-spacer>
+            <v-alert v-if="itemDeleted" class="ma-1" color="error" icon="mdi-delete" density="compact">This idea
+              has been deleted.
+            </v-alert>
+            <v-alert v-if="isErr" class="ma-1" type="error" density="compact">{{ errorMsg }}</v-alert>
             <v-btn :loading="deletingIdea" color="error" variant="outlined" @click="deleteIdea">Delete Submission</v-btn>
           </v-card-actions>
         </v-card>
@@ -112,6 +118,7 @@
         <v-card>
           <v-toolbar density="compact" color="grey-darken-3" title="Associated Posts"></v-toolbar>
           <v-card-text>
+            <p>These are Inside EMU posts that have been created based on this user submission.</p>
             <v-data-table
                 :headers="assocPostHeaders"
                 :items="idea.associated_posts"

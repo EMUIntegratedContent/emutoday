@@ -22,6 +22,7 @@ class InsideemuIdeaController extends Controller
 			View::share('bugStories', $this->bugService->getUnapprovedStories());
 			View::share('bugExperts', $this->bugService->getUnapprovedExperts());
 			View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
+			View::share('bugInsideemuIdeas', $this->bugService->getNewInsideemuIdeas());
 		}
 
     /**

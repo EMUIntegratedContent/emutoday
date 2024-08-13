@@ -20,7 +20,7 @@
             </ul>
         </li>
         <li class="footer">
-            <a href="/admin/story">View all stories</a>
+            <a href="/admin/story/all/queueall">View all stories</a>
         </li>
     </ul>
 </li>

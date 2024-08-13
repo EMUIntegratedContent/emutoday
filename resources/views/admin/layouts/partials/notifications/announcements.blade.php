@@ -19,6 +19,6 @@
                 @endforeach
             </ul>
         </li>
-        <li class="footer"><a href="/admin/announcement">View all</a></li>
+        <li class="footer"><a href="/admin/announcement/queue/general">View all</a></li>
     </ul>
 </li>

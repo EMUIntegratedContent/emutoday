@@ -21,7 +21,7 @@
                         <!-- Message title and timestamp -->
                         <h4>
                             {{ $event->title }}
-                            
+
                         </h4>
                         <!-- The message -->
                         <p>{{ $event->location }}</p>
@@ -32,7 +32,7 @@
             </ul>
             <!-- /.menu -->
         </li>
-        <li class="footer"><a href="/admin/event">See All Events</a></li>
+        <li class="footer"><a href="/admin/event/queue">See All Events</a></li>
     </ul>
 </li>
 <!-- /.messages-menu -->

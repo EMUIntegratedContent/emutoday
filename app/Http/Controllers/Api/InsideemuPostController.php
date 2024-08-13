@@ -312,23 +312,24 @@ class InsideemuPostController extends ApiController{
 	}
 
 	/**
-	 * Delete a post.
-	 * @param int $id
-	 * @return array
-	 */
-	public function destroy($id){
-//    $email = $this->email->findOrFail($id);
-//    $email->delete();
-//    return $this->setStatusCode(200)->respond('Email successfully deleted!');
-	}
-
-
-	/**
 	 * Get the image types for the post images
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function getPostImageTypes(){
 		$types = Imagetype::where('group', 'insideemu')->get(); // get email image types
 		return response()->json($types);
+	}
+
+	/**
+	 * Delete a post and any images.
+	 * @param int $id
+	 * @param InsideemuService $insideemuService
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function destroy($id, InsideemuService $insideemuService){
+		$post = $this->post->findOrFail($id);
+		$post->delete();
+		$insideemuService->deletePostImages($id);
+		return $this->setStatusCode(200)->respond('Post successfully deleted!');
 	}
 }

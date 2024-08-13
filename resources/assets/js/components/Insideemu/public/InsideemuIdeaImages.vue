@@ -2,14 +2,14 @@
   <v-row>
     <v-col cols="12">
       <v-card>
-        <v-toolbar title="Associated Images" density="compact"></v-toolbar>
+        <v-toolbar title="User Provided Images" density="compact"></v-toolbar>
         <v-card-text>
           <v-row>
             <v-col cols="12">
               <IdeaImgUploader v-if="editMode" @imageUploaded="$emit('imagesUpdated')"></IdeaImgUploader>
             </v-col>
             <v-col cols="12" v-if="ideaImages.length === 0" class="mt-0 pt-0">
-              <p v-if="ideaImages.length === 0">No associated images with this idea.</p>
+              <p v-if="ideaImages.length === 0">User did not any include any images with the submission.</p>
             </v-col>
             <v-col
                 v-else

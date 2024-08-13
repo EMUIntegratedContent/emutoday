@@ -34,7 +34,7 @@
         <!-- Story Page Content -->
         {!! Form::model($post,[
             'method' => 'put',
-            'route' => ['posts.update', $post],
+            'route' => ['admin.posts.update', $post],
             'files' => true
         ]) !!}
         <div id="story-content" class="row ck-content">
@@ -109,7 +109,7 @@
             @endif
           </div><!-- /.medium-8 columns -->
           <div class="medium-4 columns">
-            <h6 class="subheader text-right">Start Date: {{$post->start_date}}</h6>
+            <h6 class="subheader text-right">Start Date: {{$post->start_date ?: 'Not Set'}}</h6>
           </div><!-- /.medium-4 columns -->
         </div><!-- /.row -->
         {!! Form::close() !!}

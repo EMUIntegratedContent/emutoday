@@ -29,6 +29,12 @@
             v-if="isEndDate"> - Remove </span><span
             v-else> + Add </span>Range
         </button>
+        <label for="includeArchives" class="mx-3">
+          Include Archives
+          <input type="checkbox"
+                 v-model="includeArchives"
+                 class="display-inline-block" />
+        </label>
         <v-btn size="small" color="info" class="ml-4" @click="fetchIdeas">Filter</v-btn>
       </form>
       <v-row>
@@ -59,6 +65,10 @@
             <v-btn>
               Done
             </v-btn>
+
+            <v-btn v-if="includeArchives">
+              Archived
+            </v-btn>
           </v-btn-toggle>
         </v-col>
         <v-col cols="12">
@@ -76,11 +86,14 @@
             <template #top>
               <v-text-field v-model="search" label="Filter Titles" single-line hide-details></v-text-field>
             </template>
-            <template #[`item.created_at`]="{ item }">
-              {{ slashdatetime(item.created_at) }}
+            <template #[`item.submitted_at`]="{ item }">
+              {{ slashdatetime(item.submitted_at) }}
             </template>
             <template #[`item.title`]="{ item }">
               <a :href="`/admin/insideemu/ideas/${item.ideaId}`">{{ item.title }}</a>
+            </template>
+            <template #[`item.admin_status`]="{ item }">
+              {{ item.archived ? 'Archived' : item.admin_status }}
             </template>
           </v-data-table>
         </v-col>
@@ -125,8 +138,9 @@ export default {
         { title: 'Submit Dt', key: 'submitted_at' },
         { title: 'Status', key: 'admin_status' }
       ],
-      loadingIdeas: false,
       ideas: [],
+      includeArchives: false,
+      loadingIdeas: false,
       extraFilters: [],
       search: '',
       sortBy: [{ key: 'submitted_at', order: 'desc' }],
@@ -144,19 +158,22 @@ export default {
       this.extraFilters.forEach(filter => {
         switch (filter) {
           case 0: // New
-            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'New'));
+            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'New' && idea.admin_status !== 'Archived'));
             break
           case 1: // Viewed
-            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Viewed'))
+            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Viewed' && idea.admin_status !== 'Archived'))
             break
           case 2: // Considering
-            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Considering'))
+            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Considering' && idea.admin_status !== 'Archived'))
             break
           case 3: // Not Considering
-            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Not Considering'))
+            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Not Considering' && idea.admin_status !== 'Archived'))
             break
           case 4: // Done
-            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Done'))
+            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Done' && idea.admin_status !== 'Archived'))
+            break
+          case 5: // Archived
+            filtered = filtered.concat(this.ideas.filter(idea => idea.admin_status === 'Archived'))
             break
         }
       })
@@ -198,12 +215,13 @@ export default {
         routeurl = routeurl + '&toDate=' + this.endDate
       }
 
+      if(this.includeArchives) {
+        routeurl = routeurl + '&archives=true'
+      }
+
       await this.$http.get(routeurl)
       .then((r) => {
         this.ideas = r.data
-
-        // this.resultCount = this.queueStories.length
-        // this.setPage(1) // reset paginator
         this.loadingIdeas = false
       })
       .catch((e) => {

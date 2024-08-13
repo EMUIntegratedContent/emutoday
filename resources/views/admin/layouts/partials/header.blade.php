@@ -24,6 +24,9 @@
             @if(Gate::check('admin') || Gate::check('experts'))
                 @include('admin.layouts.partials.notifications.experts')
             @endif
+            @if(Gate::check('admin_super') || Gate::check('admin') || Gate::check('editor_super') || Gate::check('editor') || Gate::check('contributor_2'))
+                @include('admin.layouts.partials.notifications.insideemu')
+            @endif
         @include('admin.layouts.partials.usermenu')
 </ul>
 </div>

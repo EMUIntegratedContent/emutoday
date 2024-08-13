@@ -155,6 +155,42 @@ class InsideemuService
 	}
 
 	/**
+	 * Delete the image directory an all associated images for a post.
+	 * @param string $postId
+	 */
+	public function deletePostImages(string $postId)
+	{
+		$destinationFolder = '/imgs/insideemu_posts/'.$postId.'/';
+		if(file_exists(public_path() . $destinationFolder)){
+			$files = glob(public_path() . $destinationFolder.'*');
+			foreach($files as $file){
+				if(is_file($file)){
+					unlink($file);
+				}
+			}
+			rmdir(public_path() . $destinationFolder);
+		}
+	}
+
+	/**
+	 * Delete the image directory an all associated images for an idea.
+	 * @param string $ideaId
+	 */
+	public function deleteIdeaImages(string $ideaId)
+	{
+		$destinationFolder = '/imgs/uploads/insideemu/ideas/'.$ideaId.'/';
+		if(file_exists(public_path() . $destinationFolder)){
+			$files = glob(public_path() . $destinationFolder.'*');
+			foreach($files as $file){
+				if(is_file($file)){
+					unlink($file);
+				}
+			}
+			rmdir(public_path() . $destinationFolder);
+		}
+	}
+
+	/**
 	 * When converting a user-submitted idea to a post, replace any newlines with paragraph tags.
 	 * @param $text
 	 * @return string

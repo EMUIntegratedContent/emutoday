@@ -243,6 +243,12 @@ export default {
   methods: {
     slashdate,
     ...mapMutations(['setIdea', 'setIdeaProp', 'setIdeaImagsForUpload']),
+    beforeUnload (e) {
+      if (this.formModified) {
+        e.preventDefault();
+        e.returnValue = ''; // text is set by the browser
+      }
+    },
     async fetchIdea () {
       this.loadingIdea = true
       let routeurl = '/api/insideemu/ideas/user/' + this.ideaid
@@ -312,6 +318,7 @@ export default {
         }
       })
       .then((r) => {
+        this.formModified = false
         // Send new submissions to the edit form
         if(httpVerb === 'post') {
           window.location.href = '/insideemu/ideas/' + r.data.ideaId + '/edit'
@@ -321,7 +328,6 @@ export default {
         }
         this.savingIdea = false
         this.savingDraft = false
-        this.formModified = false
         this.showSuccess = true
         setTimeout(() => {
           this.showSuccess = false
@@ -333,6 +339,12 @@ export default {
         this.errSaving = true
       })
     }
+  },
+  mounted () {
+    window.addEventListener('beforeunload', this.beforeUnload)
+  },
+  beforeUnmount () {
+    window.removeEventListener('beforeunload', this.beforeUnload)
   }
 }
 </script>

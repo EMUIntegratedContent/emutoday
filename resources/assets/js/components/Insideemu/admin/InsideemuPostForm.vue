@@ -1,7 +1,8 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <v-form ref="postForm" @submit.prevent="savePostPreflight">
+      <v-alert v-if="notFound" type="warning" density="compact">The post was not found.</v-alert>
+      <v-form v-else ref="postForm" @submit.prevent="savePostPreflight">
         <v-card>
           <v-toolbar
               density="compact"
@@ -22,8 +23,15 @@
             <v-row>
               <v-col cols="12">
                 <v-row>
+                  <v-col cols="12">
+                    <v-alert v-if="postDeleted" class="mb-3" color="error" icon="mdi-delete" density="compact">This post
+                      has been deleted.
+                    </v-alert>
+                    <v-alert v-if="isErr" class="mb-3" type="error" density="compact">{{ errorMsg }}</v-alert>
+                  </v-col>
                   <v-col cols="12" md="6">
-                    <v-alert v-if="post.is_live" type="success" density="compact" variant="elevated">Post is LIVE.</v-alert>
+                    <v-alert v-if="post.is_live" type="success" density="compact" variant="elevated">Post is LIVE.
+                    </v-alert>
                     <v-alert
                         v-if="showHubPostAlert"
                         color="yellow-darken-3"
@@ -31,7 +39,8 @@
                         density="compact"
                         variant="elevated"
                         class="mt-3"
-                    >This post is featured on the hub page.</v-alert>
+                    >This post is featured on the hub page.
+                    </v-alert>
                     <template v-if="!post.is_live">
                       <v-expansion-panels
                           v-if="!isPostLiveEligible"
@@ -48,13 +57,17 @@
                               <li v-if="!post.content">Post content is missing.</li>
                               <li v-if="!post.start_date">Start date is missing.</li>
                               <li v-if="!postHasRequiredImages">At least one required image is missing.</li>
-                              <li v-if="post.admin_status !== 'Approved'">An administrator has not approved this post.</li>
+                              <li v-if="post.admin_status !== 'Approved'">An administrator has not approved this post.
+                              </li>
                             </ul>
                           </v-expansion-panel-text>
                         </v-expansion-panel>
                       </v-expansion-panels>
-                      <v-alert v-else type="success" density="compact" variant="outlined">Post is eligible to be live.</v-alert>
-                      <v-alert v-if="!userIsApprover && isPostLiveEligible" type="info" density="compact" class="my-2">Any changes will need to be re-approved by an administrator or editor.</v-alert>
+                      <v-alert v-else type="success" density="compact" variant="outlined">Post is eligible to be live.
+                      </v-alert>
+                      <v-alert v-if="!userIsApprover && isPostLiveEligible" type="info" density="compact" class="my-2">
+                        Any changes will need to be re-approved by an administrator or editor.
+                      </v-alert>
                     </template>
                   </v-col>
                   <v-col cols="12" md="6">
@@ -160,9 +173,13 @@
             </v-row>
             <v-row>
               <v-col cols="12">
-                <v-alert v-if="formModified && !showSuccess && !errSaving && !savingPost" type="info" color="warning" density="compact" class="my-2">You have unsaved changes.</v-alert>
-                <v-alert v-if="errSaving" type="error" density="compact" class="my-2">The post could not be saved.</v-alert>
-                <v-alert v-if="showSuccess" type="success" density="compact" class="my-2">The post has been saved.</v-alert>
+                <v-alert v-if="formModified && !showSuccess && !errSaving && !savingPost" type="info" color="warning"
+                         density="compact" class="my-2">You have unsaved changes.
+                </v-alert>
+                <v-alert v-if="errSaving" type="error" density="compact" class="my-2">The post could not be saved.
+                </v-alert>
+                <v-alert v-if="showSuccess" type="success" density="compact" class="my-2">The post has been saved.
+                </v-alert>
               </v-col>
             </v-row>
           </v-card-text>
@@ -171,6 +188,12 @@
             <v-btn type="button" color="grey" variant="outlined" class="ml-2"
                    @click="resetPostForm">Cancel Changes
             </v-btn>
+            <v-spacer></v-spacer>
+            <v-alert v-if="postDeleted" class="ma-1" color="error" icon="mdi-delete" density="compact">This post
+              has been deleted.
+            </v-alert>
+            <v-alert v-if="isErr" class="ma-1" type="error" density="compact">{{ errorMsg }}</v-alert>
+            <v-btn color="error" variant="outlined" @click="deletePost">Delete Post</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -205,7 +228,9 @@
                       <v-list-item-title>Contributor</v-list-item-title>
 
                       <v-list-item-subtitle>
-                        {{ post.associated_idea.contributor_fullname + ' (' + post.associated_idea.contributor_netid + ')' }}
+                        {{
+                          post.associated_idea.contributor_fullname + ' (' + post.associated_idea.contributor_netid + ')'
+                        }}
                       </v-list-item-subtitle>
                     </v-list-item>
                     <v-list-item>
@@ -280,9 +305,10 @@ export default {
     insideemu_store: store
   },
   async created () {
-    if(!this.newForm) {
+    if (!this.newForm) {
       await this.fetchPost()
-    } else {
+    }
+    else {
       this.originalPost = JSON.parse(JSON.stringify(this.post))
       setTimeout(() => {
         this.formModified = false
@@ -293,6 +319,8 @@ export default {
   data: function () {
     return {
       currentDate: moment(),
+      deletingPost: false,
+      errorMsg: '',
       explanationPanel: [0],
       flatpickrConfig: {
         altFormat: "m/d/Y h:i K", // format the user sees
@@ -302,8 +330,11 @@ export default {
       },
       formModified: false,
       imageTypes: [],
+      isErr: false,
       loadingPost: false,
+      notFound: false,
       originalPost: {},
+      postDeleted: false,
       wordLimit: 700,
       savingPost: false,
       errSaving: false,
@@ -334,7 +365,9 @@ export default {
       return this.post.is_live && this.originalPost.is_hub_post
     },
     userIsApprover () {
-      if(!this.userRoles) return false
+      if (!this.userRoles) {
+        return false
+      }
       return this.userRoles.find(role => role.name.includes('admin') || role.name.includes('editor') || role.name.includes('contributor_2'))
     }
   },
@@ -348,6 +381,24 @@ export default {
         e.preventDefault();
         e.returnValue = ''; // text is set by the browser
       }
+    },
+    async deletePost () {
+      if (!confirm('Are you sure you want to delete this post? This cannot be undone!')) {
+        return
+      }
+      this.deletingPost = true
+      let routeurl = `/api/insideemu/admin/posts/${this.postId}`
+
+      await this.$http.delete(routeurl)
+      .then(() => {
+        this.deletingPost = false
+        this.postDeleted = true
+        this.formModified = false
+      })
+      .catch(() => {
+        this.isErr = true
+        this.errorMsg = 'Error deleting post.'
+      })
     },
     async fetchPost () {
       this.loadingPost = true
@@ -363,6 +414,9 @@ export default {
         }, 500)
       })
       .catch((e) => {
+        if(e.response.status === 404) {
+          this.notFound = true
+        }
         console.log(e)
       })
     },
@@ -388,13 +442,13 @@ export default {
     },
     async savePostPreflight () {
       const { valid } = await this.$refs.postForm.validate()
-      if(!valid || !this.post.content) {
+      if (!valid || !this.post.content) {
         alert('Please fill in all required fields before saving.')
         return
       }
 
       // If a non-admin user is saving a post, always set the admin_status to 'Submitted'
-      if(!this.userIsApprover) {
+      if (!this.userIsApprover) {
         this.post.admin_status = 'Submitted'
       }
 
@@ -431,9 +485,10 @@ export default {
       .then((r) => {
         this.formModified = false // Reset the form modified flag before leaving the page (new forms)
         // Send new submissions to the edit form
-        if(httpVerb === 'post') {
+        if (httpVerb === 'post') {
           window.location.href = '/admin/insideemu/posts/' + r.data.postId + '/edit'
-        } else {
+        }
+        else {
           this.setPost(r.data)
           this.originalPost = JSON.parse(JSON.stringify(this.post))
         }

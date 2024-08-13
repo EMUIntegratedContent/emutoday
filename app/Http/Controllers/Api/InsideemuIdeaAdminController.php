@@ -25,42 +25,32 @@ class InsideemuIdeaAdminController extends ApiController{
 	public function index(Request $request){
 		$fromDate = $request->get('fromDate');
 		$toDate = $request->get('toDate');
+		$includeArchived = $request->get('archives');
+
 		if($fromDate && $toDate){
 			$ideas = $this->idea
 				->where('created_at', '>=', $fromDate)
-				->where('created_at', '<=', $toDate.' 23:59:59')
-				->whereNotNull('submitted_at')
-				->where('archived', '=', 0)
-				->orderBy('created_at', 'desc')
-				->get();
+				->where('created_at', '<=', $toDate.' 23:59:59');
 		}
 		else if($fromDate){
 			$ideas = $this->idea
-				->where('created_at', '>=', $fromDate)
-				->whereNotNull('submitted_at')
-				->where('archived', '=', 0)
-				->orderBy('created_at', 'desc')
-				->get();
+				->where('created_at', '>=', $fromDate);
 		}
 		else if($toDate){
 			$ideas = $this->idea
-				->where('created_at', '<=', $toDate)
-				->whereNotNull('submitted_at')
-				->where('archived', '=', 0)
-				->orderBy('created_at', 'desc')
-				->get();
+				->where('created_at', '<=', $toDate);
 		}
 		else{
-			$ideas = $this->idea
-				->where('status', '!=', 'Draft')
-				->whereNotNull('submitted_at')
-				->where('archived', '=', 0)
-				->orderBy('created_at', 'desc')
-				->all();
+			$ideas = $this->idea;
 		}
 
-		// Paginate the results
-//		$posts = $posts->paginate(10);
+		$ideas = $ideas->whereNotNull('submitted_at')
+			->where('admin_status', '!=', 'Draft');
+		if(!isset($includeArchived)) {
+			$ideas = $ideas->where('archived', '=', 0);
+		}
+		$ideas = $ideas->orderBy('created_at', 'desc')->get();
+
 		// Respond with json data
 		return response()->json(InsideemuIdeaResource::collection($ideas));
 	}
@@ -162,13 +152,15 @@ class InsideemuIdeaAdminController extends ApiController{
 	}
 
 	/**
-	 * Delete an idea.
+	 * Delete an idea and any images.
 	 * @param int $id
+	 * @param InsideemuService $insideemuService
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function destroy(int $id){
+	public function destroy(int $id, InsideemuService $insideemuService){
     $idea = $this->idea->findOrFail($id);
     $idea->delete();
+		$insideemuService->deleteIdeaImages($id);
     return $this->setStatusCode(200)->respond('Idea successfully deleted!');
 	}
 }
