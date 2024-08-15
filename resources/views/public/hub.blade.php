@@ -118,7 +118,8 @@
                     @endif
                   @elseif($barImgs[$i]->story->story_type == 'featurephoto')
                     <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"
-                       aria-label="{{$barImgs[$i]->caption}} - View" class="readmore bold-green-link">More Information</a>
+                       aria-label="{{$barImgs[$i]->caption}} - View" class="readmore bold-green-link">More
+                      Information</a>
                   @else
                     <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"
                        aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
@@ -134,14 +135,17 @@
     <div id="emu-175-container">
       <div class="row">
         <div class="small-12 columns text-center">
-          <h2 class="show-for-medium emu-175-heading">Celebrating EMU<span style="font-family:'arial'">'</span>s 175<sup>th</sup> Anniversary</h2>
+          <h2 class="show-for-medium emu-175-heading">Celebrating EMU<span style="font-family:'arial'">'</span>s
+            175<sup>th</sup> Anniversary</h2>
         </div>
         <div class="large-3 medium-3 small-12 columns" id="emu-175-logo-container">
           <div>
             <a href="https://www.emich.edu/175-anniversary/" target="_blank">
-            <img src="/assets/imgs/emu175/emu-175-white-290x290-logo.png" alt="EMU 175 logo" class="show-for-medium" width="253">
-            <span class="hide-for-medium">
-              <img src="/assets/imgs/emu175/emu-175-white-100x100-logo.png" alt="EMU 175 logo" class="hide-for-medium" width="75" height="75" style="margin-right: .5rem">
+              <img src="/assets/imgs/emu175/emu-175-white-290x290-logo.png" alt="EMU 175 logo" class="show-for-medium"
+                   width="253">
+              <span class="hide-for-medium">
+              <img src="/assets/imgs/emu175/emu-175-white-100x100-logo.png" alt="EMU 175 logo" class="hide-for-medium"
+                   width="75" height="75" style="margin-right: .5rem">
             </span>
             </a>
             <h2 class="hide-for-medium emu-175-heading">EMU 175<sup>th</sup> Anniversary</h2>
@@ -190,6 +194,8 @@
         </div>
       </div>
     </div>
+
+
     <div id="news-headline-bar">
       <div class="row">
         <div class="large-12 medium-12 small-12 columns">
@@ -197,156 +203,160 @@
         </div>
       </div>
       <div id="news-headline-bar-top" class="row" data-equalizer data-equalize-on="medium">
-        @if($topAnnouncement)
-          <div class="card small-12 medium-7 large-7 columns" data-equalizer-watch>
+        <div class="card small-12 medium-6 large-3 columns" data-equalizer-watch>
+          @if(isset($currentStoryImageWithVideoTag))
+            <a class="popup-youtube" href="{{$currentStoryImageWithVideoTag->link}}">
+              <img src="/imagecache/original/{{$currentStoryImageWithVideoTag->filename}}"
+                   alt="{{ $currentStoryImageWithVideoTag->alt_text != '' ? $currentStoryImageWithVideoTag->alt_text : 'featured video' }}"
+                   style="display: block;"/>
+            </a>
+          @else
+            <a class="popup-youtube" href="https://www.youtube.com/user/emichigan08" target="blank"><img
+                  src="/assets/imgs/placeholder/external_video.jpg" alt="featured video"></a>
+          @endif
+          <div class="card-section">
+            @if(isset($currentStoryImageWithVideoTag))
+              <p>{{$currentStoryImageWithVideoTag->caption}}</p>
+              <a class="popup-youtube bold-green-link" title="External link to a YouTube video."
+                 href="{{$currentStoryImageWithVideoTag->link}}" target="_blank">Watch Video</a>
             @else
-              <div class="card small-12 medium-5 large-5 columns" data-equalizer-watch>
-                @endif
-                <div class="card-section" data-equalizer-watch>
-                  <h4><a class="bold-green-link" title="EMU Today campus announcements."
-                         href="{{ url('/announcement') }}">Announcements</a></h4>
-                  <div class="row newshub-tab-front">
-                    @if($topAnnouncement)
-                      <div class="large-6 medium-12 small-12 large-push-6 columns">
-                        <article id="special-notice-container">
-                          <h3>Special Notice</h3>
-                          <p id="special-notice-title"><a
-                                href="/announcement/{{$topAnnouncement->id}}">{{ $topAnnouncement->title }}</a>
-                          </p>
-                          <p id="special-notice-teaser"><a
-                                href="/announcement/{{$topAnnouncement->id}}">{{ str_limit($topAnnouncement->announcement, $limit = 95, $end = '...') }}</a>
-                          </p>
-                        </article>
-                      </div>
-                      <div class="large-6 medium-12 small-12 large-pull-6 columns">
-                        <ul>
-                          @foreach ($currentAnnouncements as $announcement)
-                            {{-- priority of 1000000 is a special announcement and will appear in its own box --}}
-                            @if($announcement->priority != 1000000)
-                              <li>
-                                <a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a>
-                              </li>
-                            @endif
-                          @endforeach
-                          <li><a href="/announcement" class="bottom-tab-link">More
-                              Announcements</a>
-                          </li>
-                        </ul>
-                      </div>
-                    @else
-                      <div class="large-12 medium-12 small-12 columns">
-                        <ul>
-                          @foreach ($currentAnnouncements as $announcement)
-                            <li>
-                              <a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a>
-                            </li>
-                          @endforeach
-                        </ul>
-                      </div>
-                    @endif
-                  </div>
-                </div>
-              </div><!-- end .card -->
-              @if($topAnnouncement)
-                <div class="card small-12 medium-5 large-5 columns" data-equalizer-watch>
-                  @else
-                    <div class="card small-12 medium-7 large-7 columns" data-equalizer-watch>
-                      @endif
-                      <div class="card-section" data-equalizer-watch>
-                        <h4><a class="bold-green-link" title="EMU news, press releases, and official statements."
-                               href="{{ url('/story/news') }}">News Headlines</a>
-                        </h4>
-                        <div class="row newshub-tab-front">
-                          <div class="large-12 medium-12 small-12 columns">
-                            <ul>
-                              @foreach ($currentStorysBasic as $basicstory)
-                                <li>
-                                  @if($basicstory->story_type == 'advisory')
-                                    <a href="/story/advisory/{{$basicstory->id}}"
-                                       class="advisory-link">{{$basicstory->title}}</a>
-                                  @elseif($basicstory->story_type == 'statement')
-                                    <a href="/story/statement/{{$basicstory->id}}"
-                                       class="statement-link">{{$basicstory->title}}</a>
-                                  @elseif($basicstory->story_type == 'external')
-                                    <a href="{{$basicstory->storyImages[0]->link}}"
-                                       class="external-link">{{$basicstory->title}}</a>
-                                  @else
-                                    <a href="/story/news/{{$basicstory->id}}">{{$basicstory->title}}</a>
-                                  @endif
-                                </li>
-                              @endforeach
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div><!-- end .card -->
-                </div><!-- end .row -->
-                <div id="news-headline-bar-middle" class="row" data-equalizer data-equalize-on="medium">
-                  <div class="card small-12 medium-6 large-3 columns" data-equalizer-watch>
-                    @if(isset($currentStoryImageWithVideoTag))
-                      <a class="popup-youtube" href="{{$currentStoryImageWithVideoTag->link}}">
-                        <img src="/imagecache/original/{{$currentStoryImageWithVideoTag->filename}}"
-                             alt="{{ $currentStoryImageWithVideoTag->alt_text != '' ? $currentStoryImageWithVideoTag->alt_text : 'featured video' }}"
-                             style="display: block;"/>
-                      </a>
-                    @else
-                      <a class="popup-youtube" href="https://www.youtube.com/user/emichigan08" target="blank"><img
-                            src="/assets/imgs/placeholder/external_video.jpg" alt="featured video"></a>
-                    @endif
-                    <div class="card-section">
-                      @if(isset($currentStoryImageWithVideoTag))
-                        <p>{{$currentStoryImageWithVideoTag->caption}}</p>
-                        <a class="popup-youtube bold-green-link" title="External link to a YouTube video."
-                           href="{{$currentStoryImageWithVideoTag->link}}" target="_blank">Watch Video</a>
+              <p>Welcome to Education First, the official Eastern Michigan University YouTube Channel.</p>
+              <a class="popup-youtube bold-green-link" title="External link to a YouTube video."
+                 href="https://www.youtube.com/user/emichigan08" target="blank">Watch Video</a>
+            @endif
+          </div>
+        </div>
+        <div class="card small-12 medium-6 large-6 columns" data-equalizer-watch>
+          <div class="card-section" data-equalizer-watch>
+            <h4><a class="bold-green-link" title="EMU news, press releases, and official statements."
+                   href="{{ url('/story/news') }}">News Headlines</a>
+            </h4>
+            <div class="row newshub-tab-front">
+              <div class="large-12 medium-12 small-12 columns">
+                <ul>
+                  @foreach ($currentStorysBasic as $basicstory)
+                    <li>
+                      @if($basicstory->story_type == 'advisory')
+                        <a href="/story/advisory/{{$basicstory->id}}"
+                           class="advisory-link">{{$basicstory->title}}</a>
+                      @elseif($basicstory->story_type == 'statement')
+                        <a href="/story/statement/{{$basicstory->id}}"
+                           class="statement-link">{{$basicstory->title}}</a>
+                      @elseif($basicstory->story_type == 'external')
+                        <a href="{{$basicstory->storyImages[0]->link}}"
+                           class="external-link">{{$basicstory->title}}</a>
                       @else
-                        <p>Welcome to Education First, the official Eastern Michigan University YouTube Channel.</p>
-                        <a class="popup-youtube bold-green-link" title="External link to a YouTube video."
-                           href="https://www.youtube.com/user/emichigan08" target="blank">Watch Video</a>
+                        <a href="/story/news/{{$basicstory->id}}">{{$basicstory->title}}</a>
                       @endif
-                    </div>
-                  </div>
-                  <div class="card small-12 medium-6 large-3 large-push-6 columns" data-equalizer-watch>
-                    <img src="/assets/imgs/placeholder/magazine-spring-2024.jpg" alt="The cover of the spring 2024 issue of EMU Magazine">
-                    <div class="card-section">
-                      <p>Deep Dive: What lies beneath tells the truth about Lake Superior’s shipwrecks. </p>
-                      <a class="bold-green-link" title="External link to the issues of EMU Magazine."
-                         href="https://magazine.emich.edu/issues/" target="blank">Read the latest issue</a>
-                    </div>
-                  </div>
-                  <div class="card small-12 medium-12 large-6 large-pull-3 columns" data-equalizer-watch>
-                    <div class="card-section" data-equalizer-watch>
-                      <h4><a class="bold-green-link" href="#">Working @ EMU</a></h4>
-                      <div class="row newshub-tab-front">
-                        <div class="large-12 medium-12 small-12 columns">
-                          <ul class="feature-list hr-list">
-                            @foreach($currentHRAnnouncements as $currentHRAnnouncement)
-                              <li>
-                                <a href="{{ (substr($currentHRAnnouncement->link, 0, 4) == 'http') ? $currentHRAnnouncement->link : 'https://'.$currentHRAnnouncement->link }}">{{$currentHRAnnouncement->title}}</a>
-                              </li>
-                            @endforeach
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- /end .card -->
-                </div><!-- /end .row -->
-
-                @unless(empty($featuredevents[0]))
-                  <div id="news-headline-bar-bottom" class="row">
-                    <div class="card small-12 medium-12 large-12 columns">
-                      <div class="card-section">
-                        <h4><a title="EMU campus events calendar." href="{{ url('/calendar') }}"
-                               class="bold-green-link">Events Calendar</a></h4>
-                        <div id="five-events-bar">
-                          <div class="row large-up-4 medium-up-2 small-up-2">
-                            @each('public.featuredeventhub', $featuredevents, 'fevent')
-                          </div><!-- row event block grid end -->
-                        </div> <!--end of five events bar-->
-                      </div>
-                    </div><!-- /end .card -->
-                  </div><!-- /end .row -->
-                @endunless
-          </div><!-- /end #news-headline-bar -->
-      </div><!-- /end #content-area -->
+                    </li>
+                  @endforeach
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div><!-- end .card -->
+        <div class="card small-12 medium-6 large-3 columns" data-equalizer-watch>
+          <img src="/assets/imgs/placeholder/magazine-spring-2024.jpg" alt="The cover of the spring 2024 issue of EMU Magazine">
+          <div class="card-section">
+            <p>Deep Dive: What lies beneath tells the truth about Lake Superior’s shipwrecks. </p>
+            <a class="bold-green-link" title="External link to the issues of EMU Magazine."
+               href="https://magazine.emich.edu/issues/" target="blank">Read the latest issue</a>
+          </div>
+        </div>
+      </div>
+      <div id="news-headline-bar-middle" class="row" data-equalizer data-equalize-on="medium">
+        @if($topAnnouncement)
+        <div class="card small-12 medium-5 large-5 columns" data-equalizer-watch>
+        @else
+        <div class="card small-12 medium-7 large-7 columns" data-equalizer-watch>
+        @endif
+          <div class="card-section" id="insideemu-hub-container" data-equalizer-watch>
+            @if($topAnnouncement)
+            <div>
+                <h4><a class="bold-green-link" title="Inside EMU"
+                       href="{{ url('/insideemu') }}">Inside EMU</a></h4>
+              @if($insideemu)
+                <p style="margin-top: 0.8rem">
+                  <a href="{{ url('/insideemu/posts/' . $insideemu->id ) }}" class="caption-link">{{ $insideemu->images[0]->caption }}</a>
+                </p>
+              @endif
+              <p style="font-weight: lighter; margin-bottom: 1.1rem">Go to our Inside EMU page to find other user-submitted posts produced by staff and faculty across the University.</p>
+              <a class="round-white-btn" title="Link to Inside EMU posts."
+                 href="{{ url('/insideemu') }}">Read More Posts</a>
+            </div>
+            @else
+            <div style="display: flex; align-items: flex-start;">
+              <div style="flex: 1; padding-right: .5rem">
+                <h4><a class="bold-green-link" title="Inside EMU"
+                                                     href="{{ url('/insideemu') }}">Inside EMU</a></h4>
+                @if($insideemu)
+                  <p><a href="{{ url('/insideemu/posts/' . $insideemu->id ) }}" class="caption-link">{{ $insideemu->images[0]->caption }}</a></p>
+                @endif
+                <p style="font-weight: lighter">Go to our Inside EMU page to find other user-submitted posts produced by staff and faculty across the University.</p>
+                <div style="display: flex; justify-content: center;">
+                  <a class="round-white-btn" title="Link to Inside EMU posts."
+                     href="{{ url('/insideemu') }}">Read More Stories</a>
+                </div>
+              </div>
+              @if($insideemu)
+                <img src="/imagecache/original/{{$insideemu->id}}/{{$insideemu->images[0]->image_name}}" style="width: 290px; height: 175px"
+                     alt="{{ $insideemu->images[0]->alt_text != '' ? $insideemu->images[0]->alt_text : str_replace('"', "", $insideemu->images[0]->caption) }}">
+              @endif
+            </div>
+            @endif
+          </div>
+        </div><!-- end .card -->
+        @if($topAnnouncement)
+        <div class="card small-12 medium-7 large-7 columns" data-equalizer-watch>
+        @else
+        <div class="card small-12 medium-5 large-5 columns" data-equalizer-watch>
+        @endif
+          <div class="card-section" data-equalizer-watch>
+            <h4><a class="bold-green-link" title="EMU Today campus announcements."
+                   href="{{ url('/announcement') }}">Announcements</a></h4>
+            <div class="row newshub-tab-front">
+              @if($topAnnouncement)
+                <div class="large-6 medium-12 small-12 large-push-6 columns">
+                  <article id="special-notice-container">
+                    <h3>Special Notice</h3>
+                    <p id="special-notice-title"><a
+                          href="/announcement/{{$topAnnouncement->id}}">{{ $topAnnouncement->title }}</a>
+                    </p>
+                    <p id="special-notice-teaser"><a
+                          href="/announcement/{{$topAnnouncement->id}}">{{ str_limit($topAnnouncement->announcement, $limit = 95, $end = '...') }}</a>
+                    </p>
+                  </article>
+                </div>
+                <div class="large-6 medium-12 small-12 large-pull-6 columns">
+                  <ul>
+                    @foreach ($currentAnnouncements as $announcement)
+                       <!-- priority of 1000000 is a special announcement and will appear in its own box -->
+                      @if($announcement->priority != 1000000)
+                        <li>
+                          <a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a>
+                        </li>
+                      @endif
+                    @endforeach
+                    <li><a href="/announcement" class="bottom-tab-link">More
+                        Announcements</a>
+                    </li>
+                  </ul>
+                </div>
+              @else
+                <div class="large-12 medium-12 small-12 columns">
+                  <ul>
+                    @foreach ($currentAnnouncements as $announcement)
+                      <li>
+                        <a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a>
+                      </li>
+                    @endforeach
+                  </ul>
+                </div>
+              @endif
+            </div>
+          </div>
+        </div><!-- end .card -->
+      </div>
+    </div>
+  </div><!-- /end #content-area -->
 @endsection

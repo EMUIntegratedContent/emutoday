@@ -143,7 +143,7 @@ export const ckeditorMixin = {
 					contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
 				},
 				flmngr: {
-					urlFileManager: "/flmngr.php",
+					urlFileManager: "/flmngr_stories.php",
 					urlFiles: "/imgs/uploads/story/images/"
 				},
 				toolbar: {

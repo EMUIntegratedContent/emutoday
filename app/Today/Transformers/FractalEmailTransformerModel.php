@@ -3,6 +3,7 @@
 namespace Emutoday\Today\Transformers;
 
 use Emutoday\Email;
+use Emutoday\Http\Resources\InsideemuPostPublicResource;
 use Emutoday\Story;
 use League\Fractal;
 use Carbon\Carbon;
@@ -29,6 +30,8 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
           $sendAt = $email->send_at->toDateTimeString();
         }
 
+				$insideemuPosts = $email->insideemuPosts()->orderBy('email_insideemu.order', 'asc')->get();
+
         return [
             'id'      => (int) $email->id,
             'title'    =>  $email->title,
@@ -39,6 +42,7 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
             'announcements' => $email->announcements()->orderBy('email_announcement.order', 'asc')->get(),
             'events' => $email->events()->orderBy('email_event.order', 'asc')->get(),
             'otherStories' => $otherStories['data'],
+						'insideemuPosts' => InsideemuPostPublicResource::collection($insideemuPosts), // use the resource instead of the model because it has the 'postId' field, which the frontend needs
             'send_at' => $sendAt,
             'recipients' => $email->recipients()->get(),
             'is_sent' => $email->is_sent,

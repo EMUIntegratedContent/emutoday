@@ -23,6 +23,7 @@ class Email extends Model
       'send_at',
       'is_president_included',
       'exclude_events',
+			'exclude_insideemu',
       'president_teaser',
       'president_url',
       'is_emu175_included',
@@ -42,6 +43,10 @@ class Email extends Model
   public function events() {
     return $this->belongsToMany('Emutoday\Event', 'email_event')->withPivot('order')->orderBy('order')->withTimestamps();
   }
+
+	public function insideemuPosts() {
+		return $this->belongsToMany('Emutoday\InsideemuPost', 'email_insideemu')->withPivot('order')->orderBy('order')->withTimestamps();
+	}
 
   /**
    * The main stories (with pictures). Each email must have 1 main story but can have 3.

@@ -275,6 +275,25 @@
                   </div>
                 </td>
               </tr>
+              <tr v-if="!emailBuilderEmail.exclude_insideemu">
+                <td valign="middle">
+                  <div style="padding-top: 5px;">
+                    <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/insideemu">Inside EMU &#10137;</a></h2>
+                    <template v-if="emailBuilderEmail.insideemuPosts.length > 0">
+                      <ul style="padding-bottom: 0px; margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
+                        <li v-for="post in emailBuilderEmail.insideemuPosts"
+                            style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
+                          <a style="text-decoration: none;" :href="post.full_url">{{ post.title }}</a>
+                        </li>
+                      </ul>
+                    </template>
+                    <template v-else>
+                      <p style="padding:5px" class="insufficient">No Inside EMU posts set yet. Select at least one from
+                        the "Inside EMU" tab.</p>
+                    </template>
+                  </div>
+                </td>
+              </tr>
               <tr style="background:#515151; color:#ffffff; border:0;">
                 <td style="border:0; ">
                   <table style="margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;">
@@ -315,7 +334,7 @@
                           </li>
                           <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                             <a href="https://www.emich.edu/communications/expertise/social-media//"><img
-                                class="img-circle" alt="Twitter" src="/assets/imgs/icons/twitter-base-icons.png"></a>
+                                class="img-circle" alt="X (formerly Twitter)" src="/assets/imgs/icons/twitter-x.png"></a>
                           </li>
                           <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
                             <a href="https://www.youtube.com/user/emichigan08"><img class="img-circle" alt="YouTube"

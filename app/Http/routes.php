@@ -24,29 +24,46 @@ use Illuminate\Support\Facades\DB;
 | and give it the controller to call when that URI is requested.
 |
 */
+
+Route::get('/testoauth', function () {
+  return response()->json("Now that's what I call a secure API!");
+})->middleware('client_credentials');
+
+/***************
+ * Mailgun Webhook Routes
+ */
 Route::group(['prefix' => 'mailgun'], function () {
   Route::post('open', 'Api\MailgunApiController@postOpen');
   Route::post('click', 'Api\MailgunApiController@postClick');
   Route::post('spam', 'Api\MailgunApiController@postSpam');
 });
 
+/***************
+ * CAS Routes
+ */
 Route::get('/cas/logout', function () {
   Auth::logout();
   Session::flush();
   cas()->logout();
 })->middleware('auth');  //you MUST use 'auth' middleware and not 'auth.basic'. Otherwise, a user won't be logged out properly.
 
-# RSS Feeds
+/***************
+ * RSS Feed Routes
+ */
 Route::get('/feed/news/{type?}', 'Today\RSSFeedController@getNews')->name('rss_feed_news');
 Route::get('/feed/events/{type?}', 'Today\RSSFeedController@getEvents')->name('rss_feed_events');
 Route::get('/feed/announcements/{type?}', 'Today\RSSFeedController@getAnnouncements')->name('rss_feed_announcements');
 Route::get('/feed/minical/{minical?}', 'Today\RSSFeedController@getEventsICalMinical')->name('ical_events_minical');
 Route::get('/feed/ical', 'Today\RSSFeedController@getEventsICal')->name('ical_events');
 
+/***************
+ * External API Routes
+ */
 Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']], function () {
   Route::get('events/{limit?}/{startDate?}/{endDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEvents');
   Route::get('hscevents/{limit?}/{startDate?}/{endDate?}', 'Api\ExternalApiController@getHscEvents');
   Route::get('homecomingevents/{firstDate}/{lastDate}', 'Api\ExternalApiController@getHomecomingEvents');
+  Route::get('eventsbydates_v2/{limit?}/{referenceDate?}/{previous?}/{includeSelectedDate?}', 'Api\ExternalApiController@getEventsByDatesV2');
   Route::get('eventsbydates/{limit?}/{referenceDate?}/{previous?}/{includeSelectedDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEventsByDates');
   Route::get('hsceventsbydates/{limit?}/{referenceDate?}/{previous?}/{includeSelectedDate?}', 'Api\ExternalApiController@getHscEventsByDates');
   Route::get('eventshome/{limit?}/{sortBy?}', 'Api\ExternalApiController@getHomeFeaturedEvents');
@@ -57,7 +74,31 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']], function
   Route::post('events/campuslife/new', 'Api\ExternalApiController@createCampusLifeEvent');
 });
 
+/***************
+ * Internal API Routes
+ */
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
+
+	/* Inside EMU Ideas */
+	Route::get('insideemu/admin/ideas/ideas', 'Api\InsideemuIdeaAdminController@index')->name('api_insideemu_admin_ideas');
+	Route::get('insideemu/admin/ideas/{ideaId}', 'Api\InsideemuIdeaAdminController@show')->name('api_insideemu_admin_idea');
+	Route::put('insideemu/admin/ideas/{ideaId}/archive', 'Api\InsideemuIdeaAdminController@archive')->name('api_insideemu_admin_idea_archive');
+	Route::put('insideemu/admin/ideas/{ideaId}/unarchive', 'Api\InsideemuIdeaAdminController@unarchive')->name('api_insideemu_admin_idea_unarchive');
+	Route::put('insideemu/admin/ideas/{ideaId}/status', 'Api\InsideemuIdeaAdminController@status')->name('api_insideemu_admin_idea_status');
+	Route::delete('insideemu/admin/ideas/{ideaId}', 'Api\InsideemuIdeaAdminController@destroy')->name('api_insideemu_admin_idea_delete');
+	Route::post('insideemu/admin/ideas/{ideaId}/makepost', 'Api\InsideemuIdeaAdminController@makepost')->name('api_insideemu_admin_makepost');
+	Route::get('insideemu/ideas/user/{ideaId}', 'Api\InsideemuIdeaPublicController@show')->name('api_insideemu_user_idea');
+	Route::get('insideemu/ideas/user', 'Api\InsideemuIdeaPublicController@index')->name('api_insideemu_user_ideas');
+	Route::post('insideemu/ideas/user', 'Api\InsideemuIdeaPublicController@store')->name('api_insideemu_user_ideas_store');
+	Route::put('insideemu/ideas/user/{ideaId}', 'Api\InsideemuIdeaPublicController@update')->name('api_insideemu_user_ideas_update');
+	/* Inside EMU Posts */
+	Route::get('insideemu/admin/posts/imagetypes', 'Api\InsideemuPostController@getPostImageTypes')->name('api_insideemu_post_imagetypes');
+	Route::patch('insideemu/admin/posts/addrank/{postId}', 'Api\InsideemuPostController@addRank')->name('api_insideemu_post_addrank');
+	Route::patch('insideemu/admin/posts/makehubpost/{postId}', 'Api\InsideemuPostController@makeHubPost')->name('api_insideemu_post_makehubpost');
+	Route::post('insideemu/admin/posts/updateranks', 'Api\InsideemuPostController@updateRanks')->name('api_insideemu_post_updateranks');
+//	Route::get('insideemu/posts/{postId}', 'Api\InsideemuPostController@show')->name('api_insideemu_post');
+//	Route::get('insideemu/posts', 'Api\InsideemuPostController@index')->name('api_insideemu_posts');
+	Route::resource('insideemu/admin/posts', 'Api\InsideemuPostController');
 
   /* STORY IDEAS */
   Route::resource('storyideas', 'Api\StoryIdeasController');
@@ -84,6 +125,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::get('email/stories/main/{fromDate?}/{toDate?}', 'Api\EmailController@getMainEmailReadyStories')->name('api_email_main_stories');
   Route::get('email/stories/otherstories/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyStories')->name('api_email_other_stories');
   Route::get('email/events/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyEvents')->name('api_email_events');
+  Route::get('email/insideemuposts/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyInsideemuPosts')->name('api_email_insideemu_posts');
   Route::get('email/announcements/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyAnnouncements')->name('api_email_announcements');
   Route::get('email/recipients', 'Api\EmailController@getAllRecipients')->name('api_email_recipients_get');
   Route::post('email/recipients', 'Api\EmailController@saveRecipient')->name('api_email_recipients_save');
@@ -248,6 +290,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::get('story/elevated', 'Api\StoryController@getElevatedStorys')->name('api_story_elevated');
   Route::resource('story', 'Api\StoryController');
 });
+// ^^ END API ROUTES
 
 Route::get('/', 'MainController@index')->name('home');
 Route::get('forthemedia', 'MainController@forTheMediaIndex');
@@ -316,8 +359,12 @@ Route::resource('experts', 'Today\ExpertsController');
 //        Route::get('{stype}/{story}/', 'PreviewController@story')->name('preview_story');
 //    });
 
+/***************
+ * Admin Routes
+ */
 Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   Route::group(['prefix' => 'preview', 'middleware' => ['bindings']], function () {
+		Route::get('insideemu/post/{postId}', 'PreviewController@insideemupost')->name('preview_insideemu_post');
     Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');
     Route::get('page/{page}/', 'PreviewController@hub')->name('preview_hub');
     Route::get('magazine/{magazine}/', 'PreviewController@magazine')->name('preview_magazine');
@@ -449,6 +496,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   // EMU 175
   Route::resource('emu175', 'Admin\EMU175Controller');
 
+	// Inside EMU Posts
+	Route::group(['middleware' => ['insideemu'], 'prefix' => 'insideemu', 'as' => 'admin.'], function () {
+		Route::resource('/ideas', 'Admin\InsideemuIdeaController');
+		Route::resource('/posts', 'Admin\InsideemuPostController');
+	});
+
   Route::get('story/queueall', 'Admin\StoryTypeController@queueAll')->name('admin_story_queue');
   Route::get('magazine/article/queuearticle', 'Admin\StoryTypeController@queueArticle')->name('admin_magazine_article_queue');
 
@@ -466,11 +519,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
 
   Route::get('{qtype}/{gtype}/{stype}/{story}/edit', 'Admin\StoryTypeController@storyTypeEdit')->middleware('bindings');
 });
+// ^^ END ADMIN ROUTES
 
 Route::group(['prefix' => 'mediahighlights'], function () {
   Route::get('/', 'Today\MediaHighlightController@index')->name('mediahighlights_index');
 });
 
-Route::get('/testoauth', function () {
-  return response()->json("Now that's what I call a secure API!");
-})->middleware('client_credentials');
+Route::group(['prefix' => 'insideemu'], function () {
+	Route::resource('/ideas', 'Today\InsideemuIdeaController');
+	Route::resource('/posts', 'Today\InsideemuPostController');
+	Route::resource('', 'Today\InsideemuController');
+});

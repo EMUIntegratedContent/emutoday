@@ -18,10 +18,12 @@ export const emailMixin = {
 		...mapMutations([
 			'addAnnouncement',
 			'addEvent',
+			'addInsidePost',
 			'addMainStory',
 			'addOtherStory',
 			'removeAnnouncement',
 			'removeEvent',
+			'removeInsidePost',
 			'removeMainStory',
 			'removeOtherStory',
 			'resetEmailBuilderEmail',
@@ -29,6 +31,7 @@ export const emailMixin = {
 			'setEmailBuilderEmailProp',
 			'updateAnnouncementsOrder',
 			'updateEventsOrder',
+			'updateInsideemuPostsOrder',
 			'updateMainStoriesOrder',
 			'updateOtherStoriesOrder'
 		])

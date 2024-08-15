@@ -1,3 +1,16 @@
+====================================================================================================
+INSIDE EMU NOTES 2024
+
+TODO: create insideemu model and controller
+
+https://inertiajs.com/  <== Vue + Laravel (no need for API routes)
+
+
+
+
+
+
+====================================================================================================
 1.August.2018
 
 PROBLEM: terminal command 'gulp watch' was crashing

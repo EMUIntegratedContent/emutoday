@@ -83,14 +83,29 @@
     </ul>
   </li>
   @can('edit_all', $currentUser)
-  <li><a href="/admin/storyideas"><i class="fa fa-lightbulb-o"></i>Ideas <span class="pull-right-container"></a></li>
+  <li><a href="/admin/storyideas"><i class="fa fa-lightbulb-o"></i>Ideas</a></li>
   @endcan
-  <li style="border-top:1px solid #cccccc"><a href="/admin/archive/queue/stories"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
+  <li style="border-top:1px solid #cccccc"><a href="/admin/archive/queue/stories"><i class="fa fa-archive"></i>Archives</a></li>
   @endcan
 </ul>
 </li>
 @endcan
-
+@if(Gate::check('admin_super') || Gate::check('admin') || Gate::check('editor_super') || Gate::check('editor') || Gate::check('contributor_2') || Gate::check('contributor_1'))
+  <li class="treeview {{ set_active('admin/insideemu*') }}">
+    <a href="#"><i class="fa fa-lightbulb-o"></i> <span>Inside EMU</span></a>
+    <ul class="treeview-menu">
+    <li><a href="#"><i class="fa fa-circle-o"></i>Posts <span class="pull-right-container">
+    <i class="fa fa-angle-left pull-right"></i>
+    </span></a>
+        <ul class="treeview-menu {{ set_active('admin/story/posts*') }}">
+          <li class="{{ set_active('admin/insideemu/posts') }}"><a href="/admin/insideemu/posts"><i class="fa fa-file-text-o"></i> <span>Queue</span></a></li>
+          <li class="{{ set_active('admin/insideemu/posts/create') }}"><a href="/admin/insideemu/posts/create"><i class="fa fa-plus-square"></i><span>New Post</span></a></li>
+        </ul>
+      </li>
+      <li class="{{ set_active('admin/insideemu/ideas*') }}"><a href="/admin/insideemu/ideas"><i class="fa fa-lightbulb-o"></i> <span>Public Submissions</span></a></li>
+    </ul>
+  </li>
+@endif
 @can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/page*') }}">
   <a href="#"><i class="fa fa-sitemap"></i> <span>Hub</span></a>

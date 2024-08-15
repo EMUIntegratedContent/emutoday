@@ -7,6 +7,7 @@ namespace Emutoday\Helpers;
 use Emutoday\Helpers\Interfaces\IBug;
 use Emutoday\Announcement;
 use Emutoday\Event;
+use Emutoday\InsideemuIdea;
 use Emutoday\Story;
 use Emutoday\Expert;
 use Emutoday\ExpertMediaRequest;
@@ -42,5 +43,11 @@ class Bug implements IBug{
 
         return $bugExpertMediaRequests;
     }
+
+		public function getNewInsideemuIdeas() {
+				$bugInsideemuIdeas = InsideemuIdea::where('admin_status', 'New')->whereNotNull('submitted_at')->where('archived', 0)->orderBy('submitted_at', 'desc')->get();
+
+				return $bugInsideemuIdeas;
+		}
 
 }

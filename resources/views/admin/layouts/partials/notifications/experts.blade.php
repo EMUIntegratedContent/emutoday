@@ -40,7 +40,7 @@
             </ul>
             <!-- /.menu -->
         </li>
-        <li class="footer"><a href="/admin/experts/list">All experts</a> <a href="/admin/expertrequests/list">All media requests</a></li>
+        <li class="footer"><a href="/admin/experts">All experts</a> <a href="/admin/expertrequests">All media requests</a></li>
     </ul>
 </li>
 <!-- /.messages-menu -->

@@ -33,6 +33,7 @@ class PageController extends Controller
         View::share('bugStories', $this->bugService->getUnapprovedStories());
         View::share('bugExperts', $this->bugService->getUnapprovedExperts());
         View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
+				View::share('bugInsideemuIdeas', $this->bugService->getNewInsideemuIdeas());
     }
 
     public function index()
@@ -92,7 +93,7 @@ class PageController extends Controller
 
     public function update(Request $request, $id)
     {
-        
+
     }
 
     public function delete(Request $request)

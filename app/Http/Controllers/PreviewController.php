@@ -2,6 +2,7 @@
 
 namespace Emutoday\Http\Controllers;
 
+use Emutoday\InsideemuPost;
 use Illuminate\Http\Request;
 
 use Emutoday\Http\Requests;
@@ -34,7 +35,7 @@ Route::get('magazine/{magazine}', ['as' => 'preview_magazine', 'uses' => 'Previe
 class PreviewController extends Controller{
 
 
-	public function __construct(Page $page, Story $story, Magazine $magazine, Event $event, Announcement $announcement, Expert $expert){
+	public function __construct(Page $page, Story $story, Magazine $magazine, Event $event, Announcement $announcement, Expert $expert, InsideemuPost $insideemuPost){
 		$this->middleware('auth');
 		$this->page = $page;
 		$this->magazine = $magazine;
@@ -42,6 +43,7 @@ class PreviewController extends Controller{
 		$this->event = $event;
 		$this->announcement = $announcement;
 		$this->expert = $expert;
+		$this->insideemuPost = $insideemuPost;
 	}
 
 	public function goBack($gtype, $stype, $qtype, $id = null){
@@ -118,18 +120,17 @@ class PreviewController extends Controller{
 				['start_date', '>=', Carbon::now()->startOfDay()]
 			])->orderBy('start_date', 'asc')
 				->paginate(4);
-			$tweets = Tweet::where('approved', 1)->orderBy('created_at', 'desc')->take(4)->get();
 			$currentStoryImageWithVideoTag = $story->storyImages()->where('image_type', 'small')->first();
 
-			return view('preview.story.external', compact('story', 'gtype', 'qtype', 'stype', 'currentStorysBasic', 'currentAnnouncements', 'events', 'tweets', 'currentStoryImageWithVideoTag'));
-
-		}
-		else{
+			return view('preview.story.external', compact('story', 'gtype', 'qtype', 'stype', 'currentStorysBasic', 'currentAnnouncements', 'events', 'currentStoryImageWithVideoTag'));
 
 		}
 	}
 
 	public function hub(Page $page){
+		//Set current date to begining of day and end of day
+		$currentDateStart = Carbon::now()->startOfDay();
+		$currentDateEnd = Carbon::now()->endOfDay();
 
 		$currentStorysBasic = $this->story->where('story_type', 'news')->paginate(3);
 		$currentAnnouncements = $this->announcement->where('is_approved', 1)->orderBy('priority', 'desc')->paginate(3);
@@ -154,6 +155,18 @@ class PreviewController extends Controller{
 				}
 			}
 		}
+
+		// Find a special announcement (value of 1000000), if there is one.
+		$topAnnouncement = $this->announcement->where([
+			['is_approved', 1],
+			['is_archived', 0],
+			['type', 'general'],
+			['start_date', '<=', $currentDateStart],
+			['end_date', '>=', $currentDateEnd],
+			['priority', 1000000],
+		])
+			->orderBy('start_date', 'desc')
+			->first();
 
 		$allStorysWithVideoTag = Story::whereHas('tags', function ($query){
 			$query->where('name', 'video');
@@ -180,7 +193,6 @@ class PreviewController extends Controller{
 
 
 		$storyImages = $page->storyImages;
-		$tweets = Tweet::where('approved', 1)->orderBy('created_at', 'desc')->take(4)->get();
 
 		// Show up to 4 featured events on the front page
 		$featuredevents = Event::where([
@@ -192,6 +204,28 @@ class PreviewController extends Controller{
 			->orderBy('start_time', 'asc')
 			->take(4)->get();
 
+		// EMU's 175th Anniversary Story (temporary for 2024-25)
+		$emu175Story = Story::where('is_emu175_hub_story', 1)->first();
+		$emu175StoryImg = null;
+		if($emu175Story) {
+			$emu175StoryImg = $emu175Story->storyImages()->where('image_type', 'emu175')->first();
+		}
+		// Open the file in resources/emu175_dyk.txt and get 3 random lines
+		$emu175DykFile = file(resource_path('emu175_dyk.txt'));
+		$emu175Dyk = [];
+		if($emu175DykFile) {
+			// Shuffle the lines
+			shuffle($emu175DykFile);
+			// Get the first three unique lines from the shuffled array
+			$emu175Dyk = array_slice($emu175DykFile, 0, 3);
+		}
+
+		// Insideemu Hub Post (with small image)
+		$insideemu = $this->insideemuPost->where('is_hub_post', 1)->with(['images' => function ($query) {
+			// Only retrieve the required images for each post (in this case, the 'small' image)
+			$query->where('imagetype_id', 28);
+		}])->first();
+
 		JavaScript::put([
 			'jsis' => 'hi',
 			'cdnow' => Carbon::now(),
@@ -199,7 +233,7 @@ class PreviewController extends Controller{
 			'cdend' => Carbon::now()->addDays(7),
 			'currentPage' => $page
 		]);
-		return view('preview.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'events', 'tweets', 'currentStoryImageWithVideoTag', 'featuredevents'));
+		return view('preview.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events', 'currentStoryImageWithVideoTag', 'featuredevents', 'emu175StoryImg', 'emu175Dyk', 'insideemu'));
 
 	}
 
@@ -262,5 +296,12 @@ class PreviewController extends Controller{
 		return view('preview.magazine.index', compact('magazine', 'storyImages', 'heroImg', 'barImgs', 'magazineCover', 'magazineExtra'));
 
 
+	}
+
+	public function insideemupost($postId){
+		$post = $this->insideemuPost->findOrFail($postId);
+		$idea = $post->idea;
+		$mainImg = $post->images()->where('imagetype_id', 29)->first();
+		return view('preview.insideemu.post', compact('post', 'mainImg', 'idea'));
 	}
 }

@@ -83,32 +83,37 @@
                 <h2>Build Your Email</h2>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
-                  <li :class="{ 'active' : activeSubTab == 1 }"><a href="#main-story" role="tab" data-toggle="tab"
+                  <li :class="{ 'active' : activeSubTab === 1 }"><a href="#main-story" role="tab" data-toggle="tab"
                                                                    :class="(emailBuilderEmail.mainStories.length != 1 && emailBuilderEmail.mainStories.length != 3) ? 'insufficient' : ''"
                                                                    @click="activeSubTab = 1">Main
                     Stories ({{ emailBuilderEmail.mainStories.length }})</a></li>
-                  <li :class="{ 'active' : activeSubTab == 2 }"><a href="#stories" role="tab" data-toggle="tab"
+                  <li :class="{ 'active' : activeSubTab === 2 }"><a href="#stories" role="tab" data-toggle="tab"
                                                                    :class="emailBuilderEmail.otherStories.length < 1 ? 'insufficient' : ''"
                                                                    @click="activeSubTab = 2">Side Stories ({{
                       emailBuilderEmail.otherStories.length
                     }})</a></li>
-                  <li :class="{ 'active' : activeSubTab == 3 }"><a href="#announcements" role="tab" data-toggle="tab"
+                  <li :class="{ 'active' : activeSubTab === 3 }"><a href="#announcements" role="tab" data-toggle="tab"
                                                                    :class="emailBuilderEmail.announcements.length < 1 ? 'insufficient' : ''"
                                                                    @click="activeSubTab = 3">Announcements ({{
                       emailBuilderEmail.announcements.length
                     }})</a></li>
-                  <li :class="{ 'active' : activeSubTab == 4 }"><a href="#events" role="tab" data-toggle="tab"
+                  <li :class="{ 'active' : activeSubTab === 4 }"><a href="#events" role="tab" data-toggle="tab"
                                                                    :class="emailBuilderEmail.events.length < 1 && !emailBuilderEmail.exclude_events ? 'insufficient' : ''"
                                                                    @click="activeSubTab = 4">Events
                     ({{ emailBuilderEmail.events.length }})</a>
                   </li>
-                  <li :class="{ 'active' : activeSubTab == 5 }"><a href="#president" role="tab" data-toggle="tab"
-                                                                   :class="emailBuilderEmail.is_president_included && (!emailBuilderEmail.president_url || !emailBuilderEmail.president_teaser) ? 'insufficient' : ''"
-                                                                   @click="activeSubTab = 5">President</a>
+                  <li :class="{ 'active' : activeSubTab === 5 }"><a href="#insidePosts" role="tab" data-toggle="tab"
+                                                                   :class="emailBuilderEmail.insideemuPosts.length < 1 && !emailBuilderEmail.exclude_insideemu ? 'insufficient' : ''"
+                                                                   @click="activeSubTab = 5">Inside EMU
+                    ({{ emailBuilderEmail.insideemuPosts.length }})</a>
                   </li>
-                  <li :class="{ 'active' : activeSubTab == 6 }"><a href="#emu-175-email" role="tab" data-toggle="tab"
+                  <li :class="{ 'active' : activeSubTab === 6 }"><a href="#president" role="tab" data-toggle="tab"
+                                                                   :class="emailBuilderEmail.is_president_included && (!emailBuilderEmail.president_url || !emailBuilderEmail.president_teaser) ? 'insufficient' : ''"
+                                                                   @click="activeSubTab = 6">President</a>
+                  </li>
+                  <li :class="{ 'active' : activeSubTab === 7 }"><a href="#emu-175-email" role="tab" data-toggle="tab"
                                                                    :class="emailBuilderEmail.is_emu175_included && (!emailBuilderEmail.emu175_url || !emailBuilderEmail.emu175_teaser) ? 'insufficient' : ''"
-                                                                   @click="activeSubTab = 6">EMU 175</a>
+                                                                   @click="activeSubTab = 7">EMU 175</a>
                   </li>
                 </ul>
                 <!-- Tab panes -->
@@ -128,6 +133,9 @@
                   </div>
                   <div class="tab-pane" id="events">
                     <email-event-queue></email-event-queue>
+                  </div>
+                  <div class="tab-pane" id="insidePosts">
+                    <email-insideemu-posts-queue></email-insideemu-posts-queue>
                   </div>
                   <div class="tab-pane" id="president">
                     <div class="row">
@@ -510,6 +518,7 @@ import EmailStoryQueue from './EmailStoryQueue.vue'
 import { emailMixin } from './email_mixin'
 import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
 import EmailEventQueue from './EmailEventQueue.vue'
+import EmailInsideemuPostsQueue from './EmailInsideemuPostsQueue.vue'
 import EmailDeleteModal from './EmailDeleteModal.vue'
 import EmailStatsModal from './EmailStatsModal.vue'
 import EmailCloneModal from './EmailCloneModal.vue'
@@ -524,6 +533,7 @@ export default {
     EmailStoryQueue,
     EmailAnnouncementQueue,
     EmailEventQueue,
+    EmailInsideemuPostsQueue,
     EmailLiveView,
     EmailDeleteModal,
     EmailStatsModal,
@@ -680,104 +690,46 @@ export default {
         }
       }
     },
-    // Progress of email bulider (adds up to 100%)
+    // Progress of email builder (adds up to 100%)
     progress: function () {
       let progress = 0
 
-      // Normal (NO presidential message, with events, NO EMU 175)
-      if (!this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
-        this.emailBuilderEmail.title ? progress += 13 : ''
-        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
-        this.emailBuilderEmail.events.length > 0 ? progress += 15 : ''
-        this.emailBuilderEmail.announcements.length > 0 ? progress += 15 : ''
-        this.emailBuilderEmail.otherStories.length > 0 ? progress += 15 : ''
-        this.emailBuilderEmail.recipients.length > 0 ? progress += 14 : ''
-        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 13 : ''
+      let steps = 8 // there are anywhere from 6 to 12 steps in the email builder
+      if(this.emailBuilderEmail.is_president_included) {
+        steps += 2
       }
-      // Presidential message, with events, NO EMU 175
-      else if (this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
-        this.emailBuilderEmail.title ? progress += 12 : ''
-        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
-        this.emailBuilderEmail.events.length > 0 ? progress += 11 : ''
-        this.emailBuilderEmail.announcements.length > 0 ? progress += 11 : ''
-        this.emailBuilderEmail.otherStories.length > 0 ? progress += 11 : ''
-        this.emailBuilderEmail.recipients.length > 0 ? progress += 11 : ''
-        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 13 : ''
-        this.emailBuilderEmail.president_teaser ? progress += 8 : ''
-        this.emailBuilderEmail.president_url ? progress += 8 : ''
+      if(this.emailBuilderEmail.is_emu175_included) {
+        steps += 2
       }
-      // Presidential message, NO events, NO EMU 175
-      else if (this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
-        this.emailBuilderEmail.title ? progress += 13 : ''
-        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
-        this.emailBuilderEmail.announcements.length > 0 ? progress += 15 : ''
-        this.emailBuilderEmail.otherStories.length > 0 ? progress += 15 : ''
-        this.emailBuilderEmail.recipients.length > 0 ? progress += 15 : ''
-        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 15 : ''
-        this.emailBuilderEmail.president_teaser ? progress += 6 : ''
-        this.emailBuilderEmail.president_url ? progress += 6 : ''
+      if(this.emailBuilderEmail.exclude_events) {
+        steps -= 1
       }
-      // Presidential message, with events, WITH EMU 175
-      else if(this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
-        this.emailBuilderEmail.title ? progress += 14 : ''
-        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 12 : ''
-        this.emailBuilderEmail.events.length > 0 ? progress += 10 : ''
-        this.emailBuilderEmail.announcements.length > 0 ? progress += 10 : ''
-        this.emailBuilderEmail.otherStories.length > 0 ? progress += 10 : ''
-        this.emailBuilderEmail.recipients.length > 0 ? progress += 10 : ''
-        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 10 : ''
-        this.emailBuilderEmail.president_teaser ? progress += 6 : ''
-        this.emailBuilderEmail.president_url ? progress += 6 : ''
-        this.emailBuilderEmail.emu175_teaser ? progress += 6 : ''
-        this.emailBuilderEmail.emu175_url ? progress += 6 : ''
-      }
-      // Presidential message, NO events, WITH EMU 175
-      else if(this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
-        this.emailBuilderEmail.title ? progress += 14 : ''
-        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 14 : ''
-        this.emailBuilderEmail.announcements.length > 0 ? progress += 10 : ''
-        this.emailBuilderEmail.otherStories.length > 0 ? progress += 10 : ''
-        this.emailBuilderEmail.recipients.length > 0 ? progress += 10 : ''
-        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 10 : ''
-        this.emailBuilderEmail.president_teaser ? progress += 8 : ''
-        this.emailBuilderEmail.president_url ? progress += 8 : ''
-        this.emailBuilderEmail.emu175_teaser ? progress += 8 : ''
-        this.emailBuilderEmail.emu175_url ? progress += 8 : ''
-      }
-      // NO Presidential message, with events, WITH EMU 175
-      else if(!this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
-        this.emailBuilderEmail.title ? progress += 14 : ''
-        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
-        this.emailBuilderEmail.events.length > 0 ? progress += 13 : ''
-        this.emailBuilderEmail.announcements.length > 0 ? progress += 10 : ''
-        this.emailBuilderEmail.otherStories.length > 0 ? progress += 10 : ''
-        this.emailBuilderEmail.recipients.length > 0 ? progress += 10 : ''
-        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 10 : ''
-        this.emailBuilderEmail.emu175_teaser ? progress += 9 : ''
-        this.emailBuilderEmail.emu175_url ? progress += 9 : ''
-      }
-      // NO Presidential message, NO events, WITH EMU 175
-      else if(!this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
-        this.emailBuilderEmail.title ? progress += 15 : ''
-        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
-        this.emailBuilderEmail.announcements.length > 0 ? progress += 12 : ''
-        this.emailBuilderEmail.otherStories.length > 0 ? progress += 12 : ''
-        this.emailBuilderEmail.recipients.length > 0 ? progress += 12 : ''
-        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 12 : ''
-        this.emailBuilderEmail.emu175_teaser ? progress += 12 : ''
-        this.emailBuilderEmail.emu175_url ? progress += 10 : ''
-      }
-      // NO presidential message, NO events, NO EMU 175
-      else if (!this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
-        this.emailBuilderEmail.title ? progress += 16 : ''
-        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 17 : ''
-        this.emailBuilderEmail.announcements.length > 0 ? progress += 17 : ''
-        this.emailBuilderEmail.otherStories.length > 0 ? progress += 17 : ''
-        this.emailBuilderEmail.recipients.length > 0 ? progress += 17 : ''
-        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 16 : ''
+      if(this.emailBuilderEmail.exclude_insideemu) {
+        steps -= 1
       }
 
-      return progress
+      const stepValue = 100 / steps
+      this.emailBuilderEmail.title ? progress += stepValue : ''
+      this.emailBuilderEmail.mainStories.length === 1 || this.emailBuilderEmail.mainStories.length === 3 ? progress += stepValue : ''
+      this.emailBuilderEmail.announcements.length > 0 ? progress += stepValue : ''
+      this.emailBuilderEmail.otherStories.length > 0 ? progress += stepValue : ''
+      this.emailBuilderEmail.recipients.length > 0 ? progress += stepValue : ''
+      this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += stepValue : ''
+      if(!this.emailBuilderEmail.exclude_events) {
+        this.emailBuilderEmail.events.length > 0 ? progress += stepValue : ''
+      }
+      if(!this.emailBuilderEmail.exclude_insideemu) {
+        this.emailBuilderEmail.insideemuPosts.length > 0 ? progress += stepValue : ''
+      }
+      if(this.emailBuilderEmail.is_president_included) {
+        this.emailBuilderEmail.president_teaser ? progress += stepValue : ''
+        this.emailBuilderEmail.president_url ? progress += stepValue : ''
+      }
+      if(this.emailBuilderEmail.is_emu175_included) {
+        this.emailBuilderEmail.emu175_teaser ? progress += stepValue : ''
+        this.emailBuilderEmail.emu175_url ? progress += stepValue : ''
+      }
+      return progress.toFixed(0)
     },
     successFailure: function () {
       return {
@@ -844,6 +796,7 @@ export default {
           this.onRefresh();
         }
       }).catch((e) => {
+        console.log(e)
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;
         this.formErrors = e.response.data.error.message;

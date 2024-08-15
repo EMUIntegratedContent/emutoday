@@ -101,16 +101,28 @@ class User extends Authenticatable
     }
 
     public function isEditor() {
-        return $this->hasRole('editor');
+        return $this->hasRole('editor') || $this->hasRole('editor_super');
     }
 
     public function isExpertsEditor() {
         return $this->hasRole('experts');
     }
 
+		public function isContributor() {
+				return $this->hasRole('contributor_1') || $this->hasRole('contributor_2');
+		}
+
     public function isEmailBuilder() {
         return $this->hasRole('emails');
     }
+
+		public function hasInsideemuAccess() {
+			return $this->isAdmin() || $this->isEditor() || $this->isContributor();
+		}
+
+		public function canApproveInsideemuPosts() {
+			return $this->isAdmin() || $this->isEditor() || $this->hasRole('contributor_2');
+		}
 
     /**
      * ADDED FOR LARAVEL 7 TO KEEP EXISTING DATETIME FORMAT

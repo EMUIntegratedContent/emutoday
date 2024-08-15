@@ -6,6 +6,7 @@ use Emutoday\Announcement;
 use Emutoday\Event;
 use Emutoday\Story;
 use Emutoday\MiniCalendar;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as Input;
 use Carbon\Carbon;
@@ -745,4 +746,90 @@ class ExternalApiController extends ApiController
   public function refreshOrgSyncEvents(Request $request){
 
   }
+
+	/**
+	 * Same as getEventsByDates, but uses Request object to get any number of minical ids as a string (e.g. "1,2,3")
+	 *
+	 * @param int       $limit                     How many dates to get events for.
+	 * @param String    $referenceDate             The date to search before or after.
+	 * @param boolean   $previous                  TRUE = search past dates in relation to $referenceDate.
+	 *                                             FALSE = search future dates in relation to $referenceDate.
+	 * @param boolean   $includeSelectedDate       TRUE = search dates that include the $referenceDate.
+	 *                                             FALSE = do not search dates that include the $referenceDate.
+	 * @return \Illuminate\Http\JsonResponse                               The array of dates with corresponding events and the number of total results found.
+	 */
+	public function getEventsByDatesV2(Request $request, $limit = 10, $referenceDate = null, $previous = false, $includeSelectedDate = false){
+		$minicalIds = $request->get('minicals');
+
+		if($minicalIds) {
+			$minicalIds = explode(',', $minicalIds);
+		}
+
+		$conditions = array(); //conditions for the where clause
+		$conditions[] = array('is_approved', 1);
+
+		$orderBy = 'asc';
+
+		// includeSelectedDate variable gives the option of including the $referenceDate in the query
+		if($includeSelectedDate){
+			$dateOperator = '=';
+		} else {
+			$dateOperator = '';
+		}
+
+		// 'previous' flag is only relevant if referenceDate is set
+		if($referenceDate){
+			if($previous){
+				$conditions[] = array('start_date', '<'.$dateOperator, $referenceDate);
+				$orderBy = 'desc'; //start with most recent rather than oldest
+			} else {
+				$conditions[] = array('start_date', '>'.$dateOperator, $referenceDate);
+			}
+		} else {
+			$conditions[] = array('start_date', '>'.$dateOperator, date('Y-m-d'));
+		}
+
+		// If minicalendar is set
+		if($minicalIds){
+			$events = Event::with('minicalendars')
+				->whereHas('minicalendars', function ($query) use ($minicalIds) {
+					$query->whereIn('id', $minicalIds);
+				})
+				->where($conditions)
+				->orderBy('start_date', $orderBy)
+				->orderBy('start_time', 'asc')
+				->get();
+
+			$eventsArr = $events
+				->groupBy('start_date')
+				->take($limit)
+				->map(function ($dateEvents) {
+					return [
+						'date' => $dateEvents->first()->start_date->format('Y-m-d'),
+						'date_events' => $dateEvents->toArray(),
+					];
+				})->values()->all();
+
+			return response()->json(['events' => $eventsArr]);
+		}
+
+		// No minicalendar set
+		$dates = Event::distinct()->select('start_date')->where($conditions);
+
+		// groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
+		$dates->take($limit)->orderBy('start_date', $orderBy)->groupBy('start_date');;
+		$dates = $dates->get();
+
+		// Get all the events that fall on each date
+		$eventsArr = array();
+		foreach($dates as $date){
+			$events = Event::select('*')->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('start_time', 'asc');
+			$events = $events->get();
+			//add the day's events into the eventsArray
+			// $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+			$eventsArr[] = array('date' => $date, 'date_events' => $events);
+		}
+
+		return response()->json(['events' => $eventsArr]);
+	}
 }

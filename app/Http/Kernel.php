@@ -30,6 +30,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Emutoday\Http\Middleware\VerifyCsrfToken::class,
             \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
+						\Illuminate\Routing\Middleware\SubstituteBindings::class
         ],
 
         'cors' => [
@@ -42,6 +43,10 @@ class Kernel extends HttpKernel
         'experts' => [
           \Emutoday\Http\Middleware\ExpertsMiddleware::class,
         ],
+
+				'insideemu' => [
+					\Emutoday\Http\Middleware\InsideemuMiddleware::class,
+				],
 
         'mediahighlights' => [
           \Emutoday\Http\Middleware\MediaHighlightMiddleware::class,

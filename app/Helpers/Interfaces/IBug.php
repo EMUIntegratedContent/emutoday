@@ -11,4 +11,5 @@ interface IBug {
     public function getUnapprovedStories();
     public function getUnapprovedExperts();
     public function getNewExpertMediaRequests();
+		public function getNewInsideemuIdeas();
 }
