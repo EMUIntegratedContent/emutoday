@@ -8,6 +8,11 @@ use Intervention\Image\Laravel\Facades\Image;
 use Intervention\Image\Encoders\AutoEncoder;
 use phpseclib3\Exception\FileNotFoundException;
 
+/**
+ * Class ImageCacheController
+ *
+ * Created by CP to handle image caching. The package intervention/imagecache is no longer supported in Laravel 11.
+ */
 class ImageCacheController extends Controller{
 
 	protected Image $image;
@@ -29,7 +34,7 @@ class ImageCacheController extends Controller{
 
 		try {
 			// Set the filepath in the service
-			$filePath = $this->service->setFilePath($filename);
+			$this->service->setFilePath($filename);
 		} catch (FileNotFoundException $e) {
 			abort(404, $e->getMessage());
 		}
