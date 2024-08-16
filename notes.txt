@@ -1,15 +1,25 @@
 ====================================================================================================
-INSIDE EMU NOTES 2024
-
-https://inertiajs.com/  <== Vue + Laravel (no need for API routes)
+PHP 8.3 + Laravel 11 UPGRADE NOTES 2024
 
 use Laracasts\Presenter\PresentableTrait doesn't work anymore
 Trait "Emutoday\PresentableTrait" not found
 
-Upgraded to intervention\image v3 and replaced intervention\imagecache with custom solution:
-1. Created a route in routes.php called 'imagecache' that replaces the old intervention route
-2. Created a controller called ImageCacheController that replaces the old intervention controller
-3. Created a service called ImageCacheService that replaces the old intervention filters
+Intervention\Image Upgrade Notes 8/16/24
+1. Upgraded the package intervention\image from v2 to v3.
+
+2. Removed the file config/imagecache.php
+This was the config file for the now-defunct intervention\imagecache package.
+
+3. Removed all filter classes and the directory Today\Filters
+
+4. Created a route in routes.php: imagecache/{template}/{filename}
+This closely mimics how the defunct plugin worked. No src tags should have to be changed anywhere in the system.
+
+5. Created a controller to resolve the route, cache and return the image.
+Http\Controllers\ImageCacheController.php
+
+6. Created a service to apply the filters to the image. All filters that were in Today\Filters are included here (except some that weren't used anywhere).
+Services\ImageCacheService.php
 ====================================================================================================
 1.August.2018
 
