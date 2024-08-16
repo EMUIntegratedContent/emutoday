@@ -1,16 +1,15 @@
 ====================================================================================================
 INSIDE EMU NOTES 2024
 
-TODO: create insideemu model and controller
-
 https://inertiajs.com/  <== Vue + Laravel (no need for API routes)
 
 use Laracasts\Presenter\PresentableTrait doesn't work anymore
 Trait "Emutoday\PresentableTrait" not found
-use Intervention\Image\ImageManagerStatic as Image;  <== Static class not present after update from 2.7 to 3.6
 
-https://image.intervention.io/v3
-
+Upgraded to intervention\image v3 and replaced intervention\imagecache with custom solution:
+1. Created a route in routes.php called 'imagecache' that replaces the old intervention route
+2. Created a controller called ImageCacheController that replaces the old intervention controller
+3. Created a service called ImageCacheService that replaces the old intervention filters
 ====================================================================================================
 1.August.2018
 

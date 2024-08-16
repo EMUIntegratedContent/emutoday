@@ -2,7 +2,7 @@
 @unless(!$smallImg)
   <div class="column">
     <div class="card">
-      <img class="story-image" src="/imagecache/original/{{$post->id}}/{{$smallImg->image_name}}"
+      <img class="story-image" src="/imagecache/original/{{$smallImg->image_name}}"
            alt="{{ $smallImg->alt_text != '' ? $smallImg->alt_text : str_replace('"', "", $smallImg->caption) }}">
       <div class="card-section" data-equalizer-watch>
         <p class="more-story-caption">{{$smallImg->caption}}</p>

@@ -530,3 +530,10 @@ Route::group(['prefix' => 'insideemu'], function () {
 	Route::resource('/posts', 'Today\InsideemuPostController');
 	Route::resource('', 'Today\InsideemuController');
 });
+
+/**
+ * Intervention\imagecache was deprecated for intervention\image v3. We have to replace the imagecache functionality.
+ * These routes replace the 'imagecache' route that was used in the past inside the config/imagecache.php file.
+ * The ImageCacheController and ImageCacheService are used to generate and cache the images.
+ */
+Route::get('imagecache/{template}/{filename}', 'ImageCacheController@imagecache')->name('imagecache');
