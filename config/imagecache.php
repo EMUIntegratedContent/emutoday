@@ -5,6 +5,9 @@ return array(
     | Name of route
     |--------------------------------------------------------------------------
     |
+    | DEPRECATED. DOES NOT WORK WITH intervention\image v3. CP 8/15/24.
+    | THIS PACKAGE IS NO LONGER INSTALLED. REMOVE WHEN A REPLACEMENT IS FOUND.
+    |
     | Enter the routes name to enable dynamic imagecache manipulation.
     | This handle will define the first part of the URI:
     |

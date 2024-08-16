@@ -3,12 +3,12 @@
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
-use Laracasts\Presenter\PresentableTrait;
+//use Laracasts\Presenter\PresentableTrait;
 use DateTimeInterface;
 
 class Magazine extends Model
 {
-use PresentableTrait;
+//use PresentableTrait;
     protected $presenter = 'Emutoday\Presenters\MagazinePresenter';
     protected $fillable = [
             'year', 'season','title',

@@ -8,7 +8,7 @@ use Emutoday\InsideemuIdeasImages;
 use Emutoday\InsideemuPostsImages;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as Input;
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\Laravel\Facades\Image;
 
 /**
  * Class InsideemuService
@@ -57,8 +57,8 @@ class InsideemuService
 				$imgFilePath = $image->getRealPath();
 				$imgFileName = $image->getClientOriginalName();
 
-				Image::make($imgFilePath)
-					->save(public_path() . $destinationFolder . $imgFileName);
+				// Uses intervention\image-laravel to save the image.
+				Image::read($imgFilePath)->save(public_path().$destinationFolder.$imgFileName);
 			}
 		}
 
@@ -123,9 +123,8 @@ class InsideemuService
 				$imgFilePath = $image->getRealPath();
 				$imgFileName = $this->appendExtensionToFilename($imgNames[$count], $image->getClientOriginalExtension());
 
-				Image::make($imgFilePath)
-					->save(public_path() . $destinationFolder . $imgFileName);
-
+				// Uses intervention\image-laravel to save the image.
+				Image::read($imgFilePath)->save(public_path().$destinationFolder.$imgFileName);
 				$count++;
 			}
 		}

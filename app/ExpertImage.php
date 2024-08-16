@@ -3,10 +3,10 @@
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
-use Laracasts\Presenter\PresentableTrait;
+//use Laracasts\Presenter\PresentableTrait;
 class ExpertImage extends Model
 {
-    use PresentableTrait;
+//    use PresentableTrait;
     protected $presenter = 'Emutoday\Presenters\StoryImagePresenter';
 
     /**

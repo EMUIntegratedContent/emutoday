@@ -5,9 +5,7 @@ namespace Emutoday\Http\Controllers\Api;
 
 
 use Illuminate\Support\Facades\Request as Input;
-// import the Intervention Image Manager Class
-use Intervention\Image\ImageManagerStatic as Image;
-use Illuminate\Support\Facades\File;
+
 use League\Fractal\Manager;
 use League\Fractal;
 

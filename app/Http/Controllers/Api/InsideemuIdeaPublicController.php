@@ -5,13 +5,9 @@ namespace Emutoday\Http\Controllers\Api;
 use Emutoday\Http\Resources\InsideemuIdeaPublicResource;
 use Emutoday\Http\Resources\InsideemuIdeaResource;
 use Emutoday\InsideemuIdea;
-use Emutoday\InsideemuIdeasImages;
-use Emutoday\InsideemuPost;
-use Emutoday\User;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\Validator;
-use Intervention\Image\ImageManagerStatic as Image;
 use Emutoday\Rules\MaxWords;
 use Emutoday\Services\InsideemuService;
 

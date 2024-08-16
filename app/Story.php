@@ -5,7 +5,7 @@ namespace Emutoday;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\URL;
-use Laracasts\Presenter\PresentableTrait;
+//use Laracasts\Presenter\PresentableTrait;
 use DateTimeInterface;
 use Illuminate\Support\Facades\DB;
 
@@ -40,7 +40,7 @@ class Story extends Model
   /**
    * Vendor Package
    */
-  use PresentableTrait;
+//  use PresentableTrait;
 
   protected $presenter = 'Emutoday\Presenters\StoryPresenter';
 

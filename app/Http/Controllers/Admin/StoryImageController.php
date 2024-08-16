@@ -2,6 +2,7 @@
 
 namespace Emutoday\Http\Controllers\Admin;
 
+use Intervention\Image\Laravel\Facades\Image;
 use Storage;
 
 use Emutoday\StoryImage;
@@ -11,8 +12,6 @@ use Emutoday\Http\Requests;
 
 use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\File;
-// import the Intervention Image Manager Class
-use Intervention\Image\ImageManagerStatic as Image;
 
 use Emutoday\Helpers\Interfaces\IBug;
 use Illuminate\Support\Facades\View;
@@ -130,8 +129,8 @@ class StoryImageController extends Controller
       $storyImage->image_extension = $imgFileExtension;
       $imgFileName = $storyImage->image_name . '-'. date('YmdHis') . '.' . $storyImage->image_extension;
 
-      Image::make($imgFilePath)
-      ->save(public_path() . $destinationFolder . $imgFileName);
+			// Uses intervention\image-laravel to save the image.
+			Image::read($imgFilePath)->save(public_path().$destinationFolder.$imgFileName);
 
       $storyImage->filename = $imgFileName;
     }
