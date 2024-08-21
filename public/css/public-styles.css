@@ -1360,6 +1360,9 @@ p.small-return-news {
     font-size: 1rem;
     line-height: 1.4rem;
 }
+#story-content iframe {
+    max-width: 100%;
+}
 #big-feature-image {
     border-bottom: none;
     /*margin: .8rem 0;*/
