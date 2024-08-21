@@ -3,16 +3,9 @@
 namespace Emutoday\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Http\Request;
 use Emutoday\Email;
-use Emutoday\Story;
 use Emutoday\Imagetype;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
-
-use League\Fractal\Manager;
-use League\Fractal;
-use Emutoday\Today\Transformers\FractalEmailTransformerModel;
 
 class SendTodayEmails extends Command
 {
