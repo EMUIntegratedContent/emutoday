@@ -30,13 +30,17 @@ Route::get('/testoauth', function () {
 })->middleware('client_credentials');
 
 /***************
- * Mailgun Webhook Routes
+ * Mailgun Webhook + Double Opt-In Routes
  */
 Route::group(['prefix' => 'mailgun'], function () {
   Route::post('open', 'Api\MailgunApiController@postOpen');
   Route::post('click', 'Api\MailgunApiController@postClick');
   Route::post('spam', 'Api\MailgunApiController@postSpam');
+
+	Route::get('subscribe', 'MainController@confirmSubscribe');
+	Route::post('subscribe', 'MainController@subscribe');
 });
+Route::get('subscribe', 'MainController@subscribeForm')->name('subscribe');
 
 /***************
  * CAS Routes
@@ -318,11 +322,6 @@ Route::get('feedback', function () {
   return view('public.feedback');
 });
 Route::post('feedback', 'MainController@feedbackForm');
-
-Route::get('subscribe', function () {
-  return view('public.subscribe');
-});
-Route::post('subscribe', 'MainController@subscribeForm');
 
 Route::get('search', 'SearchController@search');
 Route::get('search/story/{id}', 'SearchController@story');
