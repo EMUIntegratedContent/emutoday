@@ -331,14 +331,19 @@ class MainController extends Controller
 	 * Handle the confirmation of a subscription to EMU Today
 	 */
 	public function confirmSubscribe (Request $request) {
-		$c = $request->get('c') !== null ? $this->mailgunSvc->sanitizeInputs($request->get('c')) : null;
-		$e = $request->get('e') !== null ? $this->mailgunSvc->sanitizeEmail($request->get('e')) : null;
-		$n = $request->get('n') !== null ? $this->mailgunSvc->sanitizeInputs($request->get('n')) : null;
+		$code = $request->get('c') !== null ? $this->mailgunSvc->sanitizeInputs($request->get('c')) : null;
+		$email = $request->get('e') !== null ? $this->mailgunSvc->sanitizeEmail($request->get('e')) : null;
+		$name = $request->get('n') !== null ? $this->mailgunSvc->sanitizeInputs($request->get('n')) : null;
 
-		if (isset($c) && isset($e)&& isset($n) ){
-			$a = $this->mailgunSvc->checkConfirmationHash($e, $c);
+		// The Mailgun API expects a non-empty name
+		if($name == '') {
+			$name = '---';
+		}
+
+		if (isset($code) && isset($email)&& isset($name) ){
+			$a = $this->mailgunSvc->checkConfirmationHash($email, $code);
 			if($a){
-				$addToList = $this->mailgunSvc->addMemberToList($e, $n);
+				$addToList = $this->mailgunSvc->addMemberToList($email, $name);
 				if($addToList['success']){
 					$data = ['type' => 'success', 'msg' => $addToList['message']];
 				}
