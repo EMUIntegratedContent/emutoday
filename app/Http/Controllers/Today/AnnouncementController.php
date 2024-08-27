@@ -14,7 +14,6 @@ use JavaScript;
 
 class AnnouncementController extends Controller
 {
-  // protected $announcements; // Disabled because I wanted to use POST request
 
   public function __construct(Announcement $announcement)
   {

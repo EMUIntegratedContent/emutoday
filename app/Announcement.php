@@ -2,11 +2,9 @@
 
 namespace Emutoday;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\URL;
-//use Laracasts\Presenter\PresentableTrait;
+use Laracasts\Presenter\PresentableTrait;
 use DateTimeInterface;
 
 class Announcement extends Model{
@@ -35,7 +33,7 @@ class Announcement extends Model{
 		'approved_date' => 'datetime'
 	];
 
-//	use PresentableTrait;
+	use PresentableTrait;
 
 	protected $presenter = 'Emutoday\Presenters\AnnouncementPresenter';
 

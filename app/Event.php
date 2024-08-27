@@ -4,12 +4,8 @@ namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\URL;
-//use Laracasts\Presenter\PresentableTrait;
-use Carbon\Carbon;
+use Laracasts\Presenter\PresentableTrait;
 use DateTimeInterface;
-
-use Emutoday\Category;
 
 class Event extends Model{
 
@@ -58,7 +54,7 @@ class Event extends Model{
 		'updated_at' => 'datetime'
 	];
 
-//	use PresentableTrait;
+	use PresentableTrait;
 
 	protected $presenter = 'Emutoday\Presenters\EventPresenter';
 

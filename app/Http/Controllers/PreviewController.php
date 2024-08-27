@@ -21,17 +21,6 @@ use Emutoday\StoryImage;
 use Carbon\Carbon;
 use JavaScript;
 
-
-/*
-
-Route::get('{stype}/{story}', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
-Route::get('hub/{page}', ['as' => 'preview_hub', 'uses' => 'PreviewController@hub']);
-Route::get('magazine/{magazine}', ['as' => 'preview_magazine', 'uses' => 'PreviewController@magazine']);
-
-
-
-*/
-
 class PreviewController extends Controller{
 
 

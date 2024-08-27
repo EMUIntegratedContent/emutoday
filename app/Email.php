@@ -3,13 +3,12 @@
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
-use Sofa\Eloquence\Eloquence;
-//use Laracasts\Presenter\PresentableTrait;
+use Laracasts\Presenter\PresentableTrait;
 use DateTimeInterface;
 
 class Email extends Model
 {
-//  use PresentableTrait;
+  use PresentableTrait;
 
   protected $presenter = 'Emutoday\Presenters\EmailPresenter';
 

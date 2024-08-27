@@ -1,7 +1,12 @@
 ====================================================================================================
 PHP 8.3 + Laravel 11 UPGRADE NOTES 2024
 
-use Laracasts\Presenter\PresentableTrait doesn't work anymore
+laravelcollective/html is DEPRECATED as of Laravel 11.
+  'Form' => Collective\Html\FormFacade::class,
+  'Html' => Collective\Html\HtmlFacade::class,
+Replace with spatie/laravel-html
+
+use Laracasts\Presenter\PresentableTrait needed to be upgraded (0.2.*)
 Trait "Emutoday\PresentableTrait" not found
 
 Intervention\Image Upgrade Notes 8/16/24

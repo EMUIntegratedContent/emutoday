@@ -6,12 +6,12 @@
 
 @section('style-plugin')
   @parent
-
 @endsection
 
 @section('style-app')
   @parent
 @endsection
+
 @section('scripthead')
   @parent
 @endsection
@@ -30,62 +30,60 @@
               This user is archived. Information cannot be changed for this user while archived.
             </div>
           @endif
-          {!! Form::model($user,[
-              'method' => $user->exists ? 'put' : 'post',
-              'route' => $user->exists ? ['admin_user_update', $user->id] : ['admin_user_store']
-              ]) !!}
+          {!!  html()->form($user->exists ? 'put' : 'post', $user->exists ? route('admin_user_update', $user->id) : route('admin_user_store'))->open() !!}
+
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                {!! Form::label('first_name') !!}
-                {!! Form::text('first_name', null, ['class' => 'form-control', 'readonly' => !!$user->hidden]) !!}
+                {!! html()->label('First Name')->for('first_name') !!}
+                {!! html()->text('first_name', $user->first_name)->class('form-control')->attributes($user->hidden ? ['readonly' => 'readonly'] : []) !!}
               </div>
             </div><!-- /.col-md-6 -->
             <div class="col-md-6">
               <div class="form-group">
-                {!! Form::label('last_name') !!}
-                {!! Form::text('last_name', null, ['class' => 'form-control', 'readonly' => !!$user->hidden]) !!}
+                {!! html()->label('Last Name')->for('last_name') !!}
+                {!! html()->text('last_name', $user->last_name)->class('form-control')->attributes($user->hidden ? ['readonly' => 'readonly'] : []) !!}
               </div>
             </div><!-- /.col-md-6 -->
           </div><!-- /.row -->
+
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                {!! Form::label('email') !!}
-                {!! Form::text('email', null, ['class' => 'form-control', 'readonly' => !!$user->hidden ]) !!}
+                {!! html()->label('Email')->for('email') !!}
+                {!! html()->email('email', $user->email)->class('form-control')->attributes($user->hidden ? ['readonly' => 'readonly'] : []) !!}
               </div>
             </div><!-- /.col-md-6 -->
             <div class="col-md-6">
-              <!-- phone mask -->
               <div class="form-group">
-                {!! Form::label('phone') !!}
+                {!! html()->label('Phone')->for('phone') !!}
                 <div class="input-group">
                   <div class="input-group-addon">
                     <i class="fa fa-phone"></i>
                   </div>
-                  {!! Form::text('phone', null, ['class' => 'form-control', 'data-inputmask' =>'"mask": "(999) 999-9999"', "data-mask", 'readonly' => !!$user->hidden ]) !!}
+                  {!! html()->text('phone', $user->phone)->class('form-control')->attribute('data-inputmask', '"mask": "(999) 999-9999"')->attribute('data-mask')->attributes($user->hidden ? ['readonly' => 'readonly'] : []) !!}
                 </div>
-                <!-- /.input group -->
-              </div><!-- /.form group -->
+              </div>
             </div><!-- /.col-md-6 -->
           </div><!-- /.row -->
+
           @if(!$user->hidden)
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  {!! Form::label('role_list', 'Roles:') !!}
+                  {!! html()->label('Roles:')->for('role_list') !!}
                   @can('super', $user)
-                    {!! Form::select('role_list[]',$userRoles, $user->roles->pluck('id')->toArray() , ['class' => 'form-control select2', 'multiple']) !!}
+                    {!! html()->select('role_list[]', $userRoles, $user->roles->pluck('id')->toArray())->class('form-control select2')->multiple() !!}
                   @else
                     @if($user->exists)
-
-                      {!! Form::text('role_list', $user->roles->pluck('name') , ['class' => 'form-control select2','readonly' => 'readonly']) !!}
+                      {!! html()->text('role_list', $user->roles->pluck('name'))->class('form-control select2')->attributes($user->hidden ? ['readonly' => 'readonly'] : []) !!}
                     @endif
                   @endcan
                 </div>
               </div><!-- /.col-md-12 -->
             </div><!-- /.row -->
           @endif
+
           @can('super', $user)
             @if($user->exists)
               <div class="row">
@@ -93,8 +91,8 @@
                   <div class="panel panel-warning">
                     <div class="panel-body">
                       @if(!$user->hidden)
-                        {!! Form::label('archive_user', 'Archive this user on save and remove all roles?') !!}
-                        {!! Form::checkbox('archive_user') !!}
+                        {!! html()->label('Archive this user on save and remove all roles?')->for('archive_user') !!}
+                        {!! html()->checkbox('archive_user') !!}
                         <br>
                         <p>
                           Archiving a user removes them from all dropdowns where names can be selected throughout the
@@ -105,8 +103,8 @@
                           You can unarchive a user at any time.
                         </p>
                       @else
-                        {!! Form::label('unarchive_user', 'Unarchive this user on save?') !!}
-                        {!! Form::checkbox('unarchive_user') !!}
+                        {!! html()->label('Unarchive this user on save?')->for('unarchive_user') !!}
+                        {!! html()->checkbox('unarchive_user') !!}
                         <p>
                           Unarchiving a user adds them back all to dropdowns where names can be selected throughout the
                           system.
@@ -121,13 +119,15 @@
               </div><!-- /.row -->
             @endif
           @endcan
+
         </div><!-- /.box-body -->
         <div class="box-footer">
-          {!! Form::submit($user->exists ? 'Save User' : 'Create New User', ['class' => 'btn btn-primary pull-right']) !!}
-          {!! Form::close() !!}
+          {!! html()->submit($user->exists ? 'Save User' : 'Create New User')->class('btn btn-primary pull-right') !!}
+          {!! html()->form()->close() !!}
         </div><!-- /.box-footer -->
       </div><!-- /.box -->
     </div><!--	/.col-sm-12 -->
+
     <div class="col-sm-6">
       @if(isset($avatar))
         <div class="box box-info">
@@ -135,38 +135,30 @@
             <h3 class="box-title">User Image</h3>
           </div><!-- /.box-header -->
           <div class="box-body">
-            {!! Form::model($avatar,[
-                  'method' => 'patch',
-                  'route' => ['admin_mediafile_update', $avatar->id],
-                  'files' => true
-                  ]) !!}
+            {!!  html()->form('patch', route('admin_mediafile_update', $avatar->id))->acceptsFiles()->open() !!}
             <div class="media-left">
               <img class="media-object" src="/imagecache/avatar160/{{$avatar->filename}}" alt="{{$avatar->name}}">
             </div>
             @if(!$user->hidden)
-            <div class="form-group">
-              {!! Form::file('photo', null, array('required','id' => 'photo', 'class'=>'form-control input-sm')) !!}
-            </div>
-            <p class="help-text">You may need to refresh page to see updated avatar </p>
-            <div class="form-group">
-              {!! Form::submit('Update Image', array('class'=>'btn btn-primary')) !!}
-            </div>
+              <div class="form-group">
+                {!! html()->file('photo')->required()->id('photo')->class('form-control input-sm') !!}
+              </div>
+              <p class="help-text">You may need to refresh page to see updated avatar </p>
+              <div class="form-group">
+                {!! html()->submit('Update Image')->class('btn btn-primary') !!}
+              </div>
             @endif
             {{ csrf_field() }}
-            {!! Form::close() !!}
+            {!! html()->form()->close() !!}
           </div> <!-- /.box-body -->
           @if(!$user->hidden)
-          <div class="box-footer">
-            <div class="form-group">
-              {!! Form::model($avatar, ['route' => ['remove_mediafile_user', $avatar->id],
-                  'method' => 'DELETE',
-                  'class' => 'form',
-                  'files' => true]
-                  ) !!}
-              {!! Form::submit('Delete Image', array('class'=>'btn btn-warning', 'Onclick' => 'return ConfirmDelete();')) !!}
-              {!! Form::close() !!}
-            </div>
-          </div><!-- /.box-footer -->
+            <div class="box-footer">
+              <div class="form-group">
+                {!! html()->form('delete', route('remove_mediafile_user', $avatar->id))->class('form')->acceptsFiles()->open() !!}
+                {!! html()->submit('Delete Image')->class('btn btn-warning')->attributes(['onclick' => 'return ConfirmDelete();']) !!}
+                {!! html()->form()->close() !!}
+              </div>
+            </div><!-- /.box-footer -->
           @endif
         </div> <!-- /.box -->
       @else
@@ -177,34 +169,32 @@
               <h3 class="box-title">Add User Image</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
-              {!! Form::open(array('method' => 'post',
-                    'route' => ['store_mediafile_user', $user->id],
-                    'files' => true)) !!}
+              {!!  html()->form('post', route('store_mediafile_user', $user->id))->acceptsFiles()->open() !!}
               <div class="form-group">
-                {!! Form::file('photo', null, array('required','id' => 'photo', 'class'=>'form-control input-sm')) !!}
+                {!! html()->file('photo')->required()->id('photo')->class('form-control input-sm') !!}
               </div>
               <div class="form-group">
-                {!! Form::label('caption') !!}
-                {!! Form::text('caption', null, ['class' => 'form-control']) !!}
+                {!! html()->label('Caption')->for('caption') !!}
+                {!! html()->text('caption')->class('form-control') !!}
               </div>
               <div class="form-group">
-                {!! Form::label('note') !!}
-                {!! Form::text('note', null, ['class' => 'form-control']) !!}
+                {!! html()->label('Note')->for('note') !!}
+                {!! html()->text('note')->class('form-control') !!}
               </div>
               <div class="form-group">
-                {!! Form::submit('Add User Image', array('class'=>'btn btn-primary')) !!}
+                {!! html()->submit('Add User Image')->class('btn btn-primary') !!}
               </div>
               {{ csrf_field() }}
-              {!! Form::close() !!}
-
+              {!! html()->form()->close() !!}
             </div> <!-- /.box-body -->
-
           </div> <!-- /.box -->
         @endif
 
       @endif
     </div> <!-- /.col-sm-6 -->
+
   </div><!--/.row -->
+
 @endsection
 
 @section('footer-vendor')
@@ -231,5 +221,4 @@
 			}
 		}
   </script>
-
 @endsection

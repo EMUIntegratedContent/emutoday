@@ -147,6 +147,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+				Spatie\Html\HtmlServiceProvider::class,
 
         /*
         * Vendor Specific Providers
@@ -213,14 +214,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Form' => Collective\Html\FormFacade::class,
-        'Html' => Collective\Html\HtmlFacade::class,
+//        'Form' => Collective\Html\FormFacade::class,
+//        'Html' => Collective\Html\HtmlFacade::class,
         'Flash' => Laracasts\Flash\Flash::class,
-        'Image' => Intervention\Image\Facades\Image::class,
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
-        'Cas' => Subfission\Cas\Facades\Cas::class,
-        'Feed' => Laravelium\Feed\Feed::class,
-
+        'Cas' => Subfission\Cas\Facades\Cas::class
     ],
 
     'debug_blacklist' => [
