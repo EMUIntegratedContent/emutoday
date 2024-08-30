@@ -29,13 +29,13 @@
 
             @if(empty($data))
             <h3 class="toptitle">Subscribe to EMU Today</h3>
-            {!! Form::open(array('url' => 'subscribe')) !!}
+            {!! html()->form('POST', url('subscribe'))->open() !!}
             <!-- EMAIL -->
-            {!! Form::label('email', 'Email Address') !!}
-            {!! Form::text('email', null, array('placeholder'=>'you@emich.edu')) !!}
-            
-            {!! Form::submit('SUBSCRIBE TO EMU TODAY', array('class'=>'button large expanded')) !!}
-            {!! Form::close() !!}
+            {!! html()->label('Email Address', 'email') !!}
+            {!! html()->text('email')->placeholder('you@emich.edu') !!}
+
+            {!! html()->submit('SUBSCRIBE TO EMU TODAY')->class('button large expanded') !!}
+            {!! html()->form()->close() !!}
             @endif
           </div>
         </div>

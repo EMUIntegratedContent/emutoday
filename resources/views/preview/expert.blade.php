@@ -19,31 +19,27 @@
     @include('preview.includes.connectionbar')
   @endsection
 @section('content')
-    <div class="row">
-      <div class="large-12 medium-12 small-12 columns">
-            <!-- Expert Content -->
-            <div id="expert-content" class="row">
-                {!! Form::model($expert,[
-                    'method' => 'put',
-                    'route' => ['admin_preview_expert_update', $expert->id],
-                    'files' => true
-                ]) !!}
-                <div id="story-content-edit">
-                {!! Form::textarea('biography', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
-                </div>
-            </div>
+  <div class="row">
+    <div class="large-12 medium-12 small-12 columns">
+      <!-- Expert Content -->
+      <div id="expert-content" class="row">
+        {!! html()->modelForm($expert, 'put', route('admin_preview_expert_update', $expert->id))->acceptsFiles()->open() !!}
+        <div id="story-content-edit">
+          {!! html()->textarea('biography')->class('form-control')->id('cktextarea') !!}
+        </div>
       </div>
     </div>
-    <div class="row">
-        <div class="medium-6 columns">
-            <div class="button-group">
-                {!! Form::submit('Update Expert', ['class' => 'button']) !!}
-            </div><!-- /.button-group -->
-            {!! Form::close() !!}
-        </div><!-- /.medium-6 columns -->
-        <div class="medium-6 columns">
-        </div><!-- /.medium-6 columns -->
-    </div><!-- /.row -->
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <div class="button-group">
+        {!! html()->submit('Update Expert')->class('button') !!}
+      </div><!-- /.button-group -->
+      {!! html()->form()->close() !!}
+    </div><!-- /.medium-6 columns -->
+    <div class="medium-6 columns">
+    </div><!-- /.medium-6 columns -->
+  </div><!-- /.row -->
 @endsection
 
 @section('scriptsfooter')

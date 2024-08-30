@@ -63,11 +63,11 @@
 
                               <form action="{{ route('admin_promotestory',['id' => $story->id])}}" method="POST">
                                 {{ csrf_field() }}
-                                {{ Form::hidden('qtype', $qtype, array('id' => 'qtype')) }}
-                                {{ Form::hidden('gtype', $gtype, array('id' => 'gtype')) }}
-                                {{ Form::hidden('stype', $stype, array('id' => 'stype')) }}
+                                {!! html()->hidden('qtype', $qtype)->id('qtype') !!}
+                                {!! html()->hidden('gtype', $gtype)->id('gtype') !!}
+                                {!! html()->hidden('stype', $stype)->id('stype') !!}
 
-                                {!! Form::select('new_story_type', $stypelist, 'story', ['class' => 'form-control']) !!}
+                                {!! html()->select('new_story_type', $stypelist, 'story')->class('form-control') !!}
                                 <button class="btn btn-primary" href="#">Promote Story</button>
                               </form>
                             </div>
@@ -91,7 +91,7 @@
                                     @endforeach
                                 @endif
                             @endif
-                            
+
                             @if($currentOtherImages !== null)
                                 @if($currentOtherImages->count() > 0)
                                   {{-- there is at least 1 optional image in the collection

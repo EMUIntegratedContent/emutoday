@@ -33,31 +33,27 @@
               @endif
             @endif
           </div>
-        <!-- Full banner image area (displays only if it exists for this story) -->
+          <!-- Full banner image area (displays only if it exists for this story) -->
           @if($fullBannerImage)
             <div class="small-12 columns">
               <div id="full-banner-image">
-                <img src="{{$fullBannerImage->present()->mainImageURL }}"
-                     alt="{{ $fullBannerImage->alt_text != '' ? $fullBannerImage->alt_text : str_replace('"', "", $story->title) }}"></a>
+                <img src="{{$fullBannerImage->present()->mainImageURL}}"
+                     alt="{{ $fullBannerImage->alt_text != '' ? $fullBannerImage->alt_text : str_replace('"', "", $story->title) }}">
                 <div class="feature-image-caption">{{ $fullBannerImage->teaser }}</div>
               </div>
             </div>
           @endif
         </div>
+
         <!-- Story Page Content -->
-        {!! Form::model($story,[
-            'method' => 'put',
-            'route' => ['admin_preview_story_update', $story->id],
-            'files' => true
-        ]) !!}
+        {!! html()->modelForm($story, 'put', route('admin_preview_story_update', $story->id))->acceptsFiles()->open() !!}
         <div id="story-content" class="row ck-content">
-        <!-- Story Content Column -->
+          <!-- Story Content Column -->
           <div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
             @if(isset($mainStoryImage) && !isset($fullBannerImage))
               <div id="big-feature-image">
-                <img src="{{$mainStoryImage->present()->mainImageURL }}"
+                <img src="{{$mainStoryImage->present()->mainImageURL}}"
                      alt="{{ $mainStoryImage->alt_text != '' ? $mainStoryImage->alt_text : str_replace('"', "", $story->title) }}">
-
                 <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
               </div>
             @endif
@@ -68,14 +64,14 @@
                 @endphp
                 <a href="?truepreview=false" class="button secondary"><i class="fa fa-exchange" aria-hidden="true"></i>
                   Editable preview</a>
-                {!! Form::hidden('content') !!}
+                {!! html()->hidden('content') !!}
                 {!! $story->content !!}
                 @php
                   else:
                 @endphp
                 <a href="?truepreview=true" class="button secondary"><i class="fa fa-exchange" aria-hidden="true"></i>
                   True preview</a>
-                {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
+                {!! html()->textarea('content', null)->class('form-control')->id('cktextarea') !!}
                 @php
                   endif
                 @endphp
@@ -97,7 +93,7 @@
                       {{$story->user->first_name}} {{$story->user->last_name}}
                     @else
                       {{$story->author_info}}
-                    @endif
+                    @endunless
                   @else
                     {{ $story->author->first_name }} {{ $story->author->last_name }}
                   @endif
@@ -113,7 +109,7 @@
                   Contact:<br>
                   {{ $story->contact->first_name }} {{ $story->contact->last_name }}<br>
                   <a href="mailto:{{ $story->contact->email }}">{{ $story->contact->email }}</a><br>
-                  {{ empty($story->contact->phone) ? '': $story->contact->phone }}
+                  {{ empty($story->contact->phone) ? '' : $story->contact->phone }}
                 </p>
               </div>
             @endif
@@ -122,15 +118,15 @@
         <div class="row">
           <div class="medium-8 columns">
             <div class="button-group">
-              {!! Form::submit('Update Story', ['class' => 'button']) !!}
-              {{-- <a class="secondary button" href="{{route('admin_storytype_edit', ['stype' => $story->story_type, 'story'=> $story->id])}}">Cancel</a> --}}
+              {!! html()->submit('Update Story')->class('button') !!}
+              {{-- <a class="secondary button" href="{{ route('admin_storytype_edit', ['stype' => $story->story_type, 'story'=> $story->id]) }}">Cancel</a> --}}
             </div><!-- /.button-group -->
           </div><!-- /.medium-8 columns -->
           <div class="medium-4 columns">
-            <h6 class="subheader text-right">Start Date: {{$story->start_date}}</h6>
+            <h6 class="subheader text-right">Start Date: {{ $story->start_date }}</h6>
           </div><!-- /.medium-4 columns -->
         </div><!-- /.row -->
-        {!! Form::close() !!}
+        {!! html()->form()->close() !!}
       </div>
 
     </div>

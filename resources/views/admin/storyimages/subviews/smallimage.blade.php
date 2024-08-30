@@ -20,9 +20,7 @@
         </div>
     </div><!-- /.box-header -->
     <div class="box-body">
-        {{-- {!! Form::label('image_type', 'Image Type:') !!} --}}
         {!! html()->hidden('image_type', $storyImage->image_type)->class('form-control input-sm')->attribute('readonly', 'readonly') !!}
-        {{-- {!! Form::label('image_name', 'Name:') !!} --}}
         {!! html()->hidden('image_name')->class('form-control')->attribute('readonly', 'readonly') !!}
 
         <div class="form-group">

@@ -31,14 +31,11 @@
             @endif
           </div>
         </div>
+
         <!-- Story Page Content -->
-        {!! Form::model($post,[
-            'method' => 'put',
-            'route' => ['admin.posts.update', $post],
-            'files' => true
-        ]) !!}
+        {!! html()->modelForm($post, 'put', route('admin.posts.update', $post))->acceptsFiles()->open() !!}
         <div id="story-content" class="row ck-content">
-        <!-- Story Content Column -->
+          <!-- Story Content Column -->
           <div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
             @if(isset($mainImg))
               <div id="big-feature-image">
@@ -69,14 +66,14 @@
               <a href="?truepreview=false" class="button secondary"><i class="fa fa-exchange" aria-hidden="true"></i>
                 Editable preview</a>
 
-              {!! Form::hidden('content') !!}
+              {!! html()->hidden('content') !!}
               {!! $post->content !!}
               @php
                 else:
               @endphp
               <a href="?truepreview=true" class="button secondary"><i class="fa fa-exchange" aria-hidden="true"></i>
                 True preview</a>
-              {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
+              {!! html()->textarea('content')->class('form-control')->id('cktextarea') !!}
               @php
                 endif
               @endphp
@@ -84,9 +81,9 @@
           </div>
           <!-- Page Side Bar Column -->
           <div class="large-3 large-pull-9 medium-3 medium-pull-9 small-12 columns" id="story-sidebar">
-{{--            <div class="dots-bottom">--}}
-{{--              <div class="addthis"><img src="/assets/imgs/icons/fake-sharethis.png"/></div>--}}
-{{--            </div>--}}
+            <div class="dots-bottom">
+              <div class="addthis"><img src="/assets/imgs/icons/fake-sharethis.png"/></div>
+            </div>
             <div class="dots-bottom">
               <p>
                 Contributed by:<br>
@@ -103,21 +100,19 @@
           <div class="medium-8 columns">
             @if(!isset($_GET['truepreview']) || $_GET['truepreview'] != "true")
               <div class="button-group">
-                {!! Form::hidden('id') !!}
-                {!! Form::submit('Update Post', ['class' => 'button']) !!}
+                {!! html()->hidden('id') !!}
+                {!! html()->submit('Update Post')->class('button') !!}
               </div><!-- /.button-group -->
             @endif
           </div><!-- /.medium-8 columns -->
           <div class="medium-4 columns">
-            <h6 class="subheader text-right">Start Date: {{$post->start_date ?: 'Not Set'}}</h6>
+            <h6 class="subheader text-right">Start Date: {{ $post->start_date ?: 'Not Set' }}</h6>
           </div><!-- /.medium-4 columns -->
         </div><!-- /.row -->
-        {!! Form::close() !!}
+        {!! html()->form()->close() !!}
       </div>
-
     </div>
   </div>
-
 @endsection
 
 @section('scriptsfooter')

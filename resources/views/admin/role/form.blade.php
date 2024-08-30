@@ -35,46 +35,35 @@
 							<h3 class="box-title">{{$role->exists ? 'Editing Role: '. $role->name: 'Create New Role'}}</h3>
 						</div>
 						<div class="box-body">
-
-						{!! Form::model($role,[
-							'method' => $role->exists ? 'put' : 'post',
-							'route' => $role->exists ? ['admin.role.update', $role->id] : ['admin.role.store']
-							]) !!}
+							{!! html()->modelForm($role, $role->exists ? 'put' : 'post', $role->exists ? route('admin.role.update', $role->id) : route('admin.role.store'))->open() !!}
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										{!! Form::label('name') !!}
-										{!! Form::text('name', null, ['class' => 'form-control']) !!}
+										{!! html()->label('Name', 'name') !!}
+										{!! html()->text('name')->class('form-control') !!}
 									</div>
 								</div><!-- /.col-md-6 -->
 								<div class="col-md-6">
 									<div class="form-group">
-										{!! Form::label('label') !!}
-										{!! Form::text('label', null, ['class' => 'form-control']) !!}
+										{!! html()->label('Label', 'label') !!}
+										{!! html()->text('label')->class('form-control') !!}
 									</div>
 								</div><!-- /.col-md-6 -->
 							</div><!-- /.row -->
 
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-											{!! Form::label('permission_list', 'Permissions:') !!}
-											{{-- @can('super', $user) --}}
-												{!! Form::select('permission_list[]',$rolePermissions, $role->permissions->lists('id')->toArray() , ['class' => 'form-control select2', 'multiple']) !!}
-											{{-- @else --}}
-												{{-- @if($role->exists)
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										{!! html()->label('Permissions:', 'permission_list') !!}
+										{!! html()->select('permission_list[]', $rolePermissions, $role->permissions->pluck('id')->toArray())->class('form-control select2')->multiple() !!}
+									</div>
+								</div><!-- /.col-md-6 -->
+							</div><!-- /.row -->
 
-													{!! Form::text('permission_list', $role->permissions->lists('name') , ['class' => 'form-control select2','readonly' => 'readonly']) !!}
-												@endif
-											@endcan --}}
-										</div>
-									</div><!-- /.col-md-6 -->
-									</div><!-- /.row -->
-								</div><!-- /.box-body -->
-								<div class="box-footer">
-									{!! Form::submit($role->exists ? 'Save Role' : 'Create New Role', ['class' => 'btn btn-primary pull-right']) !!}
-									{!! Form::close() !!}
-								</div><!-- /.box-footer -->
+							<div class="box-footer">
+								{!! html()->submit($role->exists ? 'Save Role' : 'Create New Role')->class('btn btn-primary pull-right') !!}
+								{!! html()->form()->close() !!}
+							</div><!-- /.box-footer -->
 					</div><!-- /.box -->
 			</div><!--	/.col-sm-12 -->
 		</div><!--/.row -->

@@ -36,25 +36,21 @@
 						</div>
 						<div class="box-body">
 
-						{!! Form::model($permission,[
-							'method' => $permission->exists ? 'put' : 'post',
-							'route' => $permission->exists ? ['admin.permission.update', $permission->id] : ['admin.permission.store']
-							]) !!}
+							{!! html()->modelForm($permission, $permission->exists ? 'put' : 'post', $permission->exists ? route('admin.permission.update', $permission->id) : route('admin.permission.store'))->open() !!}
 
-									<div class="form-group">
-										{!! Form::label('name') !!}
-										{!! Form::text('name', null, ['class' => 'form-control']) !!}
-									</div>
-									<div class="form-group">
-										{!! Form::label('label') !!}
-										{!! Form::text('label', null, ['class' => 'form-control']) !!}
-									</div>
+							<div class="form-group">
+								{!! html()->label('Name', 'name') !!}
+								{!! html()->text('name')->class('form-control') !!}
+							</div>
+							<div class="form-group">
+								{!! html()->label('Label', 'label') !!}
+								{!! html()->text('label')->class('form-control') !!}
+							</div>
 
-								</div><!-- /.box-body -->
-								<div class="box-footer">
-									{!! Form::submit($permission->exists ? 'Save Permission' : 'Create New Permission', ['class' => 'btn btn-primary pull-right']) !!}
-									{!! Form::close() !!}
-								</div><!-- /.box-footer -->
+							<div class="box-footer">
+								{!! html()->submit($permission->exists ? 'Save Permission' : 'Create New Permission')->class('btn btn-primary pull-right') !!}
+								{!! html()->form()->close() !!}
+							</div><!-- /.box-footer -->
 					</div><!-- /.box -->
 			</div><!--	/.col-sm-12 -->
 		</div><!--/.row -->

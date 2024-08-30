@@ -5,15 +5,14 @@
 @section('heading', 'Please provide your email address to reset password')
 
 @section('content')
-    {!! Form::open() !!}
+  {!! html()->form('POST')->open() !!}
 
-   <div class="form-group">
-       {!! Form::label('email') !!}
-       {!! Form::text('email', null, ['class' => 'form-control']) !!}
-   </div>
+  <div class="form-group">
+    {!! html()->label('Email', 'email') !!}
+    {!! html()->text('email')->class('form-control') !!}
+  </div>
 
-   {!! Form::submit('Send Password Reset Link', ['class' => 'btn btn-primary']) !!}
+  {!! html()->submit('Send Password Reset Link')->class('btn btn-primary') !!}
 
-
-   {!! Form::close() !!}
+  {!! html()->form()->close() !!}
 @endsection

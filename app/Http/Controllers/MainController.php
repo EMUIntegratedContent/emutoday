@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use JavaScript;
 use Illuminate\Support\Facades\DB;
 use Mailgun\Mailgun;
+use Illuminate\Support\Facades\Mail as Mail;
 
 class MainController extends Controller
 {
