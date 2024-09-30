@@ -4,8 +4,9 @@
     <div class="row">
       <div class="small-12 columns">
         <div class="row">
-          <div class="small-12 columns"><h1>Inside EMU</h1>
-            <p><a title="Submit to Inside EMU" href="/insideemu/ideas/create">Submit to Inside EMU</a></p>
+          <div class="small-12 columns">
+            <h1>Inside EMU</h1>
+            <a title="Submit to Inside EMU" href="/insideemu/ideas/create" class="button readmore bold-green-link" id="submit-inside-emu-btn">Submit to Inside EMU</a>
           </div>
         </div>
         <div id="four-stories-bar">
@@ -15,11 +16,8 @@
                 <img class="topic-image" src="/imagecache/original/{{$post->id}}/{{$post->images[0]->image_name}}"
                      alt="{{ $post->images[0]->alt_text != '' ? $post->images[0]->alt_text : str_replace('"', "", $post->images[0]->caption) }}">
                 <div class="stories-content">
-                  <div class="stories-text-content" data-equalizer-watch>
-                    <p>{{$post->images[0]->caption}}</p>
-                  </div>
                   <p class="link-group">
-                    <a href="/insideemu/posts/{{$post->id}}">{{ $post->images[0]->moretext ?: 'Read more' }}</a>
+                    <a href="/insideemu/posts/{{$post->id}}">{{ $post->title }}</a>
                   </p>
                 </div>
               </div>

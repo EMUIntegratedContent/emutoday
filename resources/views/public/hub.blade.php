@@ -277,7 +277,7 @@
                        href="{{ url('/insideemu') }}">Inside EMU</a></h4>
               @if($insideemu)
                 <p style="margin-top: 0.8rem">
-                  <a href="{{ url('/insideemu/posts/' . $insideemu->id ) }}" class="caption-link">{{ $insideemu->images[0]->caption }}</a>
+                  <a href="{{ url('/insideemu/posts/' . $insideemu->id ) }}" class="caption-link">{{ $insideemu->title }}</a>
                 </p>
               @endif
               <p style="font-weight: lighter; margin-bottom: 1.1rem">Go to our Inside EMU page to find other user-submitted posts produced by staff and faculty across the University.</p>
@@ -290,7 +290,7 @@
                 <h4><a class="bold-green-link" title="Inside EMU"
                                                      href="{{ url('/insideemu') }}">Inside EMU</a></h4>
                 @if($insideemu)
-                  <p><a href="{{ url('/insideemu/posts/' . $insideemu->id ) }}" class="caption-link">{{ $insideemu->images[0]->caption }}</a></p>
+                  <p><a href="{{ url('/insideemu/posts/' . $insideemu->id ) }}" class="caption-link">{{ $insideemu->title }}</a></p>
                 @endif
                 <p style="font-weight: lighter">Go to our Inside EMU page to find other user-submitted posts produced by staff and faculty across the University.</p>
                 <div style="display: flex; justify-content: center;">
@@ -300,7 +300,7 @@
               </div>
               @if($insideemu)
                 <img src="/imagecache/original/{{$insideemu->id}}/{{$insideemu->images[0]->image_name}}" style="width: 290px; height: 175px"
-                     alt="{{ $insideemu->images[0]->alt_text != '' ? $insideemu->images[0]->alt_text : str_replace('"', "", $insideemu->images[0]->caption) }}">
+                     alt="{{ $insideemu->images[0]->alt_text }}">
               @endif
             </div>
             @endif

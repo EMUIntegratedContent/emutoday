@@ -43,21 +43,24 @@
           <v-text-field
               v-model="img.alt_text"
               density="compact"
-              label="Alt Text"
-              @update:modelValue="$emit('imageUpdated')"
-          >
-          </v-text-field>
-        </v-col>
-        <v-col cols="12">
-          <v-text-field
-              v-model="img.caption"
-              density="compact"
-              :rules="[v => (!!v || imgType !== 'small') || 'Caption is required']"
+              :rules="[v => !!v || 'Alt text is required']"
               @update:modelValue="$emit('imageUpdated')"
           >
             <template #label>
-              Caption <span v-if="imgType === 'small'" class="text-error">*</span>
+              Alt Text <span class="text-error">*</span>
             </template>
+          </v-text-field>
+        </v-col>
+        <v-col
+            v-if="imgType !== 'small'"
+            cols="12"
+        >
+          <v-text-field
+              v-model="img.caption"
+              density="compact"
+              label="Caption"
+              @update:modelValue="$emit('imageUpdated')"
+          >
           </v-text-field>
         </v-col>
         <template v-if="imgType === 'small' || imgType === 'email'">
@@ -65,12 +68,11 @@
             <v-text-field
                 v-model="img.moretext"
                 density="compact"
-                :rules="[v => (!!v || imgType !== 'small') || 'More text link is required']"
+                label="More Text link"
+                :persistent-hint="imgType === 'small'"
+                :hint="imgType === 'small' ? 'Controls the link text that is displayed in the \'More Inside EMU\' area. Default text is \'Read More\'.' : ''"
                 @update:modelValue="$emit('imageUpdated')"
             >
-              <template #label>
-                Story Link Text <span class="text-error" v-if="imgType === 'small'">*</span>
-              </template>
             </v-text-field>
           </v-col>
         </template>
