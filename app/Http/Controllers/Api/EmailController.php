@@ -17,6 +17,7 @@ use Emutoday\MailingList;
 use Illuminate\Http\Request;
 
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as Input;
 
 use League\Fractal\Manager;
@@ -171,7 +172,7 @@ class EmailController extends ApiController
         $this->isEmailReady($email);
 
 				return $this->setStatusCode(200)
-					->respondUpdatedWithData('Got email.', EmailResource::make($email));
+					->respondUpdatedWithData('Email has been created.', EmailResource::make($email));
       }
     }
   }
@@ -243,16 +244,9 @@ class EmailController extends ApiController
       }
       $email->events()->sync($eventIds);
 
-      // Sync main stories
-//      $mainStoryCount = 0;
-//      $mainStoryIds = array();
-//      foreach ($request->get('mainStories') as $mainStory) {
-//        $mainStoryIds[$mainStory['id']] = ['order' => $mainStoryCount];
-//        $mainStoryCount++;
-//      }
-//      $email->mainstories()->sync($mainStoryIds);
-			$email->mainstories()->detach();
-			$email->maininsideemuposts()->detach();
+      // Sync main stories (with Inside EMU posts)
+			$email->mainstories()->detach(); // Remove all existing main stories (note, it's DETACH, not DELETE)
+			$email->maininsideemuposts()->detach(); // Remove all existing main Inside EMU posts (note, it's DETACH, not DELETE)
 			$mainStoryCount = 0;
 			$syncData = []; // Final data array for sync
 			foreach ($request->get('mainStories') as $mainStory){
@@ -313,7 +307,7 @@ class EmailController extends ApiController
         $this->isEmailReady($email);
 
 				return $this->setStatusCode(200)
-					->respondUpdatedWithData('Got email.', EmailResource::make($email));
+					->respondUpdatedWithData('Email has been updated.', EmailResource::make($email));
       }
     }
   }
@@ -374,15 +368,7 @@ class EmailController extends ApiController
         }
         $email->events()->sync($eventIds);
 
-        // Sync main stories (or Inside EMU posts)
-//        $mainStoryCount = 0;
-//        $mainStoryIds = array();
-//        foreach ($request->get('mainStories') as $mainStory) {
-//          $mainStoryIds[$mainStory['id']] = ['order' => $mainStoryCount];
-//          $mainStoryCount++;
-//        }
-//        $email->mainstories()->sync($mainStoryIds);
-
+        // Sync main stories (with Inside EMU posts)
 				$mainStoryCount = 0;
 				$syncData = []; // Final data array for sync
 				foreach ($request->get('mainStories') as $mainStory){
@@ -431,7 +417,7 @@ class EmailController extends ApiController
 				$email->insideemuPosts()->sync($postIds);
 
 				return $this->setStatusCode(200)
-					->respondUpdatedWithData('Got email.', EmailResource::make($email));
+					->respondUpdatedWithData('Email successfully cloned.', EmailResource::make($email));
       }
     }
   }
@@ -628,8 +614,14 @@ class EmailController extends ApiController
   private function isEmailReady(Email $email) {
     $email->is_ready = 0;
 
-    if ($email->mainstories()->first() &&
-        ($email->mainstories()->count() == 1 || $email->mainstories()->count() == 3) &&
+		$mainStoryCnt = $email->mainstories()->count();
+		$mainInsideEmuStoryCnt = $email->maininsideemuposts()->count();
+		$mainStoriesReady = $mainStoryCnt + $mainInsideEmuStoryCnt === 1 || $mainStoryCnt + $mainInsideEmuStoryCnt === 3;
+
+		// Log the count
+		Log::info('Main Story Count: ' . $mainStoryCnt);
+
+    if ($mainStoriesReady &&
         $email->announcements()->first() &&
         ($email->events()->first() || $email->exclude_events) &&
 				($email->insideemuPosts()->first() || $email->exclude_insideemu) &&

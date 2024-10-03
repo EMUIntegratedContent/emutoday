@@ -56,7 +56,7 @@ export default {
       .then((response) =>{
         this.disableClone = true
         this.cloneStatus.is_set = true
-        this.cloneStatus.message = response.data.message + ' <a href="/admin/email/' + response.data.newdata.data.id + '/edit">Go now.</a>'
+        this.cloneStatus.message = response.data.message + ' <a href="/admin/email/' + response.data.newdata.id + '/edit">Go now.</a>'
       }).catch(() => {
         this.disableClone = true
         this.cloneStatus.is_set = true

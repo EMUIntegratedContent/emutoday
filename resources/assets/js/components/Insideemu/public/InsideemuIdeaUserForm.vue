@@ -13,10 +13,9 @@
             any deadlines or RSVP dates; and a contact name and email address.
           </li>
           <li>Do not include job openings or solicitations or fundraising requests.</li>
-          <li>All content is intended for EMU employees. The final decision to publish your submission is at the
-            discretion of the EMU Today team.
+          <li>Please note that all submissions will be edited for clarity and conciseness, and we reserve the right to make necessary adjustments to ensure the content aligns with our editorial standards.
           </li>
-          <li>Entries must be received by <mark>Tuesday at noon</mark> to be considered for inclusion in <span style="font-style:italic">The Week at EMU</span> email, which
+          <li>Entries must be received by <mark>Friday at noon</mark> to be considered for inclusion in <span style="font-style:italic">The Week at EMU</span> email, which
             comes out on Wednesday.
           </li>
         </ul>
