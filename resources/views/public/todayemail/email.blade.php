@@ -33,7 +33,7 @@
               <article>
                 @if($mainStories[0] instanceof \Emutoday\InsideemuPost)
                   <img alt="{{ $mainStoryImages[0]->alt_text }}"
-                       src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->image_name}}"
+                       src="{{ url('/') }}{{$mainStoryImages[0]->image_path}}"
                        style="border-right: 0px solid #ffffff;max-width: 600px;border-top: 3px solid #97D700;width: 100%;height: auto;">
                 @else
                   <img alt="{{ $mainStoryImages[0]->caption }}"
@@ -88,7 +88,7 @@
 
                               @if($mainStories[1] instanceof \Emutoday\InsideemuPost)
                                 <img alt="{{ $mainStoryImages[1]->alt_text }}"
-                                     src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->image_name}}"
+                                     src="{{ url('/') }}{{$smallStoryImages[1]->image_path}}"
                                      style="width: 100%;max-width: 260px;height: auto;">
                               @else
                                 <img alt="{{ $mainStoryImages[1]->caption }}"
@@ -143,7 +143,7 @@
 
                               @if($mainStories[2] instanceof \Emutoday\InsideemuPost)
                                 <img alt="{{ $mainStoryImages[2]->alt_text }}"
-                                     src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->image_name}}"
+                                     src="{{ url('/') }}{{$smallStoryImages[2]->image_path}}"
                                      style="width: 100%;max-width: 260px;height: auto;">
                               @else
                                 <img alt="{{ $mainStoryImages[2]->caption }}"
