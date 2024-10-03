@@ -348,7 +348,7 @@ export default {
 
       this.$http.get(routeurl)
         .then((response) => {
-          this.items = response.data.newdata.data
+          this.items = response.data.newdata
           this.resultCount = this.items.length
           this.setPage(1) // reset paginator
           this.loadingQueue = false;

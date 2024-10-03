@@ -55,6 +55,13 @@ class Email extends Model
     return $this->belongsToMany('Emutoday\Story', 'email_mainstory')->withPivot('order')->orderBy('order')->withTimestamps();
   }
 
+	/**
+	 * As of 10/2/2024, the main stories can also be Inside EMU posts.
+	 */
+	public function maininsideemuposts(){
+		return $this->belongsToMany('Emutoday\InsideemuPost', 'email_mainstory')->withPivot('order')->orderBy('order')->withTimestamps();
+	}
+
   /**
    * The list of stories
    */

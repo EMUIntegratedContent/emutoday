@@ -744,7 +744,8 @@ export default {
       this.resetEmailBuilderEmail()
       this.$http.get('/api/email/' + recid + '/edit')
       .then((response) => {
-        this.setEmailBuilderEmail(response.data.newdata.data)
+        // this.setEmailBuilderEmail(response.data.newdata.data)
+        this.setEmailBuilderEmail(response.data.newdata)
       }).catch((e) => {
         this.formErrors = e.response.data.error.message;
       });
@@ -785,7 +786,7 @@ export default {
         this.formMessage.msg = response.data.message;
         this.formMessage.isOk = true; // Success message
         this.formMessage.isErr = false;
-        this.currentRecordId = response.data.newdata.data.id;
+        this.currentRecordId = response.data.newdata.id;
         this.existingEmail = true;
         this.formErrors = {}; // Clear errors
 

@@ -35,7 +35,7 @@
         <p>Type: {{ item.story_type }}</p>
         <p>Title: {{ item.title }}</p>
         <p>Ready: {{ item.is_ready }}</p>
-        <p>Approved: {{ item.is_approved }}</p>
+        <p v-if="item.story_type !== 'Inside EMU'">Approved: {{ item.is_approved }}</p>
         <p>Promoted: {{ item.is_promoted }}</p>
         <p>Featured: {{ item.is_featured }}</p>
         <p>Live: {{ item.is_live }}</p>
@@ -192,6 +192,12 @@ h6.box-title {
   border: 1px solid #488dd8;
 }
 
+.insideemu_post {
+  color: #1B1B1B;
+  background-color: #E8F5E9;
+  border: 1px solid #E8F5E9;
+}
+
 .zcallout {
   border-radius: 5px;
   border-left: 50px solid #ff0000;
@@ -332,6 +338,9 @@ export default {
           break
         case 'featurephoto':
           faicon = 'fa-camera-retro'
+          break
+        case 'Inside EMU':
+          faicon = 'fa-university'
           break
         default:
           faicon = 'fa-file-o'

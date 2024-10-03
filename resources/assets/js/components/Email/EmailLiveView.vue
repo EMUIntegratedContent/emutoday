@@ -27,9 +27,16 @@
                 <td valign="top" class="full-width-image">
                   <template v-if="emailBuilderEmail.mainStories[0]">
                     <article>
-                      <img :alt="emailBuilderEmail.mainStories[0].email_images[0].caption"
-                           :src="emailBuilderEmail.mainStories[0].email_images[0].image_path + emailBuilderEmail.mainStories[0].email_images[0].filename"
-                           style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;"/>
+                      <template v-if="emailBuilderEmail.mainStories[0].story_type === 'Inside EMU'">
+                        <img :alt="emailBuilderEmail.mainStories[0].email_images[0].caption"
+                             :src="emailBuilderEmail.mainStories[0].email_images[0].image_path"
+                             style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;"/>
+                      </template>
+                      <template v-else>
+                        <img :alt="emailBuilderEmail.mainStories[0].email_images[0].caption"
+                             :src="emailBuilderEmail.mainStories[0].email_images[0].image_path + emailBuilderEmail.mainStories[0].email_images[0].filename"
+                             style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;"/>
+                      </template>
                       <div class="indent" style="padding-bottom: 16px; margin-bottom: 10px;">
                         <h2>
                           <a v-if="emailBuilderEmail.mainStories[0].story_type == 'external' || (emailBuilderEmail.mainStories[0].story_type == 'article' && storyHasTag(emailBuilderEmail.mainStories[0], 'external'))"
@@ -70,9 +77,17 @@
                                     <table class="contents">
                                       <tr>
                                         <!-- -->
-                                        <td style="text-align:left;"><img class="col-img"
-                                                                          :alt="emailBuilderEmail.mainStories[1].small_images[0].caption"
-                                                                          :src="'/imagecache/emailsub/' + emailBuilderEmail.mainStories[1].small_images[0].filename"/>
+                                        <td style="text-align:left;">
+                                          <template v-if="emailBuilderEmail.mainStories[1].story_type === 'Inside EMU'">
+                                            <img class="col-img"
+                                                 :alt="emailBuilderEmail.mainStories[1].small_images[0].caption"
+                                                 :src="emailBuilderEmail.mainStories[1].small_images[0].image_path"/>
+                                          </template>
+                                          <template v-else>
+                                            <img class="col-img"
+                                                 :alt="emailBuilderEmail.mainStories[1].small_images[0].caption"
+                                                 :src="emailBuilderEmail.mainStories[1].small_images[0].image_path + emailBuilderEmail.mainStories[1].small_images[0].filename"/>
+                                          </template>
                                         </td>
                                       </tr>
                                       <tr>
@@ -114,9 +129,17 @@
                                   <template v-if="emailBuilderEmail.mainStories[2]">
                                     <table class="contents">
                                       <tr>
-                                        <td><img class="col-img"
+                                        <td>
+                                          <template v-if="emailBuilderEmail.mainStories[2].story_type === 'Inside EMU'">
+                                            <img class="col-img"
                                                  :alt="emailBuilderEmail.mainStories[2].small_images[0].caption"
-                                                 :src="'/imagecache/emailsub/' + emailBuilderEmail.mainStories[2].small_images[0].filename"/>
+                                                 :src="emailBuilderEmail.mainStories[2].small_images[0].image_path"/>
+                                          </template>
+                                          <template v-else>
+                                            <img class="col-img"
+                                                 :alt="emailBuilderEmail.mainStories[2].small_images[0].caption"
+                                                 :src="emailBuilderEmail.mainStories[2].small_images[0].image_path + emailBuilderEmail.mainStories[2].small_images[0].filename"/>
+                                          </template>
                                         </td>
                                       </tr>
                                       <tr>
@@ -184,7 +207,8 @@
                        style="float:left; padding:0 15px 8px 0; width:109px"/>
                   <h2 style="padding-top:0px;">
                     <template v-if="emailBuilderEmail.emu175_url">
-                      <a v-if="emailBuilderEmail.emu175_url" :href="emailBuilderEmail.emu175_url">Celebrating EMU's 175th Anniversary &#10137;</a>
+                      <a v-if="emailBuilderEmail.emu175_url" :href="emailBuilderEmail.emu175_url">Celebrating EMU's
+                        175th Anniversary &#10137;</a>
                     </template>
                     <template v-else>
                       <span class="insufficient">Celebrating EMU 175th Anniversary [NO URL]</span>
@@ -205,7 +229,8 @@
                        style="float:left; padding:0 15px 8px 0; width:109px"/>
                   <h2 style="padding-top:0px;">
                     <template v-if="emailBuilderEmail.president_url">
-                      <a v-if="emailBuilderEmail.president_url" :href="emailBuilderEmail.president_url">From the President &#10137;</a>
+                      <a v-if="emailBuilderEmail.president_url" :href="emailBuilderEmail.president_url">From the
+                        President &#10137;</a>
                     </template>
                     <template v-else>
                       <span class="insufficient">From the President [NO URL]</span>
@@ -218,6 +243,26 @@
                     <p style="font-size:1.1rem;" class="insufficient">There is no teaser text provided. You must include
                       this text when including a presidential message.</p>
                   </template>
+                </td>
+              </tr>
+              <tr v-if="!emailBuilderEmail.exclude_insideemu">
+                <td valign="middle">
+                  <div style="padding-top: 5px;">
+                    <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/insideemu">Inside EMU
+                      &#10137;</a></h2>
+                    <template v-if="emailBuilderEmail.insideemuPosts.length > 0">
+                      <ul style="padding-bottom: 0px; margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
+                        <li v-for="post in emailBuilderEmail.insideemuPosts"
+                            style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
+                          <a style="text-decoration: none;" :href="post.full_url">{{ post.title }}</a>
+                        </li>
+                      </ul>
+                    </template>
+                    <template v-else>
+                      <p style="padding:5px" class="insufficient">No Inside EMU posts set yet. Select at least one from
+                        the "Inside EMU" tab.</p>
+                    </template>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -275,25 +320,6 @@
                   </div>
                 </td>
               </tr>
-              <tr v-if="!emailBuilderEmail.exclude_insideemu">
-                <td valign="middle">
-                  <div style="padding-top: 5px;">
-                    <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/insideemu">Inside EMU &#10137;</a></h2>
-                    <template v-if="emailBuilderEmail.insideemuPosts.length > 0">
-                      <ul style="padding-bottom: 0px; margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
-                        <li v-for="post in emailBuilderEmail.insideemuPosts"
-                            style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
-                          <a style="text-decoration: none;" :href="post.full_url">{{ post.title }}</a>
-                        </li>
-                      </ul>
-                    </template>
-                    <template v-else>
-                      <p style="padding:5px" class="insufficient">No Inside EMU posts set yet. Select at least one from
-                        the "Inside EMU" tab.</p>
-                    </template>
-                  </div>
-                </td>
-              </tr>
               <tr style="background:#515151; color:#ffffff; border:0;">
                 <td style="border:0; ">
                   <table style="margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;">
@@ -334,7 +360,8 @@
                           </li>
                           <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                             <a href="https://www.emich.edu/communications/expertise/social-media//"><img
-                                class="img-circle" alt="X (formerly Twitter)" src="/assets/imgs/icons/twitter-x.png"></a>
+                                class="img-circle" alt="X (formerly Twitter)"
+                                src="/assets/imgs/icons/twitter-x.png"></a>
                           </li>
                           <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
                             <a href="https://www.youtube.com/user/emichigan08"><img class="img-circle" alt="YouTube"
