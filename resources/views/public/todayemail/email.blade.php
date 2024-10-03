@@ -31,9 +31,8 @@
           <tr>
             <td valign="top" class="full-width-image">
               <article>
-{{--                <img alt="{{ $mainStoryImages[0]->caption }}" src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}" style="border-right: 0px solid #ffffff;max-width: 600px;border-top: 3px solid #97D700;width: 100%;height: auto;">--}}
                 @if($mainStories[0] instanceof \Emutoday\InsideemuPost)
-                  <img alt="{{ $mainStoryImages[0]->caption }}"
+                  <img alt="{{ $mainStoryImages[0]->alt_text }}"
                        src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->image_name}}"
                        style="border-right: 0px solid #ffffff;max-width: 600px;border-top: 3px solid #97D700;width: 100%;height: auto;">
                 @else
@@ -88,7 +87,7 @@
 {{--                                   style="width: 100%;max-width: 260px;height: auto;">--}}
 
                               @if($mainStories[1] instanceof \Emutoday\InsideemuPost)
-                                <img alt="{{ $mainStoryImages[1]->caption }}"
+                                <img alt="{{ $mainStoryImages[1]->alt_text }}"
                                      src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->image_name}}"
                                      style="width: 100%;max-width: 260px;height: auto;">
                               @else
@@ -143,7 +142,7 @@
 {{--                                   style="width: 100%;max-width: 260px;height: auto;">--}}
 
                               @if($mainStories[2] instanceof \Emutoday\InsideemuPost)
-                                <img alt="{{ $mainStoryImages[2]->caption }}"
+                                <img alt="{{ $mainStoryImages[2]->alt_text }}"
                                      src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->image_name}}"
                                      style="width: 100%;max-width: 260px;height: auto;">
                               @else
