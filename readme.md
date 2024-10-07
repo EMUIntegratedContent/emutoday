@@ -10,6 +10,11 @@
 <p>EMU Today is Eastern Michigan University's digital hub for stories and news around campus. Discover upcoming events and important announcements to stay current on what's happening at EMU.</p>
 <hr>
 
+<h2>October 2024 Updates (v 1.4.1)</h2>
+<ul>
+<li>Introduced <strong>Inside EMU</strong>, a way for EMU staff and faculty submit items for inclusion on the EMU Today site.</li>
+<li>Subscribing to EMU Today now involves a "double opt-in" strategy through Mailgun.</li>
+</ul>
 <h2>July 2023 Updates (v 1.3.0)</h2>
 <ul>
 <li>Updated all Vue components to version 3.</li>

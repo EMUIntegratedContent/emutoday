@@ -56,7 +56,8 @@ class InsideemuService
 				}
 
 				$imgFilePath = $image->getRealPath();
-				$imgFileName = $image->getClientOriginalName();
+				$imgFileName = $this->sanitizeImageName($image->getClientOriginalName());
+				$imgFileName = $this->appendNewTimestamp($imgFileName);
 
 				Image::make($imgFilePath)
 					->save(public_path() . $destinationFolder . $imgFileName);
@@ -69,8 +70,12 @@ class InsideemuService
 			if(strpos($image['id'], 'new') !== false){
 				$ideaImage = new InsideemuIdeasImages();
 				$ideaImage->insideemu_idea_id = $idea->id;
-				$ideaImage->image_name = $image['image_name'];
-				$ideaImage->image_path = $destinationFolder.$image['image_name'];
+
+				// Sanitize the image name and add a timestamp to it
+				$imgName = $this->sanitizeImageName($image['image_name']);
+				$imgName = $this->appendNewTimestamp($imgName);
+				$ideaImage->image_name = $imgName;
+				$ideaImage->image_path = $destinationFolder.$imgName;
 			} else {
 				$ideaImage = InsideemuIdeasImages::findOrFail($image['id']);
 			}
