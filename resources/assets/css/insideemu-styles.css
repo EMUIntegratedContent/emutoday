@@ -184,7 +184,11 @@ ul.insideemu-nav li a:not(.button) {
   color:white;
 }
 
-/* Medium screens */
+#inside-emu-img-sm {
+  display: none;
+}
+
+/* Medium screens and below */
 @media only screen and (min-width: 40.063em) {
 }
 
@@ -206,10 +210,17 @@ ul.insideemu-nav li a:not(.button) {
 
 }
 
-/* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
+/* medium screens and lower */
+@media only screen and (max-width: 64em) {
+  #inside-emu-img-lg {
+    display: none;
+  }
 
-/* Small screens */
-@media only screen {
+  #inside-emu-img-sm {
+    display: block;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
 }
 
 /* Define mobile styles */
@@ -227,7 +238,6 @@ ul.insideemu-nav li a:not(.button) {
   .search-container {
     width: 92%;
   }
-
 }
 
 /* max-width 640px, mobile-only styles, use when QAing mobile issues */
