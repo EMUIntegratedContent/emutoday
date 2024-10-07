@@ -100,9 +100,15 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 	Route::patch('insideemu/admin/posts/addrank/{postId}', 'Api\InsideemuPostController@addRank')->name('api_insideemu_post_addrank');
 	Route::patch('insideemu/admin/posts/makehubpost/{postId}', 'Api\InsideemuPostController@makeHubPost')->name('api_insideemu_post_makehubpost');
 	Route::post('insideemu/admin/posts/updateranks', 'Api\InsideemuPostController@updateRanks')->name('api_insideemu_post_updateranks');
-//	Route::get('insideemu/posts/{postId}', 'Api\InsideemuPostController@show')->name('api_insideemu_post');
-//	Route::get('insideemu/posts', 'Api\InsideemuPostController@index')->name('api_insideemu_posts');
-	Route::resource('insideemu/admin/posts', 'Api\InsideemuPostController');
+	Route::resource('insideemu/admin/posts', 'Api\InsideemuPostController')->names([
+		'index' => 'api.insideemu.admin.posts.index',
+		'create' => 'api.insideemu.admin.posts.create',
+		'store' => 'api.insideemu.admin.posts.store',
+		'show' => 'api.insideemu.admin.posts.show',
+		'edit' => 'api.insideemu.admin.posts.edit',
+		'update' => 'api.insideemu.admin.posts.update',
+		'destroy' => 'api.insideemu.admin.posts.destroy'
+	]);
 
   /* STORY IDEAS */
   Route::resource('storyideas', 'Api\StoryIdeasController');
@@ -116,7 +122,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   /* AUTHORS */
   Route::patch('authors/updateitem/{id}', 'Api\AuthorController@updateItem')->name('api_authors_updateitem');
   Route::get('authors/{id}/edit', 'Api\AuthorController@edit')->name('api_authors_edititem');
-  Route::get('authors/primarycontact', 'Api\AuthorController@getCurrentPrimaryContact')->name('api_authors_updateitem');
+  Route::get('authors/primarycontact', 'Api\AuthorController@getCurrentPrimaryContact')->name('api_authors_updateprimary');
   Route::get('authors/primarymagazinecontact', 'Api\AuthorController@getCurrentPrimaryMagazineContact')->name('api_authors_updatemagazineitem');
   Route::post('authors', 'Api\AuthorController@store')->name('api_authors_storeitem'); // Route to save author to db
   Route::resource('authors', 'Api\AuthorController');
@@ -134,7 +140,15 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::get('email/recipients', 'Api\EmailController@getAllRecipients')->name('api_email_recipients_get');
   Route::post('email/recipients', 'Api\EmailController@saveRecipient')->name('api_email_recipients_save');
   Route::post('email/clone', 'Api\EmailController@cloneEmail')->name('api_email_clone');
-  Route::resource('email', 'Api\EmailController');
+  Route::resource('email', 'Api\EmailController')->names([
+				'index' => 'api.email.index',
+		'create' => 'api.email.create',
+		'store' => 'api.email.store',
+		'show' => 'api.email.show',
+		'edit' => 'api.email.edit',
+		'update' => 'api.email.update',
+		'destroy' => 'api.email.destroy'
+	]);
 
   Route::patch('experts/updateitem/{id}', 'Api\ExpertsController@updateItem')->name('api_experts_updateitem');
   Route::get('experts/{id}/edit', 'Api\ExpertsController@edit')->name('api_experts_edititem');
@@ -149,6 +163,16 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::post('experts', 'Api\ExpertsController@store')->name('api_experts_storeitem'); // Route to save expert to db
   Route::post('experts/{id}/delete', 'Api\ExpertsController@delete')->name('api_experts_delete');
   Route::resource('experts', 'Api\ExpertsController');
+	// Adjusted API route to avoid conflict with Today routes
+	Route::resource('experts', 'Api\ExpertsController')->names([
+		'index' => 'api.experts.index',
+		'create' => 'api.experts.create',
+		'store' => 'api.experts.store',
+		'show' => 'api.experts.show',
+		'edit' => 'api.experts.edit',
+		'update' => 'api.experts.update',
+		'destroy' => 'api.experts.destroy'
+	]);
 
   Route::patch('expertcategory/updateitem/{id}', 'Api\ExpertCategoryController@updateItem')->name('api_expertcategory_updateitem');
   Route::get('expertcategory/{id}/edit', 'Api\ExpertCategoryController@edit')->name('api_expertcategory_edititem');
@@ -156,7 +180,15 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::get('expertcategory/associated/{id}', 'Api\ExpertCategoryController@getAssociatedCategories')->name('api_expertcategory_associated');
   Route::post('expertcategory/{id}/delete', 'Api\ExpertCategoryController@delete')->name('api_expertcategory_delete');
   Route::post('expertcategory', 'Api\ExpertCategoryController@store')->name('api_expertcategory_storeitem'); // Route to save expert to db
-  Route::resource('expertcategory', 'Api\ExpertCategoryController');
+  Route::resource('expertcategory', 'Api\ExpertCategoryController')->names([
+		'index' => 'api.expertcategory.index',
+		'create' => 'api.expertcategory.create',
+		'store' => 'api.expertcategory.store',
+		'show' => 'api.expertcategory.show',
+		'edit' => 'api.expertcategory.edit',
+		'update' => 'api.expertcategory.update',
+		'destroy' => 'api.expertcategory.destroy'
+	]);
 
   Route::put('expertmediarequest/{id}', 'Api\ExpertMediaRequestController@updateItem')->name('api_expertmediarequest_updateitem');
   Route::post('expertmediarequest', 'Api\ExpertMediaRequestController@store')->name('api_expertmediarequest_store'); // Save expert media request to db
@@ -252,7 +284,15 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::patch('event/{id}/cancel', 'Api\EventController@cancel')->name('api_event_cancelitem');
   Route::put('event/elevated/reorder', 'Api\EventController@reorderElevatedEvents')->name('api_event_elevated_reorder');
   Route::get('event/elevated', 'Api\EventController@getElevatedEvents')->name('api_event_elevated');
-  Route::resource('event', 'Api\EventController');
+  Route::resource('event', 'Api\EventController')->names([
+		'index' => 'api.event.index',
+		'create' => 'api.event.create',
+		'store' => 'api.event.store',
+		'show' => 'api.event.show',
+		'edit' => 'api.event.edit',
+		'update' => 'api.event.update',
+		'destroy' => 'api.event.destroy'
+	]);
 
   Route::get('announcement/queueload/{atype}/{fromDate?}/{toDate?}', 'Api\AnnouncementController@queueLoad')->name('api_announcement_queueload');
   Route::put('announcement/elevated/reorder/{atype?}', 'Api\AnnouncementController@reorderElevatedAnnouncements')->name('api_announcement_elevated_reorder');
@@ -262,13 +302,28 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::get('announcement/archive', 'Api\AnnouncementController@archives')->name('api_announcement_archive');
   Route::get('announcement/elevated/{atype?}', 'Api\AnnouncementController@getElevatedAnnouncements')->name('api_announcement_elevated');
   Route::post('announcement', 'Api\AnnouncementController@store')->name('api_announcement_storeitem'); // Route to save announcement submissions to db
-  Route::resource('announcement', 'Api\AnnouncementController');
+  Route::resource('announcement', 'Api\AnnouncementController')->names([
+		'index' => 'api.announcement.index',
+		'create' => 'api.announcement.create',
+		'store' => 'api.announcement.store',
+		'show' => 'api.announcement.show',
+		'edit' => 'api.announcement.edit',
+		'update' => 'api.announcement.update',
+		'destroy' => 'api.announcement.destroy'
+	]);
 
   Route::get('page/stories/{fromDate?}/{toDate?}', 'Api\PageController@getHubReadyStories')->name('api_hub_stories');
   Route::get('page/chartload', 'Api\PageController@chartLoad')->name('api_page_chartload');
   Route::get('page/queueload', 'Api\PageController@queueLoad')->name('api.page.queueload');
-  //Route::post('page', 'Api\PageController@saveHubPage')->name('api_save_hub_page');
-  Route::resource('page', 'Api\PageController');
+  Route::resource('page', 'Api\PageController')->names([
+		'index' => 'api.page.index',
+		'create' => 'api.page.create',
+		'store' => 'api.page.store',
+		'show' => 'api.page.show',
+		'edit' => 'api.page.edit',
+		'update' => 'api.page.update',
+		'destroy' => 'api.page.destroy'
+	]);
 
   // Archives API
   Route::get('archive/queueload/{archiveType}/{perPage?}', 'Api\ArchiveController@queueLoad')->name('api_archive_queue');
@@ -308,13 +363,11 @@ Route::get('calendar/user/events', 'Today\CalendarController@userEvents');
 Route::get('calendar/event/{id}', 'Today\CalendarController@show');
 Route::get('calendar/{year?}/{month?}/{day?}/{id?}', 'Today\CalendarController@index');
 
-//
 Route::get('magazine/archives', 'Today\MagazineController@archives');
 Route::get('magazine/article/{id?}', 'Today\MagazineController@article');
 Route::get('magazine/issue/{year?}/{season?}', 'Today\MagazineController@issue');
 Route::get('magazine/{year?}/{season?}', 'Today\MagazineController@index');
 Route::get('magazine/{year?}/{season?}', 'Today\MagazineController@index');
-//
 
 Route::get('hub', 'MainController@index');
 
@@ -339,24 +392,7 @@ Route::get('experts/contact', function () {
 });
 Route::get('experts/speakerrequest/{expertId?}', 'Today\ExpertSpeakerRequestController@index');
 Route::get('experts/mediarequest/{expertId?}', 'Today\ExpertMediaRequestController@index');
-Route::get('experts', 'Today\ExpertsController@index');
 Route::resource('experts', 'Today\ExpertsController');
-//Route::resource('expertrequest', 'Today\ExpertRequestController');
-
-//    Route::auth();
-//    //watch out for match anything ROUTES
-//    Route::group(['prefix' => 'preview', 'middleware' => ['bindings']   ], function()
-//    {
-//        Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');
-//
-//        Route::get('page/{page}/', 'PreviewController@hub')->name('preview_hub');
-//        Route::get('magazine/{magazine}/', 'PreviewController@magazine')->name('preview_magazine');
-//
-//        Route::get('magazine/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
-//
-//        Route::get('story/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
-//        Route::get('{stype}/{story}/', 'PreviewController@story')->name('preview_story');
-//    });
 
 /***************
  * Admin Routes
@@ -368,7 +404,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
     Route::get('page/{page}/', 'PreviewController@hub')->name('preview_hub');
     Route::get('magazine/{magazine}/', 'PreviewController@magazine')->name('preview_magazine');
 
-    Route::get('magazine/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
+    Route::get('magazine/{stype}/{story}/', 'PreviewController@story')->name('mag_preview_story');
     Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@goBack');
 
     Route::get('{qtype}/{gtype}/{stype}/{story}', 'PreviewController@story')->name('preview_story');
@@ -381,7 +417,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
 
   Route::get('authors/list', 'Admin\AuthorsController@index')->name('authors_list');
   Route::get('authors/form', 'Admin\AuthorsController@form')->name('authors_form');
-  Route::resource('authors', 'Admin\AuthorsController');
+  // Avoid naming conflict with index route above
+	Route::resource('authors', 'Admin\AuthorController')->names([
+		'index' => 'admin.authors.index',
+		'create' => 'admin.authors.create',
+		'store' => 'admin.authors.store',
+		'show' => 'admin.authors.show',
+		'edit' => 'admin.authors.edit',
+		'update' => 'admin.authors.update',
+		'destroy' => 'admin.authors.destroy'
+	]);
 
   Route::get('dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
   Route::get('search', 'Admin\DashboardController@search')->name('admin.search');
@@ -389,7 +434,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   /* STORY IDEAS */
   Route::group(['middleware' => ['storyideas']], function () {
     Route::get('storyideas/form', 'Admin\StoryIdeaController@form');
-    Route::resource('storyideas', 'Admin\StoryIdeaController');
+		// Avoid naming conflict with other routes above
+		Route::resource('storyideas', 'Admin\StoryIdeaController')->names([
+			'index' => 'admin.storyideas.index',
+			'create' => 'admin.storyideas.create',
+			'store' => 'admin.storyideas.store',
+			'show' => 'admin.storyideas.show',
+			'edit' => 'admin.storyideas.edit',
+			'update' => 'admin.storyideas.update',
+			'destroy' => 'admin.storyideas.destroy'
+		]);
   });
 
   /* EXPERTS */
@@ -403,7 +457,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
     Route::get('experts/{id}/edit', 'Admin\ExpertsController@edit')->name('admin_expert_edit');
     Route::get('experts/form', 'Admin\ExpertsController@form')->name('admin_expert_form');
     Route::get('experts', 'Admin\ExpertsController@index')->name('admin_experts');
-    //Route::resource('experts', 'Admin\ExpertsController');
 
     Route::resource('expertcategory', 'Admin\ExpertCategoryController');
     Route::resource('expertrequests', 'Admin\ExpertRequestController');

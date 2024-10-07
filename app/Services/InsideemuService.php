@@ -9,6 +9,7 @@ use Emutoday\InsideemuPostsImages;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as Input;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Str;
 
 /**
  * Class InsideemuService
@@ -93,7 +94,10 @@ class InsideemuService
 					$oldFilePath = public_path() . $image->image_path;
 					$newFilePath = public_path() . $destinationFolder . $newImage['image_name'];
 					if(file_exists($oldFilePath) && $oldFilePath != $newFilePath){
-						rename($oldFilePath, $newFilePath);
+						$sanitizedNewFile = $this->sanitizeImageName($newImage['image_name']);
+						$newFilename = $this->appendNewTimestamp($sanitizedNewFile);
+						$sanitizedNewPath = public_path() . $destinationFolder . $newFilename;
+						rename($oldFilePath, $sanitizedNewPath);
 					}
 					$found = true; // Flag that the image was found
 					break;
@@ -121,10 +125,10 @@ class InsideemuService
 				}
 
 				$imgFilePath = $image->getRealPath();
-				$imgFileName = $this->appendExtensionToFilename($imgNames[$count], $image->getClientOriginalExtension());
-
+				$imgName = $this->sanitizeImageName($imgNames[$count]);
+				$imgName = $this->appendNewTimestamp($imgName);
 				Image::make($imgFilePath)
-					->save(public_path() . $destinationFolder . $imgFileName);
+					->save(public_path() . $destinationFolder . $imgName);
 
 				$count++;
 			}
@@ -137,8 +141,25 @@ class InsideemuService
 				$postImage = new InsideemuPostsImages();
 				$postImage->insideemu_post_id = $post->id;
 				$postImage->imagetype_id = $image['imagetype_id'];
-			} else{
+
+				// Sanitize the image name and add a timestamp to it
+				$imgName = $this->sanitizeImageName($image['image_name']);
+				$imgName = $this->appendNewTimestamp($imgName);
+				$postImage->image_name = $imgName;
+				$postImage->image_path = $destinationFolder.$imgName;
+			} else {
 				$postImage = InsideemuPostsImages::findOrFail($image['id']);
+
+				// If the image's name has changed, update it in the filesystem
+				$oldName = $postImage->image_name;
+				$newPath = $image['image_name'];
+				if($oldName != $newPath){
+					// Sanitize the image name and add a timestamp to it ONLY if the name has changed
+					$imgName = $this->sanitizeImageName($image['image_name']);
+					$imgName = $this->appendNewTimestamp($imgName);
+					$postImage->image_name = $imgName;
+					$postImage->image_path = $destinationFolder.$imgName;
+				}
 			}
 			$postImage->title = $image['title'];
 			$postImage->caption = $image['caption'];
@@ -147,8 +168,6 @@ class InsideemuService
 			$postImage->link = $image['link'];
 			$postImage->link_text = $image['link_text'];
 			$postImage->alt_text = $image['alt_text'];
-			$postImage->image_name = $image['image_name'];
-			$postImage->image_path = $destinationFolder.$this->appendExtensionToFilename($image['image_name'], $image['image_extension']);
 			$postImage->image_extension = $image['image_extension'];
 			$postImage->save();
 		}
@@ -211,17 +230,39 @@ class InsideemuService
 	}
 
 	/**
-	 * Make sure the filename has an extension
-	 * @param $filename
-	 * @param $extension
-	 * @return mixed|string
+	 * Sanitize the provided filename by removing its timestamp and slugging the base name.
+	 *
+	 * @param string $imgName
+	 * @return string
 	 */
-	protected function appendExtensionToFilename($filename, $extension)
-	{
-		$dots = explode('.', $filename);
-		if(count($dots) == 1){
-			$filename .= '.'.$extension;
+	protected function sanitizeImageName ($imgName) {
+		// Extract the base name and remove the timestamp portion
+		$filenameWithoutExtension = pathinfo($imgName, PATHINFO_FILENAME);
+		$extension = pathinfo($imgName, PATHINFO_EXTENSION);
+
+		// Detect and remove the timestamp
+		$basenameParts = explode('_', $filenameWithoutExtension);
+		if (is_numeric(end($basenameParts))) {
+			array_pop($basenameParts); // Remove the timestamp
 		}
-		return $filename;
+
+		$sanitizedBaseName = implode('_', $basenameParts);
+
+		// Return the sanitized base name
+		return Str::slug($sanitizedBaseName, '_') . ($extension ? '.' . $extension : '');
+	}
+
+	/**
+	 * Appends a new current timestamp to the filename.
+	 *
+	 * @param string $imgName
+	 * @return string
+	 */
+	protected function appendNewTimestamp($imgName)
+	{
+		$baseNameWithoutExtension = pathinfo($imgName, PATHINFO_FILENAME);
+		$extension = pathinfo($imgName, PATHINFO_EXTENSION);
+		$newTimestamp = time();
+		return $baseNameWithoutExtension . '_' . $newTimestamp . '.' . $extension;
 	}
 }
