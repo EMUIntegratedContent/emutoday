@@ -4,12 +4,20 @@
       <v-card-text>
         <p><strong>Submission Guidelines</strong></p>
         <ul>
+          <li>Inside EMU includes the latest news and information about EMU and its people, as well as news you can
+            use—information that is helpful to you as an employee or a person.
+          </li>
           <li>Submissions must involve an official EMU unit or have a direct connection to the University.</li>
-          <li>Entries must be received by <mark>Tuesday at noon</mark> in order to be considered for inclusion in <span style="font-style: italic">The Week at EMU</span> email, which comes out on Wednesday.</li>
-          <li>Keep all entries concise (500 words maximum).</li>
-          <li>Include a descriptive headline; date, time, and place; a brief description of the event, award, or story; any deadlines or RSVP dates; and a contact name and email address.</li>
+          <li>Please make sure to keep all entries concise (500 words maximum).</li>
+          <li>Include a descriptive headline; date, time, and place; a brief description of the event, award, or story;
+            any deadlines or RSVP dates; and a contact name and email address.
+          </li>
           <li>Do not include job openings or solicitations or fundraising requests.</li>
-          <li>All content is intended for EMU employees. The final decision to publish your submission is at the discretion of the editor.</li>
+          <li>Please note that all submissions will be edited for clarity and conciseness, and we reserve the right to make necessary adjustments to ensure the content aligns with our editorial standards.
+          </li>
+          <li>Entries must be received by <mark>Friday at noon</mark> to be considered for inclusion in <span style="font-style:italic">The Week at EMU</span> email, which
+            comes out on Wednesday.
+          </li>
         </ul>
       </v-card-text>
     </v-card>
@@ -24,7 +32,8 @@
                   density="compact"
                   type="info"
                   class="mb-4"
-              >This is a draft. Please click the "Confirm Submission" button to finalize your entry.</v-alert>
+              >This is a draft. Please click the "Confirm Submission" button to finalize your entry.
+              </v-alert>
               <v-text-field
                   v-model="idea.title"
                   variant="outlined"
@@ -39,17 +48,17 @@
             </v-col>
             <v-col cols="12">
               <v-textarea
-                    v-model="idea.content"
-                    variant="outlined"
-                    density="compact"
-                    persistent-hint
-                    :hint="`${contentWords}/500 words`"
-                    :rules="wordLimitRule.concat(requiredRule)"
-                    @update:modelValue="formModified = true"
-                >
-                  <template #label>
-                    Submission Body <span class="text-error">*</span>
-                  </template>
+                  v-model="idea.content"
+                  variant="outlined"
+                  density="compact"
+                  persistent-hint
+                  :hint="`${contentWords}/500 words`"
+                  :rules="wordLimitRule.concat(requiredRule)"
+                  @update:modelValue="formModified = true"
+              >
+                <template #label>
+                  Submission Body <span class="text-error">*</span>
+                </template>
               </v-textarea>
             </v-col>
             <v-col cols="12" md="6">
@@ -104,9 +113,13 @@
             </v-col>
           </v-row>
           <InsideemuIdeaImages @imagesUpdated="formModified = true" :editMode="true"></InsideemuIdeaImages>
-          <v-alert v-if="formModified && !showSuccess && !errSaving" type="info" color="warning" density="compact" class="my-2">You have unsaved changes.</v-alert>
-          <v-alert v-if="errSaving" type="error" density="compact" class="my-2">Your submission could not be saved.</v-alert>
-          <v-alert v-if="showSuccess" type="success" density="compact" class="my-2">Your submission has been saved.</v-alert>
+          <v-alert v-if="formModified && !showSuccess && !errSaving" type="info" color="warning" density="compact"
+                   class="my-2">You have unsaved changes.
+          </v-alert>
+          <v-alert v-if="errSaving" type="error" density="compact" class="my-2">Your submission could not be saved.
+          </v-alert>
+          <v-alert v-if="showSuccess" type="success" density="compact" class="my-2">Your submission has been saved.
+          </v-alert>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -160,11 +173,12 @@
               <div class="mb-3">
                 <strong>Credit</strong>
                 <br>
-                <span v-if="idea.use_other_source && idea.other_source">{{ idea.other_source}}</span>
+                <span v-if="idea.use_other_source && idea.other_source">{{ idea.other_source }}</span>
                 <span v-else>{{ idea.contributor_fullname }}</span>
               </div>
               <p>
-                Note: Submissions are subject to review and may be edited for clarity and length. Entries are not editable once submitted.
+                Note: Submissions are subject to review and may be edited for clarity and length. Entries are not
+                editable once submitted.
               </p>
             </v-col>
           </v-row>
@@ -233,10 +247,12 @@ export default {
     // \s matches any whitespace character (spaces, tabs, newlines, etc.). + means one or more.
     // This should match the backend word count logic.
     contentWords () {
-      if(!this.idea || !this.idea.content) return 0
+      if (!this.idea || !this.idea.content) {
+        return 0
+      }
       return this.idea.content.split(/\s+/).length
     },
-    formattedBody() {
+    formattedBody () {
       return this.idea.content.replace(/\n/g, '<br>')
     }
   },
@@ -277,14 +293,17 @@ export default {
       if (btnId === 'submitBtn') {
         // Non-draft submissions require full validation
         const { valid } = await this.$refs.ideaForm.validate()
-        if(!valid) {
+        if (!valid) {
           alert('Please fill out all required fields and ensure submission body is 500 words or fewer.')
           return
         }
-        if(!confirm('Are you sure you are ready to submit this entry? Submissions are not editable once submitted.')) return
+        if (!confirm('Are you sure you are ready to submit this entry? Submissions are not editable once submitted.')) {
+          return
+        }
         this.savingIdea = true
-      } else {
-        if(!this.idea.title || !this.idea.contributor_first || !this.idea.contributor_last) {
+      }
+      else {
+        if (!this.idea.title || !this.idea.contributor_first || !this.idea.contributor_last) {
           alert('Saving as a draft requires at least: Title, Your First Name, and Your Last Name.')
           return
         }
@@ -320,9 +339,10 @@ export default {
       .then((r) => {
         this.formModified = false
         // Send new submissions to the edit form
-        if(httpVerb === 'post') {
+        if (httpVerb === 'post') {
           window.location.href = '/insideemu/ideas/' + r.data.ideaId + '/edit'
-        } else {
+        }
+        else {
           this.setIdea(r.data)
           this.originalIdea = JSON.parse(JSON.stringify(this.idea))
         }

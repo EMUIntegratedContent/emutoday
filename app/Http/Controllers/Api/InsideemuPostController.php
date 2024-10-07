@@ -84,8 +84,6 @@ class InsideemuPostController extends ApiController{
 				->get();
 		}
 
-		// Paginate the results
-//		$posts = $posts->paginate(10);
 		// Respond with json data
 		return response()->json(InsideemuPostResource::collection($posts));
 	}

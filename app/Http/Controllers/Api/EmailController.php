@@ -4,6 +4,8 @@ namespace Emutoday\Http\Controllers\Api;
 
 
 use Emutoday\Email;
+use Emutoday\Http\Resources\EmailPostStoryResource;
+use Emutoday\Http\Resources\EmailResource;
 use Emutoday\Http\Resources\InsideemuPostResource;
 use Emutoday\InsideemuPost;
 use Emutoday\Story;
@@ -15,18 +17,15 @@ use Emutoday\MailingList;
 use Illuminate\Http\Request;
 
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as Input;
-use Carbon\Carbon;
 
 use League\Fractal\Manager;
 use League\Fractal;
-use League\Fractal\Serializer\ArraySerializer;
-use League\Fractal\Serializer\DataArraySerializer;
 
 use Emutoday\Today\Transformers\FractalEventTransformerModelFull;
 use Emutoday\Today\Transformers\FractalStoryTransformerModel;
 use Emutoday\Today\Transformers\FractalAnnouncementTransformerModel;
-use Emutoday\Today\Transformers\FractalEmailTransformerModel;
 
 class EmailController extends ApiController
 {
@@ -42,11 +41,8 @@ class EmailController extends ApiController
    * Get the specified email
    */
   public function edit(Email $email) {
-    $fractal = new Manager();
-    $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
-
-    return $this->setStatusCode(200)
-        ->respondUpdatedWithData('Got email.', $fractal->createData($resource)->toArray());
+		return $this->setStatusCode(200)
+			->respondUpdatedWithData('Got email.', EmailResource::make($email));
   }
 
   /**
@@ -109,13 +105,43 @@ class EmailController extends ApiController
         $email->events()->sync($eventIds);
 
         // Sync main stories
-        $mainStoryCount = 0;
-        $mainStoryIds = array();
-        foreach ($request->get('mainStories') as $mainStory) {
-          $mainStoryIds[$mainStory['id']] = ['order' => $mainStoryCount];
-          $mainStoryCount++;
-        }
-        $email->mainstories()->sync($mainStoryIds);
+//        $mainStoryCount = 0;
+//        $mainStoryIds = array();
+//        foreach ($request->get('mainStories') as $mainStory) {
+//          $mainStoryIds[$mainStory['id']] = ['order' => $mainStoryCount];
+//          $mainStoryCount++;
+//        }
+//        $email->mainstories()->sync($mainStoryIds);
+
+				$email->mainstories()->delete();
+				$mainStoryCount = 0;
+				$syncData = []; // Final data array for sync
+				foreach ($request->get('mainStories') as $mainStory){
+					$type = $mainStory['group']; // Assume this is provided in your input
+					$id = $mainStory['id'];
+					$order = $mainStoryCount;
+
+					if($type == 'insideemu_post'){
+						// For an InsideemuPost, set insideemu_post_id and null story_id
+						$syncData[$id] = [
+							'story_id' => null,
+							'insideemu_post_id' => $id,
+							'order' => $order,
+						];
+					}
+					else {
+						// For a Story, set story_id and null insideemu_post_id
+						$syncData[$id] = [
+							'story_id' => $id,
+							'insideemu_post_id' => null,
+							'order' => $order,
+						];
+
+					}
+
+					$mainStoryCount++;
+				}
+				$email->mainstories()->sync($syncData);
 
         // Sync side stories
         $otherStoryCount = 0;
@@ -145,11 +171,8 @@ class EmailController extends ApiController
         // Analyze email for completeness and set send_at flag
         $this->isEmailReady($email);
 
-        $fractal = new Manager();
-        $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
-
-        return $this->setStatusCode(200)
-            ->respondUpdatedWithData('Email has been created.', $fractal->createData($resource)->toArray());
+				return $this->setStatusCode(200)
+					->respondUpdatedWithData('Email has been created.', EmailResource::make($email));
       }
     }
   }
@@ -221,14 +244,37 @@ class EmailController extends ApiController
       }
       $email->events()->sync($eventIds);
 
-      // Sync main stories
-      $mainStoryCount = 0;
-      $mainStoryIds = array();
-      foreach ($request->get('mainStories') as $mainStory) {
-        $mainStoryIds[$mainStory['id']] = ['order' => $mainStoryCount];
-        $mainStoryCount++;
-      }
-      $email->mainstories()->sync($mainStoryIds);
+      // Sync main stories (with Inside EMU posts)
+			$email->mainstories()->detach(); // Remove all existing main stories (note, it's DETACH, not DELETE)
+			$email->maininsideemuposts()->detach(); // Remove all existing main Inside EMU posts (note, it's DETACH, not DELETE)
+			$mainStoryCount = 0;
+			$syncData = []; // Final data array for sync
+			foreach ($request->get('mainStories') as $mainStory){
+				$type = $mainStory['group']; // Assume this is provided in your input
+				$id = $mainStory['id'];
+				$order = $mainStoryCount;
+
+				if($type == 'insideemu_post'){
+					// For an InsideemuPost, set insideemu_post_id and null story_id
+					$syncData[$id] = [
+						'story_id' => null,
+						'insideemu_post_id' => $id,
+						'order' => $order,
+					];
+				}
+				else {
+					// For a Story, set story_id and null insideemu_post_id
+					$syncData[$id] = [
+						'story_id' => $id,
+						'insideemu_post_id' => null,
+						'order' => $order,
+					];
+
+				}
+
+				$mainStoryCount++;
+			}
+			$email->mainstories()->sync($syncData);
 
       // Sync side stories
       $otherStoryCount = 0;
@@ -260,11 +306,8 @@ class EmailController extends ApiController
         // Analyze email for completeness and set send_at flag
         $this->isEmailReady($email);
 
-        $fractal = new Manager();
-        $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
-
-        return $this->setStatusCode(200)
-            ->respondUpdatedWithData('Email has been updated.', $fractal->createData($resource)->toArray());
+				return $this->setStatusCode(200)
+					->respondUpdatedWithData('Email has been updated.', EmailResource::make($email));
       }
     }
   }
@@ -325,14 +368,35 @@ class EmailController extends ApiController
         }
         $email->events()->sync($eventIds);
 
-        // Sync main stories
-        $mainStoryCount = 0;
-        $mainStoryIds = array();
-        foreach ($request->get('mainStories') as $mainStory) {
-          $mainStoryIds[$mainStory['id']] = ['order' => $mainStoryCount];
-          $mainStoryCount++;
-        }
-        $email->mainstories()->sync($mainStoryIds);
+        // Sync main stories (with Inside EMU posts)
+				$mainStoryCount = 0;
+				$syncData = []; // Final data array for sync
+				foreach ($request->get('mainStories') as $mainStory){
+					$type = $mainStory['group']; // Assume this is provided in your input
+					$id = $mainStory['id'];
+					$order = $mainStoryCount;
+
+					if($type == 'insideemu_post'){
+						// For an InsideemuPost, set insideemu_post_id and null story_id
+						$syncData[$id] = [
+							'story_id' => null,
+							'insideemu_post_id' => $id,
+							'order' => $order,
+						];
+					}
+					else {
+						// For a Story, set story_id and null insideemu_post_id
+						$syncData[$id] = [
+							'story_id' => $id,
+							'insideemu_post_id' => null,
+							'order' => $order,
+						];
+
+					}
+
+					$mainStoryCount++;
+				}
+				$email->mainstories()->sync($syncData);
 
         // Sync side stories
         $otherStoryCount = 0;
@@ -352,11 +416,8 @@ class EmailController extends ApiController
 				}
 				$email->insideemuPosts()->sync($postIds);
 
-        $fractal = new Manager();
-        $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
-
-        return $this->setStatusCode(201)
-            ->respondUpdatedWithData('Email has been cloned.', $fractal->createData($resource)->toArray());
+				return $this->setStatusCode(200)
+					->respondUpdatedWithData('Email successfully cloned.', EmailResource::make($email));
       }
     }
   }
@@ -377,29 +438,53 @@ class EmailController extends ApiController
    * Main Stories require an image with type 'emutoday_email' to be present with the story.
    */
   public function getMainEmailReadyStories(Request $request, $fromDate = null, $toDate = null) {
-    $email_imagetypes = Imagetype::select('id')->where('type', 'email')->get(); //get email imagetype
+		$email_imagetypes = Imagetype::select('id')->where('type', 'email')->get(); //get email imagetype
 
-    if ($fromDate && !$toDate) {
-      $stories = Story::whereHas('storyImages', function ($query) use ($email_imagetypes) {
-        $query->whereIn('imagetype_id', $email_imagetypes);
-      })
-          ->where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'desc')->get();
-    } else if ($fromDate && $toDate) {
-      $stories = Story::whereHas('storyImages', function ($query) use ($email_imagetypes) {
-        $query->whereIn('imagetype_id', $email_imagetypes);
-      })
-          ->where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'desc')->get();
-    } else {
-      $stories = Story::whereHas('storyImages', function ($query) use ($email_imagetypes) {
-        $query->whereIn('imagetype_id', $email_imagetypes);
-      })->where([['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'desc')->get();
-    }
+		if ($fromDate && !$toDate) {
+			$storyQuery = Story::whereHas('storyImages', function ($query) use ($email_imagetypes) {
+				$query->whereIn('imagetype_id', $email_imagetypes);
+			})
+				->where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]]);
 
-    $fractal = new Manager();
-    $resource = new Fractal\Resource\Collection($stories->all(), new FractalStoryTransformerModel);
+			$postsQuery = InsideemuPost::whereHas('images', function($query) use ($email_imagetypes) {
+				$query->whereIn('imagetype_id', $email_imagetypes);
+			})
+				->where([['start_date', '>=', $fromDate]]);
+		} else if ($fromDate && $toDate) {
+			$storyQuery = Story::whereHas('storyImages', function ($query) use ($email_imagetypes) {
+				$query->whereIn('imagetype_id', $email_imagetypes);
+			})
+				->where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereBetween('start_date', array($fromDate, $toDate));
 
-    return $this->setStatusCode(200)
-        ->respondUpdatedWithData('Got stories with email photo', $fractal->createData($resource)->toArray());
+			$postsQuery = InsideemuPost::whereHas('images', function($query) use ($email_imagetypes) {
+				$query->whereIn('imagetype_id', $email_imagetypes);
+			})
+				->where([['start_date', '>=', $fromDate]])->whereBetween('start_date', array($fromDate, $toDate));
+		} else {
+			$storyQuery = Story::whereHas('storyImages', function ($query) use ($email_imagetypes) {
+				$query->whereIn('imagetype_id', $email_imagetypes);
+			})->where([['is_archived', 0], ['is_approved', 1], ['is_ready', 1]]);
+
+			$postsQuery = InsideemuPost::whereHas('images', function($query) use ($email_imagetypes) {
+				$query->whereIn('imagetype_id', $email_imagetypes);
+			})
+				->where([['start_date', '>=', date('Y-m-d')]]);
+		}
+
+		$stories = $storyQuery->orderBy('start_date', 'desc')->get();
+		$posts = $postsQuery->orderBy('start_date', 'desc')->get();
+
+		// Combine the collections
+		$combined = $stories->merge($posts);
+
+		// Sort the merged collection by start_date
+		$sortedCombined = $combined->sortByDesc('start_date');
+
+		// Reset the keys on the sorted collection
+		$sortedCombined = $sortedCombined->values()->all();
+
+		return $this->setStatusCode(200)
+			->respondUpdatedWithData('Got stories with email photo', EmailPostStoryResource::collection($sortedCombined));
   }
 
   /**
@@ -529,8 +614,14 @@ class EmailController extends ApiController
   private function isEmailReady(Email $email) {
     $email->is_ready = 0;
 
-    if ($email->mainstories()->first() &&
-        ($email->mainstories()->count() == 1 || $email->mainstories()->count() == 3) &&
+		$mainStoryCnt = $email->mainstories()->count();
+		$mainInsideEmuStoryCnt = $email->maininsideemuposts()->count();
+		$mainStoriesReady = $mainStoryCnt + $mainInsideEmuStoryCnt === 1 || $mainStoryCnt + $mainInsideEmuStoryCnt === 3;
+
+		// Log the count
+		Log::info('Main Story Count: ' . $mainStoryCnt);
+
+    if ($mainStoriesReady &&
         $email->announcements()->first() &&
         ($email->events()->first() || $email->exclude_events) &&
 				($email->insideemuPosts()->first() || $email->exclude_insideemu) &&

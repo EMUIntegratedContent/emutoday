@@ -16,6 +16,7 @@ class InsideemuPostResource extends JsonResource
     public function toArray(Request $request): array
 		{
 			return [
+				'type' => 'insideemu_post', // for email main stories
 				'postId' => $this->id,
 				'title' => $this->title,
 				'teaser' => $this->teaser,

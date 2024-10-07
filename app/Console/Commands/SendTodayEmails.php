@@ -2,17 +2,16 @@
 
 namespace Emutoday\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Http\Request;
-use Emutoday\Email;
+use Emutoday\Http\Resources\EmailPostStoryResource;
+use Emutoday\Http\Resources\EmailResource;
+use Emutoday\Http\Resources\InsideemuPostEmailResource;
+use Emutoday\Http\Resources\StoryResource;
+use Emutoday\InsideemuPost;
 use Emutoday\Story;
+use Illuminate\Console\Command;
+use Emutoday\Email;
 use Emutoday\Imagetype;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
-
-use League\Fractal\Manager;
-use League\Fractal;
-use Emutoday\Today\Transformers\FractalEmailTransformerModel;
 
 class SendTodayEmails extends Command
 {
@@ -59,17 +58,32 @@ class SendTodayEmails extends Command
       $emails = Email::where([ ['is_approved', '=', 1], ['is_ready', '=', 1], ['is_sent', '=', 0], ['send_at', '<=', date('Y-m-d H:i')] ])->get();
 
       foreach($emails as $email){
-        $mainStories = $email->mainstories()->orderBy('order', 'asc')->get(); // need main stories in order as they appear in the email
+				// Combine the main stories and main Inside EMU posts (CP 10/2/24)
+				$mainStories = $email->mainstories()->get();
+				$mainInsideemuPosts = $email->maininsideemuposts()->get();
+				$combinedMainStories = $mainStories->merge($mainInsideemuPosts);
+				// Reorder by the 'order' field
+				$combinedMainStories = $combinedMainStories->sortBy('pivot.order');
+				// Reset the keys on the sorted collection
+				$sortedCombinedMainStories = $combinedMainStories->values()->all();
+
         $emailImageTypeIds = Imagetype::select('id')->where('type', 'email')->get(); // get email image types
         $smallImageTypeIds = Imagetype::select('id')->where('type', 'small')->get(); // get small image types (for sub-main stories)
 
         $mainStoryImages = array(); // collect email story images
         $smallStoryImages = array(); // collect small story images (for sub-main stories)
-        foreach($mainStories as $mainStory){
-          $storyImage = $mainStory->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $emailImageTypeIds)->first(); // get email image for the main story
-          $mainStoryImages[] = $storyImage;
+        foreach($sortedCombinedMainStories as $mainStory){
+					$storyImage = null;
+					$smallStoryImage = null;
+					if ($mainStory instanceof Story) {
+						$storyImage = $mainStory->storyImages()->whereIn('imagetype_id', $emailImageTypeIds)->first(); // get email image for the main story
+						$smallStoryImage = $mainStory->storyImages()->whereIn('imagetype_id', $smallImageTypeIds)->first(); // get email image for the main story
+					} elseif ($mainStory instanceof InsideemuPost) {
+						$storyImage = $mainStory->images()->whereIn('imagetype_id', $emailImageTypeIds)->first(); // get email image for the main story
+						$smallStoryImage = $mainStory->images()->whereIn('imagetype_id', $smallImageTypeIds)->first(); // get email image for the main story
+					}
 
-          $smallStoryImage = $mainStory->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $smallImageTypeIds)->first(); // get email image for the main story
+          $mainStoryImages[] = $storyImage;
           $smallStoryImages[] = $smallStoryImage;
         }
 
@@ -78,7 +92,7 @@ class SendTodayEmails extends Command
         // Send one email to each recipient/mailing list
         foreach($email->recipients as $recipient){
           Mail::send('public.todayemail.email',
-						['email' => $email, 'events' => $events, 'mainStories' => $mainStories, 'mainStoryImages' => $mainStoryImages, 'smallStoryImages' => $smallStoryImages],
+						['email' => $email, 'events' => $events, 'mainStories' => $sortedCombinedMainStories, 'mainStoryImages' => $mainStoryImages, 'smallStoryImages' => $smallStoryImages],
 						function ($message) use ($email, $recipient){
 							//$message->from('test@emich.edu', 'The Week at EMU');
               $message->from(env("MAIL_USERNAME", "postmaster@today.emich.edu"), 'The Week at EMU');

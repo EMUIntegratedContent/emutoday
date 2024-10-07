@@ -63,11 +63,7 @@ class InsideemuIdeaPublicController extends ApiController{
 	 * Get the specified post
 	 */
 	public function edit(InsideemuIdea $idea){
-//    $fractal = new Manager();
-//    $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
-//
-//    return $this->setStatusCode(200)
-//        ->respondUpdatedWithData('Got email.', $fractal->createData($resource)->toArray());
+
 	}
 
 	/**

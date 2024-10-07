@@ -31,14 +31,24 @@
           <tr>
             <td valign="top" class="full-width-image">
               <article>
-                <img alt="{{ $mainStoryImages[0]->caption }}"
-                     src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}"
-                     style="border-right: 0px solid #ffffff;max-width: 600px;border-top: 3px solid #97D700;width: 100%;height: auto;">
+                @if($mainStories[0] instanceof \Emutoday\InsideemuPost)
+                  <img alt="{{ $mainStoryImages[0]->alt_text }}"
+                       src="{{ url('/') }}{{$mainStoryImages[0]->image_path}}"
+                       style="border-right: 0px solid #ffffff;max-width: 600px;border-top: 3px solid #97D700;width: 100%;height: auto;">
+                @else
+                  <img alt="{{ $mainStoryImages[0]->caption }}"
+                       src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}"
+                       style="border-right: 0px solid #ffffff;max-width: 600px;border-top: 3px solid #97D700;width: 100%;height: auto;">
+                @endif
+
                 <div
                     style="padding-left: 1rem; padding-right: 1rem; padding-top: .6rem; padding-bottom: 16px; margin-bottom: 10px;">
                   <h2 class="indent"
                       style="margin-bottom: .8rem;font-weight: 500;padding: 12px 0 3px;margin: 0;font-size: 22px;margin-left: 1rem;margin-right: 1rem;">
-                    @if($mainStories[0]->story_type == 'external' || ($mainStories[0]->story_type == 'article' && $mainStories[0]->tags()->where('name', 'external')->first()))
+                    @if($mainStories[0] instanceof \Emutoday\InsideemuPost)
+                      <a href="{{ url('/') }}/insideemu/posts/{{$mainStories[0]->id}}"
+                         style="color: #636363;text-decoration: none;">{{ $mainStoryImages[0]->title }} &#10137;</a>
+                    @elseif($mainStories[0]->story_type == 'external' || ($mainStories[0]->story_type == 'article' && $mainStories[0]->tags()->where('name', 'external')->first()))
                       {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                       <a href="{{$mainStories[0]->getExternalLink()}}"
                          style="color: #636363;text-decoration: none;">{{ $mainStoryImages[0]->title }} &#10137;</a>
@@ -54,7 +64,7 @@
             </td>
           </tr>
           {{-- some emails might not have sub stories! --}}
-          @if($email->mainstories->count() == 3)
+          @if($email->maininsideemuposts->count() + $email->mainstories->count() == 3)
             <tr>
               <td class="two-column" style="text-align: center;font-size: 0;">
                 <!--[if (gte mso 9)|(IE)]>
@@ -72,16 +82,29 @@
                                style="border-collapse: collapse;border-spacing: 0;font-family: 'Poppins', arial, sans-serif;color: #333333;background-color: #ffffff;width: 100%;font-size: .9rem;text-align: left;">
                           <tr>
                             <td>
-                              <img alt="{{ $mainStoryImages[1]->caption }}"
-                                   src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}"
-                                   style="width: 100%;max-width: 260px;height: auto;">
+{{--                              <img alt="{{ $mainStoryImages[1]->caption }}"--}}
+{{--                                   src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}"--}}
+{{--                                   style="width: 100%;max-width: 260px;height: auto;">--}}
+
+                              @if($mainStories[1] instanceof \Emutoday\InsideemuPost)
+                                <img alt="{{ $mainStoryImages[1]->alt_text }}"
+                                     src="{{ url('/') }}{{$smallStoryImages[1]->image_path}}"
+                                     style="width: 100%;max-width: 260px;height: auto;">
+                              @else
+                                <img alt="{{ $mainStoryImages[1]->caption }}"
+                                     src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}"
+                                     style="width: 100%;max-width: 260px;height: auto;">
+                              @endif
                             </td>
                           </tr>
                           <tr>
                             <td class="text" style="padding-top: 0px;padding-bottom: 10px;">
                               <h3 class="mid"
                                   style="font-weight: 500;padding: 8px 0 8px;margin: 0;font-size: 18px;line-height: 22px;text-decoration: none;">
-                                @if($mainStories[1]->story_type == 'external' || ($mainStories[1]->story_type == 'article' && $mainStories[1]->tags()->where('name', 'external')->first()))
+                                @if($mainStories[1] instanceof \Emutoday\InsideemuPost)
+                                  <a href="{{ url('/') }}/insideemu/posts/{{$mainStories[1]->id}}"
+                                     style="color: #636363;text-decoration: none;">{{ $mainStoryImages[1]->title }} &#10137;</a>
+                                @elseif($mainStories[1]->story_type == 'external' || ($mainStories[1]->story_type == 'article' && $mainStories[1]->tags()->where('name', 'external')->first()))
                                   {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                                   <a href="{{$mainStories[1]->getExternalLink()}}"
                                      style="color: #636363;text-decoration: none;">{{ $mainStoryImages[1]->title }}
@@ -114,16 +137,29 @@
                                style="border-collapse: collapse;border-spacing: 0;font-family: 'Poppins', arial, sans-serif;color: #333333;background-color: #ffffff;width: 100%;font-size: .9rem;text-align: left;">
                           <tr>
                             <td>
-                              <img alt="{{ $mainStoryImages[2]->caption }}"
-                                   src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}"
-                                   style="width: 100%;max-width: 260px;height: auto;">
+{{--                              <img alt="{{ $mainStoryImages[2]->caption }}"--}}
+{{--                                   src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}"--}}
+{{--                                   style="width: 100%;max-width: 260px;height: auto;">--}}
+
+                              @if($mainStories[2] instanceof \Emutoday\InsideemuPost)
+                                <img alt="{{ $mainStoryImages[2]->alt_text }}"
+                                     src="{{ url('/') }}{{$smallStoryImages[2]->image_path}}"
+                                     style="width: 100%;max-width: 260px;height: auto;">
+                              @else
+                                <img alt="{{ $mainStoryImages[2]->caption }}"
+                                     src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}"
+                                     style="width: 100%;max-width: 260px;height: auto;">
+                              @endif
                             </td>
                           </tr>
                           <tr>
                             <td class="text" style="padding-top: 0px;padding-bottom: 10px;">
                               <h3 class="mid"
                                   style="font-weight: 500;padding: 8px 0 8px;margin: 0;font-size: 18px;line-height: 22px;text-decoration: none;">
-                                @if($mainStories[2]->story_type == 'external' || ($mainStories[2]->story_type == 'article' && $mainStories[2]->tags()->where('name', 'external')->first()))
+                                @if($mainStories[2] instanceof \Emutoday\InsideemuPost)
+                                  <a href="{{ url('/') }}/insideemu/posts/{{$mainStories[2]->id}}"
+                                     style="color: #636363;text-decoration: none;">{{ $mainStoryImages[2]->title }} &#10137;</a>
+                                @elseif($mainStories[2]->story_type == 'external' || ($mainStories[2]->story_type == 'article' && $mainStories[2]->tags()->where('name', 'external')->first()))
                                   {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                                   <a href="{{$mainStories[2]->getExternalLink()}}"
                                      style="color: #636363;text-decoration: none;">{{ $mainStoryImages[2]->title }}
@@ -207,6 +243,27 @@
               </td>
             </tr>
           @endif
+          <!-- OPTIONAL: Inside EMU -->
+          @if(!$email->exclude_insideemu)
+            <tr>
+              <td valign="middle">
+                <div class="indent" style="margin-left: 1rem;margin-right: 1rem;">
+                  <h2 class="moveover"
+                      style="border-top: 3px double #97D700;font-weight: 500;padding: 14px 0 6px 8px;margin: 0;font-size: 22px;margin-top: 0rem;text-decoration: none;">
+                    <a href="{{ url('/') }}/insideemu" style="color: #636363;text-decoration: none;">Inside EMU
+                      &#10137;</a></h2>
+                  <ul style="padding-bottom: 8px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px; margin-top: 5px;">
+                    @foreach($email->insideemuPosts()->get() as $post)
+                      <li style="padding-bottom: 9px; margin-left: 0; color:#046A38;">
+                        <a style="text-decoration: none;color: #046A38;"
+                           href="{{ url('/') . '/insideemu/posts/' . $post->id }}">{{ $post->title }}</a>
+                      </li>
+                    @endforeach
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          @endif
           <tr>
             <td valign="top">
               <div class="indent" style="margin-left: 1rem;margin-right: 1rem;">
@@ -256,26 +313,6 @@
                     <a href="{{ url('/') }}/calendar" style="color:#046a38;text-decoration:none" target="_blank">View
                       all calendar events &#10137;</a>
                   </div>
-                </div>
-              </td>
-            </tr>
-          @endif
-          @if(!$email->exclude_insideemu)
-            <tr>
-              <td valign="middle">
-                <div class="indent" style="margin-left: 1rem;margin-right: 1rem;">
-                  <h2 class="moveover"
-                      style="border-top: 3px double #97D700;font-weight: 500;padding: 14px 0 6px 8px;margin: 0;font-size: 22px;margin-top: 0rem;text-decoration: none;">
-                    <a href="{{ url('/') }}/insideemu" style="color: #636363;text-decoration: none;">Inside EMU
-                      &#10137;</a></h2>
-                  <ul style="padding-bottom: 8px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px; margin-top: 5px;">
-                    @foreach($email->insideemuPosts()->get() as $post)
-                      <li style="padding-bottom: 9px; margin-left: 0; color:#046A38;">
-                        <a style="text-decoration: none;color: #046A38;"
-                           href="{{ url('/') . '/insideemu/posts/' . $post->id }}">{{ $post->title }}</a>
-                      </li>
-                    @endforeach
-                  </ul>
                 </div>
               </td>
             </tr>

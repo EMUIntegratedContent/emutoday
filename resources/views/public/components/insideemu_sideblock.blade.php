@@ -1,5 +1,5 @@
 @unless(count($sideitems) < 1)
-  <div class="row" >
+  <div class="row">
     <div class="small-12 medium-12 large-12 columns" >
       <h3 class="subhead-title"><a class="bold-green-link" href="{{ url('/insideemu') }}">More Inside EMU</a></h3>
       <div id="five-stories-bar">

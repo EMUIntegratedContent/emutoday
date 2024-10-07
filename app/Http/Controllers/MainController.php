@@ -4,6 +4,7 @@ namespace Emutoday\Http\Controllers;
 
 use Emutoday\Imagetype;
 use Emutoday\InsideemuPost;
+use Emutoday\Services\MailgunSubscribeService;
 use Illuminate\Http\Request;
 
 use Emutoday\Story;
@@ -12,27 +13,31 @@ use Emutoday\Announcement;
 use Emutoday\Event;
 use Emutoday\Tweet;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use JavaScript;
 use Illuminate\Support\Facades\DB;
 use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Mail as Mail;
 
-class MainController extends Controller{
-	protected $pages;
-	//how many news stories and announcements to show on hub
-	protected $recordLimitNews = 4;
-	protected $recordLimitAnnouncements = 4;
-	protected $recordLimitEvents = 4;
-	protected $recordLimitHR = 4;
+class MainController extends Controller
+{
+  protected $pages;
+  //how many news stories and announcements to show on hub
+  protected $recordLimitNews = 4;
+  protected $recordLimitAnnouncements = 4;
+  protected $recordLimitEvents = 4;
+  protected $recordLimitHR = 4;
+	protected $mailgunSvc;
 
-	public function __construct(Page $page, Story $story, Announcement $announcement, Event $event, Tweet $tweets, InsideemuPost $insideemuPost){
-		$this->page = $page;
-		$this->story = $story;
-		$this->announcement = $announcement;
-		$this->event = $event;
-		$this->tweets = $tweets;
+  public function __construct(Page $page, Story $story, Announcement $announcement, Event $event, Tweet $tweets, InsideemuPost $insideemuPost, MailgunSubscribeService $mailgunSvc) {
+    $this->page = $page;
+    $this->story = $story;
+    $this->announcement = $announcement;
+    $this->event = $event;
+    $this->tweets = $tweets;
 		$this->insideemuPost = $insideemuPost;
-	}
+		$this->mailgunSvc = $mailgunSvc;
+  }
 
 	public function index(){
 		//Set current date to begining of day and end of day
@@ -231,22 +236,9 @@ class MainController extends Controller{
 
 	}
 
-	// Testing mysql procedures 7/18/18
-	protected function getSqlProcedureTestByChris(){
-		DB::select("CALL get_stories_by_id(1, @emutoday_stories, @news_stories)");
-		return DB::select("SELECT @emutoday_stories, @news_stories");
-
-		// SAMPLE OUTPUT
-		// array (size=1)
-		// 0 =>
-		// object(stdClass)[3125]
-		//   public '@emutoday_stories' => int 4
-		//   public '@news_stories' => int 988
-	}
-
-	public function main($story_type, $id){
-		$story = $this->story->findOrFail($id);
-		$mainStoryImage = $story->storyImages()->where('image_type', 'story')->first();
+  public function main($story_type, $id) {
+    $story = $this->story->findOrFail($id);
+    $mainStoryImage = $story->storyImages()->where('image_type', 'story')->first();
 
 		$sideStorysFeatured = $this->story->where([
 			['story_type', 'story'],
@@ -270,7 +262,6 @@ class MainController extends Controller{
 		return view('public.story.story', compact('story', 'mainStoryImage', 'sideStorysFeatured', 'sideStorysStudent'));
 
 	}
-
 
 	public function search(Request $request){
 		$searchTerm = $request->input('searchterm');
@@ -314,37 +305,63 @@ class MainController extends Controller{
 		return view('public.feedback', compact('data'));
 	}
 
+	public function subscribeForm() {
+		return view('public.subscribe');
+	}
+
 	/**
-	 * Process subscribe form.
-	 * As of 4/9/23, automatically add the subscriber to the Mailgun list
+	 * Send an email via Mailgun to the user to confirm their subscription to EMU Today
+	 * @param Request $request
 	 */
-	public function subscribeForm(Request $request){
-		// Validate, return errors if not valid
+  public function subscribe(Request $request) {
+		$email = $request->input('email');
+		$name = $request->input('name');
 		$this->validate($request, [
 			'email' => 'required|email',
 		]);
 
-		# Instantiate the client.
-		$mgClient = Mailgun::create(env('MAILGUN_SECRET'));
-		$mailing_list = 'livemailersubscribers@today.emich.edu';
-		$address = $request->email;
-		$name = ' ';
-		$vars = [];
-		$subscribed = 'yes';
-		$upsert = 'yes';
+		try{
+			$this->mailgunSvc->sendConfirmationEmail($email, 'Please confirm your subscription to EMU Today', $name);
+			$data = ['type' => 'success', 'msg' => 'Please check your email to confirm your subscription. If you do not see the email after a few minutes, please check your spam folder.'];
+		} catch (\Exception $e){
+			Log::error($e->getMessage());
+			$data = ['type' => 'error', 'msg' => 'There was an error while trying to add you to the subscriber list. Please try again later.'];
+		}
 
-		# Issue the call to the client.
-		$mgClient->mailingList()->member()->create(
-			$mailing_list,
-			$address,
-			$name,
-			$vars,
-			$subscribed,
-			$upsert
-		);
+		return redirect()->route('subscribe')->with('data', $data);
+  }
 
-		// Return success to view
-		$data = "Thank you, you have subscribed to EMU Today.";
-		return view('public.subscribe', compact('data'));
+	/**
+	 * Handle the confirmation of a subscription to EMU Today
+	 */
+	public function confirmSubscribe (Request $request) {
+		$code = $request->get('c') !== null ? $this->mailgunSvc->sanitizeInputs($request->get('c')) : null;
+		$email = $request->get('e') !== null ? $this->mailgunSvc->sanitizeEmail($request->get('e')) : null;
+		$name = $request->get('n') !== null ? $this->mailgunSvc->sanitizeInputs($request->get('n')) : null;
+
+		// The Mailgun API expects a non-empty name
+		if($name == '') {
+			$name = '---';
+		}
+
+		if (isset($code) && isset($email)&& isset($name) ){
+			$a = $this->mailgunSvc->checkConfirmationHash($email, $code);
+			if($a){
+				$addToList = $this->mailgunSvc->addMemberToList($email, $name);
+				if($addToList['success']){
+					$data = ['type' => 'success', 'msg' => $addToList['message']];
+				}
+				else{
+					$data = ['type' => 'error', 'msg' => $addToList['message']];
+				}
+			}
+			else{
+				$data = ['type' => 'error', 'msg' => 'There was an error while trying to add you to the subscriber list. Please try again later.'];
+			}
+		} else {
+			$data = ['type' => 'error', 'msg' => 'There was an error while trying to add you to the subscriber list. Please try again later.'];
+		}
+
+		return redirect()->route('subscribe')->with('data', $data);
 	}
 }

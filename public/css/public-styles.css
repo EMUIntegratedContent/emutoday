@@ -458,7 +458,7 @@ ul#tier3-nav-main li a.active i.fa-play {
 
 }
 
-#featured-text a.button {
+#featured-text a.button, #submit-inside-emu-btn {
   margin: 0;
   padding: .5rem 1rem;
   background-color: transparent;
@@ -470,7 +470,7 @@ ul#tier3-nav-main li a.active i.fa-play {
   font-weight: 500;
 }
 
-#featured-text a:hover.button {
+#featured-text a:hover.button, #submit-inside-emu-btn:hover.button {
   background-color: #0f654a;
   text-decoration: none;
   color: #fff;
@@ -1370,6 +1370,9 @@ p.small-return-news {
 #story-content p{
     font-size: 1rem;
     line-height: 1.4rem;
+}
+#story-content iframe {
+    max-width: 100%;
 }
 #big-feature-image {
     border-bottom: none;

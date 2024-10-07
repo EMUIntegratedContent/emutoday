@@ -5,11 +5,11 @@
       <img class="story-image" src="/imagecache/original/{{$smallImg->image_name}}"
            alt="{{ $smallImg->alt_text != '' ? $smallImg->alt_text : str_replace('"', "", $smallImg->caption) }}">
       <div class="card-section" data-equalizer-watch>
-        <p class="more-story-caption">{{$smallImg->caption}}</p>
+        <p class="more-story-caption">{{$post->title}}</p>
         <p class="link-group">
           <a href="/insideemu/posts/{{$post->id}}"
-             aria-label="{{$smallImg->caption}} - {{$smallImg->moretext}}"
-             class="readmore bold-green-link">{{$smallImg->moretext}}</a>
+             aria-label="{{$smallImg->alt_text}}"
+             class="readmore bold-green-link">{{ $smallImg->moretext ?: 'Read More' }}</a>
         </p>
       </div>
     </div><!-- /end .card -->
