@@ -299,7 +299,7 @@
                 </div>
               </div>
               @if($insideemu)
-                <img src="/imagecache/original/{{$insideemu->id}}/{{$insideemu->images[0]->image_name}}" style="width: 290px; height: 175px"
+                <img src="/imagecache/original/{{$insideemu->images[0]->image_name}}" style="width: 290px; height: 175px"
                      alt="{{ $insideemu->images[0]->alt_text }}">
               @endif
             </div>
