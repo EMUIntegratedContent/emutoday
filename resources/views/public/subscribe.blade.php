@@ -27,7 +27,7 @@
             {!! Form::label('name', 'Your Name (optional)') !!}
             {!! Form::text('name', null, array()) !!}
 
-            {!! Form::submit('SUBSCRIBE TO EMU TODAY', array('class'=>'button large expanded')) !!}
+            <button type="submit" id="subscribe-emu-btn" class="button expanded large">SUBSCRIBE TO EMU TODAY</button>
             {!! Form::close() !!}
             @endif
           </div>
