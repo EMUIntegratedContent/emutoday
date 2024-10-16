@@ -26,16 +26,17 @@ class InsideemuService
 	 */
 	public function handleIdeaImages(InsideemuIdea $idea, array $ideaArr)
 	{
-		// Remove any images that are no longer associated with the idea
-		$images = $idea->images;
+		$images = $idea->images; // the insideemu_ideas_images records already associated with the idea
 		foreach($images as $image){
 			$found = false;
+			// The images that were passed in the request
 			foreach($ideaArr['images'] as $newImage){
-				if($image->id == $newImage['id']){
+				if($image->id == $newImage['id']){ // If there is a match, the image is still associated with the idea
 					$found = true;
 					break;
 				}
 			}
+			// Remove the insideemu_ideas_images record and the image file if it is no longer associated with the idea
 			if(!$found){
 				$image->delete();
 				// Also remove the file from the server
@@ -46,7 +47,8 @@ class InsideemuService
 			}
 		}
 
-		// Handle any attached images files from the request (these will be new images)
+		// Handle any new images files from the request.
+		$newImgFileNames = []; // store new, timestamped and sanitized image names
 		$destinationFolder = '/imgs/uploads/insideemu/ideas/'.$idea->id.'/';
 		if (!empty(Input::file('images'))){
 			foreach(Input::file('images') as $image){
@@ -58,6 +60,8 @@ class InsideemuService
 				$imgFilePath = $image->getRealPath();
 				$imgFileName = $this->sanitizeImageName($image->getClientOriginalName());
 				$imgFileName = $this->appendNewTimestamp($imgFileName);
+
+				$newImgFileNames[$image->getClientOriginalName()] = $imgFileName;
 
 				Image::make($imgFilePath)
 					->save(public_path() . $destinationFolder . $imgFileName);
@@ -71,11 +75,14 @@ class InsideemuService
 				$ideaImage = new InsideemuIdeasImages();
 				$ideaImage->insideemu_idea_id = $idea->id;
 
-				// Sanitize the image name and add a timestamp to it
-				$imgName = $this->sanitizeImageName($image['image_name']);
-				$imgName = $this->appendNewTimestamp($imgName);
-				$ideaImage->image_name = $imgName;
-				$ideaImage->image_path = $destinationFolder.$imgName;
+				// Find the new image name in the array of new, sanitized image names (avoids different timestamp issues)
+				foreach($newImgFileNames as $originalName => $newName){
+					if($image['image_name'] == $originalName){
+						$ideaImage->image_name = $newName;
+						$ideaImage->image_path = $destinationFolder.$newName;
+						break;
+					}
+				}
 			} else {
 				$ideaImage = InsideemuIdeasImages::findOrFail($image['id']);
 			}
@@ -89,6 +96,8 @@ class InsideemuService
 		$destinationFolder = '/imgs/insideemu_posts/'.$post->id.'/';
 
 		$images = $post->images;
+
+		$changedFileNames = []; // store existing images whose updates resulted in new, timestamped and sanitized image names
 		foreach($images as $image){
 			$found = false;
 			// Check if each $postArr['images'] id matches an image id
@@ -103,6 +112,8 @@ class InsideemuService
 						$newFilename = $this->appendNewTimestamp($sanitizedNewFile);
 						$sanitizedNewPath = public_path() . $destinationFolder . $newFilename;
 						rename($oldFilePath, $sanitizedNewPath);
+
+						$changedFileNames[$newImage['image_name']] = $newFilename;
 					}
 					$found = true; // Flag that the image was found
 					break;
@@ -120,6 +131,7 @@ class InsideemuService
 		}
 
 		// Handle any attached images files from the request (these will be new images)
+		$newImgFileNames = []; // store new, timestamped and sanitized image names
 		if (!empty(Input::file('images'))){
 			$count = 0;
 			$imgNames = Input::get('imageNames');
@@ -135,6 +147,8 @@ class InsideemuService
 				Image::make($imgFilePath)
 					->save(public_path() . $destinationFolder . $imgName);
 
+				$newImgFileNames[$image->getClientOriginalName()] = $imgName;
+
 				$count++;
 			}
 		}
@@ -147,11 +161,14 @@ class InsideemuService
 				$postImage->insideemu_post_id = $post->id;
 				$postImage->imagetype_id = $image['imagetype_id'];
 
-				// Sanitize the image name and add a timestamp to it
-				$imgName = $this->sanitizeImageName($image['image_name']);
-				$imgName = $this->appendNewTimestamp($imgName);
-				$postImage->image_name = $imgName;
-				$postImage->image_path = $destinationFolder.$imgName;
+				// Find the new image name in the array of new, sanitized image names (avoids different timestamp issues)
+				foreach($newImgFileNames as $originalName => $newName){
+					if($image['image_name'] == $originalName){
+						$postImage->image_name = $newName;
+						$postImage->image_path = $destinationFolder.$newName;
+						break;
+					}
+				}
 			} else {
 				$postImage = InsideemuPostsImages::findOrFail($image['id']);
 
@@ -159,11 +176,14 @@ class InsideemuService
 				$oldName = $postImage->image_name;
 				$newPath = $image['image_name'];
 				if($oldName != $newPath){
-					// Sanitize the image name and add a timestamp to it ONLY if the name has changed
-					$imgName = $this->sanitizeImageName($image['image_name']);
-					$imgName = $this->appendNewTimestamp($imgName);
-					$postImage->image_name = $imgName;
-					$postImage->image_path = $destinationFolder.$imgName;
+					// Find the new image name in the array of new, sanitized image names (avoids different timestamp issues)
+					foreach($changedFileNames as $originalName => $newName){
+						if($image['image_name'] == $originalName){
+							$postImage->image_name = $newName;
+							$postImage->image_path = $destinationFolder.$newName;
+							break;
+						}
+					}
 				}
 			}
 			$postImage->title = $image['title'];

@@ -52,7 +52,7 @@
           </v-text-field>
         </v-col>
         <v-col
-            v-if="imgType !== 'small'"
+            v-if="imgType === 'story'"
             cols="12"
         >
           <v-text-field
@@ -63,7 +63,7 @@
           >
           </v-text-field>
         </v-col>
-        <template v-if="imgType === 'small' || imgType === 'email'">
+        <template v-if="imgType === 'small'">
           <v-col cols="12">
             <v-text-field
                 v-model="img.moretext"
@@ -89,41 +89,42 @@
               </template>
             </v-text-field>
           </v-col>
-          <v-col cols="12">
-            <v-textarea
-                v-model="img.teaser"
-                density="compact"
-                label="Teaser"
-                rows="3"
-                @update:modelValue="$emit('imageUpdated')"
-            >
-            </v-textarea>
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-                v-model="img.link"
-                density="compact"
-                label="Teaser"
-                :rules="[v => !!v || 'External URL is required']"
-                @update:modelValue="$emit('imageUpdated')"
-            >
-              <template #label>
-                External URL <span class="text-error">*</span>
-              </template>
-            </v-text-field>
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-                v-model="img.link_text"
-                density="compact"
-                :rules="[v => !!v || 'External URL text is required']"
-                @update:modelValue="$emit('imageUpdated')"
-            >
-              <template #label>
-                External URL Text <span class="text-error">*</span>
-              </template>
-            </v-text-field>
-          </v-col>
+<!--          <v-col cols="12">-->
+<!--            <v-textarea-->
+<!--                v-model="img.teaser"-->
+<!--                density="compact"-->
+<!--                label="Teaser"-->
+<!--                rows="3"-->
+<!--                @update:modelValue="$emit('imageUpdated')"-->
+<!--            >-->
+<!--            </v-textarea>-->
+<!--          </v-col>-->
+<!--          <v-col cols="12">-->
+<!--            <v-text-field-->
+<!--                v-model="img.link"-->
+<!--                density="compact"-->
+<!--                label="Teaser"-->
+<!--                :rules="[v => !!v || 'External URL is required']"-->
+<!--                @update:modelValue="$emit('imageUpdated')"-->
+<!--            >-->
+<!--              <template #label>-->
+<!--                External URL <span class="text-error">*</span>-->
+<!--              </template>-->
+<!--            </v-text-field>-->
+<!--          </v-col>-->
+<!--          <v-col cols="12">-->
+<!--            <v-text-field-->
+<!--                v-model="img.link_text"-->
+<!--                density="compact"-->
+<!--                :rules="[v => !!v || 'External URL text is required']"-->
+<!--                @update:modelValue="$emit('imageUpdated')"-->
+<!--            >-->
+<!--              <template #label>-->
+<!--                External URL Text <span class="text-error">*</span>-->
+<!--              </template>-->
+<!--            </v-text-field>-->
+<!--          </v-col>-->
+
         </template>
       </v-row>
     </v-card-text>

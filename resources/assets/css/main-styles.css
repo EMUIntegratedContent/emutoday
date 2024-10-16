@@ -135,7 +135,7 @@ a.bold-green-link {
   font-weight: 500;
 }
 
-a.bold-green-link:after {
+a.bold-green-link:after, #subscribe-emu-btn:after {
   font-family: FontAwesome;
   color: #97D700;
   content: "\f061";
