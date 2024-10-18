@@ -126,7 +126,7 @@
         <div class="form-group">
           <label>Start Date: <i class="fi-star reqstar"></i>
             <flatpickr
-                v-model="fdate"
+                v-model="record.start_date"
                 id="start-date"
                 :config="flatpickrConfig"
                 class="form-control"
@@ -372,7 +372,6 @@ export default {
         photo_credit: '',
         tags: []
       },
-      fdate: null,
       response: {},
       formMessage: {
         isOk: false,
@@ -388,7 +387,7 @@ export default {
       flatpickrConfig: {
         altFormat: "m/d/Y h:i K", // format the user sees
         altInput: true,
-        dateFormat: "Y-m-d H:i:s", // format sumbitted to the API
+        dateFormat: "Y-m-d H:i:S", // format sumbitted to the API
         enableTime: true
       },
       storyType: null
@@ -408,7 +407,7 @@ export default {
       this.hasContent = true;
       this.record.user_id = this.cuser.id;
       this.record.story_type = this.storyType;
-      this.fdate = moment().format('YYYY-MM-DD 12:00:00');
+      this.record.start_date = moment().format('YYYY-MM-DD 12:00:00');
       this.setAuthorToCurrentUser(this.currentUser.id)
       this.record.author_id = this.record.user_id;
       this.updateRecordState('new');
@@ -697,8 +696,6 @@ export default {
       this.currentRecordId = this.record.id;
       this.content = this.record.content;
 
-      this.fdate = this.record.start_date;
-
       if (this.record.author_id != 0) {
         this.author = this.record.author;
       }
@@ -822,9 +819,6 @@ export default {
       }
 
       this.record.slug = this.recordSlug;
-      if (moment(this.fdate).isValid()) {
-        this.record.start_date = this.fdate;
-      }
 
       if (this.author.id !== 0) {
         this.record.author_id = this.author.id;
