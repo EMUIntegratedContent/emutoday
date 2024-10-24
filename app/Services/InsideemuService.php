@@ -8,7 +8,6 @@ use Emutoday\InsideemuIdeasImages;
 use Emutoday\InsideemuPostsImages;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as Input;
-use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Str;
 
 /**
