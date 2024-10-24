@@ -6,9 +6,9 @@ use Emutoday\InsideemuIdea;
 use Emutoday\InsideemuPost;
 use Emutoday\InsideemuIdeasImages;
 use Emutoday\InsideemuPostsImages;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Str;
+use Intervention\Image\Laravel\Facades\Image;
 
 /**
  * Class InsideemuService
@@ -62,7 +62,7 @@ class InsideemuService
 
 				$newImgFileNames[$image->getClientOriginalName()] = $imgFileName;
 
-				Image::make($imgFilePath)
+				Image::read($imgFilePath)
 					->save(public_path() . $destinationFolder . $imgFileName);
 			}
 		}
@@ -143,7 +143,7 @@ class InsideemuService
 				$imgFilePath = $image->getRealPath();
 				$imgName = $this->sanitizeImageName($imgNames[$count]);
 				$imgName = $this->appendNewTimestamp($imgName);
-				Image::make($imgFilePath)
+				Image::read($imgFilePath)
 					->save(public_path() . $destinationFolder . $imgName);
 
 				$newImgFileNames[$image->getClientOriginalName()] = $imgName;
