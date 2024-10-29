@@ -90,7 +90,7 @@
 </ul>
 </li>
 @endcan
-@if(Gate::check('admin_super') || Gate::check('admin') || Gate::check('editor_super') || Gate::check('editor') || Gate::check('contributor_2') || Gate::check('contributor_1'))
+@if(Auth::user()->hasRole('admin_super') || Auth::user()->hasRole('admin') || Auth::user()->hasRole('editor_super') || Auth::user()->hasRole('editor') || Auth::user()->hasRole('contributor_2') || Auth::user()->hasRole('contributor_1'))
   <li class="treeview {{ set_active('admin/insideemu*') }}">
     <a href="#"><i class="fa fa-lightbulb-o"></i> <span>Inside EMU</span></a>
     <ul class="treeview-menu">
@@ -119,7 +119,7 @@
   <li><a href="/admin/emu175"><i class="fa fa-birthday-cake"></i> <span>EMU 175</span></a></li>
 @endcan
 {{-- Gate Facade allows multiple permission checks (unlike @can) --}}
-@if(Gate::check('admin') || Gate::check('experts'))
+@if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('experts'))
     <li class="treeview {{ set_active('admin/expert*') }}">
       <a href="#"><i class="fa fa-blind"></i> <span>Experts</span></a>
       <ul class="treeview-menu">
@@ -166,7 +166,7 @@
   </ul>
 </li>
 @endcan
-@if(Gate::check('admin') || Gate::check('emails'))
+@if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('emails'))
     <li class="treeview {{ set_active('admin/email*') }}">
       <a href="#"><i class="fa fa-envelope"></i> <span>Email Builder</span></a>
       <ul class="treeview-menu">
@@ -175,7 +175,7 @@
       </ul>
     </li>
 @endif
-@if(Gate::check('admin') || Gate::check('editor'))
+@if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('editor'))
     <li class="treeview {{ set_active('admin/mediahighlights*') }}">
       <a href="#"><i class="fa fa-newspaper-o"></i> <span>Media Highlights</span></a>
       <ul class="treeview-menu">

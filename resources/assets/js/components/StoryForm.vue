@@ -710,7 +710,7 @@ export default {
       this.updateRecordIsDirty(false);
     },
 
-    saveAuthor: function (e) {
+    saveAuthor: function (e){
       e.preventDefault();
       this.saveAuthorMessage.isOk = '';
       let method = (this.author.id == 0) ? 'post' : 'put'
