@@ -21,10 +21,10 @@
                 <h3 class="toptitle">Subscribe to EMU Today</h3>
                 {!! html()->form('POST', url('mailgun/subscribe'))->open() !!}
 
-                {!! html()->label('email', 'Email Address') !!}
+                {!! html()->label('Email Address', 'email') !!}
                 {!! html()->text('email', null, array('placeholder'=>'you@emich.edu')) !!}
 
-                {!! html()->label('name', 'Your Name (optional)') !!}
+                {!! html()->label('Your Name (optional)', 'name') !!}
                 {!! html()->text('name', null, array()) !!}
 
                 <button type="submit" id="subscribe-emu-btn" class="button expanded large">SUBSCRIBE TO EMU TODAY
