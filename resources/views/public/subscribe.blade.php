@@ -19,17 +19,17 @@
                 @endif
               @else
                 <h3 class="toptitle">Subscribe to EMU Today</h3>
-                {!! Form::open(array('url' => 'mailgun/subscribe')) !!}
+                {!! html()->form('POST', url('mailgun/subscribe'))->open() !!}
 
-                {!! Form::label('email', 'Email Address') !!}
-                {!! Form::text('email', null, array('placeholder'=>'you@emich.edu')) !!}
+                {!! html()->label('email', 'Email Address') !!}
+                {!! html()->text('email', null, array('placeholder'=>'you@emich.edu')) !!}
 
-                {!! Form::label('name', 'Your Name (optional)') !!}
-                {!! Form::text('name', null, array()) !!}
+                {!! html()->label('name', 'Your Name (optional)') !!}
+                {!! html()->text('name', null, array()) !!}
 
                 <button type="submit" id="subscribe-emu-btn" class="button expanded large">SUBSCRIBE TO EMU TODAY
                 </button>
-                {!! Form::close() !!}
+                {!! html()->form()->close() !!}
               @endif
             </div>
           </div>
