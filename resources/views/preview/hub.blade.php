@@ -154,10 +154,10 @@
         <div class="large-3 medium-3 small-12 columns" id="emu-175-logo-container">
           <div>
             <a href="https://www.emich.edu/175-anniversary/" target="_blank">
-              <img src="/assets/imgs/emu175/emu-175-white-290x290-logo.png" alt="EMU 175 logo" class="show-for-medium"
+              <img src="/assets/imgs/emu175/emu-175-white-290x290-logo-no-date.png" alt="EMU 175 logo" class="show-for-medium"
                    width="253">
               <span class="hide-for-medium">
-              <img src="/assets/imgs/emu175/emu-175-white-100x100-logo.png" alt="EMU 175 logo" class="hide-for-medium"
+              <img src="/assets/imgs/emu175/emu-175-white-100x100-logo-no-date.png" alt="EMU 175 logo" class="hide-for-medium"
                    width="75" height="75" style="margin-right: .5rem">
             </span>
             </a>

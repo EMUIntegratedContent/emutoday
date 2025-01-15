@@ -203,7 +203,7 @@
               </tr>
               <tr v-if="emailBuilderEmail.is_emu175_included">
                 <td valign="top" style="border-top: 3px double #97D700; min-height:136px; padding:15px">
-                  <img src="/assets/imgs/emu175/emu-175-green-on-white-logo.png" alt="EMU's logo celebrating 175 years."
+                  <img src="/assets/imgs/emu175/emu-175-white-logo-no-date.png" alt="EMU's logo celebrating 175 years."
                        style="float:left; padding:0 15px 8px 0; width:109px"/>
                   <h2 style="padding-top:0px;">
                     <template v-if="emailBuilderEmail.emu175_url">
