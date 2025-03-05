@@ -418,7 +418,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   Route::get('authors/list', 'Admin\AuthorsController@index')->name('authors_list');
   Route::get('authors/form', 'Admin\AuthorsController@form')->name('authors_form');
   // Avoid naming conflict with index route above
-	Route::resource('authors', 'Admin\AuthorController')->names([
+	Route::resource('authors', 'Admin\AuthorsController')->names([
 		'index' => 'admin.authors.index',
 		'create' => 'admin.authors.create',
 		'store' => 'admin.authors.store',
