@@ -11,7 +11,7 @@ class InsideemuIdeaController extends Controller
 
 		public function __construct(InsideemuIdea $idea){
 			$this->idea = $idea;
-			$this->middleware('auth', ['only' => ['create', 'edit']]);
+			$this->middleware('auth', ['only' => ['index', 'create', 'edit']]);
 		}
 
     /**
