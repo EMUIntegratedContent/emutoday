@@ -19,6 +19,9 @@ COPY docker_vhost.conf /etc/apache2/sites-available/000-default.conf
 # Copy the shell script into the container
 COPY docker_postscript.sh /usr/local/bin/docker_postscript.sh
 
+# Copy the custom PHP configuration file into the container
+COPY custom-php.ini /usr/local/etc/php/php.ini
+
 # Set executable permissions for the shell script
 RUN chmod +x /usr/local/bin/docker_postscript.sh
 

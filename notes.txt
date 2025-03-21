@@ -1,3 +1,10 @@
+3/20/24
+
+Needed to increase the php.ini's memory_limit to 256M to process JPG images with high resolution.
+There was an image that was only 1.9MB in size, but 700dpi.
+For local dev, created custom_php.ini file in the root of the project with memory_limit = 256M.
+It is included in the Dockerfile.
+
 ====================================================================================================
 PHP 8.3 + Laravel 11 UPGRADE NOTES 2024
 

@@ -61,7 +61,6 @@ export default {
         const img = new Image();
         img.src = imageUrl;
         img.onload = () => { // Wait for the image to load before checking the dimensions
-          console.log(img.width, img.height)
           if (img.width < 412 || img.height < 248) {
             alert(`The file ${file.name} is too small (${img.width}px by ${img.height}px). Please upload a file that is at least 412px by 248px. Skipping this file.`)
           } else {

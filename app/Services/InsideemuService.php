@@ -262,6 +262,7 @@ class InsideemuService
 	protected function sanitizeImageName ($imgName) {
 		// Extract the base name and remove the timestamp portion
 		$filenameWithoutExtension = pathinfo($imgName, PATHINFO_FILENAME);
+
 		$extension = pathinfo($imgName, PATHINFO_EXTENSION);
 
 		// Detect and remove the timestamp
