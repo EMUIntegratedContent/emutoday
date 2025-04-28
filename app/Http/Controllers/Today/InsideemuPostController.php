@@ -32,7 +32,7 @@ class InsideemuPostController extends Controller
 
 			$sidePostsRaw = InsideemuPost::all()->filter(function($p) use ($post){
 				return $p->id !== $post->id && $p->postIsLive();
-			})->take(5);
+			})->take(-5);
 
 			$sidePosts = InsideemuPostResource::collection($sidePostsRaw);
 			$post = InsideemuPostResource::make($post);
