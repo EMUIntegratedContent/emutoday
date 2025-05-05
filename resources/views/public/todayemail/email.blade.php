@@ -358,44 +358,44 @@
                       <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                         <a href="https://www.facebook.com/EasternMichU/"
                            style="color: #046A38;text-decoration: underline;"><img class="img-circle" alt="Facebook"
-                                                                                   src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/facebook.png"
+                                                                                   src="https://www.emich.edu/today/icons/2018-social-icons/facebook.png"
                                                                                    style="border-radius: 50%;width: 95%;-moz-filter: grayscale(100%);filter: grayscale(100%);"></a>
                       </li>
                       <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                         <a href="https://www.emich.edu/communications/expertise/social-media/"
                            style="color: #046A38;text-decoration: underline;"><img class="img-circle"
                                                                                    alt="X (formerly Twitter)"
-                                                                                   src="{{ url('/') }}/assets/imgs/icons/twitter-x.png"
+                                                                                   src="https://www.emich.edu/today/icons/twitter-x.png"
                                                                                    style="border-radius: 50%;width: 95%;-moz-filter: grayscale(100%);filter: grayscale(100%);"></a>
                       </li>
                       <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                         <a href="https://www.youtube.com/user/emichigan08"
                            style="color: #046A38;text-decoration: underline;"><img class="img-circle" alt="YouTube"
-                                                                                   src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/youtube.png"
+                                                                                   src="https://www.emich.edu/today/icons/2018-social-icons/youtube.png"
                                                                                    style="border-radius: 50%;width: 95%;-moz-filter: grayscale(100%);filter: grayscale(100%);"></a>
                       </li>
                       <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                         <a href="https://instagram.com/easternmichigan/"
                            style="color: #046A38;text-decoration: underline;"><img class="img-circle" alt="Instagram"
-                                                                                   src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/instagram.png"
+                                                                                   src="https://www.emich.edu/today/icons/2018-social-icons/instagram.png"
                                                                                    style="border-radius: 50%;width: 95%;-moz-filter: grayscale(100%);filter: grayscale(100%);"></a>
                       </li>
                       <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                         <a href="https://www.linkedin.com/edu/school?id=18604"
                            style="color: #046A38;text-decoration: underline;"><img class="img-circle" alt="Linked-In"
-                                                                                   src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/linkedin.png"
+                                                                                   src="https://www.emich.edu/today/icons/2018-social-icons/linkedin.png"
                                                                                    style="border-radius: 50%;width: 95%;-moz-filter: grayscale(100%);filter: grayscale(100%);"></a>
                       </li>
                       <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                         <a href="https://www.snapchat.com/add/EasternMichigan"
                            style="color: #046A38;text-decoration: underline;"><img class="img-circle" alt="Snap Chat"
-                                                                                   src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/snapchat.png"
+                                                                                   src="https://www.emich.edu/today/icons/2018-social-icons/snapchat.png"
                                                                                    style="border-radius: 50%;width: 95%;-moz-filter: grayscale(100%);filter: grayscale(100%);"></a>
                       </li>
                       <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                         <a href="https://www.tiktok.com/@easternmichiganu"
                            style="color: #046A38;text-decoration: underline;"><img class="img-circle" alt="Blog EMU"
-                                                                                   src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/tiktok.png"
+                                                                                   src="https://www.emich.edu/today/icons/2018-social-icons/tiktok.png"
                                                                                    style="border-radius: 50%;width: 95%;-moz-filter: grayscale(100%);filter: grayscale(100%);"></a>
                       </li>
                     </ul>
