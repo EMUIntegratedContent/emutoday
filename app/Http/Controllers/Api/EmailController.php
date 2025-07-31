@@ -104,15 +104,6 @@ class EmailController extends ApiController
         }
         $email->events()->sync($eventIds);
 
-        // Sync main stories
-//        $mainStoryCount = 0;
-//        $mainStoryIds = array();
-//        foreach ($request->get('mainStories') as $mainStory) {
-//          $mainStoryIds[$mainStory['id']] = ['order' => $mainStoryCount];
-//          $mainStoryCount++;
-//        }
-//        $email->mainstories()->sync($mainStoryIds);
-
 				$email->mainstories()->delete();
 				$mainStoryCount = 0;
 				$syncData = []; // Final data array for sync
@@ -628,8 +619,7 @@ class EmailController extends ApiController
         $email->stories()->first() &&
         $email->recipients()->first() &&
         \Carbon\Carbon::parse($email->send_at) >= date('Y-m-d H:i:s') &&
-        ($email->is_president_included ? ($email->president_url && $email->president_teaser) : true) && // <- If the president's message is included, the URL and teaser must also be present. If not, both are irrelevant, just return true.
-				($email->is_emu175_included ? ($email->emu175_url && $email->emu175_teaser) : true) // <- If the EMU 175 message is included, the URL and teaser must also be present. If not, both are irrelevant, just return true.
+        ($email->is_president_included ? ($email->president_url && $email->president_teaser) : true) // <- If the president's message is included, the URL and teaser must also be present. If not, both are irrelevant, just return true.
     ) {
       $email->is_ready = 1;
     }

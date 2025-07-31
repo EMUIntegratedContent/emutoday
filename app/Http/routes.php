@@ -332,7 +332,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 
   Route::get('story/emu175stories/{fromDate?}/{toDate?}', 'Api\StoryController@getEmu175Stories')->name('api_story_emu175');
   Route::get('story/{story}/edit', 'Api\StoryController@edit');
-  Route::post('story/updateemu175', 'Api\StoryController@updateEmu175Story')->name('api_story_updateemu175');
 
   Route::get('{gtype}/{stype}/{qtype}/{fromDate?}/{toDate?}', 'Api\StoryController@queue')->name('api_storytype_queueload');
 
@@ -544,9 +543,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   Route::resource('mediafile', 'Admin\MediafileController');
   Route::resource('role', 'Admin\RoleController');
   Route::resource('permission', 'Admin\PermissionController');
-
-  // EMU 175
-  Route::resource('emu175', 'Admin\EMU175Controller');
 
 	// Inside EMU Posts
 	Route::group(['middleware' => ['insideemu'], 'prefix' => 'insideemu', 'as' => 'admin.'], function () {

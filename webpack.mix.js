@@ -34,7 +34,6 @@ mix.combine([
 	'resources/assets/css/basebar-styles.css',
 	'resources/assets/css/tweeks.css',
 	'resources/assets/css/ckeditor5-styles.css',
-	'resources/assets/css/emu175.css',
 	'resources/assets/css/insideemu-styles.css',
 ], 'public/css/public-styles.css').version()
 
@@ -83,7 +82,6 @@ mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-for
 mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js').vue().version();
 mix.js('resources/assets/js/vue-storyideas-form.js', 'public/js/vue-storyideas-form.js').vue().version();
 mix.js('resources/assets/js/vue-storyideas-list.js', 'public/js/vue-storyideas-list.js').vue().version();
-mix.js('resources/assets/js/vue-emu-175.js', 'public/js/vue-emu-175.js').vue().version().version();
 
 
 mix.js('resources/assets/js/vue-insideemu-queue.js', 'public/js/vue-insideemu-queue.js').vue().version().version();

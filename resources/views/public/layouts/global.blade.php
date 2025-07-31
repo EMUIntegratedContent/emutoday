@@ -133,10 +133,6 @@
 
                 <div class="large-5 medium-6 small-12 columns">
                   <h1><a href="/hub">EMU <span style="color:#000000;">Today</span></a></h1>
-                  <div class="hide-for-large">
-                    <img src="/assets/imgs/emu175/emu-175-green-logo-no-date.png" alt="EMU 175th Anniversary logo"
-                         id="emu-175-menu-logo" width="100px"/>
-                  </div>
                 </div><!-- large-9 -->
 
                 <div
@@ -167,41 +163,35 @@
 
 
             <div id="secondary-bar" class="show-for-large">
-              <div id="nav-175-wrapper">
-                <nav id="tier3-nav" class="row">
-                  <div class="large-12 medium-12 columns hide-for-small-only">
-                    <ul id="tier3-nav-main">
-                      <li><a title="EMU Today homepage." class="{{ set_active('hub')}}"
-                             href="{{ url('/') }}">Today</a></li>
-                      <li><a title="EMU Today events calendar." class="{{ set_active('calendar')}}"
-                             href="{{ url('/calendar') }}">Calendar</a></li>
-                      <li><a title="EMU Today campus announcements."
-                             class="{{ set_active('announcement')}}"
-                             href="{{ url('/announcement') }}">Announcements</a></li>
-                      <li><a title="EMU Today campus news, press releases, and official statements."
-                             class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}">News</a>
-                      </li>
-                      <li><a title="Submit to Inside EMU."
-                             href="{{ url('/insideemu') }}">Inside EMU</a></li>
-                      <li><a title="Eastern Magazine's homepage" href="{{ url('/magazine') }}">Eastern
-                          Magazine</a></li>
-                      <li>
-                        <a title="Eastern Experts are availble for interviews and speaking engagements."
-                           class="{{ set_active('experts')}}" href="{{ url('/experts') }}">Eastern
-                          Experts</a></li>
-                      <li>
-                        <a title="Samples of external media coverage focused on Eastern Michigan University."
-                           href="/mediahighlights">Media Highlights</a></li>
-                      <li><a title="External link to WEMU." href="https://www.wemu.org"
-                             target="_blank">WEMU</a></li>
-                    </ul>
-                    <div>
-                      <img src="/assets/imgs/emu175/emu-175-green-logo-no-date.png" alt="EMU 175th Anniversary logo"
-                           id="emu-175-menu-logo" width="100px"/>
-                    </div>
-                  </div>
-                </nav>
-              </div>
+              <nav id="tier3-nav" class="row">
+                <div class="large-12 medium-12 columns hide-for-small-only">
+                  <ul id="tier3-nav-main">
+                    <li><a title="EMU Today homepage." class="{{ set_active('hub')}}"
+                           href="{{ url('/') }}">Today</a></li>
+                    <li><a title="EMU Today events calendar." class="{{ set_active('calendar')}}"
+                           href="{{ url('/calendar') }}">Calendar</a></li>
+                    <li><a title="EMU Today campus announcements."
+                           class="{{ set_active('announcement')}}"
+                           href="{{ url('/announcement') }}">Announcements</a></li>
+                    <li><a title="EMU Today campus news, press releases, and official statements."
+                           class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}">News</a>
+                    </li>
+                    <li><a title="Submit to Inside EMU."
+                           href="{{ url('/insideemu') }}">Inside EMU</a></li>
+                    <li><a title="Eastern Magazine's homepage" href="{{ url('/magazine') }}">Eastern
+                        Magazine</a></li>
+                    <li>
+                      <a title="Eastern Experts are availble for interviews and speaking engagements."
+                         class="{{ set_active('experts')}}" href="{{ url('/experts') }}">Eastern
+                        Experts</a></li>
+                    <li>
+                      <a title="Samples of external media coverage focused on Eastern Michigan University."
+                         href="/mediahighlights">Media Highlights</a></li>
+                    <li><a title="External link to WEMU." href="https://www.wemu.org"
+                           target="_blank">WEMU</a></li>
+                  </ul>
+                </div>
+              </nav>
             </div><!-- secondary-bar -->
           </div><!-- #all-connections -->
         </div> <!-- #connection-bar -->

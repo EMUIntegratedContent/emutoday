@@ -1,5 +1,5 @@
 @extends('admin.layouts.adminlte')
-@section('title', 'EMU 175 Frontpage Manager')
+@section('title', 'Inside EMU User Submission')
 @section('style-vendor')
     @parent
 @endsection

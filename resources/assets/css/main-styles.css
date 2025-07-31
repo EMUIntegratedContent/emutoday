@@ -196,8 +196,8 @@ h2.mediahighlight-date {
 
 #content-area {
   position: relative;
-  padding: 0;
-  margin: -18px 0 0 0; /** SET THIS BACK TO 0 AFTER EMU 175 CAMPAIGN IS OVER **/
+  padding-top: 0;
+  margin: 0;
   width: 100%;
   background-color: #f2f2f2;
 }
@@ -242,12 +242,8 @@ h2.mediahighlight-date {
   z-index: 100;
   height: auto;
   color: #333;
-  /** PUT THESE BORDERS BACK AFTER EMU 175 CAMPAIGN IS OVER **/
-  /*border-top: 1px solid #e5e5e5;*/
-  /*border-bottom: 1px solid #e5e5e5;*/
-  /** REMOVE THESE AFTER EMU 175 CAMPAIGN IS OVER **/
-  padding-bottom: 30px;
-  margin-bottom: 5px;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .mediumgrey-section {
@@ -409,6 +405,11 @@ ul#tier3-nav-main li a.active i.fa-play {
   color: #0f654a;
 }
 
+#nav-wrapper {
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  position: relative;
+}
 
 #logo-box {
   background-color: #0f654a;
