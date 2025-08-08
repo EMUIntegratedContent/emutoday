@@ -336,15 +336,6 @@
                             <a href="https://www.facebook.com/EasternMichU/"><img class="img-circle" alt="Facebook"
                                                                                   src="https://www.emich.edu/today/icons/facebook-base-icons.png"></a>
                           </li>
-                          <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
-                            <a href="https://www.emich.edu/communications/expertise/social-media//"><img
-                                class="img-circle" alt="X (formerly Twitter)"
-                                src="https://www.emich.edu/today/icons/twitter-x.png"></a>
-                          </li>
-                          <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
-                            <a href="https://www.youtube.com/user/emichigan08"><img class="img-circle" alt="YouTube"
-                                                                                    src="https://www.emich.edu/today/icons/you-tube-base-icons.png"></a>
-                          </li>
                           <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
                             <a href="https://instagram.com/easternmichigan/"><img class="img-circle" alt="Instagram"
                                                                                   src="https://www.emich.edu/today/icons/instagram-base-icons-new.png"></a>
@@ -354,14 +345,19 @@
                                                                                         alt="Linked-In"
                                                                                         src="https://www.emich.edu/today/icons/linked-in-base-icons.png"></a>
                           </li>
-                          <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
-                            <a href="https://www.snapchat.com/add/EasternMichigan"><img class="img-circle"
-                                                                                        alt="Snap Chat"
-                                                                                        src="https://www.emich.edu/today/icons/snapchat.png"></a>
+                          <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
+                            <a href="https://www.tiktok.com/@easternmichiganu"><img
+                                class="img-circle" alt="TikTok"
+                                src="https://www.emich.edu/today/icons/tiktok.png"></a>
+                          </li>
+                          <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
+                            <a href="https://www.emich.edu/communications/expertise/social-media/"><img
+                                class="img-circle" alt="X (formerly Twitter)"
+                                src="https://www.emich.edu/today/icons/twitter-x.png"></a>
                           </li>
                           <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
-                            <a href="https://blog.emich.edu/"><img class="img-circle" alt="Blog EMU"
-                                                                   src="https://www.emich.edu/today/icons/e-base-icons.png"></a>
+                            <a href="https://www.youtube.com/user/emichigan08"><img class="img-circle" alt="YouTube"
+                                                                                    src="https://www.emich.edu/today/icons/you-tube-base-icons.png"></a>
                           </li>
                         </ul>
                       </td>

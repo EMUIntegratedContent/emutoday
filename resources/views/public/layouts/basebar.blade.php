@@ -17,12 +17,11 @@
             <div id="social-links" class="small-12 medium-centered small-centered columns">
                 <ul class="social-icons">
                     <li><a class="facebook" title="External link to EMU's Facebook page." href="https://www.facebook.com/EasternMichU/"><span class="visuallyhidden">Facebook</span></a></li>
-                    <li><a class="twitter" title="External link to EMU's X (formerly Twitter) page." href="https://x.com/EasternMichU/"><span class="visuallyhidden">X (formerly Twitter)</span></a></li>
-                    <li><a class="youtube" title="External link to EMU's YouTube page." href="https://www.youtube.com/user/emichigan08"><span class="visuallyhidden">YouTube</span></a></li>
                     <li><a class="instagram" title="External link to EMU's Instagram page." href="https://instagram.com/easternmichigan/"><span class="visuallyhidden">Instagram</span></a></li>
                     <li><a class="linkedin" title="External link to EMU's LinkedIn page." href="https://www.linkedin.com/edu/school?id=18604"><span class="visuallyhidden">LinkedIn</span></a></li>
-                    <li><a class="snapchat" title="External link to EMU's Snapchat page." href="https://www.snapchat.com/add/EasternMichigan"><span class="visuallyhidden">Snapchat</span></a></li>
                     <li><a class="tiktok" title="External link to the BlogEMU page." href="https://www.tiktok.com/@easternmichiganu"><span class="visuallyhidden">TikTok</span></a></li>
+                    <li><a class="twitter" title="External link to EMU's X (formerly Twitter) page." href="https://x.com/EasternMichU/"><span class="visuallyhidden">X (formerly Twitter)</span></a></li>
+                    <li><a class="youtube" title="External link to EMU's YouTube page." href="https://www.youtube.com/user/emichigan08"><span class="visuallyhidden">YouTube</span></a></li>
                 </ul>
             </div><!-- END social links -->
         </div>
