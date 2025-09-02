@@ -12,6 +12,7 @@ use Emutoday\User;
 use Emutoday\Tweet;
 use Emutoday\Helpers\Interfaces\IBug;
 use Illuminate\Support\Facades\View;
+use Emutoday\Facades\Cas;
 
 //use Analytics;
 
@@ -43,11 +44,11 @@ class DashboardController extends Controller{
 			$user = \Auth::user();
 		}
 		else{
-			if(cas()->isAuthenticated()){
+			if(Cas::isAuthenticated()){
 				abort(403, 'You do not have administrative privileges.');
 			}
 			else{
-				cas()->authenticate();
+				Cas::authenticate();
 			}
 		}
 

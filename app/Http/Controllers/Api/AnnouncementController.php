@@ -16,7 +16,7 @@ use League\Fractal\Manager;
 use League\Fractal;
 use League\Fractal\Serializer\ArraySerializer;
 use League\Fractal\Serializer\DataArraySerializer;
-
+use Emutoday\Facades\Cas;
 use Emutoday\User;
 use Emutoday\Today\Transformers\FractalAnnouncementTransformerModel;
 
@@ -113,18 +113,18 @@ class AnnouncementController extends ApiController
 
     if($validation->passes())
     { // Okay validation passes. create the announcement
-      cas()->authenticate(); //run authentication before calling cas->user
+      Cas::authenticate(); //run authentication before calling cas->user
 
       $announcement = new Announcement;
-      $userInUserTable = User::where('email', cas()->user() . '@emich.edu')->first();
+      $userInUserTable = User::where('email', Cas::user() . '@emich.edu')->first();
       if($userInUserTable){
           $announcement->user_id = $userInUserTable->id;
       }
 
-      $announcement->submitter         	= cas()->user(); // don't work so well on production
+      $announcement->submitter         	= Cas::user(); // don't work so well on production
       $announcement->title             	= $request->get('title');
       $announcement->start_date        	= Carbon::parse($request->get('start_date'));
-      $announcement->end_date      	= Carbon::parse($request->get('end_date'))->endOfDay();
+    $announcement->end_date      	      = Carbon::parse($request->get('end_date'))->endOfDay();
       $announcement->announcement     	= $request->get('announcement');
 
       $announcement->link               = trim($request->get('link', null));

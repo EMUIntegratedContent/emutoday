@@ -4,6 +4,7 @@ namespace Emutoday\Http\Controllers\Today;
 
 use Emutoday\Http\Controllers\Controller;
 use Emutoday\InsideemuIdea;
+use Emutoday\Facades\Cas;
 
 class InsideemuIdeaController extends Controller
 {
@@ -19,7 +20,7 @@ class InsideemuIdeaController extends Controller
      */
     public function index()
     {
-			$user = cas()->user();
+			$user = Cas::user();
 			return view('public.insideemu.ideas.index', compact('user'));
     }
 
@@ -28,7 +29,7 @@ class InsideemuIdeaController extends Controller
      */
     public function create()
     {
-			$user = cas()->user();
+			$user = Cas::user();
 			return view('public.insideemu.ideas.new', compact('user'));
     }
 
@@ -38,7 +39,7 @@ class InsideemuIdeaController extends Controller
     public function edit(InsideemuIdea $idea)
     {
 			$ideaId  = $idea->id;
-			$user = cas()->user();
+			$user = Cas::user();
 
 			return view('public.insideemu.ideas.edit', compact('ideaId', 'user'));
     }

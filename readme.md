@@ -1,11 +1,13 @@
 # EMU Today
 
-[//]: # ([![Build Status]&#40;https://travis-ci.com/chyke007/credible.svg?branch=master&#41;]&#40;https://travis-ci.com/chyke007/credible&#41;)
+[//]: # "[![Build Status](https://travis-ci.com/chyke007/credible.svg?branch=master)](https://travis-ci.com/chyke007/credible)"
+
 ![version](https://img.shields.io/badge/version-1.5.0-blue)
 ![Laravel Version](https://img.shields.io/badge/Laravel-v11.5.x-yellow)
 ![Vue.js Version](https://img.shields.io/badge/Vue.js-v3.2.45-green)
 
-[//]: # (![Docker Version]&#40;https://img.shields.io/badge/Docker-v20.10.8-purple&#41;)
+[//]: # "![Docker Version](https://img.shields.io/badge/Docker-v20.10.8-purple)"
+
 <hr>
 <p>EMU Today is Eastern Michigan University's digital hub for stories and news around campus. Discover upcoming events and important announcements to stay current on what's happening at EMU.</p>
 <hr>
@@ -14,7 +16,7 @@
 <ul>
 <li>Upgraded Laravel framework to version 12.</li>
 <li>Removed the subfission/cas package as it is no longer maintained and does not work with Laravel 12.</li>
-<li>Created a custom Cas service, service provider, and facade to handle CAS instead of the deprecated subfission/cas package.</li>
+<li>Created a custom Cas service, service provider, middlewares, and facade to handle CAS instead of the deprecated subfission/cas package.</li>
 </ul>
 <h2>October 2024 Updates (v 1.4.1)</h2>
 <ul>
@@ -56,26 +58,24 @@ contains application keys and passwords.
 
 `docker compose up --build`
 
-On subsequent starts, you should run this command without the 
-<br>`--build` flag. 
+On subsequent starts, you should run this command without the
+<br>`--build` flag.
 You can also start and stop containers from the Docker Desktop GUI.
 
 Note that the first time, composer dependencies will install in the
-background, so startup will take a few minutes. It should be quicker subsequently. 
+background, so startup will take a few minutes. It should be quicker subsequently.
 
 <h3>Step 6</h3>
 **FIRST TIME ONLY**
-Download the `emutoday.sql` file (stored outside this repo) to your local machine. In this case, we assume you downloaded it to `/path/to/emutoday.sql`. 
+Download the `emutoday.sql` file (stored outside this repo) to your local machine. In this case, we assume you downloaded it to `/path/to/emutoday.sql`.
 
 Docker created our database container with the name <br>`emutoday-db-1` and, using our database user and password, we can dump the contents of this file into the database called emutoday.
 
 `docker exec -i emutoday-db-1 mysql --user=root --password=secret
 emutoday < /path/to/emutoday.sql`
 
-
 <h3>Step 7</h3> 
 You should now be able to access the local copy of the EMU Today website by typing `localhost:8080` into your web browser.
-
 
 All done!
 
@@ -90,8 +90,7 @@ Since the servers are locked down with elevated user privileges, you'll need to 
     chmod 775 composer.lock
     chmod 775 -R bootstrap/
 
-At this point you should be able to run 
-    `composer update`
-
+At this point you should be able to run
+`composer update`
 
 If composer.lock or the vendor/ directory are still giving a problem, remove, them and re-create with 775 and the elevated user as the owner (you'll need to confer with IT about setting up privileges if you don't have them already).

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Emutoday\Event;
 use Carbon\Carbon;
 use JavaScript;
+use Emutoday\Facades\Cas;
 
 class CalendarController extends Controller{
 	protected $events;
@@ -105,7 +106,7 @@ class CalendarController extends Controller{
 			return redirect()->action('Admin\EventController@form');
 		}
 		else{
-			$user = cas()->user();
+			$user = Cas::user();
 		}
 		$approveditems = $this->events->where([
 			['is_approved', 1],
@@ -121,7 +122,7 @@ class CalendarController extends Controller{
 	}
 
 	public function userEvents(Event $event){
-		$user = cas()->user();
+		$user = Cas::user();
 
 		if($user){
 			$approveditems = $this->events->where([
