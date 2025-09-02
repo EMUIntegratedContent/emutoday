@@ -46,7 +46,7 @@ class CasService
 
         // Initialize phpCAS client
         $version = $this->getCasVersion();
-        $serviceBaseUrl = $this->config['cas_client_service'] ?: request()->getSchemeAndHttpHost();
+        $serviceBaseUrl = $this->getServiceBaseUrl();
         phpCAS::client($version, $this->config['cas_hostname'], $this->config['cas_port'], $this->config['cas_uri'], $serviceBaseUrl);
 
         // Set service URL
@@ -141,6 +141,11 @@ class CasService
             return true;
         }
 
+        // Check if we have a ticket parameter and validate it
+        if (request()->has('ticket')) {
+            return phpCAS::isAuthenticated();
+        }
+
         return phpCAS::isAuthenticated();
     }
 
@@ -156,7 +161,26 @@ class CasService
             return;
         }
 
-        phpCAS::forceAuthentication();
+        // If we have a ticket, validate it first
+        if (request()->has('ticket')) {
+            phpCAS::forceAuthentication();
+            // After successful authentication, redirect to clean URL
+            $this->redirectToCleanUrl();
+        } else {
+            phpCAS::forceAuthentication();
+        }
+    }
+
+    /**
+     * Redirect to clean URL after successful CAS authentication
+     */
+    protected function redirectToCleanUrl()
+    {
+        if (request()->has('ticket')) {
+            $cleanUrl = request()->url();
+            header("Location: $cleanUrl");
+            exit();
+        }
     }
 
     /**
@@ -232,5 +256,19 @@ class CasService
     {
         $this->initialize();
         return phpCAS::getServerLoginURL();
+    }
+
+    /**
+     * Get the service base URL for CAS
+     */
+    protected function getServiceBaseUrl()
+    {
+        // Use configured service URL or current request URL
+        if (!empty($this->config['cas_client_service'])) {
+            return $this->config['cas_client_service'];
+        }
+
+        // For development, use the current request URL
+        return request()->getSchemeAndHttpHost();
     }
 }

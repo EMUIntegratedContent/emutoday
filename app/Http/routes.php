@@ -43,6 +43,21 @@ Route::get('subscribe', 'MainController@subscribeForm')->name('subscribe');
 /***************
  * CAS Routes
  */
+Route::get('/cas/callback', function () {
+  // This route handles CAS ticket validation
+  if (request()->has('ticket')) {
+    // Validate the ticket
+    if (Cas::isAuthenticated()) {
+      // Get the intended destination from session or default to dashboard
+      $intended = session()->pull('url.intended', '/admin/dashboard');
+      return redirect($intended);
+    }
+  }
+
+  // If no ticket or validation failed, redirect to login
+  return redirect('/admin/dashboard');
+})->name('cas.callback');
+
 Route::get('/cas/logout', function () {
   Auth::logout();
   Session::flush();
@@ -393,7 +408,7 @@ Route::resource('experts', 'Today\ExpertsController');
 /***************
  * Admin Routes
  */
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'cleanup.cas.ticket', 'bindings']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'bindings']], function () {
   Route::group(['prefix' => 'preview', 'middleware' => ['auth', 'bindings']], function () {
     Route::get('insideemu/post/{postId}', 'PreviewController@insideemupost')->name('preview_insideemu_post');
     Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');

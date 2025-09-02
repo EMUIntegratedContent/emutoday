@@ -21,10 +21,12 @@ class Authenticate
    * @param  string|null  $guard
    * @return mixed
    */
-
   public function handle($request, Closure $next, $guard = null)
   {
-    if (! Cas::isAuthenticated()) {
+    if (!Cas::isAuthenticated()) {
+      // Store the intended URL for redirect after authentication
+      session()->put('url.intended', $request->fullUrl());
+
       if ($request->ajax()) {
         return response('Unauthorized.', 401);
       }
