@@ -10,6 +10,12 @@
 <p>EMU Today is Eastern Michigan University's digital hub for stories and news around campus. Discover upcoming events and important announcements to stay current on what's happening at EMU.</p>
 <hr>
 
+<h2>September 2025 Updates (v 1.5.0)</h2>
+<ul>
+<li>Upgraded Laravel framework to version 12.</li>
+<li>Removed the subfission/cas package as it is no longer maintained and does not work with Laravel 12.</li>
+<li>Created a custom Cas service, service provider, and facade to handle CAS instead of the deprecated subfission/cas package.</li>
+</ul>
 <h2>October 2024 Updates (v 1.4.1)</h2>
 <ul>
 <li>Upgraded Laravel framework to version 11.</li>

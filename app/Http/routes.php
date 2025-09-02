@@ -10,9 +10,7 @@ use Emutoday\Tag;
 use Emutoday\Author;
 use Emutoday\MiniCalendar;
 use Illuminate\Support\Facades\Request as Input;
-use Illuminate\Http\Request;
-use GuzzleHttp\Client;
-use Illuminate\Support\Facades\DB;
+use Emutoday\Facades\Cas;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +46,7 @@ Route::get('subscribe', 'MainController@subscribeForm')->name('subscribe');
 Route::get('/cas/logout', function () {
   Auth::logout();
   Session::flush();
-  cas()->logout();
+  Cas::logout();
 })->middleware('auth');  //you MUST use 'auth' middleware and not 'auth.basic'. Otherwise, a user won't be logged out properly.
 
 /***************
