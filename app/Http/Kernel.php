@@ -75,6 +75,9 @@ class Kernel extends HttpKernel
     'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
     'guest' => \Emutoday\Http\Middleware\RedirectIfAuthenticated::class,
     'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+    'cas.auth' => \Emutoday\Http\Middleware\CasAuth::class,
+    'cas.guest' => \Emutoday\Http\Middleware\RedirectCasAuthenticated::class,
+    'cleanup.cas.ticket' => \Emutoday\Http\Middleware\CleanupCasTicket::class,
     'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
     'client_credentials' => \Laravel\Passport\Http\Middleware\CheckClientCredentials::class, //for Laravel Passport OAuth
   ];
