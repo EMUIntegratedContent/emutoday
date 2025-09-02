@@ -46,7 +46,10 @@ Route::get('subscribe', 'MainController@subscribeForm')->name('subscribe');
 Route::get('/cas/callback', function () {
   // This route handles CAS ticket validation
   if (request()->has('ticket')) {
-    // Validate the ticket
+    // Initialize CAS to validate the ticket
+    Cas::isAuthenticated(); // This will validate the ticket
+
+    // Check if authentication was successful
     if (Cas::isAuthenticated()) {
       // Get the intended destination from session or default to dashboard
       $intended = session()->pull('url.intended', '/admin/dashboard');
@@ -54,7 +57,7 @@ Route::get('/cas/callback', function () {
     }
   }
 
-  // If no ticket or validation failed, redirect to login
+  // If no ticket or validation failed, redirect to dashboard
   return redirect('/admin/dashboard');
 })->name('cas.callback');
 

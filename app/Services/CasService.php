@@ -49,10 +49,8 @@ class CasService
         $serviceBaseUrl = $this->getServiceBaseUrl();
         phpCAS::client($version, $this->config['cas_hostname'], $this->config['cas_port'], $this->config['cas_uri'], $serviceBaseUrl);
 
-        // Set service URL
-        if (!empty($this->config['cas_client_service'])) {
-            phpCAS::setFixedServiceURL($this->config['cas_client_service']);
-        }
+        // Don't set a fixed service URL since we want to use the callback route
+        // phpCAS::setFixedServiceURL() is not needed when we pass service URL to client()
 
         // Handle SSL validation
         $this->handleSslValidation();
@@ -263,12 +261,12 @@ class CasService
      */
     protected function getServiceBaseUrl()
     {
-        // Use configured service URL or current request URL
+        // Use configured service URL or default to callback route
         if (!empty($this->config['cas_client_service'])) {
             return $this->config['cas_client_service'];
         }
 
-        // For development, use the current request URL
-        return request()->getSchemeAndHttpHost();
+        // Default to callback route
+        return request()->getSchemeAndHttpHost() . '/cas/callback';
     }
 }

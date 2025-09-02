@@ -65,7 +65,7 @@ return [
 	|--------------------------------------------------------------------------
 	| Example: 'http://localhost', 'https://example.com:8888'
 	*/
-	'cas_client_service' => env('CAS_CLIENT_SERVICE', 'http://localhost:8080'),
+	'cas_client_service' => env('CAS_CLIENT_SERVICE', request()->getSchemeAndHttpHost() . '/cas/callback'),
 
 
 	/*
