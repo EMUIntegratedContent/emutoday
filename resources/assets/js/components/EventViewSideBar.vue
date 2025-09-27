@@ -40,22 +40,26 @@
                href="http://www.emich.edu/registrar/calendars/">ACADEMIC CALENDAR <i class="fa fa-external-link"
                                                                                      aria-hidden="true"></i></a>
             <h4>Event Categories</h4>
-            <ul>
+            <ul class="events-by-category">
               <li class="event-category">
                 <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, false)" href="#">
                   <strong v-if="!selectedCalendarCategory">All Events</strong>
                   <span v-else>All Events</span>
+                  <span class="badge" v-if="totalEventsInMonth">{{ totalEventsInMonth }}</span>
                 </a>
               </li>
-              <template v-for="category in calendarCategories">
-                <li class="event-category" v-if="category.events.length == 0 ?false:true">
-                  <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, category.id)"
-                     href="#">
-                    <strong v-if="selectedCalendarCategory == category.category">{{ category.category }}</strong>
-                    <span v-else>{{ category.category }}</span>
-                  </a>
-                </li>
-              </template>
+              <div class="category-list-scroll">
+                <template v-for="category in calendarCategories">
+                  <li class="event-category" v-if="category.events && category.events.length > 0" :key="category.id">
+                    <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, category.id)"
+                       href="#">
+                      <strong v-if="selectedCalendarCategory == category.category">{{ category.category }}</strong>
+                      <span v-else>{{ category.category }}</span>
+                      <span class="badge" v-if="countEventsForCategory(category) > 0">{{ countEventsForCategory(category) }}</span>
+                    </a>
+                  </li>
+                </template>
+              </div>
             </ul>
           </div>
           <div class="calendar-other-categories">
@@ -212,6 +216,36 @@
   font-weight: 400;
   padding: 4px 0;
 }
+
+.events-by-category {
+  padding: 0;
+}
+
+.category-list-scroll {
+  max-height: 180px; /* keeps size consistent */
+  overflow-y: auto;
+  margin: 0; /* reset default */
+}
+
+.event-category {
+  position: relative;
+  list-style: none;
+}
+
+.event-category a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
+  background: #0f654a;
+  color: #fff;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
 </style>
 
 <script>
@@ -263,6 +297,13 @@ export default {
   },
   computed: {
     ...mapState(['calendarCategories', 'selectedCalendarCategory']),
+    totalEventsInMonth () {
+      // sum counts across categories for the currently selected month/year
+      if (!this.calendarCategories) return 0
+      return this.calendarCategories.reduce((sum, c) => {
+        return sum + this.countEventsForCategory(c)
+      }, 0)
+    },
     currentDayInMonth () {
       if (this.yearVar == this.currentDate.yearVar) {
         if (this.monthVar == this.currentDate.monthVar) {
@@ -286,6 +327,26 @@ export default {
   },
   methods: {
     ...mapMutations(['setCalendarCategories', 'setSelectedCalendarCategory']),
+    countEventsForCategory (category) {
+      console.log('countEventsForCategory called for category:', category);
+      // category.events is expected to be an array of events with a start_date or start_date_string
+      if (!category || !category.events) return 0
+      // try to match by yearVar and monthVar (numeric)
+      const y = parseInt(this.yearVar)
+      const m = parseInt(this.monthVar)
+      if (!y || !m) return 0
+      return category.events.reduce((cnt, ev) => {
+        // event start date might be ISO string or Date-like
+        const sd = ev.start_date || ev.startDate || ev.start || ev.start_date_string
+        if (!sd) return cnt
+        const d = new Date(sd)
+        if (isNaN(d)) return cnt
+        if ((d.getFullYear() === y) && (d.getMonth() + 1 === m)) {
+          return cnt + 1
+        }
+        return cnt
+      }, 0)
+    },
     fetchEvents () {
       this.$http.get('/api/events')
       .then((response) => {
@@ -396,7 +457,7 @@ export default {
       this.$emit('change-eobject', this.selectedDate)
     },
     fetchCategoryList () {
-      this.$http.get('/api/active-categories/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar)
+      this.$http.get('/api/active-categories/')
       .then((response) => {
         this.setCalendarCategories(response.data)
       }).catch((e) => {
