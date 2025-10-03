@@ -46,7 +46,7 @@
                 <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, false)" href="#">
                   <strong v-if="!selectedCalendarCategory">All Events</strong>
                   <span v-else>All Events</span>
-                  <span class="badge" v-if="totalEventsInWeek">{{ totalEventsInWeek }}</span>
+                  <span class="badge" v-if="totalEventsInWeek" title="Counts are for the next 7 days from the selected date">{{ totalEventsInWeek }}</span>
                 </a>
               </li>
               <div class="category-list-scroll">
@@ -56,7 +56,7 @@
                        href="#">
                       <strong v-if="selectedCalendarCategory == category.category">{{ category.category }}</strong>
                       <span v-else>{{ category.category }}</span>
-                      <span class="badge" v-if="countEventsForCategory(category) > 0">{{ countEventsForCategory(category) }}</span>
+                      <span class="badge" v-if="countEventsForCategory(category) > 0" title="Counts are for the next 7 days from the selected date">{{ countEventsForCategory(category) }}</span>
                     </a>
                   </li>
                 </template>
