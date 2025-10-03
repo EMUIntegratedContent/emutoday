@@ -40,16 +40,17 @@
                href="http://www.emich.edu/registrar/calendars/">ACADEMIC CALENDAR <i class="fa fa-external-link"
                                                                                      aria-hidden="true"></i></a>
             <h4>Event Categories</h4>
+            <input class="category-search-input" type="text" placeholder="Search categories..." v-model="categorySearchString" />
             <ul class="events-by-category">
               <li class="event-category">
                 <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, false)" href="#">
                   <strong v-if="!selectedCalendarCategory">All Events</strong>
                   <span v-else>All Events</span>
-                  <span class="badge" v-if="totalEventsInMonth">{{ totalEventsInMonth }}</span>
+                  <span class="badge" v-if="totalEventsInWeek">{{ totalEventsInWeek }}</span>
                 </a>
               </li>
               <div class="category-list-scroll">
-                <template v-for="category in calendarCategories">
+                <template v-for="category in filteredCategories">
                   <li class="event-category" v-if="category.events && category.events.length > 0" :key="category.id">
                     <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, category.id)"
                        href="#">
@@ -288,6 +289,7 @@ export default {
       haseventClass: 'no',
       selectedDay: '',
       calDaysArray: [],
+      categorySearchString: '',
       eventObject: {
         eoYear: '',
         eoMonth: '',
@@ -297,12 +299,42 @@ export default {
   },
   computed: {
     ...mapState(['calendarCategories', 'selectedCalendarCategory']),
-    totalEventsInMonth () {
-      // sum counts across categories for the currently selected month/year
+    // Return the number of unique events across all categories that fall
+    // within the 7-day window starting at `selectedDate`.
+    totalEventsInWeek () {
       if (!this.calendarCategories) return 0
-      return this.calendarCategories.reduce((sum, c) => {
-        return sum + this.countEventsForCategory(c)
-      }, 0)
+
+      const startYear = parseInt(this.selectedDate.yearVar)
+      const startMonth = parseInt(this.selectedDate.monthVar)
+      const startDay = parseInt(this.selectedDate.dayVar)
+      if (!startYear || !startMonth || !startDay) return 0
+
+      const start = new Date(startYear, startMonth - 1, startDay)
+      const end = new Date(start)
+      end.setDate(end.getDate() + 7) // inclusive
+
+      const eventSet = new Set()
+
+      this.calendarCategories.forEach(category => {
+        if (!category || !category.events) return
+        category.events.forEach(event => {
+          const eventStartDate = event.start_date || event.startDate || event.start || event.start_date_string
+          if (!eventStartDate) return
+          const d = new Date(eventStartDate)
+          if (isNaN(d)) return
+          const dOnly = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+          if (dOnly >= start && dOnly <= end) {
+            if (event.id !== undefined && event.id !== null) {
+              eventSet.add(event.id)
+            } else {
+              // fallback key: date + title (if id not present)
+              eventSet.add(`${dOnly.toISOString()}::${(event.title || event.name || '')}`)
+            }
+          }
+        })
+      })
+
+      return eventSet.size
     },
     currentDayInMonth () {
       if (this.yearVar == this.currentDate.yearVar) {
@@ -323,28 +355,46 @@ export default {
       else {
         return '';
       }
+    },
+    filteredCategories () {
+      if (!this.calendarCategories) return []
+      const searchString = (this.categorySearchString || '').trim()
+      if (!searchString) return this.calendarCategories
+      const normalized = searchString.toLowerCase()
+
+      return this.calendarCategories.filter(c => {
+        const name = (c.category || '').toLowerCase()
+        return name.includes(normalized);
+      })
     }
   },
   methods: {
     ...mapMutations(['setCalendarCategories', 'setSelectedCalendarCategory']),
     countEventsForCategory (category) {
-      console.log('countEventsForCategory called for category:', category);
       // category.events is expected to be an array of events with a start_date or start_date_string
       if (!category || !category.events) return 0
-      // try to match by yearVar and monthVar (numeric)
-      const y = parseInt(this.yearVar)
-      const m = parseInt(this.monthVar)
-      if (!y || !m) return 0
-      return category.events.reduce((cnt, ev) => {
+      // Count events in the 7-day range starting at the currently selected date (selectedDate)
+      const startYear = parseInt(this.selectedDate.yearVar)
+      const startMonth = parseInt(this.selectedDate.monthVar)
+      const startDay = parseInt(this.selectedDate.dayVar)
+      if (!startYear || !startMonth || !startDay) return 0
+
+      const start = new Date(startYear, startMonth - 1, startDay)
+      const end = new Date(start)
+      end.setDate(end.getDate() + 7) // inclusive 7-day window
+
+      return category.events.reduce((count, event) => {
         // event start date might be ISO string or Date-like
-        const sd = ev.start_date || ev.startDate || ev.start || ev.start_date_string
-        if (!sd) return cnt
-        const d = new Date(sd)
-        if (isNaN(d)) return cnt
-        if ((d.getFullYear() === y) && (d.getMonth() + 1 === m)) {
-          return cnt + 1
+        const eventStartDate = event.start_date || event.startDate || event.start || event.start_date_string
+        if (!eventStartDate) return count
+        const d = new Date(eventStartDate)
+        if (isNaN(d)) return count
+        // compare only the date portion
+        const dOnly = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+        if (dOnly >= start && dOnly <= end) {
+          return count + 1
         }
-        return cnt
+        return count
       }, 0)
     },
     fetchEvents () {
@@ -377,7 +427,7 @@ export default {
       this.$emit('change-eobject', this.selectedDate);
     },
     fetchEventsByDay (value) {
-      this.$http.get('/api/calendar/events/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar + '/' + value)
+      this.$http.get('/api/calendar/events/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar)
       .then((response) => {
         this.selectedDate.yearVar = response.data.yearVar
         this.selectedDate.monthVar = response.data.monthVar
