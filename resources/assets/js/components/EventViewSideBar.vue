@@ -23,6 +23,7 @@
           <div class="column" data-equalizer-watch><span href="#">Thu</span></div>
           <div class="column" data-equalizer-watch><span href="#">Fri</span></div>
           <div class="column" data-equalizer-watch><span href="#">Sat</span></div>
+          <div class="column" data-equalizer-watch><span href="#">Sat</span></div>
         </div>
         <div class="days row small-up-7 small-collapse">
           <div class="column" v-for="item in calDaysArray" data-equalizer-watch>
@@ -40,7 +41,7 @@
                href="http://www.emich.edu/registrar/calendars/">ACADEMIC CALENDAR <i class="fa fa-external-link"
                                                                                      aria-hidden="true"></i></a>
             <h4>Event Categories</h4>
-            <input class="category-search-input" type="text" placeholder="Search categories..." v-model="categorySearchString" />
+            <input class="category-search-input" type="text" placeholder="Filter categories..." v-model="categorySearchString" />
             <ul class="events-by-category">
               <li class="event-category">
                 <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, false)" href="#">
@@ -222,6 +223,15 @@
   padding: 0;
 }
 
+.events-by-category > li:first-child {
+  border-bottom: 2px solid #0f654a;
+  padding-bottom: 0.2rem;
+}
+
+.events-by-category > li:first-child span.badge {
+  margin-right: 1.3rem;
+}
+
 .category-list-scroll {
   max-height: 180px; /* keeps size consistent */
   overflow-y: auto;
@@ -231,6 +241,7 @@
 .event-category {
   position: relative;
   list-style: none;
+  margin: 0.2rem 0;
 }
 
 .event-category a {
