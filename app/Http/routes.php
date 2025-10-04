@@ -410,7 +410,7 @@ Route::resource('experts', 'Today\ExpertsController');
 /***************
  * Admin Routes
  */
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'bindings']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'cleanup.cas.ticket', 'bindings']], function () {
   Route::group(['prefix' => 'preview', 'middleware' => ['auth', 'bindings']], function () {
     Route::get('insideemu/post/{postId}', 'PreviewController@insideemupost')->name('preview_insideemu_post');
     Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');
