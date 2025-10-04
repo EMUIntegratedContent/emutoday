@@ -147,7 +147,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-				Spatie\Html\HtmlServiceProvider::class,
+        Spatie\Html\HtmlServiceProvider::class,
 
         /*
         * Vendor Specific Providers
@@ -155,7 +155,7 @@ return [
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
-        Subfission\Cas\CasServiceProvider::class,
+        Emutoday\Providers\CasServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
 
@@ -215,6 +215,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Flash' => Laracasts\Flash\Flash::class,
-        'Cas' => Subfission\Cas\Facades\Cas::class
+        'Cas' => Emutoday\Facades\Cas::class,
     ]
 ];
