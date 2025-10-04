@@ -11,7 +11,6 @@ class CategoriesController extends ApiController
 {
   public function activeCategories($year = null, $month = null, $day = null)
   {
-    $mondifier = null;
     if ($year == null) {
       $mondifier = "all";
     } else {
@@ -23,7 +22,6 @@ class CategoriesController extends ApiController
         $mondifier = "YMD";
       }
     }
-    $activateCategories = null;
 
     if($mondifier == "all"){
       $cdate_start = Carbon::now()->startOfDay();
