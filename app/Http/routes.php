@@ -56,9 +56,23 @@ Route::get('/cas/callback', function () {
     }
   }
 
-  // If no ticket or validation failed, redirect to login
+  // If no ticket or validation failed, redirect to dashboard
   return redirect('/admin/dashboard');
 })->name('cas.callback');
+
+// Handle malformed CAS callback URLs (like /cas/callback/admin/dashboard)
+Route::get('/cas/callback/{path}', function ($path) {
+  // Extract the ticket parameter
+  $ticket = request()->get('ticket');
+
+  if ($ticket) {
+    // Redirect to proper callback route with ticket
+    return redirect('/cas/callback?ticket=' . $ticket);
+  }
+
+  // If no ticket, redirect to dashboard
+  return redirect('/admin/dashboard');
+})->where('path', '.*');
 
 Route::get('/cas/logout', function () {
   Auth::logout();
