@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Emutoday\Event;
 use Carbon\Carbon;
 use JavaScript;
+use Emutoday\Facades\Cas;
 
 class CalendarController extends Controller{
 	protected $events;

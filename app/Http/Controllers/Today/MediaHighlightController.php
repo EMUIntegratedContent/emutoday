@@ -7,6 +7,7 @@ use Emutoday\MediaHighlight;
 use Emutoday\MediaHighlightTag;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Emutoday\Facades\Cas;
 
 
 class MediaHighlightController extends Controller

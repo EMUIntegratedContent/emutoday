@@ -10,17 +10,14 @@ use Emutoday\ExpertExpertise;
 use Emutoday\ExpertLanguages;
 use Emutoday\ExpertSocial;
 use Emutoday\ExpertTitles;
-use Emutoday\User;
 use Illuminate\Http\Request;
+use Emutoday\Facades\Cas;
 
 
 use Illuminate\Support\Facades\Request as Input;
-use Carbon\Carbon;
 
 use League\Fractal\Manager;
 use League\Fractal;
-use League\Fractal\Serializer\ArraySerializer;
-use League\Fractal\Serializer\DataArraySerializer;
 
 use Emutoday\Today\Transformers\FractalExpertTransformerModel;
 

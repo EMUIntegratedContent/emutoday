@@ -5,6 +5,7 @@ namespace Emutoday\Http\Controllers\Api;
 
 use Emutoday\Announcement;
 use Illuminate\Http\Request;
+use Emutoday\Facades\Cas;
 
 
 use Illuminate\Support\Facades\Request as Input;

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 // use Emutoday\Http\Requests\StoreAnnouncementRequest;
 
 use Carbon\Carbon;
-use JavaScript;
+use Emutoday\Facades\Cas;
 
 
 class AnnouncementController extends Controller

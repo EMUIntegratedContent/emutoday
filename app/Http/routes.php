@@ -2,7 +2,6 @@
 
 use Emutoday\User;
 use Emutoday\Building;
-use Emutoday\Event;
 use Emutoday\Category;
 use Emutoday\Story;
 use Emutoday\StoryIdeaMedium;
@@ -10,9 +9,7 @@ use Emutoday\Tag;
 use Emutoday\Author;
 use Emutoday\MiniCalendar;
 use Illuminate\Support\Facades\Request as Input;
-use Illuminate\Http\Request;
-use GuzzleHttp\Client;
-use Illuminate\Support\Facades\DB;
+use Emutoday\Facades\Cas;
 
 /*
 |--------------------------------------------------------------------------
