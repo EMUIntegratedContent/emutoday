@@ -45,7 +45,7 @@ class AnnouncementController extends Controller
         // The user is logged in...forward them to the admin form
         return redirect()->action('Admin\AnnouncementController@form');
       } else {
-        $user = cas()->user();
+        $user = Cas::user();
 
         $approveditems = $this->announcement->where([
             ['is_approved', 1],
@@ -65,7 +65,7 @@ class AnnouncementController extends Controller
 
     public function userAnnouncements(Announcement $announcement)
     {
-      $user = cas()->user();
+      $user = Cas::user();
 
       if($user){
         $approveditems = $this->announcement->where([

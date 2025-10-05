@@ -103,9 +103,9 @@ class ExpertsController extends ApiController
     }
     if($validation->passes())
     {
-        cas()->authenticate(); //run authentication before calling cas->user
+        Cas::authenticate(); //run authentication before calling cas->user
         $expert = new Expert;
-        $expert->submitter_username         = cas()->user();
+        $expert->submitter_username         = Cas::user();
 
         $expert->first_name                 = $request->get('first_name');
         $expert->last_name      	        = $request->get('last_name');

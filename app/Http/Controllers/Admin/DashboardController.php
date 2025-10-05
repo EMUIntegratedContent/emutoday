@@ -43,11 +43,11 @@ class DashboardController extends Controller{
 			$user = \Auth::user();
 		}
 		else{
-			if(cas()->isAuthenticated()){
+			if(Cas::isAuthenticated()){
 				abort(403, 'You do not have administrative privileges.');
 			}
 			else{
-				cas()->authenticate();
+				Cas::authenticate();
 			}
 		}
 

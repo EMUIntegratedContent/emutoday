@@ -107,7 +107,7 @@ class MediaHighlightController extends Controller
 
             return redirect()->action('Admin\ExpertsController@form');
         } else {
-            $user = cas()->user();
+            $user = Cas::user();
 
             $expertSubmissions = $this->expert->where([
                 ['submitter_username', $user]
@@ -122,7 +122,7 @@ class MediaHighlightController extends Controller
      */
     public function userExperts(Expert $expert)
     {
-        $user = cas()->user();
+        $user = Cas::user();
 
         if ($user) {
             $expertSubmissions = Expert::where('submitter_username', $user)->orderBy('created_at', 'desc')->get();

@@ -150,7 +150,7 @@ class EventController extends ApiController{
 	 */
 	public function edit($id){
 		// Authenticate user
-		cas()->authenticate();
+		Cas::authenticate();
 
 		// Retrieve the event with id of $id
 		$event = Event::findOrFail($id);
@@ -226,18 +226,18 @@ class EventController extends ApiController{
 
 		// Build record if Valid
 		if($validation->passes()){
-			cas()->authenticate(); //run authentication before calling cas->user
+			Cas::authenticate(); //run authentication before calling cas->user
 
 			$event = new Event;
 
 			// If the user's email is present in the User table, save the user's id in the cea_events.user_id field
-			$userInUserTable = User::where('email', cas()->user().'@emich.edu')->first();
+			$userInUserTable = User::where('email', Cas::user().'@emich.edu')->first();
 			if($userInUserTable){
 				$event->user_id = $userInUserTable->id;
 			}
 
 			// General & Location info
-			$event->submitter = cas()->user();
+			$event->submitter = Cas::user();
 			$event->title = $request->get('title');
 			$event->short_title = $request->get('short_title');
 			$event->description = $request->get('description');
@@ -300,8 +300,8 @@ class EventController extends ApiController{
 				$message = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n".
 					"$event->title\nhttps://today.emich.edu/admin/event/$event->id/edit\n\n".
 					"https://today.emich.edu/admin/event/queue";
-				$headers = 'From: '.cas()->user().'@emich.edu'."\r\n".
-					'Reply-To: '.cas()->user()."@emich.edu"."\r\n".
+				$headers = 'From: '.Cas::user().'@emich.edu'."\r\n".
+					'Reply-To: '.Cas::user()."@emich.edu"."\r\n".
 					'X-Mailer: PHP/'.phpversion();
 				mail($to, $subject, $message, $headers);
 
