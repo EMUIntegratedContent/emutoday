@@ -15,9 +15,9 @@ use Emutoday\Event;
 use Emutoday\Mediafile;
 use Emutoday\Mediatype;
 use Emutoday\User;
+use Emutoday\Category;
 
 use Carbon\Carbon;
-use Mail;
 
 
 use Emutoday\Today\Transformers\FractalEventTransformerModelFull;
@@ -296,8 +296,23 @@ class EventController extends ApiController
 					'X-Mailer: PHP/' . phpversion();
 				mail($to, $subject, $message, $headers);
 
+
+
+				// Make event categories and mini calendars
+
+				// Add or remove LBC Approved Events category based on lbc_approved field CP 10/5/25.
+				$lbcCatId = Category::where('category', 'LBC Approved Events')->first()->id;
 				// Make event categories and mini calendars
 				$categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'), 'value');
+				if ($event->lbc_approved) {
+					// Add LBC Approved Events category if approved. Get the category id from the category table.
+					$categoriesRequest[] = $lbcCatId;
+				} else {
+					// Remove LBC Approved Events category if not approved
+					$categoriesRequest = array_filter($categoriesRequest, function ($category) use ($lbcCatId) {
+						return $category !== $lbcCatId;
+					});
+				}
 				$minicalsRequestValue = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'), 'value');
 				$minicalsRequestParent = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'), 'parent');
 				$minicalsRequest = array_merge($minicalsRequestValue, array_filter($minicalsRequestParent));
@@ -603,8 +618,18 @@ class EventController extends ApiController
 
 
 			if ($event->save()) { // Record successfully Saved
+				$lbcCatId = Category::where('category', 'LBC Approved Events')->first()->id;
 				// Make event categories and mini calendars
 				$categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'), 'value');
+				if ($event->lbc_approved) {
+					// Add LBC Approved Events category if approved. Get the category id from the category table.
+					$categoriesRequest[] = $lbcCatId;
+				} else {
+					// Remove LBC Approved Events category if not approved
+					$categoriesRequest = array_filter($categoriesRequest, function ($category) use ($lbcCatId) {
+						return $category !== $lbcCatId;
+					});
+				}
 				$minicalsRequestValue = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'), 'value');
 				$minicalsRequestParent = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'), 'parent');
 				$minicalsRequest = array_merge($minicalsRequestValue, array_filter($minicalsRequestParent));
