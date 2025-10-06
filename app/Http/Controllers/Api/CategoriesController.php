@@ -11,7 +11,6 @@ class CategoriesController extends ApiController
 {
   public function activeCategories($year = null, $month = null, $day = null)
   {
-    $mondifier;
     if ($year == null) {
       $mondifier = "all";
     } else {
@@ -23,12 +22,11 @@ class CategoriesController extends ApiController
         $mondifier = "YMD";
       }
     }
-    $activateCategories;
 
     if($mondifier == "all"){
       $cdate_start = Carbon::now()->startOfDay();
       $activateCategories = Category::with(['events' => function($query) use ($cdate_start) {
-        $query->where('start_date', '>=', $cdate_start)->addSelect('id','title');
+        $query->where('start_date', '>=', $cdate_start)->addSelect('id','title','start_date');
       }])->addSelect('id','category','slug')->get();
 
     } else {
@@ -48,7 +46,7 @@ class CategoriesController extends ApiController
           ['start_date', '>=', $cdate_start],
           ['start_date', '<=', $cdate_end],
           ['is_approved', 1]
-          ])->addSelect('id','title');
+          ])->addSelect('id','title','start_date');
         }])->addSelect('id','category','slug')->get();
       }
       // $cats = Category::with('events')->afterThisDate(Carbon::now()->subYear())->get();
