@@ -2,7 +2,7 @@
   <div>
     <p>
       Please include any images that should be considered along with this submission.<br>
-      <span class="font-weight-bold">The minimum accepted resolution for images is 412px by 248 px.<br>Image size may not exceed 2 MB.</span>
+      <span class="font-weight-bold">The minimum accepted resolution for images is 960px by 540px.<br>Image size may not exceed 2 MB.</span>
     </p>
     <v-file-input
         v-model="fileInputImgs"
@@ -61,8 +61,8 @@ export default {
         const img = new Image();
         img.src = imageUrl;
         img.onload = () => { // Wait for the image to load before checking the dimensions
-          if (img.width < 412 || img.height < 248) {
-            alert(`The file ${file.name} is too small (${img.width}px by ${img.height}px). Please upload a file that is at least 412px by 248px. Skipping this file.`)
+          if (img.width < 960 || img.height < 540) {
+            alert(`The file ${file.name} is too small (${img.width}px by ${img.height}px). Please upload a file that is at least 960px by 540px. Skipping this file.`)
           } else {
             this.idea.images.push({
               id: `new-${Date.now()}`, // Generate a temporary ID
