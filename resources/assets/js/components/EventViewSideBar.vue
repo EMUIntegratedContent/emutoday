@@ -8,7 +8,7 @@
                 src="/assets/imgs/calendar/green-calendar-arrow-before.png" alt="arrow"></a>
           </div>
           <div class="text-center calendar-title small-8 columns">
-            <p>{{ selectedDate.monthVarWord }} {{ selectedDate.yearVar }}</p>
+            <p>{{ monthVarWord }} {{ yearVar }}</p>
           </div>
           <div class="small-2 columns">
             <a id="month-next" v-on:click.prevent="newMonth('next')" class="text-right" href=""><img
@@ -46,17 +46,17 @@
                 <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, false)" href="#">
                   <strong v-if="!selectedCalendarCategory">All Events</strong>
                   <span v-else>All Events</span>
-                  <span class="badge" v-if="totalEventsInWeek" title="Counts are for the next 7 days from the selected date">{{ totalEventsInWeek }}</span>
+                  <span class="badge" v-if="totalEventsInWeek" title="Counts are for future events during the next 7 days from the selected date">{{ totalEventsInWeek }}</span>
                 </a>
               </li>
               <div class="category-list-scroll">
-                <template v-for="category in filteredCategories">
-                  <li class="event-category" v-if="category.events && category.events.length > 0" :key="category.id">
+                <template v-for="category in filteredCategories" :key="category.id">
+                  <li class="event-category">
                     <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, category.id)"
                        href="#">
                       <strong v-if="selectedCalendarCategory == category.category">{{ category.category }}</strong>
                       <span v-else>{{ category.category }}</span>
-                      <span class="badge" v-if="countEventsForCategory(category) > 0" title="Counts are for the next 7 days from the selected date">{{ countEventsForCategory(category) }}</span>
+                      <span class="badge" v-if="countEventsForCategory(category) > 0" title="Counts are for future events during the next 7 days from the selected date">{{ countEventsForCategory(category) }}</span>
                     </a>
                   </li>
                 </template>
@@ -425,6 +425,8 @@ export default {
       (cateid === false) ? this.selectedDate.cateid = null : null;
 
       this.$emit('change-eobject', this.selectedDate);
+
+      this.fetchCategoryList(this.selectedDate.yearVar, this.selectedDate.monthVar, this.selectedDate.dayVar)
     },
     fetchEventsByDay (value) {
       this.$http.get('/api/calendar/events/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar)
@@ -471,12 +473,7 @@ export default {
         this.calDaysArray = response.data.calDaysArray
         this.monthArray = response.data.monthArray
 
-        this.selectedDate.yearVar = response.data.selectedYear
-        this.selectedDate.monthVar = response.data.selectedMonth
-        this.selectedDate.monthVarWord = response.data.selectedMonthWord
-        this.selectedDate.dayVar = response.data.selectedDay
-
-        this.fetchCategoryList()
+        this.monthVarWord = response.data.selectedMonthWord
       }).catch((e) => {
         console.log(e)
       })
@@ -498,7 +495,7 @@ export default {
         this.currentDate.dayVar = response.data.currentDay
         this.calDaysArray = response.data.calDaysArray
         this.pushFirstDateRange()
-        this.fetchCategoryList()
+        this.fetchCategoryList(this.selectedDate.yearVar, this.selectedDate.monthVar, this.selectedDate.dayVar)
       }).catch((e) => {
         console.log(e)
       })
@@ -506,10 +503,11 @@ export default {
     pushFirstDateRange () {
       this.$emit('change-eobject', this.selectedDate)
     },
+
     fetchCategoryList () {
       this.$http.get('/api/active-categories/')
       .then((response) => {
-        this.setCalendarCategories(response.data)
+          this.setCalendarCategories(response.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -517,6 +515,17 @@ export default {
     removex (val) {
       return (val[0] == 'x') ? '_' : val
     }
+  },
+  mounted() {
+    const now = new Date()
+    const selYear = parseInt(this.selectedDate.yearVar) || parseInt(this.yearVar) || now.getFullYear()
+    const selMonth = parseInt(this.selectedDate.monthVar) || parseInt(this.monthVar) || (now.getMonth() + 1)
+
+    this.yearVar = selYear
+    this.monthVar = selMonth
+    this.monthVarWord = new Date(selYear, selMonth - 1, 1).toLocaleString('en-US', { month: 'long' })
+
+    this.fetchCategoryList()
   },
   watch: {
     starthere (newVal) { // watch it
