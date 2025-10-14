@@ -8,7 +8,7 @@
                 src="/assets/imgs/calendar/green-calendar-arrow-before.png" alt="arrow"></a>
           </div>
           <div class="text-center calendar-title small-8 columns">
-            <p>{{ selectedDate.monthVarWord }} {{ selectedDate.yearVar }}</p>
+            <p>{{ monthVarWord }} {{ yearVar }}</p>
           </div>
           <div class="small-2 columns">
             <a id="month-next" v-on:click.prevent="newMonth('next')" class="text-right" href=""><img
@@ -22,6 +22,7 @@
           <div class="column" data-equalizer-watch><span href="#">Wed</span></div>
           <div class="column" data-equalizer-watch><span href="#">Thu</span></div>
           <div class="column" data-equalizer-watch><span href="#">Fri</span></div>
+          <div class="column" data-equalizer-watch><span href="#">Sat</span></div>
           <div class="column" data-equalizer-watch><span href="#">Sat</span></div>
         </div>
         <div class="days row small-up-7 small-collapse">
@@ -40,22 +41,27 @@
                href="http://www.emich.edu/registrar/calendars/">ACADEMIC CALENDAR <i class="fa fa-external-link"
                                                                                      aria-hidden="true"></i></a>
             <h4>Event Categories</h4>
-            <ul>
+            <input class="category-search-input" type="text" placeholder="Filter categories..." v-model="categorySearchString" />
+            <ul class="events-by-category">
               <li class="event-category">
                 <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, false)" href="#">
                   <strong v-if="!selectedCalendarCategory">All Events</strong>
                   <span v-else>All Events</span>
+                  <span class="badge" v-if="totalEventsInWeek" title="Counts are for events during the next 7 days from the selected date">{{ totalEventsInWeek }}</span>
                 </a>
               </li>
-              <template v-for="category in calendarCategories">
-                <li class="event-category" v-if="category.events.length == 0 ?false:true">
-                  <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, category.id)"
-                     href="#">
-                    <strong v-if="selectedCalendarCategory == category.category">{{ category.category }}</strong>
-                    <span v-else>{{ category.category }}</span>
-                  </a>
-                </li>
-              </template>
+              <div class="category-list-scroll">
+                <template v-for="category in filteredCategories" :key="category.id">
+                  <li class="event-category">
+                    <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, category.id)"
+                       href="#">
+                      <strong v-if="selectedCalendarCategory == category.category">{{ category.category }}</strong>
+                      <span v-else>{{ category.category }}</span>
+                      <span class="badge" v-if="countEventsForCategory(category) > 0" title="Counts are for events during the next 7 days from the selected date">{{ countEventsForCategory(category) }}</span>
+                    </a>
+                  </li>
+                </template>
+              </div>
             </ul>
           </div>
           <div class="calendar-other-categories">
@@ -212,6 +218,46 @@
   font-weight: 400;
   padding: 4px 0;
 }
+
+.events-by-category {
+  padding: 0;
+}
+
+.events-by-category > li:first-child {
+  border-bottom: 2px solid #0f654a;
+  padding-bottom: 0.2rem;
+}
+
+.events-by-category > li:first-child span.badge {
+  margin-right: 1.3rem;
+}
+
+.category-list-scroll {
+  max-height: 180px; /* keeps size consistent */
+  overflow-y: auto;
+  margin: 0; /* reset default */
+}
+
+.event-category {
+  position: relative;
+  list-style: none;
+  margin: 0.2rem 0;
+}
+
+.event-category a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
+  background: #0f654a;
+  color: #fff;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
 </style>
 
 <script>
@@ -254,6 +300,7 @@ export default {
       haseventClass: 'no',
       selectedDay: '',
       calDaysArray: [],
+      categorySearchString: '',
       eventObject: {
         eoYear: '',
         eoMonth: '',
@@ -263,6 +310,43 @@ export default {
   },
   computed: {
     ...mapState(['calendarCategories', 'selectedCalendarCategory']),
+    // Return the number of unique events across all categories that fall
+    // within the 7-day window starting at `selectedDate`.
+    totalEventsInWeek () {
+      if (!this.calendarCategories) return 0
+
+      const startYear = parseInt(this.selectedDate.yearVar)
+      const startMonth = parseInt(this.selectedDate.monthVar)
+      const startDay = parseInt(this.selectedDate.dayVar)
+      if (!startYear || !startMonth || !startDay) return 0
+
+      const start = new Date(startYear, startMonth - 1, startDay)
+      const end = new Date(start)
+      end.setDate(end.getDate() + 7) // inclusive
+
+      const eventSet = new Set()
+
+      this.calendarCategories.forEach(category => {
+        if (!category || !category.events) return
+        category.events.forEach(event => {
+          const eventStartDate = event.start_date || event.startDate || event.start || event.start_date_string
+          if (!eventStartDate) return
+          const d = new Date(eventStartDate)
+          if (isNaN(d)) return
+          const dOnly = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+          if (dOnly >= start && dOnly <= end) {
+            if (event.id !== undefined && event.id !== null) {
+              eventSet.add(event.id)
+            } else {
+              // fallback key: date + title (if id not present)
+              eventSet.add(`${dOnly.toISOString()}::${(event.title || event.name || '')}`)
+            }
+          }
+        })
+      })
+
+      return eventSet.size
+    },
     currentDayInMonth () {
       if (this.yearVar == this.currentDate.yearVar) {
         if (this.monthVar == this.currentDate.monthVar) {
@@ -282,10 +366,48 @@ export default {
       else {
         return '';
       }
+    },
+    filteredCategories () {
+      if (!this.calendarCategories) return []
+      const searchString = (this.categorySearchString || '').trim()
+      if (!searchString) return this.calendarCategories
+      const normalized = searchString.toLowerCase()
+
+      return this.calendarCategories.filter(c => {
+        const name = (c.category || '').toLowerCase()
+        return name.includes(normalized);
+      })
     }
   },
   methods: {
     ...mapMutations(['setCalendarCategories', 'setSelectedCalendarCategory']),
+    countEventsForCategory (category) {
+      // category.events is expected to be an array of events with a start_date or start_date_string
+      if (!category || !category.events) return 0
+      // Count events in the 7-day range starting at the currently selected date (selectedDate)
+      const startYear = parseInt(this.selectedDate.yearVar)
+      const startMonth = parseInt(this.selectedDate.monthVar)
+      const startDay = parseInt(this.selectedDate.dayVar)
+      if (!startYear || !startMonth || !startDay) return 0
+
+      const start = new Date(startYear, startMonth - 1, startDay)
+      const end = new Date(start)
+      end.setDate(end.getDate() + 7) // inclusive 7-day window
+
+      return category.events.reduce((count, event) => {
+        // event start date might be ISO string or Date-like
+        const eventStartDate = event.start_date || event.startDate || event.start || event.start_date_string
+        if (!eventStartDate) return count
+        const d = new Date(eventStartDate)
+        if (isNaN(d)) return count
+        // compare only the date portion
+        const dOnly = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+        if (dOnly >= start && dOnly <= end) {
+          return count + 1
+        }
+        return count
+      }, 0)
+    },
     fetchEvents () {
       this.$http.get('/api/events')
       .then((response) => {
@@ -314,9 +436,11 @@ export default {
       (cateid === false) ? this.selectedDate.cateid = null : null;
 
       this.$emit('change-eobject', this.selectedDate);
+
+      this.fetchCategoryList(this.selectedDate.yearVar, this.selectedDate.monthVar, this.selectedDate.dayVar)
     },
     fetchEventsByDay (value) {
-      this.$http.get('/api/calendar/events/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar + '/' + value)
+      this.$http.get('/api/calendar/events/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar)
       .then((response) => {
         this.selectedDate.yearVar = response.data.yearVar
         this.selectedDate.monthVar = response.data.monthVar
@@ -360,12 +484,7 @@ export default {
         this.calDaysArray = response.data.calDaysArray
         this.monthArray = response.data.monthArray
 
-        this.selectedDate.yearVar = response.data.selectedYear
-        this.selectedDate.monthVar = response.data.selectedMonth
-        this.selectedDate.monthVarWord = response.data.selectedMonthWord
-        this.selectedDate.dayVar = response.data.selectedDay
-
-        this.fetchCategoryList()
+        this.monthVarWord = response.data.selectedMonthWord
       }).catch((e) => {
         console.log(e)
       })
@@ -387,7 +506,7 @@ export default {
         this.currentDate.dayVar = response.data.currentDay
         this.calDaysArray = response.data.calDaysArray
         this.pushFirstDateRange()
-        this.fetchCategoryList()
+        this.fetchCategoryList(this.selectedDate.yearVar, this.selectedDate.monthVar, this.selectedDate.dayVar)
       }).catch((e) => {
         console.log(e)
       })
@@ -395,10 +514,15 @@ export default {
     pushFirstDateRange () {
       this.$emit('change-eobject', this.selectedDate)
     },
-    fetchCategoryList () {
-      this.$http.get('/api/active-categories/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar)
+
+    fetchCategoryList (yearVar, monthVar, dayVar) {
+      let url = '/api/active-categories/'
+      if(yearVar && monthVar && dayVar) {
+        url += yearVar + '/' + monthVar + '/' + dayVar
+      }
+      this.$http.get(url)
       .then((response) => {
-        this.setCalendarCategories(response.data)
+          this.setCalendarCategories(response.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -406,6 +530,17 @@ export default {
     removex (val) {
       return (val[0] == 'x') ? '_' : val
     }
+  },
+  mounted() {
+    const now = new Date()
+    const selYear = parseInt(this.selectedDate.yearVar) || parseInt(this.yearVar) || now.getFullYear()
+    const selMonth = parseInt(this.selectedDate.monthVar) || parseInt(this.monthVar) || (now.getMonth() + 1)
+
+    this.yearVar = selYear
+    this.monthVar = selMonth
+    this.monthVarWord = new Date(selYear, selMonth - 1, 1).toLocaleString('en-US', { month: 'long' })
+
+    this.fetchCategoryList()
   },
   watch: {
     starthere (newVal) { // watch it

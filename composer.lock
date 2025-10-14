@@ -1210,6 +1210,7 @@
         },
         {
             "name": "google/apiclient-services",
+<<<<<<< HEAD
             "version": "v0.414.0",
             "source": {
                 "type": "git",
@@ -1220,6 +1221,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/5bd542b6d9639b89b95270ae85ed3062b4ca9b8e",
                 "reference": "5bd542b6d9639b89b95270ae85ed3062b4ca9b8e",
+=======
+            "version": "v0.415.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/googleapis/google-api-php-client-services.git",
+                "reference": "080bdeb1d5243429164dc589b69426bae98dad1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/080bdeb1d5243429164dc589b69426bae98dad1d",
+                "reference": "080bdeb1d5243429164dc589b69426bae98dad1d",
+>>>>>>> master
                 "shasum": ""
             },
             "require": {
@@ -1248,9 +1261,15 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.414.0"
             },
             "time": "2025-09-28T01:08:30+00:00"
+=======
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.415.0"
+            },
+            "time": "2025-10-05T01:02:15+00:00"
+>>>>>>> master
         },
         {
             "name": "google/auth",
@@ -2184,6 +2203,7 @@
         },
         {
             "name": "laravel/framework",
+<<<<<<< HEAD
             "version": "v12.32.5",
             "source": {
                 "type": "git",
@@ -2198,6 +2218,22 @@
             },
             "require": {
                 "brick/math": "^0.11|^0.12|^0.13|^0.14",
+=======
+            "version": "v11.46.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/framework.git",
+                "reference": "5fd457f807570a962a53b403b1346efe4cc80bb8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/5fd457f807570a962a53b403b1346efe4cc80bb8",
+                "reference": "5fd457f807570a962a53b403b1346efe4cc80bb8",
+                "shasum": ""
+            },
+            "require": {
+                "brick/math": "^0.9.3|^0.10.2|^0.11|^0.12|^0.13|^0.14",
+>>>>>>> master
                 "composer-runtime-api": "^2.2",
                 "doctrine/inflector": "^2.0.5",
                 "dragonmantank/cron-expression": "^3.4",
@@ -2304,9 +2340,14 @@
                 "league/flysystem-read-only": "^3.25.1",
                 "league/flysystem-sftp-v3": "^3.25.1",
                 "mockery/mockery": "^1.6.10",
+<<<<<<< HEAD
                 "opis/json-schema": "^2.4.1",
                 "orchestra/testbench-core": "^10.6.5",
                 "pda/pheanstalk": "^5.0.6|^7.0.0",
+=======
+                "orchestra/testbench-core": "^9.16.1",
+                "pda/pheanstalk": "^5.0.6",
+>>>>>>> master
                 "php-http/discovery": "^1.15",
                 "phpstan/phpstan": "^2.0",
                 "phpunit/phpunit": "^10.5.35|^11.5.3|^12.0.1",
@@ -2399,7 +2440,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
+<<<<<<< HEAD
             "time": "2025-09-30T17:39:22+00:00"
+=======
+            "time": "2025-09-30T14:51:32+00:00"
+>>>>>>> master
         },
         {
             "name": "laravel/helpers",
@@ -4987,16 +5032,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.46",
+            "version": "3.0.47",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "56483a7de62a6c2a6635e42e93b8a9e25d4f0ec6"
+                "reference": "9d6ca36a6c2dd434765b1071b2644a1c683b385d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/56483a7de62a6c2a6635e42e93b8a9e25d4f0ec6",
-                "reference": "56483a7de62a6c2a6635e42e93b8a9e25d4f0ec6",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/9d6ca36a6c2dd434765b1071b2644a1c683b385d",
+                "reference": "9d6ca36a6c2dd434765b1071b2644a1c683b385d",
                 "shasum": ""
             },
             "require": {
@@ -5077,7 +5122,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.46"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.47"
             },
             "funding": [
                 {
@@ -5093,7 +5138,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-06-26T16:29:55+00:00"
+            "time": "2025-10-06T01:07:24+00:00"
         },
         {
             "name": "psr/cache",
@@ -6160,6 +6205,81 @@
                 }
             ],
             "time": "2025-10-02T07:26:38+00:00"
+<<<<<<< HEAD
+=======
+        },
+        {
+            "name": "subfission/cas",
+            "version": "v5.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/subfission/cas.git",
+                "reference": "6180e042c9772af49ce62abb162cd798760c7fa8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/subfission/cas/zipball/6180e042c9772af49ce62abb162cd798760c7fa8",
+                "reference": "6180e042c9772af49ce62abb162cd798760c7fa8",
+                "shasum": ""
+            },
+            "require": {
+                "apereo/phpcas": "^1.6",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+                "monolog/monolog": "^2.0|^3.0",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.25"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Cas": "Subfission\\Cas\\Facades\\Cas"
+                    },
+                    "providers": [
+                        "Subfission\\Cas\\CasServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Subfission/Cas/functions.php"
+                ],
+                "psr-4": {
+                    "Subfission\\Cas\\": "src/Subfission/Cas/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "subfission",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Adds CAS support to Laravel 5.x - 11.x",
+            "keywords": [
+                "SSO",
+                "cas",
+                "laravel",
+                "laravel 10",
+                "laravel 11",
+                "laravel 6",
+                "laravel 7",
+                "laravel 8",
+                "laravel 9",
+                "phpCAS"
+            ],
+            "support": {
+                "issues": "https://github.com/subfission/cas/issues",
+                "source": "https://github.com/subfission/cas/tree/v5.1.0"
+            },
+            "abandoned": true,
+            "time": "2024-09-13T06:00:10+00:00"
+>>>>>>> master
         },
         {
             "name": "symfony/clock",
