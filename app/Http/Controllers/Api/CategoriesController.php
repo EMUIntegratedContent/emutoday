@@ -39,7 +39,7 @@ class CategoriesController extends ApiController
         $cdate_end =  Carbon::create($year, $month, $cdate_daysInMonth)->endOfDay();
       } else {
         $cdate_start = Carbon::create($year, $month, $day)->startOfDay();
-        $cdate_end =  Carbon::create($year, $month, $day)->endOfDay();
+        $cdate_end =  Carbon::create($year, $month, $day)->addDays(7)->endOfDay();
       }
       $activateCategories = Category::with(['events' => function($query) use ($cdate_start, $cdate_end) {
         $query->where([
