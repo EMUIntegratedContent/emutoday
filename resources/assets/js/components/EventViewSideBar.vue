@@ -515,8 +515,12 @@ export default {
       this.$emit('change-eobject', this.selectedDate)
     },
 
-    fetchCategoryList () {
-      this.$http.get('/api/active-categories/')
+    fetchCategoryList (yearVar, monthVar, dayVar) {
+      let url = '/api/active-categories/'
+      if(yearVar && monthVar && dayVar) {
+        url += yearVar + '/' + monthVar + '/' + dayVar
+      }
+      this.$http.get(url)
       .then((response) => {
           this.setCalendarCategories(response.data)
       }).catch((e) => {
