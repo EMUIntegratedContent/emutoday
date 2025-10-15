@@ -23,7 +23,6 @@
           <div class="column" data-equalizer-watch><span href="#">Thu</span></div>
           <div class="column" data-equalizer-watch><span href="#">Fri</span></div>
           <div class="column" data-equalizer-watch><span href="#">Sat</span></div>
-          <div class="column" data-equalizer-watch><span href="#">Sat</span></div>
         </div>
         <div class="days row small-up-7 small-collapse">
           <div class="column" v-for="item in calDaysArray" data-equalizer-watch>
