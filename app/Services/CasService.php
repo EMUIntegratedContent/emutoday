@@ -70,6 +70,10 @@ class CasService
 
         // Handle session control
         if (!$this->config['cas_control_session']) {
+            // When Laravel controls sessions, allow phpCAS to clear tickets from URL
+            // This prevents the ticket parameter from appearing in the URL after authentication
+        } else {
+            // When phpCAS controls sessions, prevent clearing tickets from URL
             phpCAS::setNoClearTicketsFromUrl();
         }
 
