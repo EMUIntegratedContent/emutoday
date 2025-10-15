@@ -69,6 +69,10 @@ class CasService
         }
 
         // Handle session control
+        /**
+         * With the current configuration (cas_control_session = false), Laravel manages the authentication sessions, and phpCAS will now automatically strip the ticket parameter from the URL after successful authentication. This is the standard and secure behavior you want.
+         * The ticket will still be present during the authentication process, but it will be removed from the URL once the authentication is complete and the user is redirected to their destination page.
+         */
         if (!$this->config['cas_control_session']) {
             // When Laravel controls sessions, allow phpCAS to clear tickets from URL
             // This prevents the ticket parameter from appearing in the URL after authentication
