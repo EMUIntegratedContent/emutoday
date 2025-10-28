@@ -5,5 +5,7 @@
 <script type="text/javascript" src="/js/vue-search-form-offcanvas.js"></script>
 <script type="text/javascript">
 
+{{-- Make env variable accessible to app.js file for emergency banner --}}
+window.APP_ENV = "{{ config('app.env') }}";
 </script>
 @yield('scriptsfooter')

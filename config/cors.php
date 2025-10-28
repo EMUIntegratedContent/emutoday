@@ -19,7 +19,7 @@
     'supportsCredentials' => false,
     'allowedOrigins' => ['http://www.emich.edu', 'https://www.emich.edu', 'http://emich.edu', 'https://emich.edu', 'http://webstage.emich.edu', 'https://webstage.emich.edu'],
     'allowedHeaders' => ['*'], // ex : ['Content-Type', 'Accept']
-    'allowedMethods' => ['GET', 'POST'], // ex: ['GET', 'POST', 'PUT',  'DELETE']
+    'allowedMethods' => ['GET', 'POST'], // ex: ['GET', 'POST', 'PUT', 'DELETE']
     'exposedHeaders' => [],
     'maxAge' => 3600,
     'hosts' => [],

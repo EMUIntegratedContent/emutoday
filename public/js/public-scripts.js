@@ -1880,14 +1880,21 @@ $(document).ready(function() {
       $('#outdated-browser-container').html('<p class="browserupgrade">EMU Today does not support Internet Explorer 10 or below. Please download the latest versions of <a href="https://www.mozilla.org/en-US/firefox/new/?utm_medium=referral&utm_source=firefox-com" class="firefox">Firefox</a> or <a href="https://www.google.com/chrome/" class="chrome">Chrome</a> to improve your viewing experience.</p>');
   }
 
-  $.getJSON( "https://www.emich.edu/admin/api/emergency_api.php", function( data ) {
-    if(data.display == "yes"){
+  // Emergency Banner
+  const env = window.APP_ENV // passed in from scriptsfooter.blade.php
+  let url = "https://ic.emich.edu/api/emergency/banner"
+  if(env !== "production"){
+    url = "https://ictest.emich.edu/api/emergency/banner"
+  }
+
+  $.getJSON(url, function( data ) {
+    if(data.displayBanner === true){
         $( "#emergency-bar" ).removeClass("no")
-        $( "#emergency-title" ).html( data.title )
-        $( "#emergency-message" ).html( data.message )
-        $( "#emergency-bar-content").append('<h3 id="emergency-title">' + data.title + '</h3>')
-        $( "#emergency-bar-content").append('<p id="emergency-message">' + data.message + '</p>')
-        if( data.severity == "yellow" ){
+        $( "#emergency-title" ).html( data.bannerTitle )
+        $( "#emergency-message" ).html( data.bannerMessage )
+        $( "#emergency-bar-content").append('<h3 id="emergency-title">' + data.bannerTitle + '</h3>')
+        $( "#emergency-bar-content").append('<p id="emergency-message">' + data.bannerMessage + '</p>')
+        if( data.severity == "warning" ){
             $("#emergency-bar").addClass("emergency-yellow")
         }
         if( data.severity == "red" ){
