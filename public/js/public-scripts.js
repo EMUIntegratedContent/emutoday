@@ -1897,7 +1897,7 @@ $(document).ready(function() {
         if( data.severity == "warning" ){
             $("#emergency-bar").addClass("emergency-yellow")
         }
-        if( data.severity == "red" ){
+        if( data.severity == "danger" ){
             $("#emergency-bar").addClass("emergency-red")
         }
     }
