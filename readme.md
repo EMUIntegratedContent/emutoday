@@ -9,13 +9,26 @@
 <hr>
 <p>EMU Today is Eastern Michigan University's digital hub for stories and news around campus. Discover upcoming events and important announcements to stay current on what's happening at EMU.</p>
 <hr>
-
+<h2>January 2026 Updates (v 1.5.2)</h2>
+<ul>
+<li>TODO: Get rid of CAS and use LDAP for authentication https://ldaprecord.com/docs/laravel/v3</li>
+</ul>
+<h2>October 2025 Updates (v 1.5.1)</h2>
+<ul>
+<li>Show all calendar categories on the calendar page.</li>
+</ul>
+<h2>October 2025 Updates (v 1.5.0)</h2>
+<ul>
+<li>Upgraded Laravel framework to version 12</li>
+<li>Created custom CAS login service after subfission\cas deprecation.</li>
+</ul>
 <h2>October 2024 Updates (v 1.4.1)</h2>
 <ul>
 <li>Upgraded Laravel framework to version 11.</li>
 <li>Upgraded codebase to be compatible with PHP 8.3.</li>
 <li>Introduced <strong>Inside EMU</strong>, a way for EMU staff and faculty submit items for inclusion on the EMU Today site.</li>
 <li>Subscribing to EMU Today now involves a "double opt-in" strategy through Mailgun.</li>
+<li>Re-worked image filters and image caching after intervention\imagecache deprecation.</li>
 </ul>
 <h2>July 2023 Updates (v 1.3.0)</h2>
 <ul>
