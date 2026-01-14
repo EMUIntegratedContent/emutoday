@@ -47,8 +47,10 @@ class MiniCalendarController extends \Emutoday\Http\Controllers\Admin\Controller
     {
         $data = $request->validate([
             'calendar' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:cea_mini_calendars,slug',
+            'slug' => 'nullable|string|max:255|regex:/^[a-z0-9-]+$/|unique:cea_mini_calendars,slug',
             'parent' => 'nullable|exists:cea_mini_calendars,id',
+        ], [
+            'slug.regex' => 'The slug may only contain lowercase letters, numbers, and hyphens.',
         ]);
 
         $slugSource = empty($data['slug']) ? $data['calendar'] : $data['slug'];
@@ -73,8 +75,10 @@ class MiniCalendarController extends \Emutoday\Http\Controllers\Admin\Controller
 
         $data = $request->validate([
             'calendar' => 'required|string|max:255',
-            'slug' => ['nullable','string','max:255', Rule::unique('cea_mini_calendars','slug')->ignore($id,'id')],
+            'slug' => ['nullable','string','max:255','regex:/^[a-z0-9-]+$/', Rule::unique('cea_mini_calendars','slug')->ignore($id,'id')],
             'parent' => 'nullable|exists:cea_mini_calendars,id',
+        ], [
+            'slug.regex' => 'The slug may only contain lowercase letters, numbers, and hyphens.',
         ]);
 
         if (isset($data['parent']) && $data['parent'] == $id) {

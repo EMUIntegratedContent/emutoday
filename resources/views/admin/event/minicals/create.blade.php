@@ -12,9 +12,12 @@
         <label for="calendar">Name</label>
         <input type="text" name="calendar" class="form-control" value="{{ old('calendar') }}" required />
       </div>
-      <div class="form-group">
+      <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
         <label for="slug">Slug (optional)</label>
-        <input type="text" name="slug" class="form-control" value="{{ old('slug') }}" />
+        <input type="text" name="slug" class="form-control" value="{{ old('slug') }}" pattern="[a-z0-9-]+" title="Only lowercase letters, numbers, and hyphens are allowed." />
+        @if($errors->has('slug'))
+          <span class="help-block">{{ $errors->first('slug') }}</span>
+        @endif
         <p class="help-block">If left blank a kebab-case slug will be generated from the name.</p>
       </div>
       <div class="form-group">

@@ -13,9 +13,12 @@
         <label for="calendar">Name</label>
         <input type="text" name="calendar" class="form-control" value="{{ old('calendar', $minical->calendar) }}" required />
       </div>
-      <div class="form-group">
+      <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
         <label for="slug">Slug</label>
-        <input type="text" name="slug" class="form-control" value="{{ old('slug', $minical->slug) }}" />
+        <input type="text" name="slug" class="form-control" value="{{ old('slug', $minical->slug) }}" pattern="[a-z0-9-]+" title="Only lowercase letters, numbers, and hyphens are allowed." />
+        @if($errors->has('slug'))
+          <span class="help-block">{{ $errors->first('slug') }}</span>
+        @endif
       </div>
       <div class="form-group">
         <label for="parent">Parent</label>
