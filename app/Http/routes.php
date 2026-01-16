@@ -525,6 +525,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'cleanup.cas.ticket'
   Route::get('/lbcqueue', 'Admin\EventController@lbcqueue')->name('admin.event.lbcqueue');
   Route::get('/hscqueue', 'Admin\EventController@hscqueue')->name('admin.event.hscqueue');
   Route::get('event/form', 'Admin\EventController@form')->name('admin.event.form');
+
+  // Mini Calendars CRUD (no delete) - accessible under /admin/event/minicals
+  Route::get('event/minicals', 'Admin\Event\MiniCalendarController@index')->name('admin.event.minicals.index');
+  Route::get('event/minicals/create', 'Admin\Event\MiniCalendarController@create')->name('admin.event.minicals.create');
+  Route::post('event/minicals', 'Admin\Event\MiniCalendarController@store')->name('admin.event.minicals.store');
+  Route::get('event/minicals/{id}/edit', 'Admin\Event\MiniCalendarController@edit')->name('admin.event.minicals.edit');
+  Route::put('event/minicals/{id}', 'Admin\Event\MiniCalendarController@update')->name('admin.event.minicals.update');
+  
   Route::resource('event', 'Admin\EventController');
 
   // Archives
