@@ -98,8 +98,8 @@ class MiniCalendarController extends \Emutoday\Http\Controllers\Admin\Controller
      */
     protected function generateUniqueSlug($value, $ignoreId = null)
     {
-        $base = Str::kebab($value);
-        $slug = $base;
+        $slug = Str::slug($value);
+        $base = $slug;
         $i = 2;
 
         while ($this->slugExists($slug, $ignoreId)) {

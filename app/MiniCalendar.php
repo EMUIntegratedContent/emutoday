@@ -62,7 +62,7 @@ class MiniCalendar extends Model
       return;
     }
 
-    $this->attributes['slug'] = Str::kebab($value);
+    $this->attributes['slug'] = Str::slug($value);
   }
 
 }
