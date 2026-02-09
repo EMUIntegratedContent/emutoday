@@ -91,7 +91,7 @@ Sidebar Menu
             <ol class="breadcrumb">
                 <li><a class="btn bg-olive btn-sm" href="{{URL::previous()}}"><i class="fa fa-arrow-circle-left fa-lg"></i></a></li>
                 <li><a class="btn bg-purple btn-sm" href="/admin/dashboard"><i class="fa fa-dashboard fa-lg"></i></a></li>
-                <li class="active">Here</li>
+                <li class="active">@yield('breadcrumb', 'Here')</li>
             </ol>
 
         </div><!-- /.col-xs-6 -->

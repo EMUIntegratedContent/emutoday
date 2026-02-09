@@ -27,6 +27,7 @@
   <ul class="treeview-menu">
     <li class="{{ set_active('admin/event*') }}"><a href="/admin/event/queue"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
     <li class="{{ set_active('admin/event*') }}"><a href="/admin/event/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+    <li class="{{ set_active('admin/event/minicals*') }}"><a href="/admin/event/minicals"><i class="fa fa-calendar-check-o"></i> <span>Mini Calendars</span></a></li>
   </ul>
 </li>
 @can('lbc_approve', $currentUser)
