@@ -11,6 +11,8 @@ use Emutoday\MiniCalendar;
 use Illuminate\Support\Facades\Request as Input;
 use Emutoday\Facades\Cas;
 
+
+require __DIR__.'/experts_redirects.php';
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -532,7 +534,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'cleanup.cas.ticket'
   Route::post('event/minicals', 'Admin\Event\MiniCalendarController@store')->name('admin.event.minicals.store');
   Route::get('event/minicals/{id}/edit', 'Admin\Event\MiniCalendarController@edit')->name('admin.event.minicals.edit');
   Route::put('event/minicals/{id}', 'Admin\Event\MiniCalendarController@update')->name('admin.event.minicals.update');
-  
+
   Route::resource('event', 'Admin\EventController');
 
   // Archives
