@@ -117,42 +117,42 @@
 </li>
 @endcan
 {{-- Gate Facade allows multiple permission checks (unlike @can) --}}
-@if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('experts'))
-    <li class="treeview {{ set_active('admin/expert*') }}">
-      <a href="#"><i class="fa fa-blind"></i> <span>Experts</span></a>
-      <ul class="treeview-menu">
-        <li><a href="#"><i class="fa fa-circle-o"></i>Eastern Experts <span class="pull-right-container">
-            @if(count($bugExperts) > 0)
-            <span class="label label-success">{{ count($bugExperts) }} NEW</span>
-            @endif
-            <i class="fa fa-angle-left pull-right"></i>
-            </span></a>
-            <ul class="treeview-menu {{ set_active('admin/expert*') }}">
-                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts"><i class="fa fa-list"></i> <span>List</span></a></li>
-                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
-            </ul>
-        </li>
-        <li><a href="#"><i class="fa fa-circle-o"></i>Media Requests <span class="pull-right-container">
-            @if(count($bugExpertMediaRequests) > 0)
-            <span class="label label-success">{{ count($bugExpertMediaRequests) }} NEW</span>
-            @endif
-            <i class="fa fa-angle-left pull-right"></i>
-            </span></a>
-            <ul class="treeview-menu {{ set_active('admin/experts/requests*') }}">
-                <li class="{{ set_active('admin/expertrequests/*') }}"><a href="/admin/expertrequests"><i class="fa fa-list"></i> <span>List</span></a></li>
-            </ul>
-        </li>
-        <li><a href="#"><i class="fa fa-circle-o"></i>Categories <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
-            </span></a>
-            <ul class="treeview-menu {{ set_active('admin/experts/category*') }}">
-                <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory"><i class="fa fa-list"></i> <span>List</span></a></li>
-                <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory/show"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
-            </ul>
-        </li>
-      </ul>
-    </li>
-@endif
+{{--@if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('experts'))--}}
+{{--    <li class="treeview {{ set_active('admin/expert*') }}">--}}
+{{--      <a href="#"><i class="fa fa-blind"></i> <span>Experts</span></a>--}}
+{{--      <ul class="treeview-menu">--}}
+{{--        <li><a href="#"><i class="fa fa-circle-o"></i>Eastern Experts <span class="pull-right-container">--}}
+{{--            @if(count($bugExperts) > 0)--}}
+{{--            <span class="label label-success">{{ count($bugExperts) }} NEW</span>--}}
+{{--            @endif--}}
+{{--            <i class="fa fa-angle-left pull-right"></i>--}}
+{{--            </span></a>--}}
+{{--            <ul class="treeview-menu {{ set_active('admin/expert*') }}">--}}
+{{--                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts"><i class="fa fa-list"></i> <span>List</span></a></li>--}}
+{{--                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>--}}
+{{--            </ul>--}}
+{{--        </li>--}}
+{{--        <li><a href="#"><i class="fa fa-circle-o"></i>Media Requests <span class="pull-right-container">--}}
+{{--            @if(count($bugExpertMediaRequests) > 0)--}}
+{{--            <span class="label label-success">{{ count($bugExpertMediaRequests) }} NEW</span>--}}
+{{--            @endif--}}
+{{--            <i class="fa fa-angle-left pull-right"></i>--}}
+{{--            </span></a>--}}
+{{--            <ul class="treeview-menu {{ set_active('admin/experts/requests*') }}">--}}
+{{--                <li class="{{ set_active('admin/expertrequests/*') }}"><a href="/admin/expertrequests"><i class="fa fa-list"></i> <span>List</span></a></li>--}}
+{{--            </ul>--}}
+{{--        </li>--}}
+{{--        <li><a href="#"><i class="fa fa-circle-o"></i>Categories <span class="pull-right-container">--}}
+{{--            <i class="fa fa-angle-left pull-right"></i>--}}
+{{--            </span></a>--}}
+{{--            <ul class="treeview-menu {{ set_active('admin/experts/category*') }}">--}}
+{{--                <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory"><i class="fa fa-list"></i> <span>List</span></a></li>--}}
+{{--                <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory/show"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>--}}
+{{--            </ul>--}}
+{{--        </li>--}}
+{{--      </ul>--}}
+{{--    </li>--}}
+{{--@endif--}}
 @can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/magazine*') }}">
   <a href="#"><i class="fa fa-book"></i> <span>Magazine</span></a>
