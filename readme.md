@@ -1,16 +1,17 @@
 # EMU Today
 
 [//]: # ([![Build Status]&#40;https://travis-ci.com/chyke007/credible.svg?branch=master&#41;]&#40;https://travis-ci.com/chyke007/credible&#41;)
-![version](https://img.shields.io/badge/version-1.5.0-blue)
-![Laravel Version](https://img.shields.io/badge/Laravel-v11.5.x-yellow)
+![version](https://img.shields.io/badge/version-1.6.0-blue)
+![Laravel Version](https://img.shields.io/badge/Laravel-v12.32.x-yellow)
 ![Vue.js Version](https://img.shields.io/badge/Vue.js-v3.2.45-green)
 
 [//]: # (![Docker Version]&#40;https://img.shields.io/badge/Docker-v20.10.8-purple&#41;)
 <hr>
 <p>EMU Today is Eastern Michigan University's digital hub for stories and news around campus. Discover upcoming events and important announcements to stay current on what's happening at EMU.</p>
 <hr>
-<h2>January 2026 Updates (v 1.5.2)</h2>
+<h2>February 2026 Updates (v 1.6.0)</h2>
 <ul>
+<li>Upgraded composer dependencies for PHP 8.5.</li>
 <li>TODO: Get rid of CAS and use LDAP for authentication https://ldaprecord.com/docs/laravel/v3</li>
 </ul>
 <h2>October 2025 Updates (v 1.5.1)</h2>
