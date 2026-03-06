@@ -13,6 +13,7 @@ use Emutoday\Facades\Cas;
 
 
 require __DIR__.'/experts_redirects.php';
+require __DIR__.'/misc_redirects.php';
 /*
 |--------------------------------------------------------------------------
 | Application Routes
