@@ -1,3 +1,11 @@
+PHP 8.5 UPGRADE NOTES 2026
+
+After updating composer, everything seems to be working as expected so far.
+
+!! apereo/phpcas hasn't been maintained since 2024 and needs to be replaced.
+See if we can use OIDC instead (Laravel Socialite)
+
+====================================================================================================
 3/20/24
 
 Needed to increase the php.ini's memory_limit to 256M to process JPG images with high resolution.
