@@ -16,7 +16,7 @@
 		"doctrine/dbal": "4.3",
 		"guzzlehttp/guzzle": "^7.8",
 		"laravel/tinker": "^v2.10",
-		"apereo/phpcas": "^1.6",
+		"apereo/phpcas": "^1.6.1",
 		"laravel/helpers": "^v1.7",
 		"sofa/eloquence-base": "^v7.1",
 		"laravel/legacy-factories": "^v1.4",
