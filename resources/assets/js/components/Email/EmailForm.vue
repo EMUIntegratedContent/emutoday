@@ -168,6 +168,16 @@
                           <p v-if="formErrors.president_url" class="help-text invalid">The URL field is not valid.</p>
                         </div>
                       </div><!-- /.col-md-12 -->
+                      <div class="col-xs-12">
+                        <div class="form-group">
+                          <label for="presidentYoutube">YouTube video URL (optional)</label>
+                          <input type="text" class="form-control" id="presidentYoutube"
+                                 v-bind:class="[formErrors.president_youtube_url ? 'invalid-input' : '']"
+                                 v-model="emailBuilderEmail.president_youtube_url"
+                                 placeholder="https://www.youtube.com/watch?v=..."/>
+                          <p v-if="formErrors.president_youtube_url" class="help-text invalid">The YouTube URL is not valid. Use a youtube.com/watch or youtu.be link.</p>
+                        </div>
+                      </div><!-- /.col-md-12 -->
                     </div><!-- ./row -->
                   </div>
                 </div>
@@ -302,6 +312,11 @@
                       aria-hidden="true"></i> Email {{ emailBuilderEmail.president_url ? 'has' : 'does not have' }} a
                     URL to the
                     message from the president.
+                  </li>
+                  <li class="list-group-item" v-if="emailBuilderEmail.is_president_included"><i
+                      :class="emailBuilderEmail.president_youtube_url ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'"
+                      aria-hidden="true"></i> Email {{ emailBuilderEmail.president_youtube_url ? 'has' : 'does not have' }} a
+                    YouTube video for the presidential section. (optional)
                   </li>
                   <li class="list-group-item"><i
                       :class="emailBuilderEmail.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
