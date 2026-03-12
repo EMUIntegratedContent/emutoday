@@ -222,6 +222,21 @@
                         href="{{ $email->president_url }}" style="color: #636363;text-decoration: none;">From the
                       President &#10137;</a></h2>
                   <p style="padding-top: 8px;font-size: 0.9rem;padding: 0;margin: 0;">{{ $email->president_teaser }}</p>
+                  @if($email->president_youtube_url)
+                    @php
+                      preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $email->president_youtube_url, $ytMatches);
+                      $presidentVideoId = $ytMatches[1] ?? null;
+                    @endphp
+                    @if($presidentVideoId)
+                      <div style="clear:both; padding-top:15px; text-align:center;">
+                        <a href="{{ $email->president_youtube_url }}" target="_blank" style="text-decoration:none;">
+                          <img src="https://img.youtube.com/vi/{{ $presidentVideoId }}/hqdefault.jpg"
+                               alt="Presidential YouTube Video"
+                               style="max-width:560px; width:100%; border:2px solid #046A38;"/>
+                        </a>
+                      </div>
+                    @endif
+                  @endif
                 </div>
               </td>
             </tr>

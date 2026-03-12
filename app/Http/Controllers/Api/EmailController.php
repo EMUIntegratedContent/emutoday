@@ -59,6 +59,10 @@ class EmailController extends ApiController
       $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
     }
 
+    if ($request->get('president_youtube_url')) {
+      $validationRules['president_youtube_url'] = 'regex:/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+    }
+
     $validation = \Validator::make(Input::all(), $validationRules);
 
     if ($validation->fails()) {
@@ -83,6 +87,7 @@ class EmailController extends ApiController
 			$email->exclude_insideemu = $request->get('exclude_insideemu', 0);
       $email->president_teaser = $request->get('president_teaser', null);
       $email->president_url = $request->get('president_url', null);
+      $email->president_youtube_url = $request->get('president_youtube_url', null);
 
       if ($email->save()) {
         // Sync announcements
@@ -184,6 +189,10 @@ class EmailController extends ApiController
       $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
     }
 
+    if ($request->get('president_youtube_url')) {
+      $validationRules['president_youtube_url'] = 'regex:/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+    }
+
     // The validator if there is a EMU 175 link being included in the email, a valid URL must be passed
     if ($request->get('is_emu175_included')) {
       $validationRules['emu175_teaser'] = 'required';
@@ -212,6 +221,7 @@ class EmailController extends ApiController
 			$email->exclude_insideemu = $request->get('exclude_insideemu', 0);
       $email->president_teaser = $request->get('president_teaser', null);
       $email->president_url = $request->get('president_url', null);
+      $email->president_youtube_url = $request->get('president_youtube_url', null);
       $email->is_emu175_included = $request->get('is_emu175_included', 0);
       $email->emu175_teaser = $request->get('emu175_teaser', null);
       $email->emu175_url = $request->get('emu175_url', null);
@@ -317,6 +327,10 @@ class EmailController extends ApiController
       $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
     }
 
+    if ($request->get('president_youtube_url')) {
+      $validationRules['president_youtube_url'] = 'regex:/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+    }
+
     $validation = \Validator::make(Input::all(), $validationRules);
 
     if ($validation->fails()) {
@@ -334,6 +348,7 @@ class EmailController extends ApiController
 			$email->exclude_insideemu = $request->get('exclude_insideemu', 0);
       $email->president_teaser = $request->get('president_teaser', null);
       $email->president_url = $request->get('president_url', null);
+      $email->president_youtube_url = $request->get('president_youtube_url', null);
 			$email->is_emu175_included = $request->get('is_emu175_included', 0);
 			$email->emu175_teaser = $request->get('emu175_teaser', null);
 			$email->emu175_url = $request->get('emu175_url', null);
