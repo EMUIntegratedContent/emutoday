@@ -60,7 +60,7 @@
     "@ckeditor/ckeditor5-highlight": "^36.0.1",
     "@ckeditor/ckeditor5-horizontal-line": "^36.0.1",
     "@ckeditor/ckeditor5-html-embed": "^36.0.1",
-    "@ckeditor/ckeditor5-html-support": "^36.0.1",
+    "@ckeditor/ckeditor5-html-support": "^47.6.0",
     "@ckeditor/ckeditor5-image": "^36.0.1",
     "@ckeditor/ckeditor5-indent": "^36.0.1",
     "@ckeditor/ckeditor5-language": "^36.0.1",
