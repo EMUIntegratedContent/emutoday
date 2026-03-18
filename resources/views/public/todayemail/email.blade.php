@@ -218,16 +218,18 @@
                        style="border-top: 3px double #97D700;border-collapse:collapse;margin-left:1rem;margin-right:1rem;max-width:calc(100% - 2rem);font-family:'Poppins',arial,sans-serif;color:#333333;background-color:#ffffff;">
                   <!-- Row 1: Photo + heading/teaser -->
                   <tr>
-                    <td width="{{ $email->president_teaser ? '124' : '80' }}" valign="top" style="padding: 15px 0 10px 15px;">
+                    <td width="124" valign="top" style="padding: 15px 0 10px 15px;">
                       <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png"
-                           alt="EMU President Jim Smith" width="{{ $email->president_teaser ? '109' : '65' }}" style="display:block;">
+                           alt="EMU President Jim Smith" width="109" style="display:block;">
                     </td>
                     <td valign="middle" style="padding: 15px 15px 10px 15px;">
                       <h2 style="padding-top:0;font-weight:500;margin:0;font-size:22px;"><a
                             href="{{ $email->president_url ?: $email->president_youtube_url }}" style="color:#636363;text-decoration:none;">From the
                           President &#10137;</a></h2>
                       @if($email->president_teaser)
-                        <p style="padding-top:8px;font-size:0.9rem;padding:0;margin:0;">{{ $email->president_teaser }}</p>
+                        <p style="padding-top:8px;font-size:0.9rem;margin:0;">{{ $email->president_teaser }}</p>
+                      @elseif($email->president_youtube_teaser)
+                        <p style="padding-top:8px;font-size:0.9rem;margin:0;">{{ $email->president_youtube_teaser }}</p>
                       @endif
                     </td>
                   </tr>
@@ -260,7 +262,7 @@
                                  alt="YouTube Video Thumbnail"
                                  style="max-width:100%;height:auto;display:none;">
                           </a>
-                          @if($email->president_youtube_teaser)
+                          @if($email->president_youtube_teaser && $email->president_teaser)
                             <p style="padding-top:8px;font-size:0.9rem;margin:0;">{{ $email->president_youtube_teaser }}</p>
                           @endif
                         </td>
