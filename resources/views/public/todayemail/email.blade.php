@@ -231,10 +231,25 @@
                     @endphp
                     @if($youtubeVideoId)
                       <div style="clear:both; padding-top:15px;">
-                        <a href="{{ $email->president_youtube_url }}" style="display:block;" target="_blank">
+                        <a href="{{ $email->president_youtube_url }}" style="display:block;text-decoration:none;" target="_blank">
+                          <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;background-image:url('https://img.youtube.com/vi/{{ $youtubeVideoId }}/hqdefault.jpg');background-size:cover;background-position:center;">
+                            <tr>
+                              <td align="center" valign="middle" height="300" style="padding:0;">
+                                <!--[if mso]>
+                                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" style="height:48px;v-text-anchor:middle;width:68px;" arcsize="21%" fillcolor="#FF0000" stroke="f">
+                                  <w:anchorlock/>
+                                  <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:20px;">&#9654;</center>
+                                </v:roundrect>
+                                <![endif]-->
+                                <!--[if !mso]><!-->
+                                <div style="display:inline-block;width:68px;height:48px;background-color:#FF0000;border-radius:14px;line-height:48px;text-align:center;font-size:20px;color:#ffffff;">&#9654;</div>
+                                <!--<![endif]-->
+                              </td>
+                            </tr>
+                          </table>
                           <img src="https://img.youtube.com/vi/{{ $youtubeVideoId }}/hqdefault.jpg"
                                alt="YouTube Video Thumbnail"
-                               style="max-width:100%; height:auto; display:block;">
+                               style="max-width:100%; height:auto; display:none;">
                         </a>
                         @if($email->president_youtube_teaser)
                           <p style="padding-top: 8px;font-size: 0.9rem;padding: 0;margin: 0;">{{ $email->president_youtube_teaser }}</p>
