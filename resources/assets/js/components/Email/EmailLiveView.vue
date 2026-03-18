@@ -229,14 +229,16 @@
                   <!-- YouTube section -->
                   <template v-if="emailBuilderEmail.president_youtube_url && emailBuilderEmail.president_youtube_teaser && extractYoutubeId(emailBuilderEmail.president_youtube_url)">
                     <div style="clear:both; padding-top:15px;">
-                      <a :href="emailBuilderEmail.president_youtube_url" target="_blank" style="display:block; position:relative;">
-                        <img :src="'https://img.youtube.com/vi/' + extractYoutubeId(emailBuilderEmail.president_youtube_url) + '/hqdefault.jpg'"
-                             alt="YouTube Video Thumbnail"
-                             style="max-width:100%; height:auto; display:block;"/>
-                        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:68px; height:48px; background:rgba(0,0,0,0.7); border-radius:10px; display:flex; align-items:center; justify-content:center;">
-                          <div style="width:0; height:0; border-style:solid; border-width:10px 0 10px 20px; border-color:transparent transparent transparent #fff;"></div>
+                      <div style="position:relative; display:inline-block;">
+                        <a :href="emailBuilderEmail.president_youtube_url" target="_blank" style="display:block;">
+                          <img :src="'https://img.youtube.com/vi/' + extractYoutubeId(emailBuilderEmail.president_youtube_url) + '/hqdefault.jpg'"
+                               alt="YouTube Video Thumbnail"
+                               style="max-width:100%; height:auto; display:block;"/>
+                        </a>
+                        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:68px; height:48px; background:rgba(0,0,0,0.7); border-radius:10px; pointer-events:none;">
+                          <div style="width:0; height:0; border-style:solid; border-width:12px 0 12px 22px; border-color:transparent transparent transparent #fff; position:absolute; top:50%; left:50%; transform:translate(-40%,-50%);"></div>
                         </div>
-                      </a>
+                      </div>
                       <p style="font-size:1.1rem; padding-top:8px;">{{ emailBuilderEmail.president_youtube_teaser }}</p>
                     </div>
                   </template>
