@@ -38,7 +38,7 @@ Route::group(['prefix' => 'mailgun'], function () {
   Route::post('spam', 'Api\MailgunApiController@postSpam');
 
   Route::get('subscribe', 'MainController@confirmSubscribe');
-  Route::post('subscribe', 'MainController@subscribe');
+  Route::post('subscribe', 'MainController@subscribe')->middleware('throttle:3,5'); // can only be called 3x every 5 mins to avoid spamming
 });
 Route::get('subscribe', 'MainController@subscribeForm')->name('subscribe');
 
