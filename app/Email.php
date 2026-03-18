@@ -25,6 +25,8 @@ class Email extends Model
 			'exclude_insideemu',
       'president_teaser',
       'president_url',
+      'president_youtube_url',
+      'president_youtube_teaser',
       'is_emu175_included',
       'emu175_teaser',
       'emu175_url',

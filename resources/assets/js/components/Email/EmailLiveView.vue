@@ -207,19 +207,43 @@
                        style="float:left; padding:0 15px 8px 0; width:109px"/>
                   <h2 style="padding-top:0px;">
                     <template v-if="emailBuilderEmail.president_url">
-                      <a v-if="emailBuilderEmail.president_url" :href="emailBuilderEmail.president_url">From the
+                      <a :href="emailBuilderEmail.president_url">From the
+                        President &#10137;</a>
+                    </template>
+                    <template v-else-if="emailBuilderEmail.president_youtube_url">
+                      <a :href="emailBuilderEmail.president_youtube_url">From the
                         President &#10137;</a>
                     </template>
                     <template v-else>
                       <span class="insufficient">From the President [NO URL]</span>
                     </template>
                   </h2>
+                  <!-- Traditional teaser -->
                   <template v-if="emailBuilderEmail.president_teaser">
                     <p style="font-size:1.1rem;">{{ emailBuilderEmail.president_teaser }}</p>
                   </template>
-                  <template v-else>
+                  <template v-else-if="!emailBuilderEmail.president_youtube_url && !emailBuilderEmail.president_youtube_teaser">
                     <p style="font-size:1.1rem;" class="insufficient">There is no teaser text provided. You must include
                       this text when including a presidential message.</p>
+                  </template>
+                  <!-- YouTube section -->
+                  <template v-if="emailBuilderEmail.president_youtube_url && emailBuilderEmail.president_youtube_teaser && extractYoutubeId(emailBuilderEmail.president_youtube_url)">
+                    <div style="clear:both; padding-top:15px;">
+                      <a :href="emailBuilderEmail.president_youtube_url" target="_blank" style="display:block; position:relative;">
+                        <img :src="'https://img.youtube.com/vi/' + extractYoutubeId(emailBuilderEmail.president_youtube_url) + '/hqdefault.jpg'"
+                             alt="YouTube Video Thumbnail"
+                             style="max-width:100%; height:auto; display:block;"/>
+                        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:68px; height:48px; background:rgba(0,0,0,0.7); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                          <div style="width:0; height:0; border-style:solid; border-width:10px 0 10px 20px; border-color:transparent transparent transparent #fff;"></div>
+                        </div>
+                      </a>
+                      <p style="font-size:1.1rem; padding-top:8px;">{{ emailBuilderEmail.president_youtube_teaser }}</p>
+                    </div>
+                  </template>
+                  <template v-else-if="(emailBuilderEmail.president_youtube_url && !emailBuilderEmail.president_youtube_teaser) || (!emailBuilderEmail.president_youtube_url && emailBuilderEmail.president_youtube_teaser)">
+                    <div style="clear:both; padding-top:15px;">
+                      <p style="font-size:1.1rem;" class="insufficient">YouTube fields are partially filled. Both a YouTube URL and YouTube teaser are required.</p>
+                    </div>
                   </template>
                 </td>
               </tr>
@@ -717,6 +741,11 @@ export default {
         }
       })
       return storyHasTag
+    },
+    extractYoutubeId (url) {
+      if (!url) return null
+      const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+      return match ? match[1] : null
     },
     truncate (text, stop) {
       if (text.length > stop) {

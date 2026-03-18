@@ -58,6 +58,8 @@ class EmailResource extends JsonResource
 			'is_president_included' => $this->is_president_included,
 			'president_teaser' => $this->president_teaser,
 			'president_url' => $this->president_url,
+			'president_youtube_url' => $this->president_youtube_url,
+			'president_youtube_teaser' => $this->president_youtube_teaser,
 			'exclude_events' => $this->exclude_events,
 			'exclude_insideemu' => $this->exclude_insideemu,
 			'is_emu175_included' => $this->is_emu175_included,
