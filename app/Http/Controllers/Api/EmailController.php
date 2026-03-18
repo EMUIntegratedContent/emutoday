@@ -63,7 +63,7 @@ class EmailController extends ApiController
       // If YouTube fields are partially filled, validate them individually
       if ($request->get('president_youtube_url') || $request->get('president_youtube_teaser')) {
         $validationRules['president_youtube_teaser'] = 'required';
-        $validationRules['president_youtube_url'] = 'required|regex:/^(https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/).+)$/';
+        $validationRules['president_youtube_url'] = 'required|regex:#^(https?://(www\.)?(youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/).+)$#';
       }
     }
 
@@ -207,7 +207,7 @@ class EmailController extends ApiController
       }
       if ($request->get('president_youtube_url') || $request->get('president_youtube_teaser')) {
         $validationRules['president_youtube_teaser'] = 'required';
-        $validationRules['president_youtube_url'] = 'required|regex:/^(https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/).+)$/';
+        $validationRules['president_youtube_url'] = 'required|regex:#^(https?://(www\.)?(youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/).+)$#';
       }
     }
 
@@ -359,7 +359,7 @@ class EmailController extends ApiController
       }
       if ($request->get('president_youtube_url') || $request->get('president_youtube_teaser')) {
         $validationRules['president_youtube_teaser'] = 'required';
-        $validationRules['president_youtube_url'] = 'required|regex:/^(https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/).+)$/';
+        $validationRules['president_youtube_url'] = 'required|regex:#^(https?://(www\.)?(youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/).+)$#';
       }
     }
 
