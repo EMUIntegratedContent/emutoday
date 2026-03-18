@@ -207,11 +207,11 @@
                     <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-top: 3px double #97D700; border-collapse:collapse;">
                       <!-- Row 1: Photo + heading/teaser -->
                       <tr>
-                        <td width="124" valign="top" style="padding: 15px 0 10px 15px;">
+                        <td :width="emailBuilderEmail.president_teaser ? '124' : '80'" valign="top" style="padding: 15px 0 10px 15px;">
                           <img src="/assets/imgs/email/president-jim-smith-2024-109x136.png" alt="EMU President Jim Smith"
-                               width="109" style="display:block;"/>
+                               :width="emailBuilderEmail.president_teaser ? '109' : '65'" style="display:block;"/>
                         </td>
-                        <td valign="top" style="padding: 15px 15px 10px 15px;">
+                        <td valign="middle" style="padding: 15px 15px 10px 15px;">
                           <h2 style="padding-top:0px;">
                             <template v-if="emailBuilderEmail.president_url">
                               <a :href="emailBuilderEmail.president_url">From the President &#10137;</a>
