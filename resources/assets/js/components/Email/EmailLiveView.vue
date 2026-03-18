@@ -207,9 +207,9 @@
                     <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-top: 3px double #97D700; border-collapse:collapse;">
                       <!-- Row 1: Photo + heading/teaser -->
                       <tr>
-                        <td :width="emailBuilderEmail.president_teaser ? '124' : '80'" valign="top" style="padding: 15px 0 10px 15px;">
+                        <td width="124" valign="top" style="padding: 15px 0 10px 15px;">
                           <img src="/assets/imgs/email/president-jim-smith-2024-109x136.png" alt="EMU President Jim Smith"
-                               :width="emailBuilderEmail.president_teaser ? '109' : '65'" style="display:block;"/>
+                               width="109" style="display:block;"/>
                         </td>
                         <td valign="middle" style="padding: 15px 15px 10px 15px;">
                           <h2 style="padding-top:0px;">
@@ -226,7 +226,10 @@
                           <template v-if="emailBuilderEmail.president_teaser">
                             <p style="font-size:1.1rem; padding-top:8px;">{{ emailBuilderEmail.president_teaser }}</p>
                           </template>
-                          <template v-else-if="!emailBuilderEmail.president_youtube_url && !emailBuilderEmail.president_youtube_teaser">
+                          <template v-else-if="emailBuilderEmail.president_youtube_teaser">
+                            <p style="font-size:1.1rem; padding-top:8px;">{{ emailBuilderEmail.president_youtube_teaser }}</p>
+                          </template>
+                          <template v-else-if="!emailBuilderEmail.president_youtube_url">
                             <p style="font-size:1.1rem; padding-top:8px;" class="insufficient">There is no teaser text provided. You must include this text when including a presidential message.</p>
                           </template>
                         </td>
@@ -245,7 +248,9 @@
                                 <div style="width:0; height:0; border-style:solid; border-width:12px 0 12px 22px; border-color:transparent transparent transparent #fff; position:absolute; top:50%; left:50%; transform:translate(-40%,-50%);"></div>
                               </div>
                             </div>
-                            <p style="font-size:1.1rem; padding-top:8px;">{{ emailBuilderEmail.president_youtube_teaser }}</p>
+                            <template v-if="emailBuilderEmail.president_teaser">
+                              <p style="font-size:1.1rem; padding-top:8px;">{{ emailBuilderEmail.president_youtube_teaser }}</p>
+                            </template>
                           </td>
                         </tr>
                       </template>
