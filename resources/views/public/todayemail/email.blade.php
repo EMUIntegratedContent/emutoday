@@ -222,7 +222,7 @@
                       <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png"
                            alt="EMU President Jim Smith" width="109" style="display:block;">
                     </td>
-                    <td valign="middle" style="padding: 15px 15px 10px 15px;">
+                    <td valign="{{ !$email->president_teaser && $email->president_youtube_url ? 'middle' : 'top' }}" style="padding: 15px 15px 10px 15px;">
                       <h2 style="padding-top:0;font-weight:500;margin:0;font-size:22px;"><a
                             href="{{ $email->president_url ?: $email->president_youtube_url }}" style="color:#636363;text-decoration:none;">From the
                           President &#10137;</a></h2>

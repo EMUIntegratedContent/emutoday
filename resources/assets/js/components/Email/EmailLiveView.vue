@@ -211,7 +211,7 @@
                           <img src="/assets/imgs/email/president-jim-smith-2024-109x136.png" alt="EMU President Jim Smith"
                                width="109" style="display:block;"/>
                         </td>
-                        <td valign="middle" style="padding: 15px 15px 10px 15px;">
+                        <td :valign="!emailBuilderEmail.president_teaser && emailBuilderEmail.president_youtube_url ? 'middle' : 'top'" style="padding: 15px 15px 10px 15px;">
                           <h2 style="padding-top:0px;">
                             <template v-if="emailBuilderEmail.president_url">
                               <a :href="emailBuilderEmail.president_url">From the President &#10137;</a>
