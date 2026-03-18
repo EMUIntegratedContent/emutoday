@@ -219,9 +219,29 @@
                   <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png"
                        alt="EMU President Jim Smith" width="109px" style="float:left; padding:0 15px 8px 0;">
                   <h2 style="padding-top: 5px;font-weight: 500;padding: 12px 0 3px;margin: 0;font-size: 22px;"><a
-                        href="{{ $email->president_url }}" style="color: #636363;text-decoration: none;">From the
+                        href="{{ $email->president_url ?: $email->president_youtube_url }}" style="color: #636363;text-decoration: none;">From the
                       President &#10137;</a></h2>
-                  <p style="padding-top: 8px;font-size: 0.9rem;padding: 0;margin: 0;">{{ $email->president_teaser }}</p>
+                  @if($email->president_teaser)
+                    <p style="padding-top: 8px;font-size: 0.9rem;padding: 0;margin: 0;">{{ $email->president_teaser }}</p>
+                  @endif
+                  @if($email->president_youtube_url)
+                    @php
+                      preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/', $email->president_youtube_url, $ytMatch);
+                      $youtubeVideoId = $ytMatch[1] ?? null;
+                    @endphp
+                    @if($youtubeVideoId)
+                      <div style="clear:both; padding-top:15px;">
+                        <a href="{{ $email->president_youtube_url }}" style="display:block;" target="_blank">
+                          <img src="https://img.youtube.com/vi/{{ $youtubeVideoId }}/hqdefault.jpg"
+                               alt="YouTube Video Thumbnail"
+                               style="max-width:100%; height:auto; display:block;">
+                        </a>
+                        @if($email->president_youtube_teaser)
+                          <p style="padding-top: 8px;font-size: 0.9rem;padding: 0;margin: 0;">{{ $email->president_youtube_teaser }}</p>
+                        @endif
+                      </div>
+                    @endif
+                  @endif
                 </div>
               </td>
             </tr>

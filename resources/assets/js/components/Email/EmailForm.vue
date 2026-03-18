@@ -108,7 +108,7 @@
                     ({{ emailBuilderEmail.insideemuPosts.length }})</a>
                   </li>
                   <li :class="{ 'active' : activeSubTab === 6 }"><a href="#president" role="tab" data-toggle="tab"
-                                                                   :class="emailBuilderEmail.is_president_included && (!emailBuilderEmail.president_url || !emailBuilderEmail.president_teaser) ? 'insufficient' : ''"
+                                                                   :class="emailBuilderEmail.is_president_included && !presidentSectionValid ? 'insufficient' : ''"
                                                                    @click="activeSubTab = 6">President</a>
                   </li>
                 </ul>
@@ -168,6 +168,34 @@
                           <p v-if="formErrors.president_url" class="help-text invalid">The URL field is not valid.</p>
                         </div>
                       </div><!-- /.col-md-12 -->
+                      <div class="col-xs-12">
+                        <hr>
+                        <p class="help-text">
+                          <strong>YouTube Video Option:</strong> You may also (or instead) provide a YouTube video. At least one option (traditional teaser + URL, or YouTube URL + YouTube teaser) is required.
+                        </p>
+                      </div>
+                      <div class="col-xs-12">
+                        <div class="form-group">
+                          <label for="presidentYoutubeUrl">YouTube Video URL</label>
+                          <input type="text" class="form-control" id="presidentYoutubeUrl"
+                                 v-bind:class="[formErrors.president_youtube_url ? 'invalid-input' : '']"
+                                 v-model="emailBuilderEmail.president_youtube_url"
+                                 placeholder="https://www.youtube.com/watch?v=..."/>
+                          <p v-if="formErrors.president_youtube_url" class="help-text invalid">The YouTube URL is not valid.</p>
+                        </div>
+                      </div><!-- /.col-md-12 -->
+                      <div class="col-xs-12">
+                        <div class="form-group">
+                          <label for="presidentYoutubeTeaser">YouTube Teaser text</label>
+                          <textarea class="form-control" id="presidentYoutubeTeaser"
+                                    v-bind:class="[formErrors.president_youtube_teaser ? 'invalid-input' : '']"
+                                    v-model="emailBuilderEmail.president_youtube_teaser">{{ emailBuilderEmail.president_youtube_teaser }}</textarea>
+                          <p v-if="formErrors.president_youtube_teaser" class="help-text invalid">The YouTube teaser is required when including a YouTube video.</p>
+                        </div>
+                      </div><!-- /.col-md-12 -->
+                      <div class="col-xs-12" v-if="formErrors.president">
+                        <p class="help-text invalid">{{ formErrors.president }}</p>
+                      </div>
                     </div><!-- ./row -->
                   </div>
                 </div>
@@ -292,16 +320,9 @@
                     least one announcement.
                   </li>
                   <li class="list-group-item" v-if="emailBuilderEmail.is_president_included"><i
-                      :class="emailBuilderEmail.president_teaser ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
-                      aria-hidden="true"></i> Email {{ emailBuilderEmail.president_teaser ? 'has' : 'does not have' }}
-                    teaser text
-                    for the message from the president.
-                  </li>
-                  <li class="list-group-item" v-if="emailBuilderEmail.is_president_included"><i
-                      :class="emailBuilderEmail.president_url ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
-                      aria-hidden="true"></i> Email {{ emailBuilderEmail.president_url ? 'has' : 'does not have' }} a
-                    URL to the
-                    message from the president.
+                      :class="presidentSectionValid ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
+                      aria-hidden="true"></i> Presidential message {{ presidentSectionValid ? 'has' : 'does not have' }}
+                    at least one complete option (teaser + URL, or YouTube URL + YouTube teaser).
                   </li>
                   <li class="list-group-item"><i
                       :class="emailBuilderEmail.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
@@ -618,6 +639,11 @@ export default {
     inputGroupLabel: function () {
       return (this.framework == 'foundation') ? 'input-group-label' : 'input-group-addon'
     },
+    presidentSectionValid: function () {
+      const hasTraditional = this.emailBuilderEmail.president_teaser && this.emailBuilderEmail.president_url
+      const hasYoutube = this.emailBuilderEmail.president_youtube_url && this.emailBuilderEmail.president_youtube_teaser
+      return !!(hasTraditional || hasYoutube)
+    },
     insufficientTitle: function () {
       if (this.emailBuilderEmail.title && this.emailBuilderEmail.title.length < this.minTitleChars) {
         return true;
@@ -643,7 +669,7 @@ export default {
 
       let steps = 8 // there are anywhere from 6 to 12 steps in the email builder
       if(this.emailBuilderEmail.is_president_included) {
-        steps += 2
+        steps += 1
       }
       if(this.emailBuilderEmail.exclude_events) {
         steps -= 1
@@ -666,8 +692,7 @@ export default {
         this.emailBuilderEmail.insideemuPosts.length > 0 ? progress += stepValue : ''
       }
       if(this.emailBuilderEmail.is_president_included) {
-        this.emailBuilderEmail.president_teaser ? progress += stepValue : ''
-        this.emailBuilderEmail.president_url ? progress += stepValue : ''
+        this.presidentSectionValid ? progress += stepValue : ''
       }
       return progress.toFixed(0)
     },
