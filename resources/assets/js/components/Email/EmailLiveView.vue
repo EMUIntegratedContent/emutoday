@@ -235,7 +235,7 @@
                                alt="YouTube Video Thumbnail"
                                style="max-width:100%; height:auto; display:block;"/>
                         </a>
-                        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:68px; height:48px; background:rgba(0,0,0,0.7); border-radius:10px; pointer-events:none;">
+                        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:68px; height:48px; background-color:#FF0000; border-radius:14px; pointer-events:none; opacity:0.9;">
                           <div style="width:0; height:0; border-style:solid; border-width:12px 0 12px 22px; border-color:transparent transparent transparent #fff; position:absolute; top:50%; left:50%; transform:translate(-40%,-50%);"></div>
                         </div>
                       </div>
