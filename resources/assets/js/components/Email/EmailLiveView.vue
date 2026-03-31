@@ -201,43 +201,70 @@
                   </div>
                 </td>
               </tr>
-              <tr v-if="emailBuilderEmail.is_president_included">
-                <td valign="top" style="border-top: 3px double #97D700; min-height:136px; padding:15px">
-                  <img src="/assets/imgs/email/president-jim-smith-2024-109x136.png" alt="EMU President Jim Smith"
-                       style="float:left; padding:0 15px 8px 0; width:109px"/>
-                  <h2 style="padding-top:0px;">
-                    <template v-if="emailBuilderEmail.president_url">
-                      <a v-if="emailBuilderEmail.president_url" :href="emailBuilderEmail.president_url">From the
-                        President &#10137;</a>
-                    </template>
-                    <template v-else>
-                      <span class="insufficient">From the President [NO URL]</span>
-                    </template>
-                  </h2>
-                  <template v-if="emailBuilderEmail.president_teaser">
-                    <p style="font-size:1.1rem;">{{ emailBuilderEmail.president_teaser }}</p>
-                  </template>
-                  <template v-else>
-                    <p style="font-size:1.1rem;" class="insufficient">There is no teaser text provided. You must include
-                      this text when including a presidential message.</p>
-                  </template>
-                  <div v-if="emailBuilderEmail.president_youtube_url" style="clear:both; padding-top:15px; text-align:center;">
-                    <template v-if="presidentYoutubeVideoId">
-                      <a :href="emailBuilderEmail.president_youtube_url" target="_blank" style="display:inline-block; position:relative;">
-                        <img :src="'https://img.youtube.com/vi/' + presidentYoutubeVideoId + '/hqdefault.jpg'"
-                             alt="Presidential YouTube Video"
-                             style="max-width:560px; width:100%; border:2px solid #046A38; border-radius:4px;"/>
-                        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:68px; height:48px; background:rgba(0,0,0,0.7); border-radius:10px; display:flex; align-items:center; justify-content:center;">
-                          <div style="width:0; height:0; border-style:solid; border-width:12px 0 12px 20px; border-color:transparent transparent transparent #ffffff; margin-left:4px;"></div>
-                        </div>
-                      </a>
-                    </template>
-                    <template v-else>
-                      <p class="insufficient" style="font-size:0.9rem;">Could not extract video ID from YouTube URL. Please check the URL format.</p>
-                    </template>
-                  </div>
-                </td>
-              </tr>
+              <template v-if="emailBuilderEmail.is_president_included">
+                <tr>
+                  <td valign="top" style="padding:0">
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-top: 3px double #97D700; border-collapse:collapse;">
+                      <!-- Row 1: Photo + heading/teaser -->
+                      <tr>
+                        <td width="124" valign="top" style="padding: 15px 0 10px 15px;">
+                          <img src="/assets/imgs/email/president-jim-smith-2024-109x136.png" alt="EMU President Jim Smith"
+                               width="109" style="display:block;"/>
+                        </td>
+                        <td :valign="!emailBuilderEmail.president_teaser && emailBuilderEmail.president_youtube_url ? 'middle' : 'top'" style="padding: 15px 15px 10px 15px;">
+                          <h2 style="padding-top:0px;">
+                            <template v-if="emailBuilderEmail.president_url">
+                              <a :href="emailBuilderEmail.president_url">From the President &#10137;</a>
+                            </template>
+                            <template v-else-if="emailBuilderEmail.president_youtube_url">
+                              <a :href="emailBuilderEmail.president_youtube_url">From the President &#10137;</a>
+                            </template>
+                            <template v-else>
+                              <span class="insufficient">From the President [NO URL]</span>
+                            </template>
+                          </h2>
+                          <template v-if="emailBuilderEmail.president_teaser">
+                            <p style="font-size:1.1rem; padding-top:8px;">{{ emailBuilderEmail.president_teaser }}</p>
+                          </template>
+                          <template v-else-if="emailBuilderEmail.president_youtube_teaser">
+                            <p style="font-size:1.1rem; padding-top:8px;">{{ emailBuilderEmail.president_youtube_teaser }}</p>
+                          </template>
+                          <template v-else-if="!emailBuilderEmail.president_youtube_url">
+                            <p style="font-size:1.1rem; padding-top:8px;" class="insufficient">There is no teaser text provided. You must include this text when including a presidential message.</p>
+                          </template>
+                        </td>
+                      </tr>
+                      <!-- Row 2: YouTube thumbnail (full width) -->
+                      <template v-if="emailBuilderEmail.president_youtube_url && emailBuilderEmail.president_youtube_teaser && extractYoutubeId(emailBuilderEmail.president_youtube_url)">
+                        <tr>
+                          <td colspan="2" style="padding: 5px 15px 15px 15px;">
+                            <div style="position:relative; display:inline-block; width:100%;">
+                              <a :href="emailBuilderEmail.president_youtube_url" target="_blank" style="display:block;">
+                                <img :src="'https://img.youtube.com/vi/' + extractYoutubeId(emailBuilderEmail.president_youtube_url) + '/hqdefault.jpg'"
+                                     alt="YouTube Video Thumbnail"
+                                     style="width:100%; height:auto; display:block;"/>
+                              </a>
+                              <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:68px; height:48px; background-color:#FF0000; border-radius:14px; pointer-events:none; opacity:0.9;">
+                                <div style="width:0; height:0; border-style:solid; border-width:12px 0 12px 22px; border-color:transparent transparent transparent #fff; position:absolute; top:50%; left:50%; transform:translate(-40%,-50%);"></div>
+                              </div>
+                            </div>
+                            <template v-if="emailBuilderEmail.president_teaser">
+                              <p style="font-size:1.1rem; padding-top:8px;">{{ emailBuilderEmail.president_youtube_teaser }}</p>
+                            </template>
+                          </td>
+                        </tr>
+                      </template>
+                      <template v-else-if="(emailBuilderEmail.president_youtube_url && !emailBuilderEmail.president_youtube_teaser) || (!emailBuilderEmail.president_youtube_url && emailBuilderEmail.president_youtube_teaser)">
+                        <tr>
+                          <td colspan="2" style="padding: 5px 15px 15px 15px;">
+                            <p style="font-size:1.1rem;" class="insufficient">YouTube fields are partially filled. Both a YouTube URL and YouTube teaser are required.</p>
+                          </td>
+                        </tr>
+                      </template>
+                    </table>
+                  </td>
+                </tr>
+              </template>
               <tr v-if="!emailBuilderEmail.exclude_insideemu">
                 <td valign="middle">
                   <div style="padding-top: 5px;">
@@ -720,13 +747,6 @@ export default {
       deleteConfirm: null,
     }
   },
-  computed: {
-    presidentYoutubeVideoId () {
-      if (!this.emailBuilderEmail.president_youtube_url) return null
-      const match = this.emailBuilderEmail.president_youtube_url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)
-      return match ? match[1] : null
-    }
-  },
   methods: {
     dateParse (date) {
       return moment(date).format('MMM DD')
@@ -739,6 +759,11 @@ export default {
         }
       })
       return storyHasTag
+    },
+    extractYoutubeId (url) {
+      if (!url) return null
+      const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+      return match ? match[1] : null
     },
     truncate (text, stop) {
       if (text.length > stop) {

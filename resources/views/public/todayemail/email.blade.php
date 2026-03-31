@@ -214,30 +214,62 @@
           @if($email->is_president_included)
             <tr>
               <td valign="top">
-                <div class="indent"
-                     style="border-top: 3px double #97D700;min-height: 136px;padding: 15px;margin-left: 1rem;margin-right: 1rem;">
-                  <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png"
-                       alt="EMU President Jim Smith" width="109px" style="float:left; padding:0 15px 8px 0;">
-                  <h2 style="padding-top: 5px;font-weight: 500;padding: 12px 0 3px;margin: 0;font-size: 22px;"><a
-                        href="{{ $email->president_url }}" style="color: #636363;text-decoration: none;">From the
-                      President &#10137;</a></h2>
-                  <p style="padding-top: 8px;font-size: 0.9rem;padding: 0;margin: 0;">{{ $email->president_teaser }}</p>
+                <table cellpadding="0" cellspacing="0" border="0" width="100%"
+                       style="border-top: 3px double #97D700;border-collapse:collapse;margin-left:1rem;margin-right:1rem;max-width:calc(100% - 2rem);font-family:'Poppins',arial,sans-serif;color:#333333;background-color:#ffffff;">
+                  <!-- Row 1: Photo + heading/teaser -->
+                  <tr>
+                    <td width="124" valign="top" style="padding: 15px 0 10px 15px;">
+                      <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png"
+                           alt="EMU President Jim Smith" width="109" style="display:block;">
+                    </td>
+                    <td valign="{{ !$email->president_teaser && $email->president_youtube_url ? 'middle' : 'top' }}" style="padding: 15px 15px 10px 15px;">
+                      <h2 style="padding-top:0;font-weight:500;margin:0;font-size:22px;"><a
+                            href="{{ $email->president_url ?: $email->president_youtube_url }}" style="color:#636363;text-decoration:none;">From the
+                          President &#10137;</a></h2>
+                      @if($email->president_teaser)
+                        <p style="padding-top:8px;font-size:0.9rem;margin:0;">{{ $email->president_teaser }}</p>
+                      @elseif($email->president_youtube_teaser)
+                        <p style="padding-top:8px;font-size:0.9rem;margin:0;">{{ $email->president_youtube_teaser }}</p>
+                      @endif
+                    </td>
+                  </tr>
+                  <!-- Row 2: YouTube thumbnail (full width) -->
                   @if($email->president_youtube_url)
                     @php
-                      preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $email->president_youtube_url, $ytMatches);
-                      $presidentVideoId = $ytMatches[1] ?? null;
+                      preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/', $email->president_youtube_url, $ytMatch);
+                      $youtubeVideoId = $ytMatch[1] ?? null;
                     @endphp
-                    @if($presidentVideoId)
-                      <div style="clear:both; padding-top:15px; text-align:center;">
-                        <a href="{{ $email->president_youtube_url }}" target="_blank" style="text-decoration:none;">
-                          <img src="https://img.youtube.com/vi/{{ $presidentVideoId }}/hqdefault.jpg"
-                               alt="Presidential YouTube Video"
-                               style="max-width:560px; width:100%; border:2px solid #046A38;"/>
-                        </a>
-                      </div>
+                    @if($youtubeVideoId)
+                      <tr>
+                        <td colspan="2" style="padding: 5px 15px 15px 15px;">
+                          <a href="{{ $email->president_youtube_url }}" style="display:block;text-decoration:none;" target="_blank">
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;background-image:url('https://img.youtube.com/vi/{{ $youtubeVideoId }}/hqdefault.jpg');background-size:cover;background-position:center;">
+                              <tr>
+                                <td align="center" valign="middle" height="300" style="padding:0;">
+                                  <!--[if mso]>
+                                  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" style="height:48px;v-text-anchor:middle;width:68px;" arcsize="21%" fillcolor="#FF0000" stroke="f">
+                                    <w:anchorlock/>
+                                    <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:20px;">&#9654;</center>
+                                  </v:roundrect>
+                                  <![endif]-->
+                                  <!--[if !mso]><!-->
+                                  <div style="display:inline-block;width:68px;height:48px;background-color:#FF0000;border-radius:14px;line-height:48px;text-align:center;font-size:20px;color:#ffffff;">&#9654;</div>
+                                  <!--<![endif]-->
+                                </td>
+                              </tr>
+                            </table>
+                            <img src="https://img.youtube.com/vi/{{ $youtubeVideoId }}/hqdefault.jpg"
+                                 alt="YouTube Video Thumbnail"
+                                 style="max-width:100%;height:auto;display:none;">
+                          </a>
+                          @if($email->president_youtube_teaser && $email->president_teaser)
+                            <p style="padding-top:8px;font-size:0.9rem;margin:0;">{{ $email->president_youtube_teaser }}</p>
+                          @endif
+                        </td>
+                      </tr>
                     @endif
                   @endif
-                </div>
+                </table>
               </td>
             </tr>
           @endif

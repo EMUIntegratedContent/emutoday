@@ -17,6 +17,7 @@ const defaultEmail = {
 	president_teaser: null,
 	president_url: null,
 	president_youtube_url: null,
+	president_youtube_teaser: null,
 	emu175_teaser: null,
 	emu175_url: null,
 	send_at: null,

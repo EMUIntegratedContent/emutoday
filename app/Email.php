@@ -26,6 +26,7 @@ class Email extends Model
       'president_teaser',
       'president_url',
       'president_youtube_url',
+      'president_youtube_teaser',
       'is_emu175_included',
       'emu175_teaser',
       'emu175_url',

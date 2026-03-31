@@ -53,17 +53,32 @@ class EmailController extends ApiController
         'title' => 'required|min:10',
         'send_at' => 'nullable|date_format:Y-m-d H:i:s'
     ];
-    // The validator if there is a presidential message being included in the email, a valid URL must be passed
+    // Validate presidential message fields when included
     if ($request->get('is_president_included')) {
-      $validationRules['president_teaser'] = 'required';
-      $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
-    }
-
-    if ($request->get('president_youtube_url')) {
-      $validationRules['president_youtube_url'] = 'regex:/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+      // If traditional fields are partially filled, validate them individually
+      if ($request->get('president_teaser') || $request->get('president_url')) {
+        $validationRules['president_teaser'] = 'required';
+        $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+      }
+      // If YouTube fields are partially filled, validate them individually
+      if ($request->get('president_youtube_url') || $request->get('president_youtube_teaser')) {
+        $validationRules['president_youtube_teaser'] = 'required';
+        $validationRules['president_youtube_url'] = ['required', 'regex:#^https?://(www\.)?(youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/).+$#'];
+      }
     }
 
     $validation = \Validator::make(Input::all(), $validationRules);
+
+    // Cross-field check: at least one complete option required when president is included
+    $validation->after(function ($validator) use ($request) {
+      if ($request->get('is_president_included')) {
+        $hasTraditional = $request->get('president_teaser') && $request->get('president_url');
+        $hasYoutube = $request->get('president_youtube_url') && $request->get('president_youtube_teaser');
+        if (!$hasTraditional && !$hasYoutube) {
+          $validator->errors()->add('president', 'When including a presidential message, you must provide either a teaser + URL or a YouTube URL + YouTube teaser (or both).');
+        }
+      }
+    });
 
     if ($validation->fails()) {
       return $this->setStatusCode(422)
@@ -88,6 +103,7 @@ class EmailController extends ApiController
       $email->president_teaser = $request->get('president_teaser', null);
       $email->president_url = $request->get('president_url', null);
       $email->president_youtube_url = $request->get('president_youtube_url', null);
+      $email->president_youtube_teaser = $request->get('president_youtube_teaser', null);
 
       if ($email->save()) {
         // Sync announcements
@@ -183,14 +199,16 @@ class EmailController extends ApiController
         'title' => 'required|min:10',
         'send_at' => 'nullable|date_format:Y-m-d H:i:s'
     ];
-    // The validator if there is a presidential message being included in the email, a valid URL must be passed
+    // Validate presidential message fields when included
     if ($request->get('is_president_included')) {
-      $validationRules['president_teaser'] = 'required';
-      $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
-    }
-
-    if ($request->get('president_youtube_url')) {
-      $validationRules['president_youtube_url'] = 'regex:/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+      if ($request->get('president_teaser') || $request->get('president_url')) {
+        $validationRules['president_teaser'] = 'required';
+        $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+      }
+      if ($request->get('president_youtube_url') || $request->get('president_youtube_teaser')) {
+        $validationRules['president_youtube_teaser'] = 'required';
+        $validationRules['president_youtube_url'] = ['required', 'regex:#^https?://(www\.)?(youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/).+$#'];
+      }
     }
 
     // The validator if there is a EMU 175 link being included in the email, a valid URL must be passed
@@ -200,6 +218,17 @@ class EmailController extends ApiController
     }
 
     $validation = \Validator::make(Input::all(), $validationRules);
+
+    // Cross-field check: at least one complete option required when president is included
+    $validation->after(function ($validator) use ($request) {
+      if ($request->get('is_president_included')) {
+        $hasTraditional = $request->get('president_teaser') && $request->get('president_url');
+        $hasYoutube = $request->get('president_youtube_url') && $request->get('president_youtube_teaser');
+        if (!$hasTraditional && !$hasYoutube) {
+          $validator->errors()->add('president', 'When including a presidential message, you must provide either a teaser + URL or a YouTube URL + YouTube teaser (or both).');
+        }
+      }
+    });
 
     if ($validation->fails()) {
       return $this->setStatusCode(422)
@@ -222,6 +251,7 @@ class EmailController extends ApiController
       $email->president_teaser = $request->get('president_teaser', null);
       $email->president_url = $request->get('president_url', null);
       $email->president_youtube_url = $request->get('president_youtube_url', null);
+      $email->president_youtube_teaser = $request->get('president_youtube_teaser', null);
       $email->is_emu175_included = $request->get('is_emu175_included', 0);
       $email->emu175_teaser = $request->get('emu175_teaser', null);
       $email->emu175_url = $request->get('emu175_url', null);
@@ -321,17 +351,30 @@ class EmailController extends ApiController
         'title' => 'required|min:10',
         'send_at' => 'nullable|date_format:Y-m-d H:i:s'
     ];
-    // The validator if there is a presidential message being included in the email, a valid URL must be passed
+    // Validate presidential message fields when included
     if ($request->get('is_president_included')) {
-      $validationRules['president_teaser'] = 'required';
-      $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
-    }
-
-    if ($request->get('president_youtube_url')) {
-      $validationRules['president_youtube_url'] = 'regex:/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+      if ($request->get('president_teaser') || $request->get('president_url')) {
+        $validationRules['president_teaser'] = 'required';
+        $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+      }
+      if ($request->get('president_youtube_url') || $request->get('president_youtube_teaser')) {
+        $validationRules['president_youtube_teaser'] = 'required';
+        $validationRules['president_youtube_url'] = ['required', 'regex:#^https?://(www\.)?(youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/).+$#'];
+      }
     }
 
     $validation = \Validator::make(Input::all(), $validationRules);
+
+    // Cross-field check: at least one complete option required when president is included
+    $validation->after(function ($validator) use ($request) {
+      if ($request->get('is_president_included')) {
+        $hasTraditional = $request->get('president_teaser') && $request->get('president_url');
+        $hasYoutube = $request->get('president_youtube_url') && $request->get('president_youtube_teaser');
+        if (!$hasTraditional && !$hasYoutube) {
+          $validator->errors()->add('president', 'When including a presidential message, you must provide either a teaser + URL or a YouTube URL + YouTube teaser (or both).');
+        }
+      }
+    });
 
     if ($validation->fails()) {
       return $this->setStatusCode(422)
@@ -349,6 +392,7 @@ class EmailController extends ApiController
       $email->president_teaser = $request->get('president_teaser', null);
       $email->president_url = $request->get('president_url', null);
       $email->president_youtube_url = $request->get('president_youtube_url', null);
+      $email->president_youtube_teaser = $request->get('president_youtube_teaser', null);
 			$email->is_emu175_included = $request->get('is_emu175_included', 0);
 			$email->emu175_teaser = $request->get('emu175_teaser', null);
 			$email->emu175_url = $request->get('emu175_url', null);
@@ -634,7 +678,7 @@ class EmailController extends ApiController
         $email->stories()->first() &&
         $email->recipients()->first() &&
         \Carbon\Carbon::parse($email->send_at) >= date('Y-m-d H:i:s') &&
-        ($email->is_president_included ? ($email->president_url && $email->president_teaser) : true) // <- If the president's message is included, the URL and teaser must also be present. If not, both are irrelevant, just return true.
+        ($email->is_president_included ? (($email->president_url && $email->president_teaser) || ($email->president_youtube_url && $email->president_youtube_teaser)) : true) // <- If the president's message is included, at least one complete option (traditional or YouTube) must be present.
     ) {
       $email->is_ready = 1;
     }
