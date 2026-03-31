@@ -208,7 +208,7 @@
                       <!-- Row 1: Photo + heading/teaser -->
                       <tr>
                         <td width="124" valign="top" style="padding: 15px 0 10px 15px;">
-                          <img src="/assets/imgs/email/president-jim-smith-2024-109x136.png" alt="EMU President Jim Smith"
+                          <img src="/assets/imgs/email/president-kelly-2026-109x136.png" alt="EMU President Brendan Kelly"
                                width="109" style="display:block;"/>
                         </td>
                         <td :valign="!emailBuilderEmail.president_teaser && emailBuilderEmail.president_youtube_url ? 'middle' : 'top'" style="padding: 15px 15px 10px 15px;">

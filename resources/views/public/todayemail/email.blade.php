@@ -219,8 +219,8 @@
                   <!-- Row 1: Photo + heading/teaser -->
                   <tr>
                     <td width="124" valign="top" style="padding: 15px 0 10px 15px;">
-                      <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png"
-                           alt="EMU President Jim Smith" width="109" style="display:block;">
+                      <img src="{{ url('/') }}/assets/imgs/email/president-kelly-2026-109x136.png"
+                           alt="EMU President Brendan Kelly" width="109" style="display:block;">
                     </td>
                     <td valign="{{ !$email->president_teaser && $email->president_youtube_url ? 'middle' : 'top' }}" style="padding: 15px 15px 10px 15px;">
                       <h2 style="padding-top:0;font-weight:500;margin:0;font-size:22px;"><a
