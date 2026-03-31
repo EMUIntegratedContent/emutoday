@@ -221,6 +221,21 @@
                     <p style="font-size:1.1rem;" class="insufficient">There is no teaser text provided. You must include
                       this text when including a presidential message.</p>
                   </template>
+                  <div v-if="emailBuilderEmail.president_youtube_url" style="clear:both; padding-top:15px; text-align:center;">
+                    <template v-if="presidentYoutubeVideoId">
+                      <a :href="emailBuilderEmail.president_youtube_url" target="_blank" style="display:inline-block; position:relative;">
+                        <img :src="'https://img.youtube.com/vi/' + presidentYoutubeVideoId + '/hqdefault.jpg'"
+                             alt="Presidential YouTube Video"
+                             style="max-width:560px; width:100%; border:2px solid #046A38; border-radius:4px;"/>
+                        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:68px; height:48px; background:rgba(0,0,0,0.7); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                          <div style="width:0; height:0; border-style:solid; border-width:12px 0 12px 20px; border-color:transparent transparent transparent #ffffff; margin-left:4px;"></div>
+                        </div>
+                      </a>
+                    </template>
+                    <template v-else>
+                      <p class="insufficient" style="font-size:0.9rem;">Could not extract video ID from YouTube URL. Please check the URL format.</p>
+                    </template>
+                  </div>
                 </td>
               </tr>
               <tr v-if="!emailBuilderEmail.exclude_insideemu">
@@ -703,6 +718,13 @@ export default {
   data () {
     return {
       deleteConfirm: null,
+    }
+  },
+  computed: {
+    presidentYoutubeVideoId () {
+      if (!this.emailBuilderEmail.president_youtube_url) return null
+      const match = this.emailBuilderEmail.president_youtube_url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)
+      return match ? match[1] : null
     }
   },
   methods: {
