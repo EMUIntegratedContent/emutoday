@@ -16,8 +16,8 @@
     "production": "mix --production"
   },
   "devDependencies": {
-    "axios": "^0.27.2",
-    "browser-sync": "^2.27.11",
+    "axios": "^1.16.0",
+    "browser-sync": "^3.0.4",
     "browser-sync-webpack-plugin": "^2.3.0",
     "cross-env": "^5.2.1",
     "foundation-sites": "^6.7.5",
