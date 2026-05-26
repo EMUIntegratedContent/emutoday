@@ -25,7 +25,6 @@
 		</div>
 		<div class="row">
 			<div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
-				{{ eventlist }}
 				<event-view-content
 					:eventid.once="eventid"
 					:edata.sync="eventlist"
