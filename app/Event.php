@@ -116,6 +116,19 @@ class Event extends Model{
 		return $this->belongsToMany('Emutoday\Category', 'cea_event_categories', 'event_id', 'category_id');
 	}
 
+	public function scopeApprovedForCalendar($query)
+	{
+		return $query->where('is_approved', '1')
+			->where('is_hidden', '0')
+			->where('is_archived', '0');
+	}
+
+	public function scopeOverlappingDateRange($query, $start, $end)
+	{
+		return $query->where('start_date', '<=', $end)
+			->whereRaw('COALESCE(end_date, start_date) >= ?', [$start]);
+	}
+
 	public function doNothing(){ //
 		// do nothing
 	}

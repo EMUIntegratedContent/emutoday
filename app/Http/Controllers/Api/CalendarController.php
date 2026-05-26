@@ -52,12 +52,15 @@ class CalendarController extends ApiController
             $cdate_end = Carbon::now()->addDays(7)->endOfDay();
         }
         $eventlist = Event::where([
-            ['start_date', '>=', $cdate_start],
-            ['start_date', '<=', $cdate_end],
             ['is_approved', '1'],
             ['is_hidden', '0'],
-            ['is_archived', '0']
-        ])->orderBy('start_date')->orderBy('start_time', 'asc')->get();
+            ['is_archived', '0'],
+        ])
+            ->where('start_date', '<=', $cdate_end)
+            ->whereRaw('COALESCE(end_date, start_date) >= ?', [$cdate_start])
+            ->orderBy('start_date')
+            ->orderBy('start_time', 'asc')
+            ->get();
 
         // it would be better just to not query the event in the first place...
         if (!empty($id)) { // if id is given.
@@ -82,9 +85,27 @@ class CalendarController extends ApiController
             }
         }
 
-        $groupedByDay = $eventlist->groupBy(function ($date) {
-            return Carbon::parse($date->start_date)->format('Y-n-j');
-        });
+        $rangeStart = $cdate_start->copy()->startOfDay();
+        $rangeEnd = $cdate_end->copy()->startOfDay();
+        $groupedByDay = collect();
+
+        for ($day = $rangeStart->copy(); $day->lte($rangeEnd); $day->addDay()) {
+            $key = $day->format('Y-n-j');
+            $dayEvents = $eventlist->filter(function ($event) use ($day) {
+                $eventStart = Carbon::parse($event->start_date)->startOfDay();
+                $eventEnd = $event->end_date
+                    ? Carbon::parse($event->end_date)->startOfDay()
+                    : $eventStart->copy();
+
+                return $day->gte($eventStart) && $day->lte($eventEnd);
+            })->sortBy(function ($event) {
+                return Carbon::parse($event->start_date)->format('Y-m-d') . ' ' . ($event->start_time ?? '');
+            })->values();
+
+            if ($dayEvents->isNotEmpty()) {
+                $groupedByDay->put($key, $dayEvents);
+            }
+        }
         $yearVar = $cdate_start->year;
         $monthVarWord = $cdate_start->format('F');
         $monthVar = $cdate_start->month;
@@ -218,18 +239,39 @@ class CalendarController extends ApiController
         $selectedMonth_StartOnDay = $cdate_start->firstOfMonth()->dayOfWeek;
         $selectedMonth_daysInMonth = $cdate_start->daysInMonth;
 
-        $eventsInMonth = Event::select('id', 'start_date', 'end_date')->where([
-            ['is_approved', 1],
-            ['start_date', '>=', $cdate_start],
-            ['start_date', '<=', $cdate_end],
-            ['is_hidden', 0],
-            ['is_archived', '0']
-        ])->get();
+        $eventsInMonth = Event::select('id', 'start_date', 'end_date')
+            ->where([
+                ['is_approved', 1],
+                ['is_hidden', 0],
+                ['is_archived', '0'],
+            ])
+            ->where('start_date', '<=', $cdate_end)
+            ->whereRaw('COALESCE(end_date, start_date) >= ?', [$cdate_start])
+            ->get();
 
-        $keyed = $eventsInMonth->keyBy(function ($item) {
-            return Carbon::parse($item['start_date'])->day;
-        });
-        $uniqueByDay = $keyed->keys();
+        $monthStart = $cdate_start->copy()->startOfDay();
+        $monthEnd = $cdate_end->copy()->startOfDay();
+        $uniqueByDay = collect();
+
+        foreach ($eventsInMonth as $event) {
+            $eventStart = Carbon::parse($event->start_date)->startOfDay();
+            $eventEnd = $event->end_date
+                ? Carbon::parse($event->end_date)->startOfDay()
+                : $eventStart->copy();
+
+            $rangeStart = $eventStart->greaterThan($monthStart) ? $eventStart : $monthStart;
+            $rangeEnd = $eventEnd->lessThan($monthEnd) ? $eventEnd : $monthEnd;
+
+            if ($rangeStart->greaterThan($rangeEnd)) {
+                continue;
+            }
+
+            for ($day = $rangeStart->copy(); $day->lte($rangeEnd); $day->addDay()) {
+                $uniqueByDay->push($day->day);
+            }
+        }
+
+        $uniqueByDay = $uniqueByDay->unique()->sort()->values();
 
         $calDaysArray = collect();
         $dayCounter = 0;
