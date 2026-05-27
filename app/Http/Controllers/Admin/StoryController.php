@@ -25,21 +25,23 @@ class StoryController extends Controller
         View::share('bugStories', $this->bugService->getUnapprovedStories());
         View::share('bugExperts', $this->bugService->getUnapprovedExperts());
         View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
-				View::share('bugInsideemuIdeas', $this->bugService->getNewInsideemuIdeas());
+        View::share('bugInsideemuIdeas', $this->bugService->getNewInsideemuIdeas());
     }
 
 
-    public function queueAll(Story $story) {
+    public function queueAll(Story $story)
+    {
         $storys = $this->story;
-        $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+        $stypes  = collect(\Emutoday\StoryType::select('name', 'shortname')->get());
         $sroute = 'story';
         $qtype  = 'queueall';
         \JavaScript::put([
             'records' => $storys
         ]);
-        return view('admin.story.queue', compact('storys','sroute', 'stypes', 'qtype'));
+        return view('admin.story.queue', compact('storys', 'sroute', 'stypes', 'qtype'));
     }
-    public function queueType(Story $story, $stype) {
+    public function queueType(Story $story, $stype)
+    {
         $storys = $this->story;
         $sroute = 'story';
         $stypes  = 'news';
@@ -47,68 +49,70 @@ class StoryController extends Controller
         \JavaScript::put([
             'records' => $storys
         ]);
-        return view('admin.story.queue', compact('storys','sroute', 'stypes', 'qtype'));
+        return view('admin.story.queue', compact('storys', 'sroute', 'stypes', 'qtype'));
     }
 
     public function updateFromPreview(Request $request, $id)
     {
-      $story = $this->story->findOrFail($id);
-      $story->content = $request->get('content');
-      $story->save();
-      flash()->success('Story Content has been updated.');
-      return redirect()->back();
+        $story = $this->story->findOrFail($id);
+        $story->content = $request->get('content');
+        $story->save();
+        flash()->success('Story Content has been updated.');
+        return redirect()->back();
     }
 
     public function promoteStory(Request $request)
-        {
-            $story = $this->story->findOrFail($request->id);
-            $story->story_type = $request->new_story_type;
-            $story->save();
-            $storyGroup = $story->storyType->group;
-            $qtype = $request->qtype;
-            $gtype = $request->gtype;
+    {
+        $story = $this->story->findOrFail($request->id);
+        $story->story_type = $request->new_story_type;
+        $story->save();
+        $storyGroup = $story->storyType->group;
+        $qtype = $request->qtype;
+        $gtype = $request->gtype;
 
-            $requiredImages = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
-            $stype = $story->story_type;
-            foreach ($requiredImages as $img) {
-							// Since we can now demote stories, don't create image types if they already exist! CP (2/25/22)
-							$existingImg = StoryImage::where([
-								['story_id', '=', $story->id],
-								['imagetype_id', '=', $img->id]
-							])->first();
-							if(!$existingImg) {
-								$story->storyImages()->create([
-									'imagetype_id'=> $img->id,
-									'group'=> $storyGroup,
-									'image_type'=> $img->type,
-									'image_name'=> 'img' . $story->id . '_' . $img->type
+        $requiredImages = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
+        $stype = $story->story_type;
+        foreach ($requiredImages as $img) {
+            // Since we can now demote stories, don't create image types if they already exist! CP (2/25/22)
+            $existingImg = StoryImage::where([
+                ['story_id', '=', $story->id],
+                ['imagetype_id', '=', $img->id]
+            ])->first();
+            if (!$existingImg) {
+                $story->storyImages()->create([
+                    'imagetype_id' => $img->id,
+                    'group' => $storyGroup,
+                    'image_type' => $img->type,
+                    'image_name' => 'img' . $story->id . '_' . $img->type
 
-								]);
-							}
+                ]);
             }
-
-            flash()->success('Story has been Promoted.');
-            $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
-            return redirect($rurl);
         }
 
-	public function demoteStory(Request $request)
-	{
-		{
-			$story = $this->story->findOrFail($request->id);
-			$story->story_type = 'news';
-			$story->save();
+        flash()->success('Story has been Promoted.');
+        $rurl = '/admin/' . $qtype . '/' . $gtype . '/' . $stype . '/' . $story->id . '/edit';
+        return redirect($rurl);
+    }
 
-			$qtype = $request->qtype;
-			$gtype = $request->gtype;
-			$stype = $story->story_type;
+    public function demoteStory(Request $request)
+    { {
+            $story = $this->story->findOrFail($request->id);
+            $story->story_type = 'news';
+            $story->save();
 
-			flash()->success("Story has been demoted to 'News'.");
-			$rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
-			return redirect($rurl);
+            $qtype = $request->qtype;
+            $gtype = $request->gtype;
+            $stype = $story->story_type;
 
-		}
+            // Remove all story images except for story_type == 'social'
+            $storyImages = $story->storyImages()->where('image_type', '!=', 'social')->get();
+            foreach ($storyImages as $storyImage) {
+                $storyImage->delete();
+            }
 
-	}
-
+            flash()->success("Story has been demoted to 'News'.");
+            $rurl = '/admin/' . $qtype . '/' . $gtype . '/' . $stype . '/' . $story->id . '/edit';
+            return redirect($rurl);
+        }
+    }
 }

@@ -54,6 +54,7 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
             'is_president_included' => $email->is_president_included,
             'president_teaser' => $email->president_teaser,
             'president_url' => $email->president_url,
+            'president_youtube_url' => $email->president_youtube_url,
 						'exclude_events' => $email->exclude_events,
             'is_emu175_included' => $email->is_emu175_included,
             'emu175_teaser' => $email->emu175_teaser,

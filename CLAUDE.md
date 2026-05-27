@@ -1,63 +1,96 @@
-# EMU Today - Claude Code Reference
+# CLAUDE.md
 
-## Build & Development
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-### Docker
+## Project Overview
+
+EMU Today is Eastern Michigan University's public-facing news platform (today.emich.edu). It manages stories, events, announcements, a magazine, an "Inside EMU" staff/faculty submission system, and an Eastern Experts directory.
+
+## Development Commands
+
+### Docker (primary local environment)
 ```bash
-docker-compose up -d          # Start web (port 8080), MariaDB (3306), MailHog (8027)
-docker-compose down           # Stop services
+docker compose up --build    # first time
+docker compose up            # subsequent starts
+```
+App runs at `localhost:8080`. Services: PHP 8.5/Apache web container, MariaDB (`emutoday-db-1`), MailHog (SMTP on :1027, UI on :8027).
+
+### Frontend (Laravel Mix / Webpack)
+```bash
+npm run dev          # compile assets once
+npm run watch        # compile + watch for changes
+npm run prod         # production build (minified)
 ```
 
-### Frontend (Laravel Mix)
+### Artisan / PHP
 ```bash
-npm run dev                   # Development build
-npm run watch                 # Watch for changes
-npm run prod                  # Production build (minified)
+php artisan <command>                    # inside the web container
+docker exec -it emutoday-web-1 bash      # shell into container
 ```
 
-### Backend (Laravel)
+### Tests
 ```bash
-php artisan migrate           # Run migrations
-php artisan tinker            # REPL
-composer install              # Install PHP dependencies
+vendor/bin/phpunit                       # run all tests
+vendor/bin/phpunit tests/ExampleTest.php # run single test
 ```
-
-### Testing
-```bash
-vendor/bin/phpunit            # Run PHP tests
-```
+PHPUnit config is in `phpunit.xml`. Test suite is minimal (lives in `tests/`).
 
 ## Architecture
 
-**Stack:** Laravel 12 + Vue 3 + AdminLTE 3 + Bootstrap 5 + MariaDB
-
-**Namespace:** `Emutoday\` — maps to `app/` (PSR-4 in composer.json)
-
-### Content Types (Eloquent models in `app/`)
-Stories, Events, Announcements, Pages, Experts, Magazine, Emails, MediaHighlights, InsideemuPosts, InsideemuIdeas, StoryIdeas, MiniCalendar
-
-### Controller Organization (`app/Http/Controllers/`)
-- `Admin/` — CMS admin controllers (behind CAS auth)
-- `Api/` — API endpoints (Mailgun webhooks, data APIs)
-- `Auth/` — Authentication controllers
-- `Today/` — Public-facing today.emich.edu controllers
-- Root — MainController, SearchController, PreviewController, etc.
+**Laravel 12 + Vue 3** with Laravel Mix (webpack.mix.js). The app namespace is `Emutoday\` (PSR-4 mapped to `app/`).
 
 ### Routing
-All routes are in a single file: **`app/Http/routes.php`** (not the standard `routes/` directory). Sub-route files are required in (e.g., `experts_redirects.php`).
+All routes are in `app/Http/routes.php` (not `routes/web.php`). Loaded via `RouteServiceProvider` with the `Emutoday\Http\Controllers` namespace. Additional route files are required inline: `experts_redirects.php`, `misc_redirects.php`.
 
-### Vue Entry Points
-Each Vue component has its own entry file in `resources/assets/js/` following the pattern `vue-{feature}-{type}.js`. These are compiled individually via Laravel Mix in `webpack.mix.js`. There is no SPA — each entry point mounts to a specific Blade template.
+### Controller Structure (app/Http/Controllers/)
+- **Today/** — public-facing controllers (stories, events, announcements, calendar, magazine, experts, Inside EMU, RSS feeds)
+- **Admin/** — CMS/admin controllers (CRUD for all content types, user/role management)
+- **Api/** — internal JSON API consumed by Vue components + external API endpoints (`ExternalApiController`)
+- **Auth/** — CAS-based authentication controllers
 
-### Presenters (`app/Presenters/`)
-Uses `laracasts/presenter` for view-layer formatting on models (e.g., StoryPresenter, EventPresenter).
+### Key Directories
+- `app/Services/` — CasService (custom CAS auth), ImageCacheService (custom image caching), InsideemuService, MailgunSubscribeService
+- `app/Presenters/` — Laracasts Presenter classes for view formatting (dates, URLs, display logic) on models like Story, Event, Announcement, etc.
+- `app/Today/Transformers/` — League\Fractal transformers used by API controllers to shape JSON responses
+- `app/Helpers/` — Search helper (aggregates FULLTEXT search results across models)
+- `app/Repositories/` — Repository pattern (StoryRepository + interfaces)
+- `app/Facades/` — Custom facades (notably `Cas`)
+- `app/Providers/` — Includes custom CasServiceProvider, SearchServiceProvider, RepositoriesServiceProvider
 
-## Key Conventions
+### Models
+Eloquent models live directly in `app/` (not `app/Models/`). Key models: Story, Event, Announcement, Expert, InsideemuPost, InsideemuIdea, Magazine, Page, MediaHighlight, Email, Author. The `Story` model uses table name `storys` (not `stories`).
 
-- **Auth:** Apereo CAS (phpCAS) for admin authentication, Laravel Passport for API OAuth
-- **Email:** Mailgun integration with webhook handlers and mailing list management
-- **Rich Text:** CKEditor 5 with custom webpack config in `webpack.mix.js`
-- **Frontend CSS:** Foundation (public site) + AdminLTE/Bootstrap (admin). Styles combined via Mix from `resources/assets/css/`
-- **Helpers:** Global helper functions in `app/helpers.php` (autoloaded via composer)
-- **Images:** Intervention Image for processing
-- **Role-based access:** Custom `HasRoles` trait on User model with Role/Permission models
+### Frontend
+- Vue 3 components in `resources/assets/js/components/`
+- Each admin form/queue has its own JS entry point (e.g., `vue-story-form-wrapper.js`, `vue-event-queue.js`)
+- CKEditor 5 is integrated for rich text editing with custom webpack config in `webpack.mix.js`
+- Admin UI uses AdminLTE 3 + Bootstrap 5 + Vuetify 3
+- Public UI uses Foundation + custom CSS
+
+## Key Patterns
+
+### Presenters
+Models use `PresentableTrait` from `laracasts/presenter`. Each presenter (e.g., `StoryPresenter`) formats dates and display values. Access via `$model->present()->methodName`.
+
+### Fractal Transformers
+API responses go through `League\Fractal\TransformerAbstract` classes in `app/Today/Transformers/`. These shape model data for Vue component consumption.
+
+### Image Caching
+Custom `ImageCacheService` replaces the deprecated `intervention/imagecache` package. Uses Intervention Image v3 with named filter functions (e.g., `avatar160`, `betterthumb`). Images are served through `ImageCacheController`. Image directories: `public/imgs/{story,magazine,user,event,expert,insideemu_posts,placeholder}`.
+
+### FULLTEXT Search
+Search uses raw MySQL `MATCH ... AGAINST` queries across multiple tables/columns. Results are scored and aggregated in `app/Helpers/Search.php` using a composite `search_score` field. The Expert model has particularly complex multi-table FULLTEXT joins across education, expertise, languages, and titles.
+
+### Authentication
+Custom CAS (Central Authentication Service) implementation in `app/Services/CasService.php` using `apereo/phpcas`. This replaced the deprecated `subfission/cas` package. The `Authenticate` middleware checks CAS, then looks up the user by `{cas_username}@emich.edu` in the local users table. **CAS is planned for replacement with LDAP** (see readme.md).
+
+### Authorization
+Role-based access control with `HasRoles` trait on User model. Middleware classes gate access to specific sections (ExpertsMiddleware, InsideemuMiddleware, EmailsMiddleware, etc.).
+
+## External Files (not in repo)
+
+These must be obtained separately and placed manually:
+- **`.env`** — environment config with app keys, DB credentials, API keys
+- **`app/Http/Requests/oauth.php`** — OAuth configuration file
+- **`public/imgs/`** — most image subdirectories are not tracked in git
+- **`emutoday.sql`** — database dump for initial local setup
