@@ -42,14 +42,14 @@ class SyncAthleticsEvents extends Command
     {
         $xmlString = $this->fetchFeed();
         if ($xmlString === false) {
-            Log::error('SyncAthleticsEvents: could not fetch RSS feed.');
+            Log::channel('athletics')->error('SyncAthleticsEvents: could not fetch RSS feed.');
             $this->error('Could not fetch RSS feed.');
             return 1;
         }
 
         $xml = simplexml_load_string($xmlString);
         if ($xml === false) {
-            Log::error('SyncAthleticsEvents: could not parse RSS feed XML.');
+            Log::channel('athletics')->error('SyncAthleticsEvents: could not parse RSS feed XML.');
             $this->error('Could not parse RSS feed XML.');
             return 1;
         }
@@ -129,7 +129,7 @@ class SyncAthleticsEvents extends Command
         $canceled = $this->cancelStaleEvents($rssPermalinks);
 
         $summary = "SyncAthleticsEvents complete. Created: {$created}, Updated: {$updated}, Canceled: {$canceled}.";
-        Log::info($summary);
+        Log::channel('athletics')->info($summary);
         $this->info($summary);
 
         return 0;
