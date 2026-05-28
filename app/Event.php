@@ -34,7 +34,8 @@ class Event extends Model{
 		'submission_date', 'approved_date', 'contact_fax', 'mini_calendar', 'lbc_reviewed', 'ensemble',
 		'mba', 'mini_calendar_alt', 'feature_image',
 		'hsc_rewards', 'hsc_reviewed',
-		'on_campus', 'mediafile_id', 'building_id', 'priority', 'is_hidden'];
+		'on_campus', 'mediafile_id', 'building_id', 'priority', 'is_hidden',
+		'sidearm_permalink'];
 
 
 	/**

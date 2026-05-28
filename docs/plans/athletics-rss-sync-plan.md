@@ -33,22 +33,32 @@ Signature: `cea_events:sync_athletics`
 ```
 1. Fetch RSS XML from Sidearm URL via file_get_contents / Http facade
 2. Parse XML, register sidearm 's' and 'ev' namespaces
+   NOTE: <description> uses LITERAL "\n" (backslash-n text), not real newlines.
+   Split/regex on the literal "\n" string when parsing markers and links.
 3. Build $rssPermalinks = [] of all guid values from RSS
 4. For each RSS item:
    a. Extract fields:
       - sidearm_permalink  ← <guid>
-      - title              ← <title> (full, including date prefix)
+      - title              ← <title>, prefix stripped: take from first "EMU" to end
+                             (drops the "4/28 8:00 AM [N] " date/time/status prefix).
+                             If no "EMU" present, fall back to the full title.
       - location           ← <ev:location>
-      - description        ← <description> (plain text)
+      - description        ← <description>, CLEANED: convert literal "\n" to real
+                             newlines and strip the "TV:", "Streaming Video:",
+                             "Streaming Audio:", "Tickets:" lines (those move to links)
       - start_date         ← date part of <s:localstartdate>
       - start_time         ← time part of <s:localstartdate>
       - end_date           ← date part of <s:localenddate>
       - end_time           ← time part of <s:localenddate>
       - related_link_1     ← <link> (back to emueagles.com)
       - related_link_1_txt ← "EMU Athletics"
+      - related_link_2     ← URL following "Streaming Video:" marker in <description> (often ESPN+)
+      - related_link_2_txt ← "ESPN+ Streaming Video" (only if related_link_2 found)
+      - related_link_3     ← URL following "Streaming Audio:" marker in <description>
+      - related_link_3_txt ← "Streaming Audio" (only if related_link_3 found)
    b. updateOrCreate(['sidearm_permalink' => $permalink], [all fields above plus:
       - contact_person  = "EMU Athletics"
-      - contact_email   = "gsteiner2@emich.edu"
+      - contact_email   = "athletics@emich.edu"
       - contact_phone   = ""
       - cost            = "0"
       - free            = 1
@@ -82,11 +92,15 @@ Use `syncWithoutDetaching` so manually-added mini-cals on the event aren't wiped
 | RSS field | DB column | Notes |
 |---|---|---|
 | `<guid>` | `sidearm_permalink` | Unique key, full URL |
-| `<title>` | `title` | Kept as-is (includes date prefix) |
+| `<title>` | `title` | Remove prefix (always take from first instance of "EMU" to the end of the title) |
 | `<ev:location>` | `location` | |
 | `<s:localstartdate>` | `start_date` + `start_time` | Local ET, split on T |
 | `<s:localenddate>` | `end_date` + `end_time` | Local ET, split on T |
-| `<description>` | `description` | Raw text |
+| `<description>` | `description` | Cleaned: literal `\n`→newlines, strip TV/Streaming/Tickets lines |
+| `<description>` | `related_link_2` | URL following `Streaming Video:` marker (NOT "ESPN+ Streaming Video:") |
+| - | `related_link_2_txt` | Hardcoded "ESPN+ Streaming Video" (only if link found) |
+| `<description>` | `related_link_3` | URL following `Streaming Audio:` marker |
+| - | `related_link_3_txt` | Hardcoded "Streaming Audio" (only if link found) |
 | `<link>` | `related_link_1` | Link back to athletics page |
 | — | `related_link_1_txt` | Hardcoded "EMU Athletics" |
 

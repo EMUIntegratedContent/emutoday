@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
         Commands\SendTodayEmails::class,
         Commands\SendStoryIdeaEmail::class,
         Commands\SendIndividualStoryIdeaEmail::class,
-        Commands\ArchiveEvents::class
+        Commands\ArchiveEvents::class,
+        Commands\SyncAthleticsEvents::class
     ];
 
     /**
@@ -32,6 +33,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(Commands\SendStoryIdeaEmail::class)->cron('0 8 * * 3');
         $schedule->command(Commands\SendIndividualStoryIdeaEmail::class)->cron('0 8 * * 0-6');
         $schedule->command(Commands\ArchiveEvents::class)->cron('0 0 * * *');
+        $schedule->command(Commands\SyncAthleticsEvents::class)->cron('0 */6 * * *');
     }
 
     /**
