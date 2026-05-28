@@ -114,7 +114,7 @@ class SyncAthleticsEvents extends Command
             $event->related_link_3_txt = $links['audio'] ? 'Streaming Audio' : null;
 
             $event->contact_person = 'EMU Athletics';
-            $event->contact_email  = 'athletics@emich.edu';
+            $event->contact_email  = 'athletic_marketing@emich.edu';
             $event->contact_phone  = '';
 
             $event->cost        = '0';
@@ -288,6 +288,6 @@ class SyncAthleticsEvents extends Command
             $query->whereNotIn('sidearm_permalink', $rssPermalinks);
         }
 
-        return $query->update(['is_canceled' => 1]);
+        return $query->update(['is_canceled' => 1, 'is_archived' => 1, 'is_hidden' => 1]);
     }
 }
