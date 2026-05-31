@@ -52,12 +52,15 @@ class CalendarController extends ApiController
             $cdate_end = Carbon::now()->addDays(7)->endOfDay();
         }
         $eventlist = Event::where([
-            ['start_date', '>=', $cdate_start],
-            ['start_date', '<=', $cdate_end],
             ['is_approved', '1'],
             ['is_hidden', '0'],
-            ['is_archived', '0']
-        ])->orderBy('start_date')->orderBy('start_time', 'asc')->get();
+            ['is_archived', '0'],
+        ])
+            ->where('start_date', '<=', $cdate_end)
+            ->whereRaw('COALESCE(end_date, start_date) >= ?', [$cdate_start])
+            ->orderBy('start_date')
+            ->orderBy('start_time', 'asc')
+            ->get();
 
         // it would be better just to not query the event in the first place...
         if (!empty($id)) { // if id is given.
@@ -82,9 +85,31 @@ class CalendarController extends ApiController
             }
         }
 
-        $groupedByDay = $eventlist->groupBy(function ($date) {
-            return Carbon::parse($date->start_date)->format('Y-n-j');
-        });
+        // Group events by day for the 7-day list view. Multi-day events appear on
+        // every day they run, not just on their start date.
+        $rangeStart = $cdate_start->copy()->startOfDay();
+        $rangeEnd = $cdate_end->copy()->startOfDay();
+        $groupedByDay = collect();
+
+        for ($day = $rangeStart->copy(); $day->lte($rangeEnd); $day->addDay()) {
+            $key = $day->format('Y-n-j');
+            $dayEvents = $eventlist->filter(function ($event) use ($day) {
+                $eventStart = Carbon::parse($event->start_date)->startOfDay();
+                // Events without an end_date are treated as single-day events.
+                $eventEnd = $event->end_date
+                    ? Carbon::parse($event->end_date)->startOfDay()
+                    : $eventStart->copy();
+
+                return $day->gte($eventStart) && $day->lte($eventEnd);
+            })->sortBy(function ($event) {
+                return Carbon::parse($event->start_date)->format('Y-m-d') . ' ' . ($event->start_time ?? '');
+            })->values();
+
+            // Skip days with no events so the response only includes populated headings.
+            if ($dayEvents->isNotEmpty()) {
+                $groupedByDay->put($key, $dayEvents);
+            }
+        }
         $yearVar = $cdate_start->year;
         $monthVarWord = $cdate_start->format('F');
         $monthVar = $cdate_start->month;
@@ -218,27 +243,56 @@ class CalendarController extends ApiController
         $selectedMonth_StartOnDay = $cdate_start->firstOfMonth()->dayOfWeek;
         $selectedMonth_daysInMonth = $cdate_start->daysInMonth;
 
-        $eventsInMonth = Event::select('id', 'start_date', 'end_date')->where([
-            ['is_approved', 1],
-            ['start_date', '>=', $cdate_start],
-            ['start_date', '<=', $cdate_end],
-            ['is_hidden', 0],
-            ['is_archived', '0']
-        ])->get();
+        $eventsInMonth = Event::select('id', 'start_date', 'end_date')
+            ->where([
+                ['is_approved', 1],
+                ['is_hidden', 0],
+                ['is_archived', '0'],
+            ])
+            ->where('start_date', '<=', $cdate_end)
+            ->whereRaw('COALESCE(end_date, start_date) >= ?', [$cdate_start])
+            ->get();
 
-        $keyed = $eventsInMonth->keyBy(function ($item) {
-            return Carbon::parse($item['start_date'])->day;
-        });
-        $uniqueByDay = $keyed->keys();
+        // Build a list of calendar day numbers (1-31) that have at least one event.
+        // Multi-day events mark every day they span, not just their start date.
+        $monthStart = $cdate_start->copy()->startOfDay();
+        $monthEnd = $cdate_end->copy()->startOfDay();
+        $uniqueByDay = collect();
 
+        foreach ($eventsInMonth as $event) {
+            $eventStart = Carbon::parse($event->start_date)->startOfDay();
+            // Events without an end_date are treated as single-day events.
+            $eventEnd = $event->end_date
+                ? Carbon::parse($event->end_date)->startOfDay()
+                : $eventStart->copy();
+
+            // Clamp the event to the visible month so days outside the month are ignored.
+            $rangeStart = $eventStart->greaterThan($monthStart) ? $eventStart : $monthStart;
+            $rangeEnd = $eventEnd->lessThan($monthEnd) ? $eventEnd : $monthEnd;
+
+            if ($rangeStart->greaterThan($rangeEnd)) {
+                continue;
+            }
+
+            for ($day = $rangeStart->copy(); $day->lte($rangeEnd); $day->addDay()) {
+                $uniqueByDay->push($day->day);
+            }
+        }
+
+        $uniqueByDay = $uniqueByDay->unique()->sort()->values();
+
+        // Build the calendar grid payload consumed by the Vue sidebar widget.
         $calDaysArray = collect();
         $dayCounter = 0;
+
+        // Pad the first week with placeholder cells so day 1 aligns under the correct weekday.
         while ($dayCounter < $selectedMonth_StartOnDay) {
             $dayObject = collect(['day' => 'x' . $dayCounter, 'hasevents' => 'no-events']);
             $calDaysArray->push($dayObject);
             $dayCounter++;
         }
 
+        // One entry per day in the month; hasevents drives the event indicator styling.
         for ($x = 1; $x <= $selectedMonth_daysInMonth; $x++) {
             $hasevent = $uniqueByDay->contains($x) ? 'yes-events' : 'no-events';
             $dayObject = collect(['day' => $x, 'hasevents' => $hasevent]);
