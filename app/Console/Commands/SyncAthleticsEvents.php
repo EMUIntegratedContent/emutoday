@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Emutoday\Event;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Emutoday\Category;
 
 class SyncAthleticsEvents extends Command
 {
@@ -32,6 +33,30 @@ class SyncAthleticsEvents extends Command
      * Mini calendar that imported athletics events are attached to.
      */
     const ATHLETICS_MINICAL_ID = 117;
+
+    /**
+     * Sidearm calendar sport/type IDs mapped to display names and home venues.
+     * homeVenue is null if the sport is not played at a specific venue.
+     */
+    const SIDEARM_SPORTS = [
+        2  => ['sport' => 'Baseball', 'homeVenue' => 'Oestrike Stadium', 'sellsTickets' => false],
+        3  => ['sport' => 'Men\'s Basketball', 'homeVenue' => 'George Gervin GameAbove Center', 'sellsTickets' => true],
+        4  => ['sport' => 'Women\'s Basketball', 'homeVenue' => 'George Gervin GameAbove Center', 'sellsTickets' => true],
+        5  => ['sport' => 'Men\'s XC', 'homeVenue' => null, 'sellsTickets' => false],
+        6  => ['sport' => 'Women\'s XC', 'homeVenue' => null, 'sellsTickets' => false],
+        7  => ['sport' => 'Football', 'homeVenue' => 'Rynearson Stadium', 'sellsTickets' => true],
+        8  => ['sport' => 'Soccer', 'homeVenue' => 'Paul Scicluna Soccer Field', 'sellsTickets' => false],
+        10 => ['sport' => 'Men\'s Track & Field', 'homeVenue' => 'Olds-Marshall-Parks Track', 'sellsTickets' => false],
+        11 => ['sport' => 'Women\'s Track & Field', 'homeVenue' => 'Olds-Marshall-Parks Track', 'sellsTickets' => false],
+        12 => ['sport' => 'Volleyball', 'homeVenue' => 'George Gervin GameAbove Center', 'sellsTickets' => false],
+        13 => ['sport' => 'Men\'s Golf', 'homeVenue' => null, 'sellsTickets' => false],
+        16 => ['sport' => 'Women\'s Golf', 'homeVenue' => null, 'sellsTickets' => false],
+        17 => ['sport' => 'Women\'s Rowing', 'homeVenue' => 'Ford Lake', 'sellsTickets' => false],
+        18 => ['sport' => 'Gymnastics', 'homeVenue' => 'George Gervin GameAbove Center', 'sellsTickets' => false],
+        19 => ['sport' => 'Swimming & Diving', 'homeVenue' => 'Jones Natatorium', 'sellsTickets' => false],
+        20 => ['sport' => 'Tennis', 'homeVenue' => 'The Chippewa Club', 'sellsTickets' => false],
+        36 => ['sport' => 'Lacrosse', 'homeVenue' => 'Paul Scicluna Soccer Field', 'sellsTickets' => false],
+    ];
 
     /**
      * Execute the console command.
@@ -67,6 +92,9 @@ class SyncAthleticsEvents extends Command
                 continue;
             }
             $rssPermalinks[] = $permalink;
+
+            $sportId = $this->extractSportId($permalink);
+            $sport = self::SIDEARM_SPORTS[$sportId] ?? null;
 
             $localStart = (string) $sdNs->localstartdate;
             $localEnd   = (string) $sdNs->localenddate;
@@ -115,15 +143,64 @@ class SyncAthleticsEvents extends Command
 
             $event->contact_person = 'EMU Athletics';
             $event->contact_email  = 'athletic_marketing@emich.edu';
-            $event->contact_phone  = '';
+            $event->contact_phone  = '734.487.3369';
 
-            $event->cost        = '0';
-            $event->free        = 1;
+            // Home event is determined by <ev:location> containing 'Ypsilanti, Mich'
+            $isHomeEvent = (bool) preg_match('/\bYpsilanti, Mich\b/i', $event->location);
+            if($isHomeEvent) {
+                $event->on_campus = 1;
+            } else {
+                $event->on_campus = 0;
+            }
+
+            if($isHomeEvent && $sport['sellsTickets']) {
+                $event->cost        = 'Varies';
+                $event->free        = 0;
+                $event->tickets     = 'all';
+                $event->ticket_details_online = 'https://emueagles.com/tickets';
+                $event->ticket_details_phone = '734.487.3369';
+                $event->ticket_details_office = 'EMU Ticket Office: 799 N. Hewitt Rd. Ypsilanti, MI 48197';
+            } else if($sport['sellsTickets']) {
+                // Non-home event that sells tickets
+                $event->cost        = 'Road Event - Varies';
+                $event->free        = 0;
+                $event->tickets     = null;
+                $event->ticket_details_online = null;
+                $event->ticket_details_phone = null;
+                $event->ticket_details_office = null;
+            } else {
+                // Any event that does not sell tickets
+                $event->cost        = '0';
+                $event->free        = 1;
+                $event->tickets     = null;
+                $event->ticket_details_online = null;
+                $event->ticket_details_phone = null;
+                $event->ticket_details_office = null;
+            }
+
+            if($isHomeEvent && $sport['homeVenue']) {
+                if(
+                    ($sport['sport'] === 'Men\'s Track & Field' || $sport['sport'] === 'Women\'s Track & Field') &&
+                    $event->start_date->format('m') < 3 // Use March as the cutoff for outdoor track season
+                ) {
+                    $event->building = 'bowen-field-house';
+                } else {
+                    // Following the same pattern as when an event is created manually inside EMU Today.
+                    $event->building = preg_replace(["/[\s\\/]/", "/[^A-Za-z0-9-\\/]/"], ["-", ""], strtolower($sport['homeVenue']));
+                }
+            } else {
+                $event->building = null;
+            }
+
             $event->is_approved = 1;
             $event->is_canceled = 0;
 
             $event->save();
+            // Set mini-calendar to athletics
             $event->minicalendars()->syncWithoutDetaching([self::ATHLETICS_MINICAL_ID]);
+            // Set category to varsity athletics in cea_event_categories
+            $category = Category::where('category', 'Varsity Athletics')->first();
+            $event->eventcategories()->syncWithoutDetaching([$category->id]);
         }
 
         $canceled = $this->cancelStaleEvents($rssPermalinks);
@@ -289,5 +366,16 @@ class SyncAthleticsEvents extends Command
         }
 
         return $query->update(['is_canceled' => 1, 'is_archived' => 1, 'is_hidden' => 1]);
+    }
+
+    /**
+     * The sport_id is in the link tag of the event.
+     * @param mixed $link
+     */
+    protected function extractSportId($link) {
+        // e.g. <link>https://admin.emueagles.com/calendar.aspx?game_id=19565&amp;sport_id=10</link>
+        $matches = [];
+        preg_match('/sport_id=(\d+)/', $link, $matches);
+        return $matches[1] ?? null;
     }
 }
