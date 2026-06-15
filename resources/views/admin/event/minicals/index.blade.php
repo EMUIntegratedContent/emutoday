@@ -25,7 +25,12 @@
         @foreach($minicals as $m)
         <tr>
           <td>{{ $m->id }}</td>
-          <td>{{ $m->calendar }}</td>
+          <td>
+            {{ $m->calendar }}
+            @if($m->admin_only)
+              <span class="label label-warning">Admin Only</span>
+            @endif
+          </td>
           <td>{{ $m->slug }}</td>
           <td>{{ optional($m->parentCalendar)->calendar }}</td>
           <td><a href="/admin/event/minicals/{{ $m->id }}/edit" class="btn btn-xs btn-primary">Edit</a></td>
