@@ -179,6 +179,29 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
     'destroy' => 'api.email.destroy'
   ]);
 
+  /* STUDENT EMAIL ("The Week at EMU: Students") */
+  // NOTE: mirrors the existing api/email/* posture (web + bindings, no route-level auth).
+  // A previous attempt to gate these behind ['auth','email'] broke CSRF on submit because the
+  // CAS Authenticate middleware on the API path invalidates the SPA's session token. Deferring
+  // the auth-hardening until it can be done deliberately for both builders.
+  Route::get('student-email/stories/main/{fromDate?}/{toDate?}', 'Api\StudentEmailController@getMainEmailReadyStories')->name('api_studentemail_main_stories');
+  Route::get('student-email/stories/otherstories/{fromDate?}/{toDate?}', 'Api\StudentEmailController@getAllEmailReadyStories')->name('api_studentemail_other_stories');
+  Route::get('student-email/events/{fromDate?}/{toDate?}', 'Api\StudentEmailController@getAllEmailReadyEvents')->name('api_studentemail_events');
+  Route::get('student-email/insideemuposts/{fromDate?}/{toDate?}', 'Api\StudentEmailController@getAllEmailReadyInsideemuPosts')->name('api_studentemail_insideemu_posts');
+  Route::get('student-email/announcements/{fromDate?}/{toDate?}', 'Api\StudentEmailController@getAllEmailReadyAnnouncements')->name('api_studentemail_announcements');
+  Route::get('student-email/recipients', 'Api\StudentEmailController@getAllRecipients')->name('api_studentemail_recipients_get');
+  Route::post('student-email/recipients', 'Api\StudentEmailController@saveRecipient')->name('api_studentemail_recipients_save');
+  Route::post('student-email/clone', 'Api\StudentEmailController@cloneEmail')->name('api_studentemail_clone');
+  Route::resource('student-email', 'Api\StudentEmailController')->parameters(['student-email' => 'studentEmail'])->names([
+    'index' => 'api.studentemail.index',
+    'create' => 'api.studentemail.create',
+    'store' => 'api.studentemail.store',
+    'show' => 'api.studentemail.show',
+    'edit' => 'api.studentemail.edit',
+    'update' => 'api.studentemail.update',
+    'destroy' => 'api.studentemail.destroy'
+  ]);
+
 //  Route::patch('experts/updateitem/{id}', 'Api\ExpertsController@updateItem')->name('api_experts_updateitem');
 //  Route::get('experts/{id}/edit', 'Api\ExpertsController@edit')->name('api_experts_edititem');
 //  Route::get('experts/category/{id?}', 'Api\ExpertsController@expertCategory')->name('api_experts_category');
@@ -493,6 +516,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'cleanup.cas.ticket'
   Route::group(['middleware' => ['auth', 'email']], function () {
     Route::get('email/destroy/{id}', 'Admin\EmailController@delete')->name('admin_email_delete'); // in addition to DELETE action
     Route::resource('email', 'Admin\EmailController');
+  });
+
+  /* STUDENT EMAILS ("The Week at EMU: Students") */
+  Route::group(['middleware' => ['auth', 'email']], function () {
+    Route::get('studentemail/destroy/{id}', 'Admin\StudentEmailController@delete')->name('admin_studentemail_delete'); // in addition to DELETE action
+    Route::get('studentemail/show', 'Admin\StudentEmailController@show')->name('admin_studentemail_show'); // create form
+    Route::resource('studentemail', 'Admin\StudentEmailController')->parameters(['studentemail' => 'studentEmail']);
   });
 
   /* MEDIA HIGHLIGHTS */

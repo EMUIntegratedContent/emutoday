@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "Bash(cat)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(perl -0pi -e \"s{/api/email}{/api/student-email}g; s{/admin/email}{/admin/studentemail}g\" *.vue)",
+      "Bash(perl -0pi -e 's{<h3>Events</h3>}{<h3>What'\"'\"'s Happening at EMU</h3>}' StudentEmailEventQueue.vue)",
+      "Bash(perl -0pi -e 's{<h3>Side Stories</h3>}{<h3>More News</h3>}; s{There are no side stories set for this email\\\\.}{There are no More News stories set for this email.}' StudentEmailStoryQueue.vue)",
+      "Bash(perl -0pi -e 's{Inside EMU Posts}{Campus Life}g; s{Inside EMU posts}{Campus Life posts}g' StudentEmailInsideemuPostsQueue.vue)",
+      "Bash(perl -0pi -e 's{<h3>Main Stories</h3>}{<h3>Featured Story</h3>}; s{There are no main stories set for this email\\\\.}{There is no featured story set for this email.}' StudentEmailMainStoriesQueue.vue)",
+      "Bash(perl -0pi -e \"s{\\\\@section\\\\\\('title','EMU Today Emails'\\\\\\)}{\\\\@section\\('title','The Week at EMU: Students'\\)}; s{EMU Today Email Builder}{The Week at EMU: Students — Email Builder}; s{\\\\+ New Email}{+ New Student Email}\" index.blade.php)",
+      "Bash(timeout 500 npx mix)",
+      "Bash(php -l app/Http/routes.php)",
+      "Bash(php -l app/Http/Controllers/Admin/StudentEmailController.php)"
     ]
   }
 }

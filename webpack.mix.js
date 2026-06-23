@@ -100,6 +100,13 @@ mix
 	.vue()
 	.version()
 mix
+	.js(
+		"resources/assets/js/vue-studentemail-form.js",
+		"public/js/vue-studentemail-form.js"
+	)
+	.vue()
+	.version()
+mix
 	.js("resources/assets/js/vue-event-form.js", "public/js/vue-event-form.js")
 	.vue()
 	.version()
