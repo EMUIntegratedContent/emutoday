@@ -11,7 +11,8 @@
       "Bash(perl -0pi -e \"s{\\\\@section\\\\\\('title','EMU Today Emails'\\\\\\)}{\\\\@section\\('title','The Week at EMU: Students'\\)}; s{EMU Today Email Builder}{The Week at EMU: Students — Email Builder}; s{\\\\+ New Email}{+ New Student Email}\" index.blade.php)",
       "Bash(timeout 500 npx mix)",
       "Bash(php -l app/Http/routes.php)",
-      "Bash(php -l app/Http/Controllers/Admin/StudentEmailController.php)"
+      "Bash(php -l app/Http/Controllers/Admin/StudentEmailController.php)",
+      "Bash(awk '/Route::group.*prefix.*api/,/^}\\);/' /Users/cpuzzuol/emu/emutoday/app/Http/routes.php)"
     ]
   }
 }

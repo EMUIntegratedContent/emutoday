@@ -404,7 +404,22 @@
       });
 
       $('#deleteBtn').on('click', function(){
-        window.location.href = '/admin/studentemail/destroy/' + emailId;
+        // Delete via the CSRF-protected API endpoint (the /api path has no CAS auth, so the
+        // session CSRF token stays valid — unlike a POST/DELETE to an auth-gated admin route).
+        var token = document.querySelector('meta[name="_token"]').getAttribute('content');
+        fetch('/api/student-email/' + emailId, {
+          method: 'DELETE',
+          headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json' },
+          credentials: 'same-origin'
+        }).then(function(res){
+          if (res.ok) {
+            window.location.href = '/admin/studentemail';
+          } else {
+            alert('Could not delete this email. Please try again or contact a site admin.');
+          }
+        }).catch(function(){
+          alert('Could not delete this email. Please try again or contact a site admin.');
+        });
       });
 
       $('#statsModal').on("show.bs.modal", function (e) {

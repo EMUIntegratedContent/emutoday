@@ -108,21 +108,7 @@ class StudentEmailController extends Controller
         return view('admin.studentemail.form', ['email' => $studentEmail, 'stypes' => $stypes]);
     }
 
-    /**
-     * Delete a student email.
-     * NOTE: mirrors the original Email builder, which exposes a GET delete in addition to the
-     * resource DELETE (the GET avoids the CAS/CSRF token interaction on the admin path).
-     *
-     * @param int $id
-     * @return array
-     */
-    public function delete($id)
-    {
-      $studentEmail = $this->studentEmail->findOrFail($id);
-      $title = $studentEmail->title;
-      $studentEmail->delete();
-
-      return back()->with('email_deleted', 'Student email "' . $title . '" was successfully deleted.');
-    }
+    // Deletion is handled by the CSRF-protected API DELETE (Api\StudentEmailController@destroy),
+    // called from the list page. No GET/admin-path delete method.
 
 }
