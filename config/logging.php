@@ -33,6 +33,13 @@ return [
     */
 
     'channels' => [
+        // Created for athletics RSS sync command 5/28/26
+        'athletics' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/athletics.log'),
+            'level' => 'info',
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],

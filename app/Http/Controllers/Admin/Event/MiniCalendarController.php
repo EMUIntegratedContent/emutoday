@@ -55,6 +55,7 @@ class MiniCalendarController extends \Emutoday\Http\Controllers\Admin\Controller
 
         $slugSource = empty($data['slug']) ? $data['calendar'] : $data['slug'];
         $data['slug'] = $this->generateUniqueSlug($slugSource);
+        $data['admin_only'] = $request->boolean('admin_only');
 
         $this->mini->create($data);
 
@@ -87,6 +88,7 @@ class MiniCalendarController extends \Emutoday\Http\Controllers\Admin\Controller
 
         $slugSource = empty($data['slug']) ? $data['calendar'] : $data['slug'];
         $data['slug'] = $this->generateUniqueSlug($slugSource, $id);
+        $data['admin_only'] = $request->boolean('admin_only');
 
         $minical->update($data);
 

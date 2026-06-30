@@ -205,12 +205,12 @@
           </div>
         </div><!-- end .card -->
         <div class="card small-12 medium-6 large-3 columns" data-equalizer-watch>
-          <img src="/assets/imgs/placeholder/magazine-summer-2025.jpg"
+          <img src="/assets/imgs/placeholder/magazine-spring-2026.jpg"
                alt="The cover of the Summer 2025 issue of EMU Magazine">
           <div class="card-section">
-            <p>Innovation with Intent: How EMU is solving problems, shaping futures, and delivering results that matter.</p>
+            <p>A Brighter EMU Begins Today: Empowered students. Inspired classrooms. A renewed commitment to leadership that puts learners first.</p>
             <a class="bold-green-link" title="External link to the issues of EMU Magazine."
-               href="https://magazine.emich.edu/summer-2025/" target="blank">Read the latest issue</a>
+               href="https://magazine.emich.edu/spring-2026/" target="blank">Read the latest issue</a>
           </div>
         </div>
       </div>

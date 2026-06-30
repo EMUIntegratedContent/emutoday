@@ -16,51 +16,47 @@ class CategoriesController extends ApiController
     } else {
       if ($month == null) {
         $mondifier = "Y";
-      } else if ($day == null){
+      } else if ($day == null) {
         $mondifier = "YM";
       } else {
         $mondifier = "YMD";
       }
     }
 
-    if($mondifier == "all"){
+    if ($mondifier == "all") {
       $cdate_start = Carbon::now()->startOfDay();
-      $activateCategories = Category::with(['events' => function($query) use ($cdate_start) {
-        $query->where('start_date', '>=', $cdate_start)->addSelect('id','title','start_date');
-      }])->addSelect('id','category','slug')->get();
-
+      $cdate_end = Carbon::now()->addDays(7)->endOfDay();
+    } else if ($mondifier == "Y") {
+      $cdate_start = Carbon::create($year, 1, 1)->startOfDay();
+      $cdate_end = Carbon::create($year, 12, 31)->endOfDay();
+    } else if ($mondifier == "YM") {
+      $cdate_start = Carbon::create($year, $month, 1)->startOfDay();
+      $cdate_daysInMonth = $cdate_start->daysInMonth;
+      $cdate_end = Carbon::create($year, $month, $cdate_daysInMonth)->endOfDay();
     } else {
-      if  ($mondifier == "Y") {
-        $cdate_start = Carbon::create($year, 1, 1)->startOfDay();
-        $cdate_end =  Carbon::create($year, 12, 31)->endOfDay();
-      } else if ($mondifier == "YM") {
-        $cdate_start = Carbon::create($year, $month, 1)->startOfDay();
-        $cdate_daysInMonth = $cdate_start->daysInMonth;
-        $cdate_end =  Carbon::create($year, $month, $cdate_daysInMonth)->endOfDay();
-      } else {
-        $cdate_start = Carbon::create($year, $month, $day)->startOfDay();
-        $cdate_end =  Carbon::create($year, $month, $day)->addDays(7)->endOfDay();
-      }
-      $activateCategories = Category::with(['events' => function($query) use ($cdate_start, $cdate_end) {
-        $query->where([
-          ['start_date', '>=', $cdate_start],
-          ['start_date', '<=', $cdate_end],
-          ['is_approved', 1]
-          ])->addSelect('id','title','start_date');
-        }])->addSelect('id','category','slug')->get();
-      }
-      // $cats = Category::with('events')->afterThisDate(Carbon::now()->subYear())->get();
-      return $this->respond($activateCategories);
-    }
-    /**
-    * [getCategories description]
-    * @param  [type] $eventid [description]
-    * @return [type]          [description]
-    */
-    private function getCategories($eventid)
-    {
-      $categories = $eventid ? Event::findOrFail($eventid)->categories: Category::all();
-      return $categories;
+      $cdate_start = Carbon::create($year, $month, $day)->startOfDay();
+      $cdate_end = Carbon::create($year, $month, $day)->addDays(7)->endOfDay();
     }
 
+    $activateCategories = Category::with(['events' => function ($query) use ($cdate_start, $cdate_end) {
+      $query->approvedForCalendar()
+        ->overlappingDateRange($cdate_start, $cdate_end)
+        ->orderBy('start_date')
+        ->orderBy('start_time', 'asc')
+        ->addSelect('id', 'title', 'start_date', 'end_date');
+    }])->addSelect('id', 'category', 'slug')->orderBy('category', 'asc')->get();
+
+    return $this->respond($activateCategories);
   }
+
+  /**
+   * [getCategories description]
+   * @param  [type] $eventid [description]
+   * @return [type]          [description]
+   */
+  private function getCategories($eventid)
+  {
+    $categories = $eventid ? Event::findOrFail($eventid)->categories : Category::all();
+    return $categories;
+  }
+}

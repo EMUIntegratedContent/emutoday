@@ -29,6 +29,14 @@
           @endforeach
         </select>
       </div>
+      <div class="form-group">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="admin_only" value="1" {{ old('admin_only', $minical->admin_only) ? 'checked' : '' }} />
+            Visible to admins only
+          </label>
+        </div>
+      </div>
       <button class="btn btn-primary" type="submit">Save</button>
       <a href="/admin/event/minicals" class="btn btn-default">Cancel</a>
     </form>
