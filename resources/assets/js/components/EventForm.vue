@@ -1587,7 +1587,8 @@ export default {
 					return (
 						category.label.toLowerCase() !== "lbc approved" &&
 						category.label.toLowerCase() !== "academic dates & deadlines" &&
-						category.label.toLowerCase() !== "holidays"
+						category.label.toLowerCase() !== "holidays" &&
+						category.label.toLowerCase() !== "faculty & staff"
 					)
 				} else {
 					return category.label.toLowerCase() !== "lbc approved"
