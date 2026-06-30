@@ -8,9 +8,6 @@
 				<div class="medium-6 small-7 columns">
 					<h4>
 						Upcoming Events
-						{{
-							selectedCalendarCategory ? " - " + selectedCalendarCategory : ""
-						}}
 					</h4>
 				</div>
 				<div class="medium-3 small-5 columns">
@@ -75,7 +72,6 @@
 }
 </style>
 <script>
-import { mapState } from "vuex"
 import EventViewSideBar from "./EventViewSideBar.vue"
 import EventViewContent from "./EventViewContent.vue"
 
@@ -94,29 +90,19 @@ export default {
 			}
 		}
 	},
-	computed: {
-		...mapState(["selectedCalendarCategory"])
-	},
 	methods: {
 		handleEventFetch(eobject) {
-			let route = ""
-			eobject.cateid
-				? (route =
-						"/api/calendar/events/" +
-						eobject.yearVar +
-						"/" +
-						eobject.monthVar +
-						"/" +
-						eobject.dayVar +
-						"/" +
-						eobject.cateid)
-				: (route =
-						"/api/calendar/events/" +
-						eobject.yearVar +
-						"/" +
-						eobject.monthVar +
-						"/" +
-						eobject.dayVar)
+			let route =
+				"/api/calendar/events/" +
+				eobject.yearVar +
+				"/" +
+				eobject.monthVar +
+				"/" +
+				eobject.dayVar
+			const cateids = eobject.cateids || []
+			if (cateids.length) {
+				route += "/" + cateids.join(",")
+			}
 			this.$http
 				.get(route)
 				.then((response) => {
