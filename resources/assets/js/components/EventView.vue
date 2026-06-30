@@ -61,7 +61,7 @@
 #graybar {
 	width: 100%;
 	padding: 0.3rem 0;
-	background-color: #bebdbd;
+	background-color: #cccccc;
 }
 
 #graybar h4 {
