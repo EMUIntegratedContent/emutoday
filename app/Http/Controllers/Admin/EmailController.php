@@ -108,20 +108,7 @@ class EmailController extends Controller
         return view('admin.email.form', compact('email', 'stypes'));
     }
 
-    /**
-     * Delete an email.
-     * NOTE: there is a DELETE HTTP verb that performs this automatically when this controller is defined as a resource in the router file, but GET verb is also needed.
-     *
-     * @param int $id
-     * @return array
-     */
-    public function delete($id)
-    {
-      $email = $this->email->findOrFail($id);
-      $title = $email->title;
-      $email->delete();
-
-      return back()->with('email_deleted', 'Email "' . $title . '" was successfully deleted.');
-    }
+    // Deletion is handled by the CSRF-protected API DELETE (Api\EmailController@destroy),
+    // called from the list page. No GET/admin-path delete method.
 
 }

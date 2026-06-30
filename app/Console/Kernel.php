@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         // Commands\Inspire::class,
         Commands\SendTodayEmails::class,
+        Commands\SendStudentEmails::class,
         Commands\SendStoryIdeaEmail::class,
         Commands\SendIndividualStoryIdeaEmail::class,
         Commands\ArchiveEvents::class,
@@ -30,6 +31,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(Commands\SendTodayEmails::class)->cron('*/5 * * * *');
+        $schedule->command(Commands\SendStudentEmails::class)->cron('*/5 * * * *');
         $schedule->command(Commands\SendStoryIdeaEmail::class)->cron('0 8 * * 3');
         $schedule->command(Commands\SendIndividualStoryIdeaEmail::class)->cron('0 8 * * 0-6');
         $schedule->command(Commands\ArchiveEvents::class)->cron('0 0 * * *');

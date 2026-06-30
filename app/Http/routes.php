@@ -161,23 +161,45 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::get('calendar/month/{year?}/{month?}/{day?}', 'Api\CalendarController@eventsInMonth');
   Route::get('calendar/events/{year?}/{month?}/{day?}/{id?}', 'Api\CalendarController@eventsByDay');
 
-  Route::get('email/stories/main/{fromDate?}/{toDate?}', 'Api\EmailController@getMainEmailReadyStories')->name('api_email_main_stories');
-  Route::get('email/stories/otherstories/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyStories')->name('api_email_other_stories');
-  Route::get('email/events/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyEvents')->name('api_email_events');
-  Route::get('email/insideemuposts/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyInsideemuPosts')->name('api_email_insideemu_posts');
-  Route::get('email/announcements/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyAnnouncements')->name('api_email_announcements');
-  Route::get('email/recipients', 'Api\EmailController@getAllRecipients')->name('api_email_recipients_get');
-  Route::post('email/recipients', 'Api\EmailController@saveRecipient')->name('api_email_recipients_save');
-  Route::post('email/clone', 'Api\EmailController@cloneEmail')->name('api_email_clone');
-  Route::resource('email', 'Api\EmailController')->names([
-    'index' => 'api.email.index',
-    'create' => 'api.email.create',
-    'store' => 'api.email.store',
-    'show' => 'api.email.show',
-    'edit' => 'api.email.edit',
-    'update' => 'api.email.update',
-    'destroy' => 'api.email.destroy'
-  ]);
+  /* EMAIL — admin-only mass-mail builder. Gated behind auth + the 'email' role. */
+  Route::group(['middleware' => ['auth', 'email']], function () {
+    Route::get('email/stories/main/{fromDate?}/{toDate?}', 'Api\EmailController@getMainEmailReadyStories')->name('api_email_main_stories');
+    Route::get('email/stories/otherstories/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyStories')->name('api_email_other_stories');
+    Route::get('email/events/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyEvents')->name('api_email_events');
+    Route::get('email/insideemuposts/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyInsideemuPosts')->name('api_email_insideemu_posts');
+    Route::get('email/announcements/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyAnnouncements')->name('api_email_announcements');
+    Route::get('email/recipients', 'Api\EmailController@getAllRecipients')->name('api_email_recipients_get');
+    Route::post('email/recipients', 'Api\EmailController@saveRecipient')->name('api_email_recipients_save');
+    Route::post('email/clone', 'Api\EmailController@cloneEmail')->name('api_email_clone');
+    Route::resource('email', 'Api\EmailController')->names([
+      'index' => 'api.email.index',
+      'create' => 'api.email.create',
+      'store' => 'api.email.store',
+      'show' => 'api.email.show',
+      'edit' => 'api.email.edit',
+      'update' => 'api.email.update',
+      'destroy' => 'api.email.destroy'
+    ]);
+
+    /* STUDENT EMAIL ("The Week at EMU: Students") — same gating as the email builder. */
+    Route::get('student-email/stories/main/{fromDate?}/{toDate?}', 'Api\StudentEmailController@getMainEmailReadyStories')->name('api_studentemail_main_stories');
+    Route::get('student-email/stories/otherstories/{fromDate?}/{toDate?}', 'Api\StudentEmailController@getAllEmailReadyStories')->name('api_studentemail_other_stories');
+    Route::get('student-email/events/{fromDate?}/{toDate?}', 'Api\StudentEmailController@getAllEmailReadyEvents')->name('api_studentemail_events');
+    Route::get('student-email/insideemuposts/{fromDate?}/{toDate?}', 'Api\StudentEmailController@getAllEmailReadyInsideemuPosts')->name('api_studentemail_insideemu_posts');
+    Route::get('student-email/announcements/{fromDate?}/{toDate?}', 'Api\StudentEmailController@getAllEmailReadyAnnouncements')->name('api_studentemail_announcements');
+    Route::get('student-email/recipients', 'Api\StudentEmailController@getAllRecipients')->name('api_studentemail_recipients_get');
+    Route::post('student-email/recipients', 'Api\StudentEmailController@saveRecipient')->name('api_studentemail_recipients_save');
+    Route::post('student-email/clone', 'Api\StudentEmailController@cloneEmail')->name('api_studentemail_clone');
+    Route::resource('student-email', 'Api\StudentEmailController')->parameters(['student-email' => 'studentEmail'])->names([
+      'index' => 'api.studentemail.index',
+      'create' => 'api.studentemail.create',
+      'store' => 'api.studentemail.store',
+      'show' => 'api.studentemail.show',
+      'edit' => 'api.studentemail.edit',
+      'update' => 'api.studentemail.update',
+      'destroy' => 'api.studentemail.destroy'
+    ]);
+  });
 
 //  Route::patch('experts/updateitem/{id}', 'Api\ExpertsController@updateItem')->name('api_experts_updateitem');
 //  Route::get('experts/{id}/edit', 'Api\ExpertsController@edit')->name('api_experts_edititem');
@@ -491,8 +513,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'cleanup.cas.ticket'
 
   /* EMAILS */
   Route::group(['middleware' => ['auth', 'email']], function () {
-    Route::get('email/destroy/{id}', 'Admin\EmailController@delete')->name('admin_email_delete'); // in addition to DELETE action
+    // Deletion is handled via the CSRF-protected API DELETE (Api\EmailController@destroy);
+    // no destructive GET route.
     Route::resource('email', 'Admin\EmailController');
+  });
+
+  /* STUDENT EMAILS ("The Week at EMU: Students") */
+  Route::group(['middleware' => ['auth', 'email']], function () {
+    // Deletion is handled via the CSRF-protected API DELETE (Api\StudentEmailController@destroy);
+    // no destructive GET route.
+    Route::get('studentemail/show', 'Admin\StudentEmailController@show')->name('admin_studentemail_show'); // create form
+    Route::resource('studentemail', 'Admin\StudentEmailController')->parameters(['studentemail' => 'studentEmail']);
   });
 
   /* MEDIA HIGHLIGHTS */
