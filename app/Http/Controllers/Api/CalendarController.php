@@ -62,8 +62,11 @@ class CalendarController extends ApiController
             ->orderBy('start_time', 'asc')
             ->get();
 
+        // $id may carry one id or a comma-separated list (e.g. "3,7,12"). Keep an
+        // event if it belongs to ANY of the requested categories (union of selections).
         // it would be better just to not query the event in the first place...
-        if (!empty($id)) { // if id is given.
+        $ids = array_filter(explode(',', (string) $id), 'strlen');
+        if (!empty($ids)) { // if at least one category id is given.
             $i = 0;
             foreach ($eventlist as $event) { // filter by category
                 $has_category = false; // sentinel
@@ -72,13 +75,13 @@ class CalendarController extends ApiController
                 $event['category'] = $event->eventcategories()->get();
 
                 foreach ($event['category'] as $ev_cat) {
-                    // Loop through to find if the category matches.
-                    if ($ev_cat['id'] == $id) {
+                    // Loop through to find if any selected category matches.
+                    if (in_array($ev_cat['id'], $ids)) {
                         $has_category = true;
                     }
                 }
                 if ($has_category == false) {
-                    // Destroy event. if it doesn't have the category.
+                    // Destroy event. if it doesn't have a selected category.
                     unset($eventlist[$i]);
                 }
                 $i++;

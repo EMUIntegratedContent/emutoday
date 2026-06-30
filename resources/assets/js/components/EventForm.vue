@@ -1585,7 +1585,7 @@ export default {
 			return this.zcats.filter(
 				(category) =>
 					category.label.toLowerCase() !== "important dates" &&
-					category.label.toLowerCase() !== "lbc approved events"
+					category.label.toLowerCase() !== "lbc approved"
 			)
 		}
 	},
