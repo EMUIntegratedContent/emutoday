@@ -36,9 +36,6 @@
       <div class="row calendar-categories">
         <div class="small-12 column">
           <div class="calendar-other-categories">
-            <a class="button hollow expanded academic-calednar-button prime"
-               href="http://www.emich.edu/registrar/calendars/">ACADEMIC CALENDAR <i class="fa fa-external-link"
-                                                                                     aria-hidden="true"></i></a>
             <h4>Event Categories</h4>
             <input class="category-search-input" type="text" placeholder="Filter categories..." v-model="categorySearchString" />
             <ul class="events-by-category">
@@ -64,14 +61,6 @@
             </ul>
           </div>
           <div class="calendar-other-categories">
-            <h4>Other Calendars</h4>
-            <ul class="other">
-              <li><a href="http://art.emich.edu/events/upcoming">Art Galleries</a></li>
-              <li><a href="https://www.emueagles.com/calendar.aspx">Athletics</a></li>
-              <li><a href="http://www.emich.edu/campuslife/calendars/index.php">Campus Life</a></li>
-              <li><a href="http://www.emich.edu/hr/working/employment/holidays.php">Holiday</a></li>
-              <li><a href="http://www.emich.edu/emutheatre/">Theatre</a></li>
-            </ul>
             <div class="submit-calendar">
               <a href="/calendar/event/form" class="button emu-button">Submit an Event</a>
             </div>

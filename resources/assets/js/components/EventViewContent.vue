@@ -25,7 +25,7 @@
 </template>
 <style>
 .calendar-bar {
-  background: #bebdbd;
+  background: #cccccc;
 }
 
 .calendar-bar h4 {
