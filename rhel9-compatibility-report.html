@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RHEL 8 to RHEL 9 Compatibility Report — EMU Today</title>
+<style>
+  :root {
+    --green: #0a6640;
+    --green-bg: #d4edda;
+    --yellow: #856404;
+    --yellow-bg: #fff3cd;
+    --red: #721c24;
+    --red-bg: #f8d7da;
+    --blue: #004085;
+    --blue-bg: #cce5ff;
+    --gray: #495057;
+    --gray-bg: #f8f9fa;
+    --border: #dee2e6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    color: #212529;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    background: #fff;
+  }
+  h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1.35rem; margin-top: 2rem; margin-bottom: 0.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.35rem; }
+  h3 { font-size: 1.1rem; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+  p, li { margin-bottom: 0.5rem; }
+  ul { padding-left: 1.5rem; }
+  .subtitle { color: var(--gray); font-size: 0.95rem; margin-bottom: 1.5rem; }
+  .badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15em 0.55em;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    vertical-align: middle;
+  }
+  .badge-ok   { background: var(--green-bg); color: var(--green); }
+  .badge-warn { background: var(--yellow-bg); color: var(--yellow); }
+  .badge-danger { background: var(--red-bg); color: var(--red); }
+  .badge-info { background: var(--blue-bg); color: var(--blue); }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .card-green  { border-left: 4px solid var(--green); }
+  .card-yellow { border-left: 4px solid var(--yellow); }
+  .card-red    { border-left: 4px solid var(--red); }
+  .card-blue   { border-left: 4px solid var(--blue); }
+  .card h3 { margin-top: 0; }
+  code {
+    background: #f1f3f5;
+    padding: 0.15em 0.35em;
+    border-radius: 3px;
+    font-size: 0.88em;
+  }
+  pre {
+    background: #f1f3f5;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0.5rem 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+  }
+  th { background: var(--gray-bg); font-weight: 600; }
+  .file { color: #6f42c1; font-family: monospace; font-size: 0.88em; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .summary-box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .summary-box .number { font-size: 2rem; font-weight: 700; }
+  .summary-box .label { font-size: 0.85rem; color: var(--gray); }
+  hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+</style>
+</head>
+<body>
+
+<h1>RHEL 8 &rarr; RHEL 9 Compatibility Report</h1>
+<p class="subtitle">EMU Today (Laravel 12 + Vue 3) &mdash; Generated February 27, 2026</p>
+
+<div class="summary-grid">
+  <div class="summary-box" style="border-left: 4px solid var(--green);">
+    <div class="number" style="color: var(--green);">&#10003;</div>
+    <div class="label">OpenSSL 3.0<br>Compatible</div>
+  </div>
+  <div class="summary-box" style="border-left: 4px solid var(--blue);">
+    <div class="number" style="color: var(--blue);">9</div>
+    <div class="label">PHP Extensions<br>to Rebuild (Ops)</div>
+  </div>
+  <div class="summary-box" style="border-left: 4px solid var(--red);">
+    <div class="number" style="color: var(--red);">3</div>
+    <div class="label">Regex Patterns<br>Need Code Fixes</div>
+  </div>
+  <div class="summary-box" style="border-left: 4px solid var(--yellow);">
+    <div class="number" style="color: var(--yellow);">2</div>
+    <div class="label">Dead Code<br>Items Noted</div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>1. OpenSSL 3.0 Compatibility <span class="badge badge-ok">No Code Changes</span></h2>
+
+<p>RHEL 9 ships OpenSSL 3.0, which disables some legacy algorithms by default. The codebase was audited for crypto operations and <strong>all are compatible</strong>.</p>
+
+<div class="card card-green">
+  <h3>Compatible Crypto Usage</h3>
+  <table>
+    <tr><th>Component</th><th>Algorithm / Protocol</th><th>Status</th></tr>
+    <tr><td>Laravel encryption (<span class="file">config/app.php:96</span>)</td><td>AES-256-CBC</td><td><span class="badge badge-ok">OK</span></td></tr>
+    <tr><td>Mailgun webhook verification (<span class="file">MailgunApiController.php:115</span>)</td><td>HMAC-SHA256</td><td><span class="badge badge-ok">OK</span></td></tr>
+    <tr><td>Laravel Passport / JWT signing</td><td>RSA via phpseclib 3.x (pure PHP)</td><td><span class="badge badge-ok">OK</span></td></tr>
+    <tr><td>SMTP to Mailgun (<span class="file">config/mail.php</span>)</td><td>STARTTLS on port 587</td><td><span class="badge badge-ok">OK</span></td></tr>
+    <tr><td>phpCAS 1.6.1 (CAS auth)</td><td>TLS via curl (OpenSSL 3.0 compatible)</td><td><span class="badge badge-ok">OK</span></td></tr>
+    <tr><td>Database (<span class="file">config/database.php</span>)</td><td>No SSL/TLS configured</td><td><span class="badge badge-ok">Unaffected</span></td></tr>
+    <tr><td>Google API Client 2.18.4</td><td>HTTPS via Guzzle 7.x</td><td><span class="badge badge-ok">OK</span></td></tr>
+  </table>
+</div>
+
+<div class="card card-green">
+  <h3>Legacy Hash Usage (Safe)</h3>
+  <p>The following use PHP's internal hash extension, <strong>not</strong> OpenSSL, and will continue to work on RHEL 9:</p>
+  <ul>
+    <li><code>md5()</code> in <span class="file">MailgunSubscribeService.php:68,72</span> &mdash; email confirmation tokens</li>
+    <li><code>md5()</code> in <span class="file">StoryTypeController.php:371</span> &mdash; filename uniquification</li>
+    <li><code>md5()</code> in <span class="file">ImageCacheController.php:27</span> &mdash; cache key generation</li>
+    <li><code>hash_hmac('sha1',...)</code> in <span class="file">Tweet.php:64</span> &mdash; Twitter OAuth 1.0a (dead code)</li>
+  </ul>
+  <p><strong>Note:</strong> If RHEL 9 is deployed with <strong>FIPS mode enabled</strong>, test <code>md5()</code> explicitly. It should still work via PHP's bundled hash, but verify in your target environment.</p>
+</div>
+
+<div class="card card-yellow">
+  <h3>CAS SSL Validation &mdash; Verify Production Config</h3>
+  <p>The default CAS configuration disables SSL validation (<code>phpCAS::setNoCasServerValidation()</code>). This is not a RHEL 9 breakage, but should be verified:</p>
+  <ul>
+    <li>Check that production <code>.env</code> has <code>CAS_VALIDATION=ca</code> and <code>CAS_CERT=/path/to/cert.pem</code></li>
+    <li>If not set, CAS authentication connections are not verifying the server certificate</li>
+  </ul>
+  <p><strong>Files:</strong> <span class="file">config/cas.php:80,89</span> &middot; <span class="file">app/Services/CasService.php:138-153</span></p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>2. PHP Extensions to Rebuild <span class="badge badge-info">Ops Task</span></h2>
+
+<p>Since PHP is likely installed via the Remi repository, you must switch from <code>remi-release-8.rpm</code> to <code>remi-release-9.rpm</code> and reinstall all PHP packages. Extensions link against system libraries that have newer versions on RHEL 9.</p>
+
+<div class="card card-blue">
+  <h3>Required Extensions</h3>
+  <table>
+    <tr><th>Extension</th><th>Used By</th><th>RHEL 9 Package(s)</th><th>Priority</th></tr>
+    <tr><td><code>php-gd</code></td><td>Intervention Image (all image processing) &mdash; must have freetype + jpeg</td><td><code>php-gd</code>, <code>libpng-devel</code>, <code>libjpeg-turbo-devel</code>, <code>freetype-devel</code></td><td><span class="badge badge-danger">Critical</span></td></tr>
+    <tr><td><code>php-pdo</code> + <code>php-mysqlnd</code></td><td>Eloquent ORM / database</td><td><code>php-pdo</code>, <code>php-mysqlnd</code></td><td><span class="badge badge-danger">Critical</span></td></tr>
+    <tr><td><code>php-curl</code></td><td>phpCAS, Guzzle, external APIs</td><td><code>php-curl</code></td><td><span class="badge badge-danger">Critical</span></td></tr>
+    <tr><td><code>php-mbstring</code></td><td>Intervention Image, Tweet.php</td><td><code>php-mbstring</code></td><td><span class="badge badge-danger">Critical</span></td></tr>
+    <tr><td><code>php-openssl</code></td><td>Passport, Guzzle HTTPS, Google API</td><td>Usually bundled with PHP</td><td><span class="badge badge-danger">Critical</span></td></tr>
+    <tr><td><code>php-xml</code></td><td>phpCAS (CAS XML ticket parsing)</td><td><code>php-xml</code></td><td><span class="badge badge-danger">Critical</span></td></tr>
+    <tr><td><code>php-zip</code></td><td>File operations</td><td><code>php-zip</code>, <code>libzip-devel</code></td><td><span class="badge badge-warn">Important</span></td></tr>
+    <tr><td><code>php-exif</code></td><td>Image EXIF metadata / auto-orientation</td><td><code>php-exif</code></td><td><span class="badge badge-warn">Important</span></td></tr>
+    <tr><td><code>php-json</code></td><td>Laravel core (bundled in PHP 8+)</td><td>Bundled</td><td><span class="badge badge-warn">Important</span></td></tr>
+  </table>
+</div>
+
+<div class="card card-green">
+  <h3>Extensions NOT Needed</h3>
+  <table>
+    <tr><th>Extension</th><th>Reason</th></tr>
+    <tr><td><code>php-imagick</code></td><td>Not used &mdash; Intervention Image is configured to use GD driver (<span class="file">config/image.php:19</span>)</td></tr>
+    <tr><td><code>php-intl</code></td><td>No <code>IntlDateFormatter</code>, <code>NumberFormatter</code>, or <code>Collator</code> usage found in application code</td></tr>
+    <tr><td><code>php-ffi</code></td><td>No FFI usage found</td></tr>
+  </table>
+</div>
+
+<div class="card card-green">
+  <h3>Node.js / Frontend</h3>
+  <p>No native Node.js modules (<code>node-gyp</code> compiled addons) were found in <span class="file">package.json</span>. All frontend dependencies are pure JavaScript. No system library linking concerns.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>3. PCRE2 Regex Fixes <span class="badge badge-danger">Code Changes Required</span></h2>
+
+<p>RHEL 9 ships a significantly newer PCRE2 library (10.37+) that is stricter about invalid escape sequences, ambiguous character class ranges, and enforces tighter backtracking limits via JIT. Three patterns in the codebase need fixes.</p>
+
+<!-- Fix A -->
+<div class="card card-red">
+  <h3>Fix A: Catastrophic Backtracking in URL Regex <span class="badge badge-danger">High</span></h3>
+  <p><strong>Files affected:</strong></p>
+  <ul>
+    <li><span class="file">app/Http/Controllers/Api/EmailController.php</span> &mdash; lines 59, 184, 190, 317</li>
+    <li><span class="file">app/Http/Controllers/Api/EventController.php</span> &mdash; lines 197, 542</li>
+  </ul>
+
+  <p><strong>Current pattern:</strong></p>
+  <pre>/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/</pre>
+
+  <p><strong>Problem:</strong> <code>([\/\w \.-]*)*</code> is a nested quantifier (star inside star) on an overlapping character class. This causes catastrophic backtracking on non-matching inputs. RHEL 9's PCRE2 with stricter JIT match limits may cause <code>preg_match()</code> to silently return <code>false</code> instead of <code>0</code>.</p>
+
+  <p><strong>Fix:</strong> Remove the outer repetition &mdash; change <code>([\/\w \.-]*)*</code> to <code>([\/\w \.-]*)</code>:</p>
+  <pre>/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)\/?\/?$/</pre>
+</div>
+
+<!-- Fix B -->
+<div class="card card-red">
+  <h3>Fix B: Invalid Character Class Range in Email Regex <span class="badge badge-danger">High</span></h3>
+  <p><strong>File:</strong> <span class="file">app/Services/MailgunSubscribeService.php</span> &mdash; line 62</p>
+
+  <p><strong>Current pattern:</strong></p>
+  <pre>$pattern = "/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/";</pre>
+
+  <p><strong>Problems:</strong></p>
+  <ol>
+    <li><code>[a-zA-Z0-9-.]</code> &mdash; the hyphen between <code>9</code> and <code>.</code> may be interpreted as range <code>9-.</code> where <code>.</code> (ASCII 46) &lt; <code>9</code> (ASCII 57), making it an invalid/backwards range. Stricter PCRE2 on RHEL 9 may reject this with a compilation error.</li>
+    <li>The <code>.</code> between the domain and TLD parts is unescaped outside a character class &mdash; matches any character, not just a literal dot (pre-existing bug).</li>
+  </ol>
+
+  <p><strong>Fix:</strong> Move hyphen to end of class and escape the dot:</p>
+  <pre>$pattern = "/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.-]+$/";</pre>
+</div>
+
+<!-- Fix C -->
+<div class="card card-yellow">
+  <h3>Fix C: Ambiguous Hyphen in Slug Generation Regex <span class="badge badge-warn">Medium</span></h3>
+  <p><strong>File:</strong> <span class="file">app/Http/Controllers/Api/EventController.php</span> &mdash; lines 244, 578</p>
+
+  <p><strong>Current pattern:</strong></p>
+  <pre>preg_replace(["/[\s\\/]/", "/[^A-Za-z0-9-\\/]/"], ["-", ""], ...)</pre>
+
+  <p><strong>Problem:</strong> In <code>[^A-Za-z0-9-\\/]</code>, the hyphen between <code>9</code> and <code>\\</code> could be interpreted as range <code>9-\</code> (ASCII 57&ndash;92), which includes many unintended characters. Different PCRE2 versions may interpret this differently.</p>
+
+  <p><strong>Fix:</strong> Move hyphen to end of the character class:</p>
+  <pre>preg_replace(["/[\s\\/]/", "/[^A-Za-z0-9\\/-]/"], ["-", ""], ...)</pre>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>4. Dead Code (Informational) <span class="badge badge-warn">Optional Cleanup</span></h2>
+
+<div class="card card-yellow">
+  <h3>Twitter Integration</h3>
+  <p><strong>File:</strong> <span class="file">app/Tweet.php</span></p>
+  <p>This file implements Twitter v1.1 API integration with OAuth 1.0a (HMAC-SHA1). Twitter shut down the v1.1 API for most use cases in 2023. The code also disables SSL verification (<code>CURLOPT_SSL_VERIFYPEER =&gt; false</code>). Consider removing if the Twitter integration is no longer in production.</p>
+</div>
+
+<div class="card card-yellow">
+  <h3>LDAP Configuration</h3>
+  <p><strong>File:</strong> <span class="file">config/ldap.php</span></p>
+  <p>LDAP configuration exists with SSL enabled, but the LDAP auth provider is commented out in <code>config/auth.php:72-75</code> and no LDAP package is present in <code>composer.json</code>. This file appears to be a leftover artifact.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>5. Verification Checklist</h2>
+
+<div class="card card-blue">
+  <h3>After RHEL 9 Migration</h3>
+  <ol>
+    <li>Verify all PHP extensions are loaded: <code>php -m</code></li>
+    <li>Verify GD has freetype + jpeg support: <code>php -r "print_r(gd_info());"</code></li>
+    <li>Run unit tests: <code>vendor/bin/phpunit</code></li>
+    <li>Test CAS login flow (verify <code>CAS_VALIDATION</code> and <code>CAS_CERT</code> env vars)</li>
+    <li>Test image upload in admin panel (stories, events, experts, magazine covers)</li>
+    <li>Test email subscription confirmation flow</li>
+    <li>Test event creation with URL validation (ensure regex works correctly)</li>
+    <li>Test email sending via Mailgun SMTP</li>
+    <li>If FIPS mode is enabled, explicitly test <code>php -r "echo md5('test');"</code></li>
+  </ol>
+</div>
+
+<hr>
+<p style="color: var(--gray); font-size: 0.85rem; text-align: center;">Report generated by Claude Code &mdash; February 27, 2026</p>
+
+</body>
+</html>

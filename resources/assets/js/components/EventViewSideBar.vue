@@ -36,9 +36,6 @@
       <div class="row calendar-categories">
         <div class="small-12 column">
           <div class="calendar-other-categories">
-            <a class="button hollow expanded academic-calednar-button prime"
-               href="http://www.emich.edu/registrar/calendars/">ACADEMIC CALENDAR <i class="fa fa-external-link"
-                                                                                     aria-hidden="true"></i></a>
             <h4>Event Categories</h4>
             <input class="category-search-input" type="text" placeholder="Filter categories..." v-model="categorySearchString" />
             <ul class="events-by-category">
@@ -64,14 +61,6 @@
             </ul>
           </div>
           <div class="calendar-other-categories">
-            <h4>Other Calendars</h4>
-            <ul class="other">
-              <li><a href="http://art.emich.edu/events/upcoming">Art Galleries</a></li>
-              <li><a href="https://www.emueagles.com/calendar.aspx">Athletics</a></li>
-              <li><a href="http://www.emich.edu/campuslife/calendars/index.php">Campus Life</a></li>
-              <li><a href="http://www.emich.edu/hr/working/employment/holidays.php">Holiday</a></li>
-              <li><a href="http://www.emich.edu/emutheatre/">Theatre</a></li>
-            </ul>
             <div class="submit-calendar">
               <a href="/calendar/event/form" class="button emu-button">Submit an Event</a>
             </div>
@@ -319,27 +308,17 @@ export default {
       const startDay = parseInt(this.selectedDate.dayVar)
       if (!startYear || !startMonth || !startDay) return 0
 
-      const start = new Date(startYear, startMonth - 1, startDay)
-      const end = new Date(start)
-      end.setDate(end.getDate() + 7) // inclusive
-
       const eventSet = new Set()
 
       this.calendarCategories.forEach(category => {
         if (!category || !category.events) return
         category.events.forEach(event => {
-          const eventStartDate = event.start_date || event.startDate || event.start || event.start_date_string
-          if (!eventStartDate) return
-          const d = new Date(eventStartDate)
-          if (isNaN(d)) return
-          const dOnly = new Date(d.getFullYear(), d.getMonth(), d.getDate())
-          if (dOnly >= start && dOnly <= end) {
-            if (event.id !== undefined && event.id !== null) {
-              eventSet.add(event.id)
-            } else {
-              // fallback key: date + title (if id not present)
-              eventSet.add(`${dOnly.toISOString()}::${(event.title || event.name || '')}`)
-            }
+          if (!this.eventOverlapsSelectedRange(event)) return
+          if (event.id !== undefined && event.id !== null) {
+            eventSet.add(event.id)
+          } else {
+            const eventStartDate = event.start_date || event.startDate || event.start || event.start_date_string
+            eventSet.add(`${eventStartDate}::${(event.title || event.name || '')}`)
           }
         })
       })
@@ -380,31 +359,34 @@ export default {
   },
   methods: {
     ...mapMutations(['setCalendarCategories', 'setSelectedCalendarCategory']),
-    countEventsForCategory (category) {
-      // category.events is expected to be an array of events with a start_date or start_date_string
-      if (!category || !category.events) return 0
-      // Count events in the 7-day range starting at the currently selected date (selectedDate)
+    eventOverlapsSelectedRange (event) {
+      const eventStartDate = event.start_date || event.startDate || event.start || event.start_date_string
+      if (!eventStartDate) return false
+
+      const eventEndDate = event.end_date || event.endDate || eventStartDate
+      const eventStart = new Date(eventStartDate)
+      const eventEnd = new Date(eventEndDate)
+      if (isNaN(eventStart) || isNaN(eventEnd)) return false
+
       const startYear = parseInt(this.selectedDate.yearVar)
       const startMonth = parseInt(this.selectedDate.monthVar)
       const startDay = parseInt(this.selectedDate.dayVar)
-      if (!startYear || !startMonth || !startDay) return 0
+      if (!startYear || !startMonth || !startDay) return false
 
-      const start = new Date(startYear, startMonth - 1, startDay)
-      const end = new Date(start)
-      end.setDate(end.getDate() + 7) // inclusive 7-day window
+      const rangeStart = new Date(startYear, startMonth - 1, startDay)
+      const rangeEnd = new Date(rangeStart)
+      rangeEnd.setDate(rangeEnd.getDate() + 7)
+
+      const eventStartOnly = new Date(eventStart.getFullYear(), eventStart.getMonth(), eventStart.getDate())
+      const eventEndOnly = new Date(eventEnd.getFullYear(), eventEnd.getMonth(), eventEnd.getDate())
+
+      return eventStartOnly <= rangeEnd && eventEndOnly >= rangeStart
+    },
+    countEventsForCategory (category) {
+      if (!category || !category.events) return 0
 
       return category.events.reduce((count, event) => {
-        // event start date might be ISO string or Date-like
-        const eventStartDate = event.start_date || event.startDate || event.start || event.start_date_string
-        if (!eventStartDate) return count
-        const d = new Date(eventStartDate)
-        if (isNaN(d)) return count
-        // compare only the date portion
-        const dOnly = new Date(d.getFullYear(), d.getMonth(), d.getDate())
-        if (dOnly >= start && dOnly <= end) {
-          return count + 1
-        }
-        return count
+        return this.eventOverlapsSelectedRange(event) ? count + 1 : count
       }, 0)
     },
     fetchEvents () {

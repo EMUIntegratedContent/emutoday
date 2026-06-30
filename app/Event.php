@@ -34,7 +34,8 @@ class Event extends Model{
 		'submission_date', 'approved_date', 'contact_fax', 'mini_calendar', 'lbc_reviewed', 'ensemble',
 		'mba', 'mini_calendar_alt', 'feature_image',
 		'hsc_rewards', 'hsc_reviewed',
-		'on_campus', 'mediafile_id', 'building_id', 'priority', 'is_hidden'];
+		'on_campus', 'mediafile_id', 'building_id', 'priority', 'is_hidden',
+		'sidearm_permalink'];
 
 
 	/**
@@ -114,6 +115,31 @@ class Event extends Model{
 
 	public function eventcategories(){
 		return $this->belongsToMany('Emutoday\Category', 'cea_event_categories', 'event_id', 'category_id');
+	}
+
+	/**
+	 * Public calendar visibility filters.
+	 * Scope is a naming convention. You call it like this: Event::approvedForCalendar()->get();
+	 * Used by CalendarController@eventsByDay and CalendarController@eventsInMonth.
+	 * CalendarController applies the same conditions inline in eventsByDay and eventsInMonth.
+	 */
+	public function scopeApprovedForCalendar($query)
+	{
+		return $query->where('is_approved', '1')
+			->where('is_hidden', '0')
+			->where('is_archived', '0');
+	}
+
+	/**
+	 * Events that overlap a date range (start on/before range end, end on/after range start).
+	 * Null end_date is treated as a single-day event via COALESCE.
+	 * Used by CategoriesController@activeCategories.
+	 * CalendarController applies the same logic inline in eventsByDay and eventsInMonth.
+	 */
+	public function scopeOverlappingDateRange($query, $start, $end)
+	{
+		return $query->where('start_date', '<=', $end)
+			->whereRaw('COALESCE(end_date, start_date) >= ?', [$start]);
 	}
 
 	public function doNothing(){ //

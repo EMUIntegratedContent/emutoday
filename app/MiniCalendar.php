@@ -19,7 +19,7 @@ class MiniCalendar extends Model
   /**
    * Mass assignable attributes
    */
-  protected $fillable = ['calendar', 'slug', 'parent'];
+  protected $fillable = ['calendar', 'slug', 'parent', 'admin_only'];
 
   /**
    * Relationship to events (many-to-many)
@@ -43,6 +43,25 @@ class MiniCalendar extends Model
   public function children()
   {
     return $this->hasMany(self::class, 'parent');
+  }
+
+  /**
+   * Scope to return mini calendars for the current user
+   * If the user is not an admin, only show mini calendars that are not admin only
+   * @param mixed $query
+   * @return mixed
+   */
+  public function scopeForUser($query)
+  {
+    $query->select('calendar', 'id as value', 'parent')
+      ->where('calendar', '<>', 'Welcome Weeks')
+      ->orderBy('calendar', 'asc');
+
+    if (!auth()->user()->isAdmin()) {
+      $query->where('admin_only', false);
+    }
+
+    return $query;
   }
 
   /**

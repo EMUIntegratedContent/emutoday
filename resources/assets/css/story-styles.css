@@ -143,11 +143,11 @@ p.small-return-news {
 #graybar{
     width: 100%;
     padding: .3rem 0;
-    background-color: #bebdbd;
+    background-color: #cccccc;
 }
 #graybar h4{
     text-transform: uppercase;
-    color: #fff;
+    color: #000;
 }
 .date-tag{
     color: #fff;

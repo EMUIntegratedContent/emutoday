@@ -152,7 +152,20 @@
 								name="location"
 								type="text"
 								maxlength="80"
+								@blur="validateLocationNoUrl"
+								@input="validateLocationNoUrl"
 							/>
+							<p v-if="formErrors.location" class="help-text invalid">
+								{{ formErrors.location[0] }}
+							</p>
+							<div
+								:class="calloutWarning"
+								style="margin-top: 10px"
+								role="alert"
+							>
+								If this event is online, please enter 'Remote' or 'Zoom' as the
+								case may be. Enter the URL in the Related Links section below.
+							</div>
 						</template>
 					</div>
 					<!-- /.md12col -->
@@ -985,7 +998,9 @@ h5.form-control,
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-	transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+	transition:
+		border-color ease-in-out 0.15s,
+		box-shadow ease-in-out 0.15s;
 }
 
 textarea {
@@ -1112,7 +1127,8 @@ textarea {
 	transform: scale(1);
 	transition: -webkit-transform 0.15s cubic-bezier(1, -0.115, 0.975, 0.855);
 	transition: transform 0.15s cubic-bezier(1, -0.115, 0.975, 0.855);
-	transition: transform 0.15s cubic-bezier(1, -0.115, 0.975, 0.855),
+	transition:
+		transform 0.15s cubic-bezier(1, -0.115, 0.975, 0.855),
 		-webkit-transform 0.15s cubic-bezier(1, -0.115, 0.975, 0.855);
 	transition-timing-function: cubic-bezier(1, -0.115, 0.975, 0.855);
 }
@@ -1494,6 +1510,11 @@ export default {
 				? "callout alert"
 				: "alert alert-danger"
 		},
+		calloutWarning: function () {
+			return this.framework == "foundation"
+				? "callout warning"
+				: "alert alert-warning"
+		},
 		submitBtnLabel: function () {
 			return this.thisRecordExists ? "Update Event" : "Submit For Approval"
 		},
@@ -1559,8 +1580,8 @@ export default {
 			return false
 		},
 		filteredCategories: function () {
-      // Don't show important dates and lbc approved events CP 10/5/25. Important Dates is no longer an option.
-      // LBC will be marked based on the lbc_approved field.
+			// Don't show important dates and lbc approved events CP 10/5/25. Important Dates is no longer an option.
+			// LBC will be marked based on the lbc_approved field.
 			return this.zcats.filter(
 				(category) =>
 					category.label.toLowerCase() !== "important dates" &&
@@ -1727,6 +1748,19 @@ export default {
 				.catch((e) => {
 					console.log(e)
 				})
+		},
+		// Validate location is not a URL (CP 2/18/26)
+		validateLocationNoUrl() {
+			if (!this.record.on_campus) {
+				const urlPattern = /https?:\/\/[^\s]+|www\.[^\s]+/i
+				if (urlPattern.test((this.record.locationoffcampus || "").trim())) {
+					this.formErrors.location = [
+						"No URLs allowed. Please use the Related Links section below to enter the URL."
+					]
+				} else if (this.formErrors.location) {
+					delete this.formErrors.location
+				}
+			}
 		},
 		delEvent: function (e) {
 			e.preventDefault()

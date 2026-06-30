@@ -191,10 +191,16 @@ class EventController extends ApiController
 			$start_time_rules = '';
 		}
 
+		$location_no_url_rules = 'required';
+		if ($request->get('on_campus') == 0) {
+			// No URLs allowed for off-campus events
+			$location_no_url_rules = 'not_regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+		}
+
 		// Validation rules
 		$validation = \Validator::make(Input::all(), [
 			'title' => 'required',
-			'location' => 'required',
+			'location' => 'required|' . $location_no_url_rules,
 			'on_campus' => 'required',
 			'start_date' => 'required|date',
 			'end_date' => 'required|date',
@@ -530,10 +536,16 @@ class EventController extends ApiController
 			$start_time_rules = '';
 		}
 
+		$location_no_url_rules = 'required';
+		if ($request->get('on_campus') == 0) {
+			// No URLs allowed for off-campus events
+			$location_no_url_rules = 'not_regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+		}
+
 		// Validation rules
 		$validation = \Validator::make(Input::all(), [
 			'title' => 'required',
-			'location' => 'required',
+			'location' => 'required|' . $location_no_url_rules,
 			'on_campus' => 'required',
 			'start_date' => 'required|date',
 			'end_date' => 'required|date',

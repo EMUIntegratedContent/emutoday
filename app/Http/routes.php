@@ -246,7 +246,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
    * List of MiniCalendars for EventForm
    */
   Route::get('minicalslist', function () {
-    return MiniCalendar::select('calendar', 'id as value', 'parent')->where('calendar', '<>', 'Welcome Weeks')->orderBy('calendar', 'asc')->get();
+    return MiniCalendar::forUser()->get();
   });
 
   Route::get('authorlist', function () {
