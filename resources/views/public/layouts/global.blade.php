@@ -132,7 +132,7 @@
               <div class="row">
 
                 <div class="large-5 medium-6 small-12 columns">
-                  <h1><a href="/hub">EMU <span style="color:#000000;">Today</span></a></h1>
+                  <p class="site-title"><a href="/hub">EMU <span style="color:#000000;">Today</span></a></p>
                 </div><!-- large-9 -->
 
                 <div

@@ -271,7 +271,7 @@ ul.social-icons {
   padding: 0 0 0 0;
 }
 
-#tier1-nav h1 {
+#tier1-nav .site-title {
   font-weight: 400;
   font-size: 2.5rem;
   margin: 0;
@@ -291,9 +291,10 @@ ul.social-icons {
   position: relative;
 }
 
-#tier2-nav h1 {
+#tier2-nav .site-title {
   font-size: 3.1rem;
-  margin-bottom: .5rem;
+  margin: 0 0 .5rem 0;
+  padding: 0;
 }
 
 #tier2-nav ul {
@@ -2588,7 +2589,7 @@ ul.social-icons li a.facebook:hover, ul.social-icons li a.twitter:hover, ul.soci
     filter: grayscale(0%);
 }
 .lightgrey-section{
-    background-color: #797979;
+    background-color: #767676;
     text-align: center;
     color: #ffffff;
 }
