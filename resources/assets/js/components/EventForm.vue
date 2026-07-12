@@ -1582,11 +1582,18 @@ export default {
 		filteredCategories: function () {
 			// Don't show important dates and lbc approved events CP 10/5/25. Important Dates is no longer an option.
 			// LBC will be marked based on the lbc_approved field.
-			return this.zcats.filter(
-				(category) =>
-					category.label.toLowerCase() !== "important dates" &&
-					category.label.toLowerCase() !== "lbc approved events"
-			)
+			return this.zcats.filter((category) => {
+				if (!this.isAdmin) {
+					return (
+						category.label.toLowerCase() !== "lbc approved" &&
+						category.label.toLowerCase() !== "academic dates & deadlines" &&
+						category.label.toLowerCase() !== "holidays" &&
+						category.label.toLowerCase() !== "faculty & staff"
+					)
+				} else {
+					return category.label.toLowerCase() !== "lbc approved"
+				}
+			})
 		}
 	},
 	methods: {

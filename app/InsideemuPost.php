@@ -5,9 +5,13 @@ namespace Emutoday;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Laracasts\Presenter\PresentableTrait;
+use Emutoday\Presenters\InsideEmuPresenter;
 
 class InsideemuPost extends Model{
 	use HasFactory;
+	use PresentableTrait;
+	protected $presenter = InsideEmuPresenter::class;
 
 	protected $fillable = ['title', 'teaser', 'content', 'start_date', 'end_date', 'admin_status', 'insideemu_idea_id', 'seq', 'created_by', 'source', 'is_hub_post'];
 	protected $dates = ['start_date', 'end_date', 'created_at', 'updated_at'];

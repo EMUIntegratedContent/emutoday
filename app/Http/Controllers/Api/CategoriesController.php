@@ -16,7 +16,7 @@ class CategoriesController extends ApiController
     } else {
       if ($month == null) {
         $mondifier = "Y";
-      } else if ($day == null){
+      } else if ($day == null) {
         $mondifier = "YM";
       } else {
         $mondifier = "YMD";
@@ -44,20 +44,19 @@ class CategoriesController extends ApiController
         ->orderBy('start_date')
         ->orderBy('start_time', 'asc')
         ->addSelect('id', 'title', 'start_date', 'end_date');
-    }])->addSelect('id', 'category', 'slug')->get();
+    }])->addSelect('id', 'category', 'slug')->orderBy('category', 'asc')->get();
 
     return $this->respond($activateCategories);
   }
 
   /**
-  * [getCategories description]
-  * @param  [type] $eventid [description]
-  * @return [type]          [description]
-  */
+   * [getCategories description]
+   * @param  [type] $eventid [description]
+   * @return [type]          [description]
+   */
   private function getCategories($eventid)
   {
-    $categories = $eventid ? Event::findOrFail($eventid)->categories: Category::all();
+    $categories = $eventid ? Event::findOrFail($eventid)->categories : Category::all();
     return $categories;
   }
-
 }

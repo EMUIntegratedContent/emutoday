@@ -41,7 +41,7 @@ const state = {
 	magazineBuilderArticlesSub: [],
 	issueArticles: [null, null, null, null, null, null],
 	modalPosition: '',
-	selectedCalendarCategory: null,
+	selectedCalendarCategoryIds: [],
 	// Email builder
 	emailBuilderEmail: JSON.parse(JSON.stringify(defaultEmail)),
 	// EMU 175 (2024) story
@@ -85,8 +85,13 @@ const mutations = {
 	setIssueArticles (state, articles) {
 		state.issueArticles = articles
 	},
-	setSelectedCalendarCategory (state, category) {
-		state.selectedCalendarCategory = category
+	setSelectedCalendarCategoryIds (state, ids) {
+		state.selectedCalendarCategoryIds = ids
+	},
+	toggleCalendarCategory (state, id) {
+		state.selectedCalendarCategoryIds = state.selectedCalendarCategoryIds.includes(id)
+			? state.selectedCalendarCategoryIds.filter(c => c !== id)
+			: [...state.selectedCalendarCategoryIds, id]
 	},
 	// Email Builder
 	addAnnouncement (state, ann) {

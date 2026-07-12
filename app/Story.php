@@ -2,9 +2,7 @@
 
 namespace Emutoday;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\URL;
 use Laracasts\Presenter\PresentableTrait;
 use DateTimeInterface;
 use Illuminate\Support\Facades\DB;
