@@ -2,23 +2,13 @@
 	<div>
 		<div id="graybar">
 			<div class="calendar-bar row">
-				<div class="medium-3 show-for-medium columns">
+				<div class="medium-4 show-for-medium columns">
 					<h4>Calendar</h4>
 				</div>
-				<div class="medium-6 small-7 columns">
-					<h4>
-						Upcoming Events
-					</h4>
+				<div class="medium-8 small-12 columns">
+					<h4>Upcoming Events</h4>
 				</div>
-				<div class="medium-3 small-5 columns">
-					<a
-						class="button hollow secondary expanded academic-calednar-button"
-						href="https://www.emich.edu/registrar/calendars/"
-						>ACADEMIC CALENDAR
-						<i class="fa fa-external-link" aria-hidden="true"></i
-					></a>
 				</div>
-			</div>
 		</div>
 		<div class="row">
 			<div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
@@ -65,6 +55,7 @@
 	font-size: 1.2rem;
 	margin-top: 0.4rem;
 	margin-bottom: 0.4rem;
+	color: #000;
 }
 
 #annotations p {
