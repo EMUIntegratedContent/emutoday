@@ -38,13 +38,15 @@ class CategoriesController extends ApiController
       $cdate_end = Carbon::create($year, $month, $day)->addDays(7)->endOfDay();
     }
 
+    $hiddenCategories = ['General Events', 'Important Dates', 'Spoken Word'];
+
     $activateCategories = Category::with(['events' => function ($query) use ($cdate_start, $cdate_end) {
       $query->approvedForCalendar()
         ->overlappingDateRange($cdate_start, $cdate_end)
         ->orderBy('start_date')
         ->orderBy('start_time', 'asc')
         ->addSelect('id', 'title', 'start_date', 'end_date');
-    }])->addSelect('id', 'category', 'slug')->orderBy('category', 'asc')->get();
+    }])->whereNotIn('category', $hiddenCategories)->addSelect('id', 'category', 'slug')->orderBy('category', 'asc')->get();
 
     return $this->respond($activateCategories);
   }
