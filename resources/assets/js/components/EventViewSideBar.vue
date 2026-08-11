@@ -114,6 +114,14 @@
 						</ul>
 					</div>
 					<div class="calendar-other-categories">
+						<h4>Other Calendars</h4>
+						<ul class="other">
+							<li><a href="https://www.emich.edu/registrar/calendars/" target="_blank">Academic Calendar <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+							<li><a href="https://www.emugalleries.org/" target="_blank">Art Galleries <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+							<li><a href="https://emueagles.com/calendar" target="_blank">Athletics <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+							<li><a href="https://www.emich.edu/hr/working/employment/holidays.php" target="_blank">Human Resources <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+							<li><a href="https://www.emich.edu/cmta/productions/current-season/index.php" target="_blank">Theatre <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+						</ul>
 						<div class="submit-calendar">
 							<a href="/calendar/event/form" class="button emu-button"
 								>Submit an Event</a
