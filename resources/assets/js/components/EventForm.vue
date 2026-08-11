@@ -663,12 +663,12 @@
 						></label>
 						<div v-if="hasCost" class="form-group">
 							<div class="input-group">
-								<!--            <span :class="inputGroupLabel">$</span>-->
 								<input
 									v-model="record.cost"
 									class="form-control"
 									:class="[formErrors.cost ? 'invalid-input' : '']"
 									name="event-cost"
+									placeholder="e.g. $10, $5-$20, Varies"
 								/>
 							</div>
 							<!-- /. input-group -->
