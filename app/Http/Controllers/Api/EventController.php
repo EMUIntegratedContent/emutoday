@@ -3,6 +3,7 @@
 namespace Emutoday\Http\Controllers\Api;
 
 use Illuminate\Support\Facades\Request as Input;
+use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Laravel\Facades\Image;
@@ -293,14 +294,17 @@ class EventController extends ApiController
 			if ($event->save()) { // Record successfully stored
 				// Send event has been submitted email
 				$to = "calendar_events@emich.edu";
-				$subject = $event->submitter . "@emich.edu has submitted the following new calendar event:\n\n";
+				$subject = $event->submitter . "@emich.edu has submitted the following new calendar event:";
 				$message = $event->submitter . "@emich.edu has submitted the following new calendar event:\n\n" .
 					"$event->title\nhttps://today.emich.edu/admin/event/$event->id/edit\n\n" .
 					"https://today.emich.edu/admin/event/queue";
-				$headers = 'From: ' . Cas::user() . '@emich.edu' . "\r\n" .
-					'Reply-To: ' . Cas::user() . "@emich.edu" . "\r\n" .
-					'X-Mailer: PHP/' . phpversion();
-				mail($to, $subject, $message, $headers);
+				$fromAddress = Cas::user() . '@emich.edu';
+				Mail::raw($message, function ($mail) use ($to, $subject, $fromAddress) {
+					$mail->to($to);
+					$mail->from($fromAddress);
+					$mail->replyTo($fromAddress);
+					$mail->subject($subject);
+				});
 
 
 
@@ -469,10 +473,12 @@ class EventController extends ApiController
 					$to = $event->submitter . "@emich.edu";
 					$subject = "Your Calendar Event Was Approved";
 					$message = "Thank you for your submission. Your event ({$event->title}) has been posted to the calendar.";
-					$headers = 'From: calendar_events@emich.edu' . "\r\n" .
-						'Reply-To: calendar_events@emich.edu' . "\r\n" .
-						'X-Mailer: PHP/' . phpversion();
-					mail($to, $subject, $message, $headers);
+					Mail::raw($message, function ($mail) use ($to, $subject) {
+						$mail->to($to);
+						$mail->from('calendar_events@emich.edu');
+						$mail->replyTo('calendar_events@emich.edu');
+						$mail->subject($subject);
+					});
 				}
 				// $returnData = ['is_approved' => $event->is_approved,'home_priority'=> $event->home_priority, 'priority'=> $event->priority, 'is_canceled'=> $event->is_canceled];
 				$returnData = ['is_promoted' => $event->is_promoted, 'is_approved' => $event->is_approved, 'priority' => $event->priority, 'home_priority' => $event->home_priority, 'is_canceled' => $event->is_canceled];

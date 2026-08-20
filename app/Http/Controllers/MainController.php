@@ -292,13 +292,15 @@ class MainController extends Controller
 
 		// Send feeback to emu_today
 		$to = "emu_today@emich.edu";
-		$subject = $person." has sent feedback:\n\n";
+		$subject = $person." has sent feedback:";
 		$message = $person." has sent feedback:\n\n".
 			$request->comments."\n\n";
-		$headers = 'From: '.$request->email."\r\n".
-			'Reply-To: '.$request->email."\r\n".
-			'X-Mailer: PHP/'.phpversion();
-		mail($to, $subject, $message, $headers);
+		Mail::raw($message, function ($mail) use ($to, $subject, $request) {
+			$mail->to($to);
+			$mail->from($request->email);
+			$mail->replyTo($request->email);
+			$mail->subject($subject);
+		});
 
 		// Return success to view
 		$data = 'Thank you, we apprieciate your feedback!';
