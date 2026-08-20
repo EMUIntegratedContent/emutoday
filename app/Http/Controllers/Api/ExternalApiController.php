@@ -9,6 +9,7 @@ use Emutoday\MiniCalendar;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as Input;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use League\Fractal\Manager;
 use League\Fractal;
@@ -535,14 +536,17 @@ class ExternalApiController extends ApiController
           $event->minicalendars()->sync($minical);
 
           $to      = "calendar_events@emich.edu";
-          $subject = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n";
+          $subject = $event->submitter."@emich.edu has submitted the following new calendar event:";
           $message = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n" .
                       "$event->title\nhttps://today.emich.edu/admin/event/$event->id/edit\n\n" .
                       "https://today.emich.edu/admin/event/queue";
-          $headers = 'From: '.$event->submitter.'@emich.edu'. "\r\n" .
-          'Reply-To: '.$event->submitter."@emich.edu"."\r\n" .
-          'X-Mailer: PHP/' . phpversion();
-          mail($to, $subject, $message, $headers);
+          $fromAddress = $event->submitter.'@emich.edu';
+          Mail::raw($message, function ($mail) use ($to, $subject, $fromAddress) {
+              $mail->to($to);
+              $mail->from($fromAddress);
+              $mail->replyTo($fromAddress);
+              $mail->subject($subject);
+          });
 
           return $this->setStatusCode(201)
           ->respondSavedWithData('Event successfully created!',[ 'event_id' => $event->id ]);
@@ -675,14 +679,17 @@ class ExternalApiController extends ApiController
         $event->minicalendars()->sync($minical);
 
         $to      = "calendar_events@emich.edu";
-        $subject = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n";
+        $subject = $event->submitter."@emich.edu has submitted the following new calendar event:";
         $message = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n" .
                     "$event->title\nhttps://today.emich.edu/admin/event/$event->id/edit\n\n" .
                     "https://today.emich.edu/admin/event/queue";
-        $headers = 'From: '.$event->submitter.'@emich.edu'. "\r\n" .
-        'Reply-To: '.$event->submitter."@emich.edu"."\r\n" .
-        'X-Mailer: PHP/' . phpversion();
-        mail($to, $subject, $message, $headers);
+        $fromAddress = $event->submitter.'@emich.edu';
+        Mail::raw($message, function ($mail) use ($to, $subject, $fromAddress) {
+            $mail->to($to);
+            $mail->from($fromAddress);
+            $mail->replyTo($fromAddress);
+            $mail->subject($subject);
+        });
 
         return $this->setStatusCode(201)
         ->respondSavedWithData('Event successfully created!',[ 'event_id' => $event->id ]);

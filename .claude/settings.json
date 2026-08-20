@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(cat)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(git -C /Users/cpuzzuol/emu/emutoday diff --stat)",
+      "Bash(git -C /Users/cpuzzuol/emu/emutoday diff -- app/Http/Controllers/Api/EventController.php app/Http/Controllers/Api/ExternalApiController.php app/Http/Controllers/MainController.php)",
+      "Bash(curl -s http://localhost:8027/api/v2/messages)"
     ]
   }
 }
