@@ -514,6 +514,12 @@ export default {
 			this.$http
 				.get(url)
 				.then((response) => {
+					// Move the calendar called "Weeks of Welcome" to the top of the list and remove it from where it was (CP 8/20/26)
+					const weeksOfWelcome = response.data.find(category => category.category === "Weeks of Welcome")
+					if (weeksOfWelcome) {
+						response.data.splice(response.data.indexOf(weeksOfWelcome), 1)
+						response.data.unshift(weeksOfWelcome)
+					}
 					this.setCalendarCategories(response.data)
 				})
 				.catch((e) => {
