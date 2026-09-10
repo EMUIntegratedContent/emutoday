@@ -13,7 +13,10 @@
       "Bash(php -l app/Http/routes.php)",
       "Bash(curl -s -D - -o /dev/null http://localhost:8080/feed/ical/event/__CMDSUB_OUTPUT__)",
       "Bash(curl -s http://localhost:8080/feed/ical/event/__CMDSUB_OUTPUT__)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(node_modules/.bin/terser --version)",
+      "Bash(node_modules/.bin/terser public/add-to-calendar/ouical.js -c -m -o public/add-to-calendar/ouical.min.js)",
+      "Bash(node -c public/add-to-calendar/ouical.min.js)"
     ]
   }
 }
