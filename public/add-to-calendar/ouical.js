@@ -100,7 +100,35 @@
 		},
 
 		outlook: function (event) {
-			return this.ics(event, "icon-outlook", "Outlook")
+			// Outlook web compose deeplink (Microsoft 365 / work + school accounts).
+			// Wants ISO 8601 with separators (2026-09-10T18:00:00Z), unlike the
+			// stripped format used for the .ics data URI above. Personal
+			// @outlook.com/@hotmail accounts use outlook.live.com instead of
+			// outlook.office.com; EMU is M365 so office.com is the right host.
+			var end = event.end
+				? event.end
+				: new Date(event.start.getTime() + event.duration * MS_IN_MINUTES)
+			var startTime = event.start.toISOString().replace(/\.\d{3}/, "")
+			var endTime = end.toISOString().replace(/\.\d{3}/, "")
+
+			var href =
+				"https://outlook.office.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent" +
+				"&subject=" +
+				encodeURIComponent(event.title || "") +
+				"&startdt=" +
+				encodeURIComponent(startTime) +
+				"&enddt=" +
+				encodeURIComponent(endTime) +
+				"&body=" +
+				encodeURIComponent(event.description || "") +
+				"&location=" +
+				encodeURIComponent(event.address || "")
+
+			return (
+				'<a class="icon-outlook" target="_blank" href="' +
+				href +
+				'">Outlook</a> <span class="hint">(Web Link)</span>'
+			)
 		}
 	}
 
