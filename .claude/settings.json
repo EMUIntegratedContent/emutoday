@@ -8,7 +8,12 @@
       "Bash(curl -s http://localhost:8027/api/v2/messages)",
       "Bash(curl -s -o /private/tmp/claude-502/-Users-cpuzzuol-emu-emutoday/2cce8ea8-9134-415f-b1b4-fbf6247c8a7e/scratchpad/insideemu.html -w \"HTTP %{http_code}\\\\n\" http://localhost:8080/insideemu)",
       "Bash(curl -s http://localhost:8080/css/public-styles.css)",
-      "Bash(curl -s http://localhost:8080/insideemu)"
+      "Bash(curl -s http://localhost:8080/insideemu)",
+      "Bash(php -l app/Http/Controllers/Today/RSSFeedController.php)",
+      "Bash(php -l app/Http/routes.php)",
+      "Bash(curl -s -D - -o /dev/null http://localhost:8080/feed/ical/event/__CMDSUB_OUTPUT__)",
+      "Bash(curl -s http://localhost:8080/feed/ical/event/__CMDSUB_OUTPUT__)",
+      "Bash(node -e ' *)"
     ]
   }
 }

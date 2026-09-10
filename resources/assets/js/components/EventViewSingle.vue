@@ -158,7 +158,8 @@ export default {
         end: new Date(end_datetime), // You can also choose to set an end time.
         address: this.item.location,
         description: this.item.description,
-        timezone: 'America/Detroit'
+        timezone: 'America/Detroit',
+        icsUrl: '/feed/ical/event/' + this.item.id // server-hosted .ics so iCal/Outlook links work on iOS/mobile
       }
     });
     if (this.item.id == this.targeteventid) {

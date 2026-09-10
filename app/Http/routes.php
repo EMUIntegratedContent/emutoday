@@ -88,6 +88,7 @@ Route::get('/feed/events/{type?}', 'Today\RSSFeedController@getEvents')->name('r
 Route::get('/feed/announcements/{type?}', 'Today\RSSFeedController@getAnnouncements')->name('rss_feed_announcements');
 Route::get('/feed/minical/{minical?}', 'Today\RSSFeedController@getEventsICalMinical')->name('ical_events_minical');
 Route::get('/feed/ical', 'Today\RSSFeedController@getEventsICal')->name('ical_events');
+Route::get('/feed/ical/event/{id}', 'Today\RSSFeedController@getEventICalSingle')->name('ical_event_single');
 
 /***************
  * External API Routes
