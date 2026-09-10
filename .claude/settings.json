@@ -16,7 +16,8 @@
       "Bash(node -e ' *)",
       "Bash(node_modules/.bin/terser --version)",
       "Bash(node_modules/.bin/terser public/add-to-calendar/ouical.js -c -m -o public/add-to-calendar/ouical.min.js)",
-      "Bash(node -c public/add-to-calendar/ouical.min.js)"
+      "Bash(node -c public/add-to-calendar/ouical.min.js)",
+      "Bash(perl -0777 -i -pe \"s/\\\\.cal-line>a:before\\\\{.*?content:' '\\\\}\\\\.icon-ical:before\\\\{background-position:-68px 0\\\\}\\\\.icon-outlook:before\\\\{\\\\}\\\\.icon-yahoo:before\\\\{background-position:-36px \\\\+4px\\\\}\\\\.icon-google:before\\\\{background-position:-52px 0\\\\}/.cal-line>a .fa{margin-right:.4em}/s\" public/add-to-calendar/ouical.js)"
     ]
   }
 }
