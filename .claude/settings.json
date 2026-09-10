@@ -5,7 +5,10 @@
       "Read(//tmp/**)",
       "Bash(git -C /Users/cpuzzuol/emu/emutoday diff --stat)",
       "Bash(git -C /Users/cpuzzuol/emu/emutoday diff -- app/Http/Controllers/Api/EventController.php app/Http/Controllers/Api/ExternalApiController.php app/Http/Controllers/MainController.php)",
-      "Bash(curl -s http://localhost:8027/api/v2/messages)"
+      "Bash(curl -s http://localhost:8027/api/v2/messages)",
+      "Bash(curl -s -o /private/tmp/claude-502/-Users-cpuzzuol-emu-emutoday/2cce8ea8-9134-415f-b1b4-fbf6247c8a7e/scratchpad/insideemu.html -w \"HTTP %{http_code}\\\\n\" http://localhost:8080/insideemu)",
+      "Bash(curl -s http://localhost:8080/css/public-styles.css)",
+      "Bash(curl -s http://localhost:8080/insideemu)"
     ]
   }
 }
