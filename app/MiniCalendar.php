@@ -3,6 +3,7 @@
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class MiniCalendar extends Model
@@ -57,7 +58,8 @@ class MiniCalendar extends Model
       ->where('calendar', '<>', 'Welcome Weeks')
       ->orderBy('calendar', 'asc');
 
-    if (!auth()->user()->isAdmin()) {
+    $user = Auth::user();
+    if (! ($user instanceof User) || ! $user->isAdmin()) {
       $query->where('admin_only', false);
     }
 

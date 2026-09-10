@@ -4,8 +4,6 @@ namespace Emutoday;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Emutoday\Mediafile;
-use Sofa\Eloquence\Eloquence;
 use Laravel\Passport\HasApiTokens;
 use DateTimeInterface;
 
