@@ -6,21 +6,12 @@ use Emutoday\Http\Resources\InsideemuPostResource;
 use Emutoday\Imagetype;
 use Emutoday\InsideemuPost;
 use Emutoday\Services\InsideemuService;
-use Emutoday\User;
 use Illuminate\Http\Request;
 
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request as Input;
-use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Validator;
-use League\Fractal\Manager;
-use League\Fractal;
-use League\Fractal\Serializer\ArraySerializer;
-use League\Fractal\Serializer\DataArraySerializer;
-
-use Emutoday\Today\Transformers\FractalEventTransformerModelFull;
 
 class InsideemuPostController extends ApiController{
 	protected $post;
