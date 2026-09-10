@@ -2736,6 +2736,22 @@ a.magazine-article-button {
   padding-bottom: 10px;
 }
 
+.insideemu-card-link {
+  display: block;
+}
+.insideemu-card-link .topic-image,
+.insideemu-card-link .link-group {
+  transition: opacity .15s ease, color .15s ease;
+}
+.insideemu-card-link:hover .topic-image,
+.insideemu-card-link:focus .topic-image {
+  opacity: .9;
+}
+.insideemu-card-link:hover .link-group,
+.insideemu-card-link:focus .link-group {
+  color: #0d5740;
+}
+
 
 #profile-text-over-image-box{
     width: 50%;

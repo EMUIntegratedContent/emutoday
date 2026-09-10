@@ -13,13 +13,13 @@
           <div id="four-stories-container" class="row small-up-2 medium-up-2 large-up-4" data-equalizer>
             @foreach($posts as $post)
               <div class="column four-stories-block">
-                <img class="topic-image" src="/imagecache/original/{{$post->images[0]->image_name}}"
-                     alt="{{ $post->images[0]->alt_text != '' ? $post->images[0]->alt_text : str_replace('"', "", $post->images[0]->caption) }}">
-                <div class="stories-content">
-                  <p class="link-group">
-                    <a href="/insideemu/posts/{{$post->id}}">{{ $post->title }}</a>
-                  </p>
-                </div>
+                <a class="insideemu-card-link" href="/insideemu/posts/{{$post->id}}">
+                  <img class="topic-image" src="/imagecache/original/{{$post->images[0]->image_name}}"
+                       alt="{{ $post->images[0]->alt_text != '' ? $post->images[0]->alt_text : str_replace('"', "", $post->images[0]->caption) }}">
+                  <div class="stories-content">
+                    <p class="link-group">{{ $post->title }}</p>
+                  </div>
+                </a>
               </div>
             @endforeach
           </div>
