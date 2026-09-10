@@ -65,6 +65,15 @@
     },
 
     ics: function(event, eClass, calendarName) {
+      // If a server-hosted .ics URL is provided, link to it directly. A real
+      // text/calendar file lets mobile Safari / iOS Calendar open the "Add to
+      // Calendar" sheet -- iOS blocks navigation to the data: URI used below,
+      // which is why this option did nothing on mobile.
+      if (event.icsUrl) {
+        return '<a class="' + eClass + '" href="' +
+          event.icsUrl + '">' + calendarName + ' Calendar</a>';
+      }
+
       var startTime = formatTime(event.start);
       var endTime = calculateEndTime(event);
 

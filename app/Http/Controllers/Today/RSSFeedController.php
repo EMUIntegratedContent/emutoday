@@ -87,6 +87,51 @@ class RSSFeedController extends Controller{
 	}
 
 	/**
+	 * Return a single event as a downloadable .ics file.
+	 *
+	 * Served with a real text/calendar Content-Type (not a data: URI) so that
+	 * mobile Safari / iOS Calendar will open the "Add to Calendar" sheet. iOS
+	 * blocks navigation to data: URLs, which is why the old ouical.js in-page
+	 * data: links did nothing on mobile.
+	 *
+	 * @param int $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function getEventICalSingle($id){
+		$event = Event::where('id', $id)->where('is_approved', 1)->firstOrFail();
+
+		// Floating local (America/Detroit) time, matching the existing feeds.
+		$dateFormat = 'Ymd\THis';
+
+		$status = $event->is_canceled ? "CANCELLED" : "CONFIRMED";
+
+		// Descriptions can't be sent with special characters or it breaks the iCal output.
+		// Tutorial: https://stackoverflow.com/questions/30220243/php-creating-ics-file-hidden-characters-and-line-breaks-breaking-output
+		$description = str_replace("\xA0", " ", $event->description); // nbsp - make space
+		$description = str_replace("\x0A", "", $description);          // cr - remove
+		$description = str_replace("\x0D", "\\n", $description);       // lf - text: escaped new line
+		$description = strip_tags(htmlspecialchars_decode($description)); // clear html for plain text
+
+		$start_date = date('Y-m-d', strtotime($event->start_date)) . date('H:i:s', strtotime($event->start_time));
+		$end_date   = date('Y-m-d', strtotime($event->end_date)) . date('H:i:s', strtotime($event->end_time));
+
+		$output =
+			"BEGIN:VCALENDAR\r\nMETHOD:PUBLISH\r\nVERSION:2.0\r\nPRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n" .
+			"BEGIN:VEVENT\r\nSUMMARY:$event->title\r\nUID:" . $event->id . "@today.emich.edu\r\nSTATUS:$status\r\n" .
+			"DTSTART:" . date($dateFormat, strtotime($start_date)) . "\r\n" .
+			"DTEND:" . date($dateFormat, strtotime($end_date)) . "\r\n" .
+			"DTSTAMP:" . date($dateFormat, strtotime($event->created_at)) . "\r\n" .
+			"LAST-MODIFIED:" . date($dateFormat, strtotime($event->updated_at)) . "\r\n" .
+			"ORGANIZER:" . $event->contact_person . "\r\nLOCATION:$event->location\r\nDESCRIPTION:$description\r\n" .
+			"END:VEVENT\r\nEND:VCALENDAR\r\n";
+
+		return response($output, 200, [
+			'Content-Type'        => 'text/calendar; charset=utf-8',
+			'Content-Disposition' => 'attachment; filename="event-' . $event->id . '.ics"',
+		]);
+	}
+
+	/**
 	 * Same as getEventsICal but limits by minical. If no minical, return all events that DON'T have a minical.
 	 * @param null $minical (if not null, the slug of the minical)
 	 * @return string
