@@ -78,5 +78,6 @@ class Kernel extends HttpKernel
     'cleanup.cas.ticket' => \Emutoday\Http\Middleware\CleanupCasTicket::class,
     'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
     'client_credentials' => \Laravel\Passport\Http\Middleware\CheckClientCredentials::class, //for Laravel Passport OAuth
+    'noindex' => \Emutoday\Http\Middleware\NoIndex::class,
   ];
 }

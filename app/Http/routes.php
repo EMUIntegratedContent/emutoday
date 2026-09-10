@@ -93,7 +93,7 @@ Route::get('/feed/ical/event/{id}', 'Today\RSSFeedController@getEventICalSingle'
 /***************
  * External API Routes
  */
-Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']], function () {
+Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings', 'noindex']], function () {
   Route::get('events/{limit?}/{startDate?}/{endDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEvents');
   Route::get('hscevents/{limit?}/{startDate?}/{endDate?}', 'Api\ExternalApiController@getHscEvents');
   Route::get('homecomingevents/{firstDate}/{lastDate}', 'Api\ExternalApiController@getHomecomingEvents');
@@ -111,7 +111,7 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']], function
 /***************
  * Internal API Routes
  */
-Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
+Route::group(['prefix' => 'api', 'middleware' => ['bindings','noindex']], function () {
 
   /* Inside EMU Ideas */
   Route::get('insideemu/admin/ideas/ideas', 'Api\InsideemuIdeaAdminController@index')->name('api_insideemu_admin_ideas');
