@@ -17,6 +17,26 @@ class RSSFeedController extends Controller{
 
 	}
 
+	/**
+	 * VTIMEZONE component defining US Eastern Time (America/Detroit) with its
+	 * EST/EDT daylight-saving rules.
+	 *
+	 * Event times are stored as wall-clock Eastern. Emitting them as a bare
+	 * "floating" timestamp (no Z, no TZID) let some clients treat them as UTC,
+	 * which showed EMU events shifted 4 hours. Embedding this block and tagging
+	 * DTSTART/DTEND with ;TZID=America/Detroit makes clients render each event in
+	 * Eastern Standard or Eastern Daylight time according to its date.
+	 *
+	 * @return string
+	 */
+	private function easternVTimezone(){
+		return
+			"BEGIN:VTIMEZONE\r\nTZID:America/Detroit\r\n" .
+			"BEGIN:DAYLIGHT\r\nTZOFFSETFROM:-0500\r\nTZOFFSETTO:-0400\r\nTZNAME:EDT\r\nDTSTART:19700308T020000\r\nRRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU\r\nEND:DAYLIGHT\r\n" .
+			"BEGIN:STANDARD\r\nTZOFFSETFROM:-0400\r\nTZOFFSETTO:-0500\r\nTZNAME:EST\r\nDTSTART:19701101T020000\r\nRRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU\r\nEND:STANDARD\r\n" .
+			"END:VTIMEZONE\r\n";
+	}
+
 	public function getNews(){
 		$items = Story::where([['is_approved', 1], ['is_archived', 0]])
 			->whereIn('story_type', ['news', 'advisory', 'statement', 'story', 'article'])
@@ -50,11 +70,12 @@ class RSSFeedController extends Controller{
 	public function getEventsICal(){
 		// Get all future events and past events of two months ago or less
 		$events = Event::where([['is_approved', 1], ['start_date', '>=', date('Y-m-d', strtotime(date("Y-m-d", strtotime("-2 months"))))]])->orderBy('start_date', 'asc')->get();
-		// the iCal date format. Note the Z on the end indicates a UTC timestamp.
+		// Wall-clock date format; times are tagged America/Detroit via the VTIMEZONE above.
 		define('DATE_ICAL', 'Ymd\THis');
 
 		$output =
-			"BEGIN:VCALENDAR\r\nMETHOD:PUBLISH\r\nVERSION:2.0\r\nPRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n";
+			"BEGIN:VCALENDAR\r\nMETHOD:PUBLISH\r\nVERSION:2.0\r\nPRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n" .
+			$this->easternVTimezone();
 
 		// loop over events
 		foreach($events as $event):
@@ -75,7 +96,7 @@ class RSSFeedController extends Controller{
 			$end_date = date('Y-m-d', strtotime($event->end_date)).date('H:i:s', strtotime($event->end_time));
 
 			$output .=
-				"BEGIN:VEVENT\r\nSUMMARY:$event->title\r\nUID:$event->id\r\nSTATUS:$status\r\nDTSTART:".date(DATE_ICAL, strtotime($start_date))."\r\nDTEND:".date(DATE_ICAL, strtotime($end_date))."\r\nDTSTAMP:".date(DATE_ICAL, strtotime($event->created_at))."\r\nLAST-MODIFIED:"
+				"BEGIN:VEVENT\r\nSUMMARY:$event->title\r\nUID:$event->id\r\nSTATUS:$status\r\nDTSTART;TZID=America/Detroit:".date(DATE_ICAL, strtotime($start_date))."\r\nDTEND;TZID=America/Detroit:".date(DATE_ICAL, strtotime($end_date))."\r\nDTSTAMP:".date(DATE_ICAL, strtotime($event->created_at))."\r\nLAST-MODIFIED:"
 				.date(DATE_ICAL, strtotime($event->updated_at))."\r\nORGANIZER:".$event->contact_person."\r\nLOCATION:$event->location\r\nDESCRIPTION:$description\r\nEND:VEVENT\r\n";
 		endforeach;
 
@@ -100,7 +121,8 @@ class RSSFeedController extends Controller{
 	public function getEventICalSingle($id){
 		$event = Event::where('id', $id)->where('is_approved', 1)->firstOrFail();
 
-		// Floating local (America/Detroit) time, matching the existing feeds.
+		// Wall-clock time, tagged America/Detroit via the VTIMEZONE below so
+		// clients render it in Eastern Standard/Daylight time by date.
 		$dateFormat = 'Ymd\THis';
 
 		$status = $event->is_canceled ? "CANCELLED" : "CONFIRMED";
@@ -117,9 +139,10 @@ class RSSFeedController extends Controller{
 
 		$output =
 			"BEGIN:VCALENDAR\r\nMETHOD:PUBLISH\r\nVERSION:2.0\r\nPRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n" .
+			$this->easternVTimezone() .
 			"BEGIN:VEVENT\r\nSUMMARY:$event->title\r\nUID:" . $event->id . "@today.emich.edu\r\nSTATUS:$status\r\n" .
-			"DTSTART:" . date($dateFormat, strtotime($start_date)) . "\r\n" .
-			"DTEND:" . date($dateFormat, strtotime($end_date)) . "\r\n" .
+			"DTSTART;TZID=America/Detroit:" . date($dateFormat, strtotime($start_date)) . "\r\n" .
+			"DTEND;TZID=America/Detroit:" . date($dateFormat, strtotime($end_date)) . "\r\n" .
 			"DTSTAMP:" . date($dateFormat, strtotime($event->created_at)) . "\r\n" .
 			"LAST-MODIFIED:" . date($dateFormat, strtotime($event->updated_at)) . "\r\n" .
 			"ORGANIZER:" . $event->contact_person . "\r\nLOCATION:$event->location\r\nDESCRIPTION:$description\r\n" .
@@ -168,11 +191,12 @@ class RSSFeedController extends Controller{
 					->get();
 			}
 		}
-		// the iCal date format. Note the Z on the end indicates a UTC timestamp.
+		// Wall-clock date format; times are tagged America/Detroit via the VTIMEZONE above.
 		define('DATE_ICAL', 'Ymd\THis');
 
 		$output =
-			"BEGIN:VCALENDAR\r\nMETHOD:PUBLISH\r\nVERSION:2.0\r\nPRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n";
+			"BEGIN:VCALENDAR\r\nMETHOD:PUBLISH\r\nVERSION:2.0\r\nPRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n" .
+			$this->easternVTimezone();
 
 		// loop over events
 		foreach($events as $event):
@@ -193,7 +217,7 @@ class RSSFeedController extends Controller{
 			$end_date = date('Y-m-d', strtotime($event->end_date)).date('H:i:s', strtotime($event->end_time));
 
 			$output .=
-				"BEGIN:VEVENT\r\nSUMMARY:$event->title\r\nUID:$event->id\r\nSTATUS:$status\r\nDTSTART:".date(DATE_ICAL, strtotime($start_date))."\r\nDTEND:".date(DATE_ICAL, strtotime($end_date))."\r\nDTSTAMP:".date(DATE_ICAL, strtotime($event->created_at))."\r\nLAST-MODIFIED:"
+				"BEGIN:VEVENT\r\nSUMMARY:$event->title\r\nUID:$event->id\r\nSTATUS:$status\r\nDTSTART;TZID=America/Detroit:".date(DATE_ICAL, strtotime($start_date))."\r\nDTEND;TZID=America/Detroit:".date(DATE_ICAL, strtotime($end_date))."\r\nDTSTAMP:".date(DATE_ICAL, strtotime($event->created_at))."\r\nLAST-MODIFIED:"
 				.date(DATE_ICAL, strtotime($event->updated_at))."\r\nORGANIZER:".$event->contact_person."\r\nLOCATION:$event->location\r\nDESCRIPTION:$description\r\nEND:VEVENT\r\n";
 		endforeach;
 
