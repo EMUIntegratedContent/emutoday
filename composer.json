@@ -32,7 +32,7 @@
 	"require-dev": {
 		"mockery/mockery": "1.6.12",
 		"phpunit/phpunit": "^11.5.",
-		"symfony/dom-crawler": "2.8.*|3.0.*",
+		"symfony/dom-crawler": "^5.4.52",
 		"filp/whoops": "^2.15.2",
 		"fakerphp/faker": "^1.24"
 	},
