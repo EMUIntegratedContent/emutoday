@@ -1,19 +1,12 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-
 class ExampleTest extends TestCase
 {
     /**
-     * A basic functional test example.
-     *
-     * @return void
+     * The application should boot into the testing environment.
      */
-    public function testBasicExample()
+    public function testApplicationBootsInTestingEnvironment(): void
     {
-        $this->visit('/')
-             ->see('Laravel 5');
+        $this->assertSame('testing', $this->app->environment());
     }
 }

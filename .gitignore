@@ -17,3 +17,5 @@ Homestead.yaml
 Homestead.yaml*
 *.vagrant*
 .idea
+.phpunit.cache
+.phpunit.result.cache
