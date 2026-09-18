@@ -360,17 +360,6 @@ mix.webpackConfig({
 	module: {
 		rules: [
 			{
-				test: /\.s[ac]ss$/i,
-				use: [
-					{
-						loader: "sass-loader",
-						options: {
-							implementation: require("sass")
-						}
-					}
-				]
-			},
-			{
 				test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
 				use: ["raw-loader"]
 			},
@@ -411,6 +400,26 @@ mix.webpackConfig({
 })
 //Exclude CKEditor regex from mix's default rules
 mix.override((config) => {
+	// Force the modern Dart Sass API on every sass-loader instance (including
+	// Mix's own built-in rule) to silence the legacy JS API deprecation warning.
+	const patchSass = (rules) => {
+		rules.forEach((rule) => {
+			if (Array.isArray(rule.oneOf)) patchSass(rule.oneOf)
+			if (!Array.isArray(rule.use)) return
+			rule.use.forEach((u) => {
+				if (
+					u &&
+					typeof u === "object" &&
+					typeof u.loader === "string" &&
+					u.loader.includes("sass-loader")
+				) {
+					u.options = { ...(u.options || {}), api: "modern" }
+				}
+			})
+		})
+	}
+	patchSass(config.module.rules)
+
 	const rules = config.module.rules
 	const targetSVG =
 		/(\.(png|jpe?g|gif|webp|avif)$|^((?!font).)*\.svg$)/.toString()
