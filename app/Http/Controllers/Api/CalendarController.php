@@ -105,7 +105,9 @@ class CalendarController extends ApiController
 
                 return $day->gte($eventStart) && $day->lte($eventEnd);
             })->sortBy(function ($event) {
-                return Carbon::parse($event->start_date)->format('Y-m-d') . ' ' . ($event->start_time ?? '');
+                // Sort by time of day only: every event in this bucket occurs on $day,
+                // so a multi-day event's earlier start_date must not push it to the top.
+                return $event->start_time?->format('H:i:s') ?? '';
             })->values();
 
             // Skip days with no events so the response only includes populated headings.
