@@ -514,8 +514,8 @@ export default {
 			this.$http
 				.get(url)
 				.then((response) => {
-					// Move the calendar called "Homecoming" to the top of the list and remove it from where it was (CP 8/20/26)
-					const homecoming = response.data.find(category => category.category === "Homecoming")
+					// Move the calendar called "Homecoming Week 2026" to the top of the list and remove it from where it was (CP 8/20/26)
+					const homecoming = response.data.find(category => category.category === "Homecoming Week 2026")
 					if (homecoming) {
 						response.data.splice(response.data.indexOf(homecoming), 1)
 						response.data.unshift(homecoming)
