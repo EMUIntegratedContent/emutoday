@@ -125,5 +125,6 @@
 	"bugs": {
 		"url": "https://github.com/EMUIntegratedContent/emutoday/issues"
 	},
-	"homepage": "https://github.com/EMUIntegratedContent/emutoday#readme"
+	"homepage": "https://github.com/EMUIntegratedContent/emutoday#readme",
+	"engines": { "node": ">=22" }
 }
