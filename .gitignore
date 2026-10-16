@@ -19,3 +19,8 @@ Homestead.yaml*
 .idea
 .phpunit.cache
 .phpunit.result.cache
+
+# Local-only security notes (audit plans, findings). Never commit.
+/private
+
+.claude/
