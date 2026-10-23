@@ -56,6 +56,7 @@ class SyncAthleticsEvents extends Command
         19 => ['sport' => 'Swimming & Diving', 'homeVenue' => 'Jones Natatorium', 'sellsTickets' => false],
         20 => ['sport' => 'Tennis', 'homeVenue' => 'The Chippewa Club', 'sellsTickets' => false],
         36 => ['sport' => 'Lacrosse', 'homeVenue' => 'Paul Scicluna Soccer Field', 'sellsTickets' => false],
+        39 => ['sport' => 'Lightweight Rowing', 'homeVenue' => 'Rowing Course at Ford Lake', 'sellsTickets' => false],
     ];
 
     /**
@@ -95,6 +96,8 @@ class SyncAthleticsEvents extends Command
 
             $sportId = $this->extractSportId($permalink);
             $sport = self::SIDEARM_SPORTS[$sportId] ?? null;
+
+						if(!$sport) continue;
 
             $localStart = (string) $sdNs->localstartdate;
             $localEnd   = (string) $sdNs->localenddate;
@@ -199,7 +202,7 @@ class SyncAthleticsEvents extends Command
             // Set mini-calendar to athletics
             $event->minicalendars()->syncWithoutDetaching([self::ATHLETICS_MINICAL_ID]);
             // Set category to varsity athletics in cea_event_categories
-            $category = Category::where('category', 'Varsity Athletics')->first();
+            $category = Category::where('category', 'Athletics')->first();
             $event->eventcategories()->syncWithoutDetaching([$category->id]);
         }
 
