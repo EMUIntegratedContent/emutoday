@@ -56,7 +56,7 @@ class SyncAthleticsEvents extends Command
         19 => ['sport' => 'Swimming & Diving', 'homeVenue' => 'Jones Natatorium', 'sellsTickets' => false],
         20 => ['sport' => 'Tennis', 'homeVenue' => 'The Chippewa Club', 'sellsTickets' => false],
         36 => ['sport' => 'Lacrosse', 'homeVenue' => 'Paul Scicluna Soccer Field', 'sellsTickets' => false],
-        38 => ['sport' => 'Flag Football', 'homeVenue' => 'Rynearson Stadium', 'sellsTickets' => false],
+        38 => ['sport' => 'Flag Football', 'homeVenue' => 'Paul Scicluna Soccer Field', 'sellsTickets' => false],
         39 => ['sport' => 'Lightweight Rowing', 'homeVenue' => 'Rowing Course at Ford Lake', 'sellsTickets' => false],
     ];
 
