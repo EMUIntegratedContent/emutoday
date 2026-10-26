@@ -4143,8 +4143,8 @@ shasum-object@^1.0.0:
     fast-safe-stringify "^2.0.7"
 
 shell-quote@^1.6.1:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.10.0.tgz#482033e192e4f5c07151521ffa03400ec71b1b0f"
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.12.0.tgz#e98fdfd2e921d8a58ae2820f4fc0f75c39f09675"
 
 shelljs@0.3.x:
   version "0.3.0"
