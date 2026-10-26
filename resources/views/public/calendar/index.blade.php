@@ -17,7 +17,7 @@
         <div class="row" id="calendar-featured-container">
             <div class="large-12 medium-12 small-12 columns">
                 <div class="row">
-                    <div class="large-12 medium-12 small-12 columns"><h3 class="cal-caps toptitle">Events Calendar</h3></div>
+                    <div class="large-12 medium-12 small-12 columns"><h1 class="cal-caps toptitle">Events Calendar</h1></div>
                 </div>
 
                 @unless(empty($featuredevents[0]))
@@ -27,7 +27,7 @@
                         <div id="five-events-bar">
                             <div id="news-title-bar" class="row">
                                 <div class="large-12 medium-12 show-for-medium columns">
-                                    <h5 class="subhead-title">Featured Events</h5>
+                                    <h2 class="subhead-title">Featured Events</h2>
                                 </div>
                             </div>
 

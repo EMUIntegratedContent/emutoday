@@ -119,8 +119,9 @@ p.small-return-news {
     padding: 0;
     margin: 0;
 }
-#five-events-bar h5{
+#five-events-bar h2{
     text-transform: uppercase;
+    font-size: 1.1rem;
 }
 #five-events-bar .calendar-content .calendar-text-content p{
     font-size: .9rem;
@@ -128,7 +129,8 @@ p.small-return-news {
     padding: 0;
     margin: 0;
 }
-#five-events-bar  h6{
+#five-events-bar  h3{
+  font-size: 1rem;
   font-weight: normal;
     padding: 0;
     margin: .4rem 0 .2rem 0;
@@ -145,9 +147,13 @@ p.small-return-news {
     padding: .3rem 0;
     background-color: #cccccc;
 }
-#graybar h4{
+#graybar h4, #graybar h2{
     text-transform: uppercase;
     color: #000;
+}
+
+h1.cal-caps.toptitle{
+    font-size: 1.5rem;
 }
 .date-tag{
     color: #fff;

@@ -113,7 +113,7 @@ span.truemu::before {
 }
 
 a.emu-button {
-  background-color: #1e9744;
+  background-color: #11662C;
   text-transform: uppercase;
   font-size: 1rem;
   text-decoration: none;
@@ -121,8 +121,14 @@ a.emu-button {
 }
 
 a:hover.emu-button {
-  background-color: #0f654a;
-  text-decoration: none;
+  background-color: #0b4a20;
+  text-decoration: underline;
+}
+
+a.emu-button:focus-visible {
+  background-color: #0b4a20;
+  outline: 2px solid #11662C;
+  outline-offset: 2px;
 }
 
 a.allcaps {

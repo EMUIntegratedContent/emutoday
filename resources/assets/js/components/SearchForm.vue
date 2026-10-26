@@ -19,7 +19,27 @@ input {
   height: 33px;
   vertical-align: bottom;
   background-color: #535353;
-  border: none;
+  color: #fff;
+  border: 1px solid #bdbdbd;
+}
+
+input::placeholder {
+  color: #e6e6e6;
+  opacity: 1;
+}
+
+input:focus,
+input:focus-visible {
+  background-color: #535353;
+  border: 1px solid #fff;
+  box-shadow: none;
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+}
+
+.submit-search-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
 }
 
 .input-group {
