@@ -3,12 +3,12 @@
 		<div id="graybar">
 			<div class="calendar-bar row">
 				<div class="medium-3 show-for-medium columns">
-					<h4>Calendar</h4>
+					<h2>Calendar</h2>
 				</div>
 				<div class="medium-6 small-7 columns">
-					<h4>
+					<h2>
 						Upcoming Events
-					</h4>
+					</h2>
 				</div>
 				<div class="medium-3 small-5 columns">
 					<a
@@ -61,7 +61,7 @@
 	background-color: #cccccc;
 }
 
-#graybar h4 {
+#graybar h2 {
 	font-size: 1.2rem;
 	margin-top: 0.4rem;
 	margin-bottom: 0.4rem;

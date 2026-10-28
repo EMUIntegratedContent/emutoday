@@ -2,7 +2,8 @@
   <div class="calendar-content">
     <div class="calendar-content-title row">
       <div class="small-12 column">
-        <h6>From {{ firstDate }} thru {{ lastDate }}</h6>
+        <h3>From {{ firstDate }} thru {{ lastDate }}</h3>
+        <p class="show-for-sr" role="status" aria-live="polite">{{ announcement }}</p>
       </div>
     </div>
     <div class="calendar-content-content row">
@@ -47,6 +48,10 @@
   margin-top: 0.5rem;
 }
 
+.calendar-content-title h3 {
+  font-size: 1rem;
+}
+
 .calendar-content-content {
   background: #fff;
 }
@@ -86,6 +91,8 @@ export default {
       monthVarUnit: '',
       eventRange: {},
       hasevents: 0,
+      announcement: '',
+      hasLoaded: false,
     }
   },
   computed: {
@@ -112,6 +119,18 @@ export default {
       this.firstDate = edata.firstDate;
       this.lastDate = edata.lastDate;
       this.hasevents = this.elist ? 1 : 0;
+      this.announceResults();
+    },
+    // Announce result changes to screen readers, but stay quiet on the initial page load.
+    announceResults () {
+      if (!this.hasLoaded) {
+        this.hasLoaded = true;
+        return;
+      }
+      const count = Object.values(this.elist || {})
+        .reduce((total, events) => total + events.length, 0);
+      const noun = count === 1 ? 'event' : 'events';
+      this.announcement = 'Showing ' + count + ' ' + noun + ' from ' + this.firstDate + ' thru ' + this.lastDate;
     }
   },
   watch: {

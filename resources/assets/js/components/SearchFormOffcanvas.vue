@@ -16,10 +16,31 @@
 </template>
 <style scoped>
 input {
-  padding: 0;
-  padding-left: 1em;
-  height: 34.4px;
+  padding: 0 0 0 1em;
+  height: 33px;
   vertical-align: bottom;
+  background-color: #535353;
+  color: #fff;
+  border: none;
+}
+
+input::placeholder {
+  color: #e6e6e6;
+  opacity: 1;
+}
+
+input:focus,
+input:focus-visible {
+  background-color: #535353;
+  border: 1px solid #fff;
+  box-shadow: none;
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+}
+
+.input-group {
+  margin: 0;
+  padding: 0;
 }
 
 </style>

@@ -1,79 +1,81 @@
 <template>
 	<div class="calendar-box row">
 		<div class="small-12 columns">
-			<div class="calendar small-12 columns" data-equalizer>
+			<div class="calendar small-12 columns">
 				<div class="calendar-nav row small-collapse">
 					<div class="small-2 columns">
-						<a
+						<button
+							type="button"
 							id="month-prev"
-							v-on:click.prevent="newMonth('prev')"
 							class="text-left"
-							href=""
-							><img
+							v-on:click="newMonth('prev')"
+						>
+							<img
 								src="/assets/imgs/calendar/green-calendar-arrow-before.png"
-								alt="arrow"
-						/></a>
+								alt="Previous month"
+							/>
+						</button>
 					</div>
 					<div class="text-center calendar-title small-8 columns">
-						<p>{{ monthVarWord }} {{ yearVar }}</p>
+						<h3 id="calendar-month-title">{{ monthVarWord }} {{ yearVar }}</h3>
 					</div>
 					<div class="small-2 columns">
-						<a
+						<button
+							type="button"
 							id="month-next"
-							v-on:click.prevent="newMonth('next')"
 							class="text-right"
-							href=""
-							><img
+							v-on:click="newMonth('next')"
+						>
+							<img
 								src="/assets/imgs/calendar/green-calendar-arrow-after.png"
-								alt="arrow"
-						/></a>
+								alt="Next month"
+							/>
+						</button>
 					</div>
 				</div>
-				<div class="weekdays row small-up-7 small-collapse">
-					<div class="column" data-equalizer-watch>
-						<span href="#">Sun</span>
-					</div>
-					<div class="column" data-equalizer-watch>
-						<span href="#">Mon</span>
-					</div>
-					<div class="column" data-equalizer-watch>
-						<span href="#">Tue</span>
-					</div>
-					<div class="column" data-equalizer-watch>
-						<span href="#">Wed</span>
-					</div>
-					<div class="column" data-equalizer-watch>
-						<span href="#">Thu</span>
-					</div>
-					<div class="column" data-equalizer-watch>
-						<span href="#">Fri</span>
-					</div>
-					<div class="column" data-equalizer-watch>
-						<span href="#">Sat</span>
-					</div>
-				</div>
-				<div class="days row small-up-7 small-collapse">
-					<div class="column" v-for="item in calDaysArray" data-equalizer-watch>
-						<a
-							v-on:click.prevent="selectDay(item.day)"
-							v-bind:class="[
-								{ istoday: item.day == currentDayInMonth },
-								{ 'no-events': item.hasevents == noEventClass },
-								{ 'yes-events': item.hasevents == yesEventClass },
-								{ active: item.day == selectedDayInMonth }
-							]"
-							href="#"
-						>
-							{{ removex(item.day) }}</a
-						>
-					</div>
-				</div>
+				<p class="show-for-sr" role="status" aria-live="polite">
+					{{ monthAnnouncement }}
+				</p>
+				<table class="calendar-grid" aria-labelledby="calendar-month-title">
+					<thead class="weekdays">
+						<tr>
+							<th v-for="weekday in weekdays" :key="weekday.short" scope="col">
+								<abbr :title="weekday.full">{{ weekday.short }}</abbr>
+							</th>
+						</tr>
+					</thead>
+					<tbody class="days">
+						<tr v-for="(week, weekIndex) in calendarWeeks" :key="weekIndex">
+							<td v-for="(item, dayIndex) in week" :key="dayIndex">
+								<span v-if="!item" aria-hidden="true"></span>
+								<span v-else-if="isFiller(item.day)" class="day filler" aria-hidden="true">_</span>
+								<button
+									v-else-if="item.hasevents == yesEventClass"
+									type="button"
+									:class="dayClasses(item)"
+									:aria-label="dayLabel(item)"
+									:aria-pressed="item.day == selectedDayInMonth ? 'true' : 'false'"
+									:aria-current="item.day == currentDayInMonth ? 'date' : null"
+									v-on:click="selectDay(item.day)"
+								>
+									{{ item.day }}
+								</button>
+								<span
+									v-else
+									:class="dayClasses(item)"
+									:aria-current="item.day == currentDayInMonth ? 'date' : null"
+									>{{ item.day }}<span class="show-for-sr">, no events</span></span
+								>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 
 			<div class="row calendar-categories">
 				<div class="small-12 column">
 					<div class="calendar-other-categories">
-						<h4>Event Categories</h4>
+						<h3>Event Categories</h3>
 						<ul class="events-by-category">
 							<li class="event-category">
 								<label class="category-checkbox">
@@ -88,29 +90,26 @@
 									<span v-else>All Events</span>
 								</label>
 							</li>
-							<div>
-								<template
-									v-for="category in calendarCategories"
-									:key="category.id"
-								>
-									<li class="event-category">
-										<label class="category-checkbox">
-											<input
-												type="checkbox"
-												:checked="
-													selectedCalendarCategoryIds.includes(category.id)
-												"
-												v-on:change="toggleCategory(category.id)"
-											/>
-											<strong
-												v-if="selectedCalendarCategoryIds.includes(category.id)"
-												>{{ category.category }}</strong
-											>
-											<span v-else>{{ category.category }}</span>
-										</label>
-									</li>
-								</template>
-							</div>
+							<li
+								v-for="category in calendarCategories"
+								:key="category.id"
+								class="event-category"
+							>
+								<label class="category-checkbox">
+									<input
+										type="checkbox"
+										:checked="
+											selectedCalendarCategoryIds.includes(category.id)
+										"
+										v-on:change="toggleCategory(category.id)"
+									/>
+									<strong
+										v-if="selectedCalendarCategoryIds.includes(category.id)"
+										>{{ category.category }}</strong
+									>
+									<span v-else>{{ category.category }}</span>
+								</label>
+							</li>
 						</ul>
 					</div>
 					<div class="calendar-other-categories">
@@ -177,13 +176,41 @@
 	font-size: 0.9rem;
 }
 
-.calendar .weekdays,
-.calendar .days {
-	font-size: 12px;
-	color: #888;
+.calendar .calendar-grid {
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: collapse;
+	margin: 0;
+}
+
+.calendar .calendar-grid thead,
+.calendar .calendar-grid tbody,
+.calendar .calendar-grid tr,
+.calendar .calendar-grid tr:nth-child(even) {
+	background: transparent;
+	border: 0;
+}
+
+.calendar .calendar-grid th,
+.calendar .calendar-grid td {
+	padding: 4px 0;
 	text-align: center;
-	padding-top: 4px;
-	padding-bottom: 4px;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.calendar .weekdays {
+	color: #515151;
+}
+
+.calendar .weekdays abbr {
+	border-bottom: none;
+	text-decoration: none;
+	cursor: default;
+}
+
+.calendar .days {
+	color: #595959;
 }
 
 .calendar .event-category span {
@@ -192,43 +219,50 @@
 	font-weight: bold;
 }
 
-.calendar a {
-	color: #0f654a;
+.calendar .day {
 	display: block;
+	width: 100%;
 	padding: 4px 0;
 	border: 1px solid #f2f2f3;
+	font-size: 12px;
+	line-height: inherit;
+	color: #595959;
 }
 
-.calendar a:hover {
+.calendar button.day {
+	cursor: pointer;
+}
+
+.calendar button.day:hover {
 	border-radius: 5px;
-	text-decoration: none;
 	border: 1px solid #0f654a;
 }
 
-.calendar a.istoday {
+.calendar .day:focus-visible,
+.calendar-nav button:focus-visible {
+	outline: 2px solid #0f654a;
+	outline-offset: 1px;
+	border-radius: 5px;
+}
+
+.calendar .day.istoday {
 	border-radius: 5px;
 	border: 1px solid #0f654a;
 }
 
-.calendar a.active {
+.calendar .day.active {
 	border-radius: 5px;
 	border: 1px solid #0f654a;
 	background: #fff;
 }
 
-.calendar a.noevents {
-	pointer-events: none;
-	color: #888;
-}
-
-.calendar a.yes-events {
-	/*pointer-events: none;*/
+.calendar .day.yes-events {
 	color: #0f654a;
+	font-weight: bold;
 }
 
-.calendar a.no-events {
-	pointer-events: none;
-	color: #888;
+.calendar .day.no-events {
+	color: #595959;
 }
 
 .calendar-box caption {
@@ -247,17 +281,26 @@
 	border: 1px none #000;
 }
 
-.calendar-nav a {
-	border: none;
-}
-
-.calendar-nav a:hover {
-	border: none;
-}
-
-.calendar-title p {
-	font-weight: 400;
+.calendar-nav button {
+	display: block;
+	width: 100%;
 	padding: 4px 0;
+	border: none;
+	background: none;
+	cursor: pointer;
+}
+
+.calendar-title h3 {
+	font-family: inherit;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.4rem;
+	margin: 0;
+	padding: 4px 0;
+}
+
+.calendar-other-categories h3 {
+	font-size: 1.2rem;
 }
 
 .events-by-category {
@@ -329,6 +372,16 @@ export default {
 			haseventClass: "no",
 			selectedDay: "",
 			calDaysArray: [],
+			monthAnnouncement: "",
+			weekdays: [
+				{ short: "Sun", full: "Sunday" },
+				{ short: "Mon", full: "Monday" },
+				{ short: "Tue", full: "Tuesday" },
+				{ short: "Wed", full: "Wednesday" },
+				{ short: "Thu", full: "Thursday" },
+				{ short: "Fri", full: "Friday" },
+				{ short: "Sat", full: "Saturday" }
+			],
 			eventObject: {
 				eoYear: "",
 				eoMonth: "",
@@ -355,6 +408,18 @@ export default {
 			} else {
 				return ""
 			}
+		},
+		// Split the flat day list into weeks of seven, padding the last week with nulls.
+		calendarWeeks() {
+			const weeks = []
+			for (let i = 0; i < this.calDaysArray.length; i += 7) {
+				const week = this.calDaysArray.slice(i, i + 7)
+				while (week.length < 7) {
+					week.push(null)
+				}
+				weeks.push(week)
+			}
+			return weeks
 		}
 	},
 	methods: {
@@ -463,6 +528,7 @@ export default {
 					this.monthArray = response.data.monthArray
 
 					this.monthVarWord = response.data.selectedMonthWord
+					this.monthAnnouncement = this.monthVarWord + " " + this.yearVar
 				})
 				.catch((e) => {
 					console.log(e)
@@ -526,8 +592,23 @@ export default {
 					console.log(e)
 				})
 		},
-		removex(val) {
-			return val[0] == "x" ? "_" : val
+		// Leading cells before the 1st of the month come from the API as "x1", "x2", etc.
+		isFiller(day) {
+			return String(day)[0] == "x"
+		},
+		dayClasses(item) {
+			return [
+				"day",
+				{ istoday: item.day == this.currentDayInMonth },
+				{ "no-events": item.hasevents == this.noEventClass },
+				{ "yes-events": item.hasevents == this.yesEventClass },
+				{ active: item.day == this.selectedDayInMonth }
+			]
+		},
+		dayLabel(item) {
+			return (
+				this.monthVarWord + " " + item.day + ", " + this.yearVar + ", has events"
+			)
 		}
 	},
 	mounted() {

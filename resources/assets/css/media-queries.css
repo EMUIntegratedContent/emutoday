@@ -9,7 +9,7 @@
     display: block;
   }
 
-  #five-events-bar h6 {
+  #five-events-bar h3 {
     padding: 0 .6rem;
     font-size: .8rem;
   }
@@ -154,7 +154,7 @@
     display: block;
   }
 
-  #five-events-bar h6 {
+  #five-events-bar h3 {
     padding: 0 1rem;
     font-size: .9rem;
   }

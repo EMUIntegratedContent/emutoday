@@ -1,7 +1,7 @@
 <template>
   <div class="eventview">
     <a v-on:click.prevent="toggleBody" href="#">
-      <h6>{{ item.title }}<span class="event-cancel" v-if="item.is_canceled"> - canceled</span></h6>
+      <h5>{{ item.title }}<span class="event-cancel" v-if="item.is_canceled"> - canceled</span></h5>
     </a>
     <template v-if="item.all_day">
       <p>All Day</p>
@@ -85,8 +85,9 @@
   color: #b20c0c;
 }
 
-h6 {
+.eventview h5 {
   color: #0f654a;
+  font-size: 1rem;
 }
 
 p {
