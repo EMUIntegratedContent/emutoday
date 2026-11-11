@@ -43,12 +43,19 @@ class MailgunSubscribeService {
 
 	public function addMemberToList($recipientAddress, $recipientName) {
 		try {
-			$this->mgClient->mailingList()->member()->create($this->mailingList, $recipientAddress, $recipientName);
+			$this->mgClient->mailingList()->member()->create(
+				$this->mailingList,
+				$recipientAddress,
+				$recipientName,
+				// Mailgun requires "vars" to be a JSON object; an empty PHP array encodes as "[]" and is rejected.
+				['source' => 'emutoday-double-optin']
+			);
 			return ['success' => true, 'message' => 'You have been successfully subscribed to EMU Today!'];
 		} catch (HttpClientException  $e) {
 			if(str_contains($e->getMessage(), 'Address already exists')) {
 				return ['success' => false, 'message' => 'You are already subscribed to EMU Today.'];
 			}
+			\Log::error('Mailgun addMemberToList failed (list: '.$this->mailingList.'): '.$e->getMessage());
 			return ['success' => false, 'message' => 'There was an error confirming your subscription. Please try again later.'];
 		}
 	}
