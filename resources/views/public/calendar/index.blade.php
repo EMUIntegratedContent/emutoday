@@ -45,7 +45,7 @@
                 :var-year-unit="{!! $varYearUnit !!}"
                 :var-month-unit="{!! $varMonthUnit !!}"
                 :var-day-unit="{!! $varDayUnit !!}"
-                :eventid="{!!$eventid ? $eventid : 0!!}">
+                :eventid="{{ (int) $eventid }}">
             </event-view>
         </div>
     </div><!-- end calendar-bar -->
