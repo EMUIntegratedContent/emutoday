@@ -389,6 +389,7 @@ Route::get('announcement/{id?}', 'Today\AnnouncementController@index'); // Does 
 Route::get('calendar/event/form', 'Today\CalendarController@eventForm');
 Route::get('calendar/user/events', 'Today\CalendarController@userEvents');
 Route::get('calendar/event/{id}', 'Today\CalendarController@show');
+// Where sets a regular expression constraint on the route parameters. This helps prevent XSS attacks.
 Route::get('calendar/{year?}/{month?}/{day?}/{id?}', 'Today\CalendarController@index')
   ->where(['year' => '[0-9]{4}', 'month' => '[0-9]{1,2}', 'day' => '[0-9]{1,2}', 'id' => '[0-9]+']);
 

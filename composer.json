@@ -22,7 +22,7 @@
 		"laravel/legacy-factories": "^v1.4",
 		"edsdk/flmngr-server-php": "^1.6",
 		"mailgun/mailgun-php": "^v4.3",
-		"symfony/http-client": "7.3",
+		"symfony/http-client": "^7.4",
 		"nyholm/psr7": "^1.8",
 		"google/apiclient": "^2.18",
 		"intervention/image-laravel": "^1.3.0",
