@@ -18,7 +18,7 @@ class CalendarController extends Controller{
 	}
 
 	public function index($year = null, $month = null, $day = null, $id = null){
-		$eventid = $id;
+		$eventid = (int) $id;
 		if($year == null){
 			$cd = Carbon::now();
 		}
